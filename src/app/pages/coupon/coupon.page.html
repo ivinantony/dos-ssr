@@ -1,0 +1,56 @@
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-item lines="none">
+      <ion-label style="font-size: 2vw">Apply Coupon</ion-label>
+      <ion-button (click)="dismissModal()" fill="clear" slot="end">
+        <ion-icon slot="icon-only" name="close" color="dark"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+  <ion-item class="input" lines="none">
+    <ion-input placeholder="Coupon Code"></ion-input>
+    <ion-button expand="block" color="danger" shape="round">
+      APPLY COUPON
+    </ion-button>
+  </ion-item>
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Available offers</ion-label>
+    </ion-list-header>
+    <ion-list
+      class="ion-margin-vertical"
+      *ngFor="let item of [1,2,3,4,5,6]; let i=index"
+    >
+      <ion-item lines="none">
+        <ion-label>
+          <h2>WELCOME125</h2>
+          <ion-text color="dark">
+            <p>
+              Get flat ₹125 OFF + flat ₹50 Paytm cashback on your first order.
+            </p>
+          </ion-text>
+          <ion-text color="medium">
+            <p>Valid on orders above ₹249.</p>
+          </ion-text>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="none">
+        <div class="relative">
+          <div class="content-container">
+            <p class="text">WELCOME175</p>
+            <div class="dots-H"></div>
+          </div>
+          <div class="left"></div>
+          <div class="right"></div>
+        </div>
+        <ion-button
+          slot="end"
+          expand="block"
+          fill="outline"
+        >
+          APPLY
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </ion-list>
+</ion-content>

@@ -1,29 +1,144 @@
 <ion-app>
-  <ion-split-pane contentId="main-content">
+  <ion-header class="ion-hide-md-down">
+    <ion-toolbar>
+      <ion-buttons slot="start" class="ion-margin-horizontal">
+        <ion-button (click)="router.navigate(['/home'])">
+          <ion-text color="primary"> <b>DEAL</b> </ion-text>
+          <ion-text color="dark"> <b>ON STORE</b> </ion-text>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="start" class="nav-btns ion-margin-horizontal">
+        <ion-button (click)="router.navigate(['/home'])"> Home </ion-button>
+        <ion-button (click)="menuController.toggle()"> Categories </ion-button>
+        <ion-button> Offers </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button
+          color="dark"
+          style="height: 100%"
+          [routerLink]="['/profile']"
+        >
+          <div>
+            <ion-icon name="person-outline"></ion-icon> <br />
+            <span style="font-size: 10px; font-weight: bold"> Account</span>
+          </div>
+        </ion-button>
+        <ion-button
+          color="dark"
+          style="height: 100%; min-width: 100px"
+          [routerLink]="['/cart']"
+        >
+          <div>
+            <ion-icon name="cart-outline"></ion-icon> <br />
+            <span style="font-size: 10px; font-weight: bold"> Cart</span>
+          </div>
+        </ion-button>
+      </ion-buttons>
+      <ion-grid fixed>
+        <ion-row>
+          <ion-col size="7" push="3">
+            <ion-searchbar
+              style="
+                padding: 0 !important;
+                --border-radius: 5px;
+                text-align: center;
+              "
+              [formControl]="searchTerm"
+              showCancelButton="focus"
+              (ionCancel)="onCancel()"
+              (ionChange)="onSearchInput()"
+              placeholder="Search for products, brands and more"
+              showCancelButton="focus"
+            ></ion-searchbar
+          ></ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col
+          size="12"
+          size-sm="12"
+          size-md="12"
+          push-lg="6"
+          size-lg="6"
+          push-xl="6"
+          size-xl="6"
+        >
+          <ion-content
+            [ngStyle]="{ height: searchItems?.length ? '40vh' : '0' }"
+            style="position: absolute; z-index: 2; left: 0; right: 0"
+          >
+            <ion-list>
+              <ion-item
+                button
+                *ngFor="let item of searchItems; let i = index"
+                (click)="viewSearchProduct(i)"
+              >
+                {{ item.name }}
+              </ion-item>
+            </ion-list>
+          </ion-content>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <!-- <ion-split-pane contentId="main-content"> -->
     <ion-menu contentId="main-content" type="overlay">
       <ion-content>
+        <div class="menu-header-bg"></div>
+      <ion-menu-toggle>
+        <div class="header-content" [routerLink]="['/profile']">
+          <img
+            src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/128.jpg"
+            alt=""
+          />
+          <ion-label class="ion-margin-horizontal"
+            ><ion-text color="light">
+              <h2><b>Username</b></h2>
+            </ion-text></ion-label
+          >
+        </div>
+      </ion-menu-toggle>
         <ion-list id="inbox-list">
-          <ion-list-header>Inbox</ion-list-header>
-          <ion-note>hi@ionicframework.com</ion-note>
+          <!-- <ion-list-header>Inbox</ion-list-header>
+          <ion-note>hi@ionicframework.com</ion-note> -->
 
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-            <ion-item (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" [class.selected]="selectedIndex == i">
-              <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
-              <ion-label>{{ p.title }}</ion-label>
+          <ion-menu-toggle
+            auto-hide="false"
+            *ngFor="let p of categories; let i = index"
+          >
+            <ion-item
+              (click)="navigateToProducts(i)"
+              routerDirection="root"
+              lines="none"
+              detail="false"
+              [class.selected]="selectedIndex == i"
+            >
+              <ion-label>{{ p.name }}</ion-label>
             </ion-item>
           </ion-menu-toggle>
         </ion-list>
-
-        <ion-list id="labels-list">
-          <ion-list-header>Labels</ion-list-header>
-
-          <ion-item *ngFor="let label of labels" lines="none">
-            <ion-icon slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
-            <ion-label>{{ label }}</ion-label>
-          </ion-item>
-        </ion-list>
       </ion-content>
+      <ion-footer>
+        <ion-toolbar color="dark">
+          <ion-button
+            (click)="logout()"
+            expand="block"
+            fill="clear"
+            color="light"
+            shape="round"
+          >
+            <ion-icon slot="start" name="key"></ion-icon>
+            Sign out
+          </ion-button>
+        </ion-toolbar>
+      </ion-footer>
     </ion-menu>
+
     <ion-router-outlet id="main-content"></ion-router-outlet>
-  </ion-split-pane>
+    <!-- </ion-split-pane> -->
+  </ion-content>
 </ion-app>

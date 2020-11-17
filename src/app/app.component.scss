@@ -1,3 +1,33 @@
+.menu-header-bg {
+  height: 180px;
+  width: 350px;
+  background-color: #00b4dbff;
+  background: linear-gradient(90deg, #0083b0ff, #00b4dbff);;
+  box-shadow: 0px 1px 10px rgba(0, 180, 219, 0.5);
+  transform: rotate(-15deg);
+  border-radius: 10px 10px 10px 50px;
+  margin-left: -18px;
+  margin-top: -50px;
+  margin-bottom: 60px;
+}
+.header-content{
+  position: absolute;
+  top: 30px;
+  left: 15px;
+  display: flex;
+  align-items: center;
+  img{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 7px solid #00b4dbff;
+  }
+}
+
+ion-split-pane {
+  --side-max-width: 12%;
+}
+
 ion-menu ion-content {
   --background: var(--ion-item-background, var(--ion-background-color, #fff));
 }
@@ -117,3 +147,32 @@ ion-note {
 ion-item.selected {
   --color: var(--ion-color-primary);
 }
+.nav-btns {
+  ion-button {
+    --color: var(--ion-color-dark);
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 1em;
+  }
+}
+ion-toolbar {
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 4px 16px;
+  --border-width: 0px !important;
+  display: block !important;
+}
+@media screen and (min-device-width: 1200px) and (max-device-width: 1600px) and (-webkit-min-device-pixel-ratio: 1) {
+  .ion-toolbar {
+    --min-height: 80px !important;
+  }
+}
+
+/* ----------- Retina Screens ----------- */
+@media screen and (min-device-width: 1200px) and (max-device-width: 1600px) and (-webkit-min-device-pixel-ratio: 2) and (min-resolution: 192dpi) {
+  .ion-toolbar {
+    --min-height: 80px !important;
+  }
+}
+ion-buttons {
+  height: 80px;
+}
+

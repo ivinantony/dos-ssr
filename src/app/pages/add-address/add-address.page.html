@@ -1,0 +1,66 @@
+<ion-content class="ion-padding">
+  <div>
+    <div id="main">
+      <div>
+        <div #map id="map"></div>
+      </div>
+      <div>
+        <ion-card class="fixed">
+          <ion-list>
+            <ion-item lines="none">
+              <ion-label>
+                <h2>Set your delivery location</h2>
+              </ion-label>
+              <ion-button slot="end" fill="clear" (click)="dismissModal()">
+                <ion-icon slot="icon-only" name="close" color="dark"></ion-icon>
+              </ion-button>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-label>DELIVERY AREA</ion-label>
+            </ion-item>
+            <ion-item class="area" lines="none">
+              <ion-label> <p>{{address}}</p></ion-label>
+              <ion-button
+                color="danger"
+                slot="end"
+                (click)="areaSearch()"
+                fill="clear"
+              >
+                CHANGE
+              </ion-button>
+            </ion-item>
+            <ion-item class="area" lines="none">
+              <ion-input
+                required
+                placeholder="House no./ Flat no./Floor/ Building"
+              ></ion-input>
+            </ion-item>
+            <ion-item class="area" lines="none">
+              <ion-input required placeholder="Alternate number"></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-card>
+      </div>
+    </div>
+
+    <ion-fab vertical="top" horizontal="end" slot="fixed">
+      <ion-fab-button size="small" color="dark" (click)="loadMap()">
+        <ion-icon name="locate"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-toolbar color="dark">
+    <ion-button
+      color="light"
+      id="btn"
+      expand="block"
+      fill="clear"
+      shape="round"
+      (click)="onSubmit()"
+    >
+      {{local_address? 'Save address' : 'Confirm and proceed' }}
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

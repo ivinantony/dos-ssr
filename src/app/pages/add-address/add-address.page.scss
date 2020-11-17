@@ -1,0 +1,44 @@
+#main {
+  // height: 100%;
+  // display: flex;
+  // flex-direction: column;
+}
+#main div {
+  // -ms-flex: 1;  /* IE 10 */  
+  // flex: 1;
+  min-height: 50%;
+  max-height: 80%;
+}
+#map {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 4px 16px;
+}
+ion-list {
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 4px 16px;
+  ion-item {
+    border-radius: 8px;
+  }
+}
+.fixed {
+  position: fixed;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+  margin: 0;
+  border-radius: 0px;
+}
+.area {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* padding: 0px 1.6rem; */
+  border: 1px solid #cfcfcf;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  margin: 16px;
+}

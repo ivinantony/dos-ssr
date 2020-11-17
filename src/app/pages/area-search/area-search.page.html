@@ -1,0 +1,24 @@
+<ion-content>
+  <ion-list>
+    <ion-item lines="none">
+      <ion-label>Search Location</ion-label>
+      <ion-button (click)="dismissModal()" fill="clear" slot="end">
+        <ion-icon slot="icon-only" name="close" color="dark"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+  <ion-item lines="none">
+    <ion-searchbar animated="true" mode="ios" autocomplete="off" placeholder="Search for your location"
+    inputmode="text" type="text" (ionChange)="onSearchChange($event)" showCancelButton="focus" enterkeyhint="done">
+  </ion-searchbar>
+  </ion-item>
+  <ion-list>
+    <ion-item *ngFor="let place of search_places" (click)="selectPlace(place)">
+      <ion-label>
+        <p>
+          {{ place.description }}
+        </p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

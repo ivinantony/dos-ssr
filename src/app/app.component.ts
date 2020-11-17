@@ -1,8 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { LoadingController, MenuController, Platform, ToastController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { HttpClient } from '@angular/common/http';
+import { CATEGORIES } from './pages/home/home.page';
+import { Router } from '@angular/router';
+import { AuthenticationService } from './services/authentication.service';
+import { SwUpdate } from '@angular/service-worker';
+import { FormControl } from '@angular/forms';
+import { debounceTime } from 'rxjs/operators';
+import { ProductSearchService } from './services/product-search.service';
 
 @Component({
   selector: 'app-root',
@@ -11,46 +19,33 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 })
 export class AppComponent implements OnInit {
   public selectedIndex = 0;
-  public appPages = [
-    {
-      title: 'Inbox',
-      url: '/folder/Inbox',
-      icon: 'mail'
-    },
-    {
-      title: 'Outbox',
-      url: '/folder/Outbox',
-      icon: 'paper-plane'
-    },
-    {
-      title: 'Favorites',
-      url: '/folder/Favorites',
-      icon: 'heart'
-    },
-    {
-      title: 'Archived',
-      url: '/folder/Archived',
-      icon: 'archive'
-    },
-    {
-      title: 'Trash',
-      url: '/folder/Trash',
-      icon: 'trash'
-    },
-    {
-      title: 'Spam',
-      url: '/folder/Spam',
-      icon: 'warning'
-    }
-  ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-
+  categories = CATEGORIES
+  searching: boolean = false
+  public searchTerm: FormControl;
+  searchItems: Array<any>;
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    public menuController: MenuController,
+    private authService: AuthenticationService,
+    private menu: MenuController,
+    private loadingController: LoadingController,
+    private toastController: ToastController,
+    public router: Router,
+    private swUpdate: SwUpdate,
+    private searchService: ProductSearchService
   ) {
+    this.searchTerm = new FormControl();
     this.initializeApp();
+    this.searchService.searchValues.subscribe(data => {
+      console.log('data', data)
+      if (data) {
+        this.searchItems = data
+      } else {
+        this.searchItems = []
+      }
+    });
   }
 
   initializeApp() {
@@ -60,10 +55,86 @@ export class AppComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    const path = window.location.pathname.split('folder/')[1];
-    if (path !== undefined) {
-      this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
-    }
+
+  async ngOnInit() {
+
+    this.searchTerm.valueChanges
+      .pipe(debounceTime(700))
+      .subscribe(search => {
+        this.searching = false;
+        this.setFilteredItems(search);
+      });
+
+
+    this.swUpdate.available.subscribe(async res => {
+      const toast = await this.toastController.create({
+        message: 'Update available!',
+        position: 'bottom',
+        buttons: [
+          {
+            role: 'cancel',
+            text: 'Reload'
+          }
+        ]
+      });
+
+      await toast.present();
+
+      toast
+        .onDidDismiss()
+        .then(() => this.swUpdate.activateUpdate())
+        .then(() => window.location.reload());
+    });
+  }
+
+
+  setFilteredItems(search) {
+    this.searchItems = this.searchService.filterItems(search)
+  }
+  onSearchInput() {
+    this.searching = true;
+  }
+  viewSearchProduct(index: number) {
+    this.router.navigate(['product', this.searchItems[index].id])
+    this.searchItems = [];
+  }
+  onCancel() {
+    this.searchItems = []
+  }
+
+
+
+  navigateToProducts(index: number) {
+    this.selectedIndex = index;
+    this.router.navigate(['products', this.categories[index].id, { name: this.categories[index].name }])
+  }
+  logout() {
+    this.presentLoading().then(() => {
+      this.authService.logout().then(() => {
+        this.presentToast().finally(() => {
+          this.menu.close()
+        })
+
+      })
+    })
+
+
+  }
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      message: 'Please wait... ',
+      duration: 100,
+      spinner: 'bubbles'
+    });
+    await loading.present();
+  }
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Logged out Succesfully',
+      cssClass: 'custom-toast',
+      duration: 2000
+    });
+    toast.present();
   }
 }

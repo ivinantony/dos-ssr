@@ -1,0 +1,39 @@
+.banner {
+    ion-slide {
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      height: 15rem;
+    }
+  }
+
+  hr{
+    background: black;
+  }
+ 
+.product-img {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  // height: 30vh;
+  height: 280px;
+  display: flex;
+  align-items: flex-end;
+  border-radius: 0px;
+  ion-list {
+    width: 100%;
+    background: #ffffff9e;
+    ion-item {
+      --background: transparent;
+    }
+  }
+}
+.price {
+  color: var(--ion-color-dark);
+  font-size: 2vh;
+}
+.offer-price {
+  color: var(--ion-color-danger);
+  font-size: 2vh;
+
+}

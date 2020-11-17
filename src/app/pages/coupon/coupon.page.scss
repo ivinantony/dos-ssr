@@ -1,0 +1,64 @@
+ion-item {
+  cursor: pointer;
+}
+.input {
+  border: 1px solid #cfcfcf;
+  border-radius: 0.8rem;
+}
+.relative {
+    position: relative;
+}
+.content-container {
+    background: rgb(248, 248, 248);
+    border: 0.1rem solid rgb(207, 207, 207);
+    box-sizing: border-box;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+}
+.text {
+    font-size: inherit;
+    margin: 0px;
+    color: #363636;
+    padding: 0.5rem 0.8rem 0.5rem 1.8rem;
+    text-transform: uppercase;
+    border-width: 0.1rem;
+    border-color: #cfcfcf;
+    border-style: none dashed none none;
+}
+.dots-H {
+    width: 2rem;
+    height: 100%;
+}
+.left {
+    width: 0.8rem;
+    height: 1.6rem;
+    background: rgb(255, 255, 255);
+    border-top: 0.1rem solid rgb(207, 207, 207);
+    border-right: 0.1rem solid rgb(207, 207, 207);
+    border-bottom: 0.1rem solid rgb(207, 207, 207);
+    border-image: initial;
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border-left: none;
+    border-radius: 0px 0.8rem 0.8rem 0px;
+    left: 0px;
+}
+.right {
+    width: 0.8rem;
+    height: 1.6rem;
+    background: rgb(255, 255, 255);
+    border-top: 0.1rem solid rgb(207, 207, 207);
+    border-bottom: 0.1rem solid rgb(207, 207, 207);
+    border-left: 0.1rem solid rgb(207, 207, 207);
+    border-image: initial;
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border-right: none;
+    border-radius: 0.8rem 0px 0px 0.8rem;
+    right: 0px;
+}

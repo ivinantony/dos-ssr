@@ -1,0 +1,239 @@
+<ion-header transclusent class="ion-no-border" class="ion-hide-md-up">
+  <ion-toolbar #toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button color="dark"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>home</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content
+  fullscreen
+  #content
+  [scrollEvents]="true"
+  [appFadeHeader]="toolbar"
+>
+  <!-- <ion-header collapse="condense" >
+  <ion-toolbar class="ion-no-border">
+    <ion-item lines="none" class="ion-margin-top">
+      <ion-avatar
+        style="position: relative"
+        slot="end"
+        [routerLink]="[ '/profile' ]"
+      >
+        <img
+          src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/128.jpg"
+          alt=""
+        />
+        <div class="notification"></div>
+      </ion-avatar>
+
+      <ion-label>
+        <ion-text color="primary">
+          <p>{{myDate | date}}</p>
+        </ion-text>
+        <ion-text color="dark" class="ion-text-uppercase">
+          <b> Deal </b>
+        </ion-text>
+        <ion-text color="primary">On Store </ion-text>
+      </ion-label>
+    </ion-item>
+  </ion-toolbar>
+</ion-header> -->
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="12" size-lg="8" push-lg="4" size-xl="8" push-xl="4">
+        <ion-searchbar
+          class="ion-hide-md-up"
+          [formControl]="searchTerm"
+          showCancelButton="focus"
+          (ionChange)="onSearchInput()"
+          (ionCancel)="onCancel()"
+        ></ion-searchbar>
+        <div *ngIf="searching" class="spinner-container">
+          <ion-spinner></ion-spinner>
+        </div>
+
+        <ion-content
+          [ngStyle]="{'height': searchItems?.length ? '40vh':'0'}"
+          style="position: absolute; z-index: 2; left: 0; right: 0"
+        >
+          <ion-list>
+            <ion-item
+              *ngFor="let item of searchItems ; let i=index"
+              (click)="viewSearchProduct(i)"
+            >
+              {{ item.name }}
+            </ion-item>
+          </ion-list>
+        </ion-content>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <section id="banr">
+    <ion-slides class="banner" [options]="bannerSlideOpts">
+      <ion-slide
+        *ngFor="let item of banners; let i=index"
+        [ngStyle]="{'background-image': 'url(' + item.imgUrl + ')'}"
+      >
+      </ion-slide>
+    </ion-slides>
+  </section>
+
+  <section id="cat">
+    <ion-item lines="none">
+      <ion-label class="title">All Categories</ion-label>
+      <ion-button expand="block" fill="clear" shape="round" slot="end">
+        View all 
+      </ion-button>
+    </ion-item>
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col
+          class="category"
+          size="6"
+          size-sm="6"
+          size-md="6"
+          size-lg="2"
+          size-xl="2"
+          *ngFor="let item of categories; let i=index"
+          (click)="navigateToProducts(i)"
+        >
+          <ion-card [class.selected]="selectedIndex == i">
+            <ion-item lines="none">
+              <ion-icon slot="start" color="light" name="car"></ion-icon>
+            </ion-item>
+            <ion-label class="ion-text-left">
+              <ion-text color="light">
+                <h3><b>{{item.name}}</b></h3>
+              </ion-text>
+            </ion-label>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <!-- <ion-slides [options]="categorySlides" class="category">
+      <ion-slide
+        *ngFor="let item of categories; let i=index"
+        (click)="navigateToProducts(i)"
+      >
+        <ion-card [class.selected]="selectedIndex == i">
+          <ion-item lines="none">
+            <ion-icon slot="start" color="light" name="car"></ion-icon>
+          </ion-item>
+          <ion-label class="ion-text-left">
+            <ion-text color="light">
+              <h3><b>{{item.name}}</b></h3>
+            </ion-text>
+          </ion-label>
+        </ion-card>
+      </ion-slide>
+    </ion-slides> -->
+  </section>
+  <section id="banr">
+    <ion-slides class="banner" [options]="bannerSlideOpts">
+      <ion-slide
+        *ngFor="let item of banners; let i=index"
+        [ngStyle]="{'background-image': 'url(' + item.imgUrl + ')'}"
+      >
+      </ion-slide>
+    </ion-slides>
+  </section>
+
+  <section id="top">
+    <ion-item lines="none">
+      <ion-label class="title">Top Searches</ion-label>
+      <ion-button expand="block" fill="clear" shape="round" slot="end">
+        View all
+      </ion-button>
+    </ion-item>
+    <ion-slides [options]="topSlides" class="top-search">
+      <ion-slide *ngFor="let item of topSearches; let i=index">
+        <ion-card
+          (click)="viewProduct(i)"
+          [ngStyle]="{'background-image': 'url( '+ item.images[0].url+' )'}"
+        >
+        </ion-card>
+      </ion-slide>
+    </ion-slides>
+  </section>
+  <section>
+    <ion-item lines="none">
+      <ion-label class="title">Search by Manufactures</ion-label>
+      <ion-button expand="block" fill="clear" shape="round" slot="end">
+        View all
+      </ion-button>
+    </ion-item>
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col
+          size="6"
+          size-sm="6"
+          size-md="6"
+          size-lg="3"
+          size-xl="3"
+          *ngFor="let item of manufactures; let i=index"
+        >
+          <ion-card class="ion-no-margin">
+            <ion-card-content>
+              <img
+                style="
+                  height: 280px;
+                  object-fit: contain;
+                  object-position: center;
+                "
+                [src]="item.imgUrl"
+                alt=""
+              />
+            </ion-card-content>
+            <ion-card-header>
+              <ion-card-title>{{item.name}}</ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </section>
+
+  <section id="banr">
+    <ion-slides class="banner" [options]="bannerSlideOpts">
+      <ion-slide
+        *ngFor="let item of banners; let i=index"
+        [ngStyle]="{'background-image': 'url(' + item.imgUrl + ')'}"
+      >
+      </ion-slide>
+    </ion-slides>
+  </section>
+  <section id="recommended">
+    <ion-item lines="none">
+      <ion-label class="title">Recommended for You</ion-label>
+      <ion-button expand="block" fill="clear" shape="round" slot="end">
+        View all
+      </ion-button>
+    </ion-item>
+    <ion-slides [options]="recommendedSlides" class="recommended">
+      <ion-slide *ngFor="let item of topSearches; let i=index">
+        <ion-card
+          (click)="viewProduct(i)"
+          [ngStyle]="{'background-image': 'url( '+ item.images[0].url+' )'}"
+        >
+        </ion-card>
+      </ion-slide>
+      <!-- <ion-slide *ngFor="let item of categories; let i=index">
+      <ion-card
+        [ngStyle]="{'background-image': 'url( https://images.pexels.com/photos/1536619/pexels-photo-1536619.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260 )'}"
+      >
+      </ion-card>
+    </ion-slide> -->
+    </ion-slides>
+  </section>
+  <section id="banr">
+    <ion-slides class="banner" [options]="bannerSlideOpts">
+      <ion-slide
+        *ngFor="let item of banners; let i=index"
+        [ngStyle]="{'background-image': 'url(' + item.imgUrl + ')'}"
+      >
+      </ion-slide>
+    </ion-slides>
+  </section>
+</ion-content>

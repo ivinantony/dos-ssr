@@ -1,0 +1,20 @@
+ion-thumbnail {
+  width: 75px;
+  height: 75px;
+  --border-radius: 10px;
+}
+.cart-btns {
+  border: 1px solid;
+  border-radius: 10px;
+}
+.login-card {
+  box-shadow: none;
+  border: 1px solid;
+}
+
+ion-item {
+  cursor: pointer;
+}
+.total {
+  --background: rgb(254, 252, 249);
+}

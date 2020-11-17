@@ -1,0 +1,169 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-back-button color="danger" defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>cart</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size-sm="12" size-md="12" size-lg="8" size-xl="8">
+        <ion-card style="box-shadow: none">
+          <ion-list-header>
+            <ion-label> Delivery Address </ion-label>
+          </ion-list-header>
+          <ion-card-content style="max-height: 30vh" class="ion-no-padding" >
+            <ion-content style="height: 30vh" class="ion-padding">
+              <ion-radio-group
+                [(ngModel)]="selectedAddress"
+                mode="md"
+                (ionChange)="onChangeAddress($event)"
+              >
+                <ion-item *ngFor="let item of [1,2,3,4]; let i=index">
+                  <ion-label>
+                    <ion-text color="primary">
+                      <h3>John Doe</h3>
+                    </ion-text>
+                    <p>3 Newyork Bridge, Chicago, Spain {{item}}</p>
+                  </ion-label>
+                  <ion-radio slot="start" value="{{item}}"></ion-radio>
+                </ion-item>
+              </ion-radio-group>
+            </ion-content>
+          </ion-card-content>
+          <ion-footer class="ion-no-border">
+            <ion-toolbar>
+              <ion-buttons slot="end">
+                <ion-button color="danger" (click)="addAddress()" >
+                  <ion-icon slot="start" color="danger" name="add"></ion-icon>
+                  Add Address
+                </ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-footer>
+        </ion-card>
+      </ion-col>
+      <ion-col size-sm="12" size-md="12" size-lg="4" size-xl="4">
+        <ion-list-header>
+          <ion-label> Summary </ion-label>
+        </ion-list-header>
+        <ion-list *ngFor="let item of [1,2,3,4]; let i=index">
+          <ion-item lines="none">
+            <ion-label>
+              <h5>Alternator 24v</h5>
+            </ion-label>
+            <ion-buttons class="cart-btns" slot="end">
+              <ion-button>
+                <ion-icon slot="start" color="danger" name="remove"></ion-icon>
+              </ion-button>
+              <ion-button color="dark"> 1 </ion-button>
+              <ion-button>
+                <ion-icon slot="start" color="danger" name="add"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-item>
+          <ion-item>
+            <ion-label><p>{{ 100 | currency:'AED' }}</p></ion-label>
+            <ion-button expand="block" fill="clear" shape="round">
+              {{ 225 | currency:'AED' }}
+            </ion-button>
+          </ion-item>
+          <hr />
+        </ion-list>
+        <ion-list>
+          <ion-item lines="none" (click)="openPromo()">
+            <ion-icon
+              slot="start"
+              color="danger"
+              src="assets/imgs/discount.svg"
+            ></ion-icon>
+            <ion-label color="danger">Apply Promo Code</ion-label>
+            <ion-icon
+              slot="end"
+              color="danger"
+              name="chevron-forward"
+            ></ion-icon>
+          </ion-item>
+        </ion-list>
+        <ion-list>
+          <ion-item lines="none" class="total">
+            <ion-button
+              color="dark"
+              slot="start"
+              expand="block"
+              fill="clear"
+            >
+              Subtotal
+            </ion-button>
+            <ion-button
+              color="dark"
+              slot="end"
+              expand="block"
+              fill="clear"
+            >
+              {{ 180 | currency:'AED' }}
+            </ion-button>
+          </ion-item>
+          <ion-item class="total">
+            <ion-button
+              size="small"
+              color="dark"
+              slot="start"
+              expand="block"
+              fill="clear"
+            >
+              Taxes
+            </ion-button>
+            <ion-button
+              color="dark"
+              slot="end"
+              expand="block"
+              fill="clear"
+              size="small"
+            >
+              {{ 10 | currency:'AED' }}
+            </ion-button>
+          </ion-item>
+          <ion-item lines="none" class="total">
+            <ion-button
+              style="font-weight: bold"
+              color="dark"
+              slot="start"
+              expand="block"
+              fill="clear"
+            >
+              Grand Total
+            </ion-button>
+            <ion-button
+              style="font-weight: bold"
+              color="dark"
+              slot="end"
+              expand="block"
+              fill="clear"
+              size="small"
+            >
+              {{ 10 | currency:'AED' }}
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-button
+      [disabled]="!selectedAddress"
+      slot="end"
+      shape="round"
+      color="danger"
+      (click)="payWithRazorpay()"
+    >
+      <ion-icon slot="end" name="chevron-forward"></ion-icon>
+      Continue to payment
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>
