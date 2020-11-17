@@ -70,15 +70,19 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <!-- Banner -1 start -->
   <section id="banr">
-    <ion-slides class="banner" [options]="bannerSlideOpts">
-      <ion-slide
-        *ngFor="let item of banners; let i=index"
-        [ngStyle]="{'background-image': 'url(' + item.imgUrl + ')'}"
-      >
-      </ion-slide>
+    <ion-slides class="banner" [options]="bannerSlideOpts1">
+      <ion-slide *ngFor="let item of banners_combined; let i=index">
+      <picture>
+        <source media="(min-width: 1024px)" srcset="{{item.desktopImg}}" >
+        <img src="{{item.mobileImg}}" />
+      </picture>
+      </ion-slide>     
     </ion-slides>
   </section>
+  <!-- Banner -1 end -->
 
   <section id="cat">
     <ion-item lines="none">
@@ -130,15 +134,19 @@
       </ion-slide>
     </ion-slides> -->
   </section>
+
+  <!-- Banner -2 start -->
   <section id="banr">
-    <ion-slides class="banner" [options]="bannerSlideOpts">
-      <ion-slide
-        *ngFor="let item of banners; let i=index"
-        [ngStyle]="{'background-image': 'url(' + item.imgUrl + ')'}"
-      >
-      </ion-slide>
+    <ion-slides class="banner" [options]="bannerSlideOpts2">
+      <ion-slide *ngFor="let item of banners_combined; let i=index">
+      <picture>
+        <source media="(min-width: 1024px)" srcset="{{item.desktopImg}}" >
+        <img src="{{item.mobileImg}}" />
+      </picture>
+      </ion-slide>     
     </ion-slides>
   </section>
+  <!-- Banner -2 end -->
 
   <section id="top">
     <ion-item lines="none">
@@ -157,7 +165,8 @@
       </ion-slide>
     </ion-slides>
   </section>
-  <section>
+
+  <section id="searchByManufactures">
     <ion-item lines="none">
       <ion-label class="title">Search by Manufactures</ion-label>
       <ion-button expand="block" fill="clear" shape="round" slot="end">
@@ -172,13 +181,13 @@
           size-md="6"
           size-lg="3"
           size-xl="3"
-          *ngFor="let item of manufactures; let i=index"
-        >
+          *ngFor="let item of manufactures; let i=index">
           <ion-card class="ion-no-margin">
-            <ion-card-content>
+            <ion-card-content class="ion-text-center">
               <img
                 style="
-                  height: 280px;
+                  height: 120px;
+                  width: 120px;
                   object-fit: contain;
                   object-position: center;
                 "
@@ -186,7 +195,7 @@
                 alt=""
               />
             </ion-card-content>
-            <ion-card-header>
+            <ion-card-header class="ion-text-center">
               <ion-card-title>{{item.name}}</ion-card-title>
             </ion-card-header>
           </ion-card>
@@ -195,15 +204,19 @@
     </ion-grid>
   </section>
 
-  <section id="banr">
-    <ion-slides class="banner" [options]="bannerSlideOpts">
-      <ion-slide
-        *ngFor="let item of banners; let i=index"
-        [ngStyle]="{'background-image': 'url(' + item.imgUrl + ')'}"
-      >
-      </ion-slide>
-    </ion-slides>
-  </section>
+ <!-- Banner -3 start -->
+ <section id="banr">
+  <ion-slides class="banner" [options]="bannerSlideOpts3">
+    <ion-slide *ngFor="let item of banners_combined; let i=index">
+    <picture>
+      <source media="(min-width: 1024px)" srcset="{{item.desktopImg}}" >
+      <img src="{{item.mobileImg}}" />
+    </picture>
+    </ion-slide>     
+  </ion-slides>
+</section>
+<!-- Banner -3 end -->
+
   <section id="recommended">
     <ion-item lines="none">
       <ion-label class="title">Recommended for You</ion-label>
@@ -227,13 +240,18 @@
     </ion-slide> -->
     </ion-slides>
   </section>
-  <section id="banr">
-    <ion-slides class="banner" [options]="bannerSlideOpts">
-      <ion-slide
-        *ngFor="let item of banners; let i=index"
-        [ngStyle]="{'background-image': 'url(' + item.imgUrl + ')'}"
-      >
-      </ion-slide>
-    </ion-slides>
-  </section>
+
+<!-- Banner -4 start -->
+<section id="banr">
+  <ion-slides class="banner" [options]="bannerSlideOpts4">
+    <ion-slide *ngFor="let item of banners_combined; let i=index">
+    <picture>
+      <source media="(min-width: 1024px)" srcset="{{item.desktopImg}}" >
+      <img src="{{item.mobileImg}}" />
+    </picture>
+    </ion-slide>     
+  </ion-slides>
+</section>
+<!-- Banner -4 end -->
+
 </ion-content>

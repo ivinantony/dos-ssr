@@ -7,6 +7,7 @@ import { Platform } from '@ionic/angular';
 
 
 import { ProductSearchService } from 'src/app/services/product-search.service';
+import { HomeService } from 'src/app/services/home/home.service';
 
 export const PRODUCTS = [
   { id: 1, cat_id: 1, name: 'Alternator 24v', price: 400, images: [{ id: 1, url: 'https://www.ikh.fi/images/wwwkuvat/Tuotekuvat/STL24005_S_1_web.jpg' }] },
@@ -76,6 +77,43 @@ export const BANNERS: Array<any> = [
   { id: 3, title: 'Hydrogen', imgUrl: 'assets/banners/b3.jpg' },
   { id: 4, title: 'Hydrogen', imgUrl: 'assets/banners/b4.jpg' },
 ];
+
+export const BANNERS_LARGE: Array<any> = [
+  { id: 1, title: 'Hydrogen', imgUrl: 'assets/banners/b1_large.jpg'},
+  { id: 2, title: 'Hydrogen', imgUrl: 'assets/banners/b2_large.jpg' },
+  { id: 3, title: 'Hydrogen', imgUrl: 'assets/banners/b3.jpg' },
+  { id: 4, title: 'Hydrogen', imgUrl: 'assets/banners/b4.jpg' },
+];
+
+export const BANNERS_COMBINED: Array<any> = [
+  {
+    id:1,
+    title:'Hydrogen',
+    desktopImg:'assets/banners/b1_large.jpg',
+    mobileImg:'assets/banners/b1.jpeg',
+  },
+  {
+    id:2,
+    title:'Hydrogen',
+    desktopImg:'assets/banners/b2_large.jpg',
+    mobileImg:'assets/banners/b2.jpg',
+  },
+  {
+    id:3,
+    title:'Hydrogen',
+    desktopImg:'assets/banners/b3_large.jpg',
+    mobileImg:'assets/banners/b3.jpg',
+  },
+  {
+    id:4,
+    title:'Hydrogen',
+    desktopImg:'assets/banners/b2_large.jpg',
+    mobileImg:'assets/banners/b4.jpg',
+  },
+]
+
+
+
 export const MANUFACTURES: Array<any> = [
   { id: 1, name: 'VOLVO', imgUrl: 'assets/logos/volvo.png' },
   { id: 2, name: 'MAN', imgUrl: 'assets/logos/man.png' },
@@ -121,7 +159,7 @@ export const MANUFACTURES: Array<any> = [
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  bannerSlideOpts = {
+  bannerSlideOpts1 = {
     slidesPerView: 1,
     initialSlide: 0,
     spaceBetween: 20,
@@ -134,6 +172,46 @@ export class HomePage implements OnInit {
     speed: 400
 
   };
+  bannerSlideOpts4 = {
+    slidesPerView: 1,
+    initialSlide: 0,
+    spaceBetween: 20,
+    loop: true,
+    centeredSlides: true,
+    autoplay: {
+      delay: 2500,
+      disableOnInteraction: false
+    },
+    speed: 400
+
+  };
+  bannerSlideOpts2 = {
+    slidesPerView: 1,
+    initialSlide: 1,
+    spaceBetween: 20,
+    loop: true,
+    centeredSlides: true,
+    autoplay: {
+      delay: 2000,
+      disableOnInteraction: false
+    },
+    speed: 400
+
+  };
+  bannerSlideOpts3 = {
+    slidesPerView: 1,
+    initialSlide: 2,
+    spaceBetween: 20,
+    loop: true,
+    centeredSlides: true,
+    autoplay: {
+      delay: 3500,
+      disableOnInteraction: false
+    },
+    speed: 400
+
+  };
+
   categorySlides = {
     slidesPerView: 2.7,
     spaceBetween: 5,
@@ -153,19 +231,21 @@ export class HomePage implements OnInit {
   categories = CATEGORIES
   products = PRODUCTS
   banners = BANNERS;
+  banners_combined = BANNERS_COMBINED;
   public searchTerm: FormControl;
   public searchItems: any;
   searching: any = false;
 manufactures = MANUFACTURES
   myDate: String = new Date().toISOString();
   constructor(private router: Router, private platform: Platform,
-    private searchService: ProductSearchService,
+    private searchService: ProductSearchService,private homeService:HomeService,
     private badge: Badge) {
     this.badge.set(10);
     // this.badge.increase(1);
     // this.badge.clear();
     this.searchTerm = new FormControl();
     this.checkWidth()
+    this.getData()
   }
 
   ngOnInit() {
@@ -239,6 +319,22 @@ manufactures = MANUFACTURES
 
   onSearchChange($event) {
     console.log($event);
+  }
+
+  getData()
+  {
+    this.homeService.getHomeDetails(14176,12).subscribe(
+      (data)=> this.handleResponse(data),
+      (error)=>this.handleError(error)
+    )
+  }
+
+  handleResponse(data){
+    console.log(data)
+  }
+  handleError(error)
+  {
+    console.log(error);
   }
 
 }

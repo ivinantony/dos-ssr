@@ -43,6 +43,7 @@ ion-toolbar {
       // background-repeat: no-repeat;
       // background-size: cover;
       height: 50vh;
+      
     }
   }
   .title {
@@ -115,4 +116,21 @@ ion-toolbar {
   ion-item.selected {
     --color: #00b4dbff;
   }
-  
+ 
+  picture {
+    width: 100%;
+    height: 100%;
+    display: flex;
+   
+  }
+  picture img {
+   object-fit: cover; 
+      height: auto;
+      width:100%;
+  }
+
+  #searchByManufactures{
+    ion-card-title{
+      font-size: 15px;
+    }
+  }

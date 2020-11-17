@@ -1,0 +1,24 @@
+
+
+<ion-content>
+  <div class="ion-text-center">
+    <img src="../../../assets/images/mail_recieved.svg" alt="">
+  </div>
+  
+  <div class="ion-text-center headerText">
+    <ion-card-title>Please Check your messages.</ion-card-title>
+  <p>Enter the 4 digit number sent to your meessages</p>
+
+  </div>
+
+  
+  <ion-item class="ion-text-center" lines="none">
+  <ion-input placeholder="-  -  -  -" autocapitalize="off" autocomplete="off" autocorrect="off" minlength="4" maxlength="4"  name="otp" type="tel" [(ngModel)]="inputOtp"  class="otp"></ion-input>
+  </ion-item>
+  <div class="ion-text-center btn">
+    <ion-button (click)="cancel()" color="danger" shape="round" >cancel</ion-button>
+    <ion-button (click)="onContinue()" color="success" shape="round" >Continue</ion-button>
+    
+  </div>
+  
+</ion-content>

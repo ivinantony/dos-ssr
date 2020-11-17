@@ -71,7 +71,11 @@ const routes: Routes = [
   {
     path: 'sort',
     loadChildren: () => import('./pages/sort/sort.module').then( m => m.SortPageModule)
+  },  {
+    path: 'otpmodal',
+    loadChildren: () => import('./pages/otpmodal/otpmodal.module').then( m => m.OtpmodalPageModule)
   }
+
 ];
 
 @NgModule({

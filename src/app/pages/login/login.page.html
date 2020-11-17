@@ -23,7 +23,7 @@
         style="border: 1px solid rgba(var(--b6a, 219, 219, 219), 1)"
       >
      
-      <form [formGroup]="loginGroup" (ngSubmit)="login()">
+      <form [formGroup]="loginGroup" (ngSubmit)="login(loginGroup.value)">
         <ion-list>
           <ion-list-header>
             <ion-label class="ion-text-center">
