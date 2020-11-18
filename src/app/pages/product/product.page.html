@@ -19,8 +19,8 @@
       >
         <ion-slides pager [options]="productOpts" class="prod-slide">
           <ion-slide
-            *ngFor="let item of product?.images; let i=index"
-            [ngStyle]="{'background-image': 'url(' + item.url + ')'}"
+            *ngFor="let item of productDetails?.images; let i=index"
+            [ngStyle]="{'background-image': 'url(' + item.path + ')'}"
           >
           </ion-slide>
         </ion-slides>
@@ -35,13 +35,13 @@
         <ion-list>
           <ion-item lines="none">
             <ion-label>
-              <h1>{{product?.name}}</h1>
+              <h1>{{productDetails?.name}}</h1>
               <ion-text color="dark">
                 <h4 class="ion-margin-top">Brand Name</h4>
               </ion-text>
               <ion-text color="primary">
                 <p class="ion-margin-top">
-                  {{ product?.price | currency:'AED' }}
+                  {{ productDetails?.price | currency:'AED' }}
                 </p>
               </ion-text>
             </ion-label>
@@ -49,11 +49,7 @@
           <section class="ion-padding-horizontal">
             <h3>Description:</h3>
             <p>
-              Lorem ipsum, or lipsum as it is sometimes known, is dummy text
-              used in laying out print, graphic or web designs. The passage is
-              attributed to an unknown typesetter in the 15th century who is
-              thought to have scrambled parts of Cicero's De Finibus Bonorum et
-              Malorum for use in a type specimen book.
+              {{productDetails?.description}}
             </p>
           </section>
           <ion-grid>

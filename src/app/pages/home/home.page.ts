@@ -8,6 +8,7 @@ import { Platform } from '@ionic/angular';
 
 import { ProductSearchService } from 'src/app/services/product-search.service';
 import { HomeService } from 'src/app/services/home/home.service';
+import { UtilsService } from 'src/app/services/utils.service';
 
 export const PRODUCTS = [
   { id: 1, cat_id: 1, name: 'Alternator 24v', price: 400, images: [{ id: 1, url: 'https://www.ikh.fi/images/wwwkuvat/Tuotekuvat/STL24005_S_1_web.jpg' }] },
@@ -67,8 +68,6 @@ export const CATEGORIES = [
   { id: 7, name: 'Mixer Tank Accessories' },
   { id: 9, name: 'Startter Systme' },
   { id: 10, name: 'Steering System' },
-
-
 ]
 
 export const BANNERS: Array<any> = [
@@ -228,9 +227,13 @@ export class HomePage implements OnInit {
   }
   selectedIndex = 0
   topSearches = PRODUCTS;
-  categories = CATEGORIES
-  products = PRODUCTS
-  banners = BANNERS;
+  // categories = CATEGORIES
+  // products = PRODUCTS
+   banners = BANNERS;
+  s3url:string
+  brands:any
+  categories:any
+  products:any
   banners_combined = BANNERS_COMBINED;
   public searchTerm: FormControl;
   public searchItems: any;
@@ -239,7 +242,8 @@ manufactures = MANUFACTURES
   myDate: String = new Date().toISOString();
   constructor(private router: Router, private platform: Platform,
     private searchService: ProductSearchService,private homeService:HomeService,
-    private badge: Badge) {
+    private badge: Badge,private utils:UtilsService) {
+      this.s3url = utils.getS3url()
     this.badge.set(10);
     // this.badge.increase(1);
     // this.badge.clear();
@@ -271,10 +275,10 @@ manufactures = MANUFACTURES
 
   navigateToProducts(index: number) {
     this.selectedIndex = index;
-    this.router.navigate(['products', this.categories[index].id, { name: this.categories[index].name }])
+    this.router.navigate(['products', this.categories[index].id, { name: this.categories[index].category_name }])
   }
   viewProduct(index: number) {
-    this.router.navigate(['product', this.topSearches[index].id])
+    this.router.navigate(['product', this.products[index].id])
   }
   viewSearchProduct(index: number) {
     this.router.navigate(['product', this.searchItems[index].id])
@@ -323,7 +327,7 @@ manufactures = MANUFACTURES
 
   getData()
   {
-    this.homeService.getHomeDetails(14176,12).subscribe(
+    this.homeService.getHomeDetails().subscribe(
       (data)=> this.handleResponse(data),
       (error)=>this.handleError(error)
     )
@@ -331,6 +335,23 @@ manufactures = MANUFACTURES
 
   handleResponse(data){
     console.log(data)
+
+    this.brands = data.brands
+    this.categories = data.categories
+    this.products = data.products
+    for(let i=0;i<this.brands.length;i++)
+    {
+      this.brands[i].path= this.s3url + this.brands[i].path
+    }
+    for(let i=0;i<this.categories.length;i++)
+    {
+      this.categories[i].path= this.s3url + this.categories[i].path
+    }
+    for(let i=0;i<this.products.length;i++)
+    {
+      this.products[i].images[0].path = this.s3url + this.products[i].images[0].path
+    }
+    console.log(this.products,"this is products")
   }
   handleError(error)
   {

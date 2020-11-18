@@ -20,8 +20,9 @@ export class AuthenticationService {
     }
   }
 
-  async login() {
-    await localStorage.setItem(TOKEN_KEY, 'Bearer 1234567')
+  async login(token) {
+    await localStorage.setItem(TOKEN_KEY, token)
+    console.log(token,"this is token")
     console.log('token saved')
   }
 

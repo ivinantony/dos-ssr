@@ -17,6 +17,7 @@
       </ion-slide>
     </ion-slides>
   </section>
+
   <ion-grid>
     <ion-row>
       <ion-col class="ion-hide-md-down" size-xl="2" size-lg="2">
@@ -94,14 +95,14 @@
                 <picture>
                   <source
                     media="(min-width:650px)"
-                    [srcset]="item?.images[0].url"
+                    [srcset]="item?.images[0].path"
                   />
                   <source
                     media="(min-width:465px)"
-                    [srcset]="item?.images[0].url"
+                    [srcset]="item?.images[0].path"
                   />
                   <img
-                    [src]="item?.images[0].url"
+                    [src]="item?.images[0].path"
                     alt="Flowers"
                     style="width: auto"
                   />
@@ -111,7 +112,7 @@
               <ion-list>
                 <ion-item lines="none">
                   <ion-label>
-                    <h3>Alternator 24v</h3>
+                    <h2>{{item.name}}</h2>
                     <ion-label
                       style="
                         display: flex;
@@ -120,10 +121,10 @@
                       "
                     >
                       <ion-text color="dark">
-                        <p>{{ 225 | currency:'AED' }}</p>
+                        <p>{{ item.offer_price | currency:'AED' }}</p>
                       </ion-text>
                       <ion-text color="danger">
-                        <p>{{ 225 | currency:'AED' }}</p>
+                        <p class="offer-price">{{ item.price | currency:'AED' }}</p>
                       </ion-text>
                     </ion-label>
                     <!-- <p class="price">{{ 225 | currency:'AED' }}</p>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NavController, LoadingController, ToastController, ModalController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { LoginService } from 'src/app/services/login/login.service';
@@ -16,13 +17,15 @@ export class LoginPage implements OnInit {
   previousUrl: string = null;
   currentUrl: string = null;
   branch_id:number=6
+  phone:any
   constructor(private authService: AuthenticationService,
     private navCtrl: NavController,
     private loadingController: LoadingController,
     private toastController: ToastController,
     private formBuilder: FormBuilder,
     private loginService:LoginService,
-    private modalController:ModalController) {
+    private modalController:ModalController,
+    private router:Router) {
     
     this.loginGroup = this.formBuilder.group({
       name: ['', Validators.compose([Validators.required, Validators.minLength(4)])],
@@ -36,8 +39,10 @@ export class LoginPage implements OnInit {
 
   }
   login(data) {
+    let phone= data.phone
+    let email = data.email
     let userDetails={
-      branch_id: 6,
+      
       email: data.email,
       name: data.name,
       phone: data.phone
@@ -46,7 +51,7 @@ export class LoginPage implements OnInit {
     this.loginService.registerUser(userDetails).subscribe(
       (data)=>this.handleResponse(data),
       (error)=>this.handleError(error))
-      this.presentModal()
+      this.router.navigate(['otp',{phone,email}])
     // this.presentLoading().then(() => {
     //   this.authService.login().then(() => {
     //     this.presentToast().finally(() => {
@@ -84,19 +89,19 @@ export class LoginPage implements OnInit {
   {
     console.log(error)
   }
-  async presentModal() {
-    const modal = await this.modalController.create({
-      component: OtpmodalPage,
-      cssClass: 'modal-class',
-      // componentProps: {
-      //   type : type,
+  // async presentModal() {
+  //   const modal = await this.modalController.create({
+  //     component: OtpmodalPage,
+  //     cssClass: '',
+  //     componentProps: {
+  //       phone : type,
         
-      // }
-    });
-    //  modal.onDidDismiss().finally(()=>{
-    //   this.getData()
-    // })
-    return await modal.present();
+  //     }
+  //   });
+  //   //  modal.onDidDismiss().finally(()=>{
+  //   //   this.getData()
+  //   // })
+  //   return await modal.present();
    
-  }
+  // }
 }

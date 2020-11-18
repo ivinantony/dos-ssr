@@ -9,7 +9,8 @@ export class UtilsService {
   public token: any;
   constructor() {
     this.apiPath = "https://dev.sparepartsapi.mermerapps.com/api/mobile-app/";
-    this.s3url = "https://s3.ap-south-1.amazonaws.com/fashionstoremermer/";
+    // this.s3url = "https://s3.ap-south-1.amazonaws.com/fashionstoremermer/";
+    this.s3url = "https://s3.ap-south-1.amazonaws.com/dev-fashionstoremermer/";
   }
   public getApiPath() {
     return this.apiPath;

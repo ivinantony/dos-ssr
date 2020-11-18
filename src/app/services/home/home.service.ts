@@ -16,11 +16,11 @@ url:string
     this.url = utils.getApiPath()
   }
 
-  public getHomeDetails(member_id: number, branch_id: number) {
+  public getHomeDetails() {
     const headers = this.headerService.getHttpHeaders();
     return this.httpClient
       .get(
-        this.url + "home-details?member_id=" +member_id +"&branch_id=" + branch_id,{ headers }
+        this.url + "home-details",{ headers }
       ).pipe(map(res =>{
       return res
       })

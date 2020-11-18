@@ -1,0 +1,17 @@
+ion-button{
+    --border-radius:5px;
+    width: 100%;
+}
+.main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.otp{
+    width: 200px;
+    font-size: 42px;
+    letter-spacing: 5px;
+    margin-top: 50px;
+}

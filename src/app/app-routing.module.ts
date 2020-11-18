@@ -13,7 +13,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)
   },
   {
-    path: 'product/:id',
+    path: 'product',
     loadChildren: () => import('./pages/product/product.module').then( m => m.ProductPageModule)
   },
   {
@@ -71,7 +71,8 @@ const routes: Routes = [
   {
     path: 'sort',
     loadChildren: () => import('./pages/sort/sort.module').then( m => m.SortPageModule)
-  },  {
+  },
+  {
     path: 'otpmodal',
     loadChildren: () => import('./pages/otpmodal/otpmodal.module').then( m => m.OtpmodalPageModule)
   }

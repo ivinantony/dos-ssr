@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-
+import { ActivatedRoute, Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { VerifyOtpService } from 'src/app/services/otp/verify-otp.service';
+const POST_OTP=200;
 @Component({
   selector: 'app-otp',
   templateUrl: './otp.page.html',
@@ -7,9 +11,64 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OtpPage implements OnInit {
 
-  constructor() { }
+  inputOtp:number
+  phone:number
+  email:any
+  constructor(private otpService:VerifyOtpService,private activatedRoute:ActivatedRoute,
+    private alertController:AlertController,private authService:AuthenticationService,
+    private router:Router) 
+  {
+    this.phone = this.activatedRoute.snapshot.params.phone
+    this.email = this.activatedRoute.snapshot.params.email
+    console.log(this.phone)
+  }
 
   ngOnInit() {
   }
 
+  cancel()
+  {
+
+  }
+
+  continue()
+  {
+    var data={
+      email:this.email,
+      otp:this.inputOtp ,
+      phone:this.phone
+    }
+
+    this.otpService.verifyOtp(data).subscribe(
+      (data) => this.handleResponseData(data, POST_OTP),
+      (error) => this.handleError(error)
+    );
+
+  }
+
+  handleResponseData(data,type)
+  {
+    console.log(data)
+    this.authService.login(data.data)
+    localStorage.setItem('member_id',data.member_id)
+    this.router.navigate(['home'])
+  }
+
+  handleError(error)
+  {
+    this.presentAlert("plaease check your OTP.")
+    console.log(error)
+  }
+
+  async presentAlert(msg:string) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Invalid OTP',
+     
+      message:msg,
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  }
 }

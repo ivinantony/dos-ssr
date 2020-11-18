@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ModalController, Platform } from '@ionic/angular';
+import { LoadingController, ModalController, Platform } from '@ionic/angular';
+import { utils } from 'protractor';
+import { SubcatProductsService } from 'src/app/services/subcatProducts/subcat-products.service';
+import { UtilsService } from 'src/app/services/utils.service';
 import { FiltersPage } from '../filters/filters.page';
 import { PRODUCTS, BANNERS } from '../home/home.page';
-
+const GET_DATA = 200;
 @Component({
   selector: 'app-products',
   templateUrl: './products.page.html',
@@ -24,25 +27,61 @@ export class ProductsPage implements OnInit {
     },
     speed: 400
   }
+  catId:any
   category_name: any;
+  s3url:string
   public form = [
     { val: 'Pepperoni', isChecked: true },
     { val: 'Sausage', isChecked: false },
     { val: 'Mushroom', isChecked: false }
   ];
-  constructor(private activatedRoute: ActivatedRoute, private platform: Platform, private router: Router, private modalController: ModalController) {
+  constructor(private activatedRoute: ActivatedRoute, private platform: Platform, private router: Router, private modalController: ModalController,
+    private CatProductService:SubcatProductsService,private utils:UtilsService,private loadingcontroller:LoadingController) {
     this.checkWidth()
-    let id = parseInt(this.activatedRoute.snapshot.paramMap.get('id'))
+    this.s3url = utils.getS3url()
+    this.catId = parseInt(this.activatedRoute.snapshot.paramMap.get('id'))
     this.category_name = this.activatedRoute.snapshot.paramMap.get('name')
-    this.products = PRODUCTS.filter(data => data.cat_id == id)
-    console.log(this.products)
+    // this.products = PRODUCTS.filter(data => data.cat_id == catId)
+    // console.log(this.products)
+    this.getData()
+
   }
 
   ngOnInit() {
   }
 
+  getData()
+  {
+    console.log("catid",this.catId)
+    let member_id = Number(localStorage.getItem('member_id'))
+    this.CatProductService.getSubCatProducts(this.catId,member_id,1).subscribe(
+      (data)=>this.handleResponse(data,GET_DATA),
+      (error)=>this.handleError(error)
+    )
+  }
+
+  handleResponse(data,type)
+  {
+    if(type == GET_DATA)
+    {
+    this.products = data.products
+    console.log(this.products)
+    for(let i=0;i<this.products.length;i++)
+    {
+      this.products[i].images[0].path = this.s3url+this.products[i].images[0].path
+    }
+    }
+    
+    
+  }
+  handleError(error)
+  {
+    console.log(error)
+  }
   navigateToProduct(index: number) {
-    this.router.navigate(['product', this.products[index].id])
+    let id=this.products[index].id
+    let catId= this.products[index].category_id
+    this.router.navigate(['product',{id,catId}])
   }
 
   onCatChange(event) {
