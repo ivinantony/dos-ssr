@@ -1,0 +1,178 @@
+<ion-header>
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{brand_name}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <section id="banr" class="ion-margin-vertical">
+    <ion-slides class="banner" [options]="bannerSlideOpts">
+      <ion-slide
+        *ngFor="let item of banners; let i=index"
+        [ngStyle]="{'background-image': 'url(' + item.imgUrl + ')'}"
+      >
+      </ion-slide>
+    </ion-slides>
+  </section>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col class="ion-hide-md-down" size-xl="2" size-lg="2">
+        <ion-list>
+          <ion-list-header>
+            <ion-label>
+              <p>Filters</p>
+            </ion-label>
+            <ion-button size="small" color="danger">Clear All</ion-button>
+          </ion-list-header>
+          <ion-item
+            *ngFor="let entry of form"
+            lines="none"
+            (ionChange)="onCatChange($event)"
+          >
+            <ion-label>{{entry.val}}</ion-label>
+            <ion-checkbox
+              color="danger"
+              slot="start"
+              [(ngModel)]="entry.isChecked"
+            ></ion-checkbox>
+          </ion-item>
+          <hr />
+        </ion-list>
+        <ion-list>
+          <ion-list-header>
+            <ion-label>
+              <p>Brand</p>
+            </ion-label>
+            <ion-button size="small" color="danger">Clear All</ion-button>
+          </ion-list-header>
+
+          <ion-item *ngFor="let entry of form" lines="none">
+            <ion-label>{{entry.val}}</ion-label>
+            <ion-checkbox
+              color="danger"
+              slot="start"
+              [(ngModel)]="entry.isChecked"
+            ></ion-checkbox>
+          </ion-item>
+          <hr />
+        </ion-list>
+        <ion-list>
+          <ion-list-header>
+            <ion-label>
+              <p>Price</p>
+            </ion-label>
+            <ion-button size="small" color="danger">Clear All</ion-button>
+          </ion-list-header>
+
+          <ion-item *ngFor="let entry of form" lines="none">
+            <ion-label>{{entry.val}}</ion-label>
+            <ion-checkbox
+              color="danger"
+              slot="start"
+              [(ngModel)]="entry.isChecked"
+            ></ion-checkbox>
+          </ion-item>
+          <hr />
+        </ion-list>
+      </ion-col>
+      <ion-col size="12" size-sm="12" size-md="12" size-xl="10" size-lg="10">
+        <ion-grid fixed>
+          <ion-row>
+            <ion-col
+              size="6"
+              size-sm="6"
+              size-md="6"
+              size-lg="3"
+              size-xl="3"
+              *ngFor="let item of products; let i=index"
+              (click)="navigateToProduct(i)"
+            >
+              <div style="height: 280px; position: relative; overflow: hidden">
+                <picture>
+                  <source
+                    media="(min-width:650px)"
+                    [srcset]="item?.images[0].path"
+                  />
+                  <source
+                    media="(min-width:465px)"
+                    [srcset]="item?.images[0].path"
+                  />
+                  <img
+                    [src]="item?.images[0].path"
+                    alt="Flowers"
+                    style="width: auto"
+                  />
+                </picture>
+                <!-- <img [src]="item?.images[0].url" alt=""> -->
+              </div>
+              <ion-list>
+                <ion-item lines="none">
+                  <ion-label>
+                    <h2>{{item.name}}</h2>
+                    <ion-label
+                      style="
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-around;
+                      "
+                    >
+                      <ion-text color="dark">
+                        <p>{{ item.offer_price | currency:'AED' }}</p>
+                      </ion-text>
+                      <ion-text color="danger">
+                        <p class="offer-price">{{ item.price | currency:'AED' }}</p>
+                      </ion-text>
+                    </ion-label>
+                    <!-- <p class="price">{{ 225 | currency:'AED' }}</p>
+                    <p class="offer-price">{{ 225 | currency:'AED' }}</p> -->
+                  </ion-label>
+                </ion-item>
+              </ion-list>
+              <!-- <ion-card
+                class="product-img ion-no-margin"
+                [ngStyle]="{'background-image': 'url('+ item?.images[0].url +' )'}"
+              >
+              </ion-card> -->
+              <!-- <ion-list>
+                <ion-item lines="none">
+                  <ion-label>
+                    <p>Alternator 24v</p>
+                    <p class="price">{{ 225 | currency:'AED' }}</p>
+                    <p class="offer-price">{{ 225 | currency:'AED' }}</p>
+                  </ion-label>
+                </ion-item>
+              </ion-list> -->
+            </ion-col>
+            <ion-infinite-scroll (ionInfinite)="loadMoreContent($event)">
+              <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+              </ion-infinite-scroll-content>
+            </ion-infinite-scroll>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<ion-footer class="ion-hide-md-up">
+  <ion-toolbar>
+    <ion-buttons class="ion-justify-content-around">
+      <ion-button expand="block" fill="clear" shape="round">
+        <ion-icon slot="start" name="funnel-outline"></ion-icon>
+        SORT
+      </ion-button>
+      <ion-button
+        (click)="openFilter()"
+        expand="block"
+        fill="clear"
+        shape="round"
+      >
+        <ion-icon slot="start" name="filter-outline"></ion-icon>
+        FILTER
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

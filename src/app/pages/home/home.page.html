@@ -182,7 +182,7 @@
           size-lg="3"
           size-xl="3"
           *ngFor="let item of brands; let i=index">
-          <ion-card class="ion-no-margin">
+          <ion-card class="ion-no-margin" (click)="navigateToBrandProducts(i)">
             <ion-card-content class="ion-text-center">
               <img
                 style="

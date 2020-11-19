@@ -75,7 +75,12 @@ const routes: Routes = [
   {
     path: 'otpmodal',
     loadChildren: () => import('./pages/otpmodal/otpmodal.module').then( m => m.OtpmodalPageModule)
+  },
+  {
+    path: 'brand-products',
+    loadChildren: () => import('./pages/brand-products/brand-products.module').then( m => m.BrandProductsPageModule)
   }
+
 
 ];
 

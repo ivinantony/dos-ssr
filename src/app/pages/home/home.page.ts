@@ -358,4 +358,11 @@ manufactures = MANUFACTURES
     console.log(error);
   }
 
+
+  navigateToBrandProducts(index:number)
+  {
+    let brand_id = this.brands[index].id
+    let brand_name = this.brands[index].brand_name
+    this.router.navigate(['brand-products',{brand_id,brand_name}])
+  }
 }
