@@ -28,7 +28,7 @@
             </ion-label>
             <ion-button size="small" color="danger">Clear All</ion-button>
           </ion-list-header>
-          <ion-item
+          <!-- <ion-item
             *ngFor="let entry of form"
             lines="none"
             (ionChange)="onCatChange($event)"
@@ -39,7 +39,7 @@
               slot="start"
               [(ngModel)]="entry.isChecked"
             ></ion-checkbox>
-          </ion-item>
+          </ion-item> -->  
           <hr />
         </ion-list>
         <ion-list>
@@ -50,14 +50,14 @@
             <ion-button size="small" color="danger">Clear All</ion-button>
           </ion-list-header>
 
-          <ion-item *ngFor="let entry of form" lines="none">
+          <!-- <ion-item *ngFor="let entry of form" lines="none">
             <ion-label>{{entry.val}}</ion-label>
             <ion-checkbox
               color="danger"
               slot="start"
               [(ngModel)]="entry.isChecked"
             ></ion-checkbox>
-          </ion-item>
+          </ion-item> -->
           <hr />
         </ion-list>
         <ion-list>
@@ -68,14 +68,14 @@
             <ion-button size="small" color="danger">Clear All</ion-button>
           </ion-list-header>
 
-          <ion-item *ngFor="let entry of form" lines="none">
+          <!-- <ion-item *ngFor="let entry of form" lines="none">
             <ion-label>{{entry.val}}</ion-label>
             <ion-checkbox
               color="danger"
               slot="start"
               [(ngModel)]="entry.isChecked"
             ></ion-checkbox>
-          </ion-item>
+          </ion-item> -->
           <hr />
         </ion-list>
       </ion-col>
@@ -147,7 +147,8 @@
                 </ion-item>
               </ion-list> -->
             </ion-col>
-            <ion-infinite-scroll (ionInfinite)="loadMoreContent($event)">
+            <!-- (ionInfinite)="loadMoreContent($event)" -->
+            <ion-infinite-scroll >
               <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
               </ion-infinite-scroll-content>
             </ion-infinite-scroll>
@@ -164,7 +165,7 @@
         <ion-icon slot="start" name="funnel-outline"></ion-icon>
         SORT
       </ion-button>
-      <ion-button
+      <!-- <ion-button
         (click)="openFilter()"
         expand="block"
         fill="clear"
@@ -172,7 +173,7 @@
       >
         <ion-icon slot="start" name="filter-outline"></ion-icon>
         FILTER
-      </ion-button>
+      </ion-button> -->
     </ion-buttons>
   </ion-toolbar>
 </ion-footer>
