@@ -8,7 +8,8 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid fixed>
+
+  <ion-grid fixed [ngClass]="cartLength > 0 ? 'active' : 'inactive'">
     <ion-row>
       <ion-col size-sm="12" size-md="12" size-lg="8" size-xl="8">
         <ion-card style="box-shadow: none">
@@ -50,25 +51,31 @@
         <ion-list-header>
           <ion-label> Summary </ion-label>
         </ion-list-header>
-        <ion-list *ngFor="let item of [1,2,3,4]; let i=index">
-          <ion-item lines="none">
+        <ion-list *ngFor="let item of cart; let i=index">
+
+          <ion-item lines="none" class="products">
+            <ion-thumbnail>
+              <img src="{{item.images[0].path}}">
+            </ion-thumbnail>
             <ion-label>
-              <h5>Alternator 24v</h5>
+              <h5>{{item.name}}</h5>
             </ion-label>
+            <ion-icon name="trash-outline" (click)="remove(i,item.id)"></ion-icon>
             <ion-buttons class="cart-btns" slot="end">
-              <ion-button>
+              <ion-button (click)="subtract(i,item.id)">
                 <ion-icon slot="start" color="danger" name="remove"></ion-icon>
               </ion-button>
-              <ion-button color="dark"> 1 </ion-button>
-              <ion-button>
-                <ion-icon slot="start" color="danger" name="add"></ion-icon>
+              <ion-button color="dark">{{item.count}}</ion-button>
+              <ion-button (click)="add(i,item.id)">
+                <ion-icon slot="start" color="danger" name="add" ></ion-icon>
               </ion-button>
             </ion-buttons>
           </ion-item>
+
           <ion-item>
-            <ion-label><p>{{ 100 | currency:'AED' }}</p></ion-label>
+            <ion-label><p>{{ item.price | currency:'AED  ' }} * {{item.count}}</p></ion-label>
             <ion-button expand="block" fill="clear" shape="round">
-              {{ 225 | currency:'AED' }}
+              {{ item.sum | currency:'AED  ' }}
             </ion-button>
           </ion-item>
           <hr />
@@ -152,7 +159,18 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
+<ion-grid fixed [ngClass]="cartLength > 0 ? 'inactive' : 'active' ">
+  <ion-row>
+    <ion-col size="12" class="ion-text-center">
+      <p>The cart is empty</p>
+    </ion-col>
+  
+  </ion-row>
+</ion-grid>
+
 </ion-content>
+
 <ion-footer>
   <ion-toolbar>
     <ion-button

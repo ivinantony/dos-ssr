@@ -93,7 +93,15 @@ export class BrandProductsPage implements OnInit {
   // loadMoreContent()
   // {
   //   if (this.page_limit == 1000) {
-  //   //   event.target.disabled = true;
-  //   // }
+  //     event.target.disabled = true;
+  //   }
   // }
+
+
+  navigateToProduct(index)
+  {
+
+  }
+
+  
 }

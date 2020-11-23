@@ -278,7 +278,9 @@ manufactures = MANUFACTURES
     this.router.navigate(['products', this.categories[index].id, { name: this.categories[index].category_name }])
   }
   viewProduct(index: number) {
-    this.router.navigate(['product', this.products[index].id])
+    let id = this.products[index].id
+    let catId =this.products[index].category_id
+    this.router.navigate(['product', {id,catId}])
   }
   viewSearchProduct(index: number) {
     this.router.navigate(['product', this.searchItems[index].id])

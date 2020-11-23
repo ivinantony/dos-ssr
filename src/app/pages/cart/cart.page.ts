@@ -1,10 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { IonRouterOutlet, ModalController, Platform, ToastController } from '@ionic/angular';
+import { CartService } from 'src/app/services/cart/cart.service';
+import { UtilsService } from 'src/app/services/utils.service';
 import { AddAddressPage } from '../add-address/add-address.page';
 import { AddressPage } from '../address/address.page';
 import { CouponPage } from '../coupon/coupon.page';
 declare var RazorpayCheckout: any;
 declare var Razorpay: any
+const GET_CART=200;
+const POST_DATA=210;
+const DEL_DATA=220;
+const REMOVE=230;
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.page.html',
@@ -12,7 +18,16 @@ declare var Razorpay: any
 })
 export class CartPage implements OnInit {
   selectedAddress: any
-  constructor(public modalController: ModalController, private routerOutlet: IonRouterOutlet, private toastController: ToastController, private platform: Platform) { }
+  cart:any[]
+  s3url:string
+  count:number=1
+  cartLength:number
+  constructor(public modalController: ModalController, private routerOutlet: IonRouterOutlet, private toastController: ToastController,
+     private platform: Platform,private cartService:CartService,private utils:UtilsService) 
+     {
+       this.getData()
+       this.s3url = utils.getS3url()
+      }
 
   ngOnInit() {
   }
@@ -128,5 +143,97 @@ export class CartPage implements OnInit {
       duration: 2000
     });
     toast.present();
+  }
+
+  getData()
+  {
+    let client_id = localStorage.getItem('client_id')
+    this.cartService.getCart(client_id).subscribe(
+      (data)=>this.handleResponse(data,GET_CART),
+      (error)=>this.handleError(error)
+    )
+  }
+
+  handleResponse(data,type)
+  {
+    if(type == GET_CART)
+    {
+      this.cart = data.cart
+      this.cartLength = this.cart.length
+      console.log(this.cart,"This is cart")
+      for(let i=0;i<this.cart?.length;i++)
+      {
+        this.cart[i].images[0].path = this.s3url+this.cart[i].images[0].path
+       
+      }
+      for(let i=0;i<this.cart.length;i++)
+      {
+        let sum=this.cart[i].price*this.cart[i].count
+        this.cart[i].sum = sum
+
+      }
+   
+      
+    }
+
+    console.log(data)
+   
+  }
+  handleError(error)
+  {
+    console.log(error)
+  }
+
+
+  add(index:number,id:number)
+  {
+    let data={
+      product_id :id,
+      client_id :localStorage.getItem('client_id')
+       }
+       this.cartService.addToCart(data).subscribe(
+         (data)=>this.handleResponse(data,POST_DATA),
+         (error)=>this.handleError(error)
+       )
+       this.cart[index].count = this.cart[index].count+1
+  }
+
+  subtract(index:number,id:number)
+  {
+    let client_id =localStorage.getItem('client_id')
+    this.cartService.removeFromCart(client_id,id).subscribe(
+      (data)=>this.handleResponse(data,DEL_DATA),
+      (error)=>this.handleError(error)
+    )
+    this.cart[index].count = this.cart[index].count-1
+  }
+
+  onQuantityChange()
+  {
+    // let data={
+    //   product_id :this.productDetails.id,
+    //   client_id :localStorage.getItem('client_id')
+    //    }
+    //    this.cartService.addToCart(data).subscribe(
+    //      (data)=>this.handleResponse(data,POST_DATA),
+    //      (error)=>this.handleError(error)
+    //    )
+  }
+
+  sumOfEachProduct(index)
+  {
+    let sum=this.cart[index].price*this.cart[index].count
+    this.cart.push(sum)
+    return
+  }
+
+  remove(index:number,id:number)
+  {
+    let client_id =localStorage.getItem('client_id')
+    this.cartService.deleteFromCart(client_id,id).subscribe(
+      (data)=>this.handleResponse(data,REMOVE),
+      (error)=>this.handleError(error)
+    )
+    this.cart.splice(index,1)
   }
 }

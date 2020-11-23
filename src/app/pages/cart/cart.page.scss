@@ -18,3 +18,16 @@ ion-item {
 .total {
   --background: rgb(254, 252, 249);
 }
+.products{
+  ion-label{
+    margin-left: 12px;
+  }
+}
+
+.active{
+  display: block;
+}
+
+.inactive{
+  display: none;
+}

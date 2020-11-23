@@ -50,7 +50,7 @@ export class OtpPage implements OnInit {
   {
     console.log(data)
     this.authService.login(data.data)
-    localStorage.setItem('member_id',data.member_id)
+    localStorage.setItem('client_id',data.client_id)
     this.router.navigate(['home'])
   }
 

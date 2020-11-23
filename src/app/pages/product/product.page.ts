@@ -3,11 +3,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IonFab, ModalController, Platform, ToastController } from '@ionic/angular';
 import { AuthGuard } from 'src/app/guards/auth.guard';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { CartService } from 'src/app/services/cart/cart.service';
 import { ProductDetailsService } from 'src/app/services/productDetails/product-details.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { PRODUCTS, CATEGORIES } from '../home/home.page';
 import { ImagemodalPage } from '../imagemodal/imagemodal.page';
 const GET_DATA=200;
+const POST_DATA=210;
+const GET_CART=220;
 @Component({
   selector: 'app-product',
   templateUrl: './product.page.html',
@@ -30,9 +33,10 @@ export class ProductPage implements OnInit {
   catId:any
   productDetails:any
   s3url:string
+  qty:number=1
   constructor(private platform: Platform, private modalController: ModalController, public authencationservice: AuthenticationService, 
     public checkloginGuard: AuthGuard, private toastController: ToastController, private router: Router, 
-    private activatedRoute: ActivatedRoute,private productsDetailsService:ProductDetailsService,private utils:UtilsService) {
+    private activatedRoute: ActivatedRoute,private productsDetailsService:ProductDetailsService,private utils:UtilsService,private cartService:CartService) {
 
     this.productId = parseInt(this.activatedRoute.snapshot.paramMap.get('id'))
     this.catId = parseInt(this.activatedRoute.snapshot.paramMap.get('catId'))
@@ -54,7 +58,7 @@ export class ProductPage implements OnInit {
 
   getData()
   {
-    let member_id = Number(localStorage.getItem('member_id'))
+    
     this.productsDetailsService.getProductDetails(this.productId).subscribe(
       (data)=>this.handleResponse(data,GET_DATA),
       (error)=>this.handleError(error)
@@ -79,8 +83,26 @@ export class ProductPage implements OnInit {
   }
 
   onSubmit() {
+    let data={
+   product_id :this.productDetails.id,
+   client_id :localStorage.getItem('client_id')
+    }
+    this.cartService.addToCart(data).subscribe(
+      (data)=>this.handleResponse(data,POST_DATA),
+      (error)=>this.handleError(error)
+    )
     this.presentToast()
   }
+  viewCart()
+  {
+    let client_id = localStorage.getItem('client_id')
+    this.cartService.getCart(client_id).subscribe(
+      (data)=>this.handleResponse(data,GET_CART),
+      (error)=>this.handleError(error)
+    )
+  }
+
+
   async presentToast() {
     const toast = await this.toastController.create({
       message: 'Added to Cart.',
@@ -119,5 +141,13 @@ export class ProductPage implements OnInit {
         centeredSlides: true,
       }
     }
+  }
+  add()
+  {
+    this.qty+=1
+  }
+  subtract()
+  {
+    this.qty-=1
   }
 }
