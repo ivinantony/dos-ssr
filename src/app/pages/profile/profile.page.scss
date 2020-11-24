@@ -4,3 +4,46 @@
     font-size: 14px;
     margin: 10px;
   }
+
+  .profileImg{
+    width: 25%;
+    
+  }
+
+  .details{
+    ion-item{
+      padding: 0px 10px;
+    }
+    ion-icon{
+      color: #479bfe;
+      padding-right: 15px;
+      font-size: 22px;
+      margin-bottom: -3px;
+      font-weight: 700;
+    }
+
+    
+  }
+
+  .card{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 2px;
+    margin-right: 2px;
+    img{
+      border-radius: 17px;
+      padding-left: 4px;
+    }
+  }
+
+  .name{
+    padding-left: 14px;
+  }
+  .settings{
+    padding-right: 5px;
+    font-size: 22px;
+  }
+
+  
