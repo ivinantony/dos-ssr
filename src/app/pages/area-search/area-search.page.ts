@@ -11,6 +11,9 @@ export class AreaSearchPage implements OnInit {
   todo = { title: "" };
   public search_places: any = [];
   query: string = "";
+  location_data:any={
+
+  }
   constructor(private modalController: ModalController, public zone: NgZone) { }
 
   ngOnInit() {
@@ -45,12 +48,13 @@ export class AreaSearchPage implements OnInit {
     placesService.getDetails({ placeId: place.place_id }, (details) => {
       this.zone.run(() => {
         console.log(details)
-        // this.location_data.name = details.name;
-        // this.location_data.lat = details.geometry.location.lat();
-        // this.location_data.lng = details.geometry.location.lng();
-        // if (this.location_data.lat && this.location_data.lng) {
-        //   this.modalcontroller.dismiss(this.location_data);
-        // }
+        this.location_data.name = details.name;
+        this.location_data.lat = details.geometry.location.lat();
+        this.location_data.lng = details.geometry.location.lng();
+        console.log(this.location_data)
+        if (this.location_data.lat && this.location_data.lng) {
+          this.modalController.dismiss(this.location_data);
+        }
       });
     });
   }

@@ -1,0 +1,29 @@
+ion-button{
+    --border-radius:5px;
+    width: 100%;
+}
+
+.card{
+    padding: 50px;
+    ion-label{
+        font-size: 1.2rem;
+    }
+}
+
+.otp{
+    width: 200px;
+    font-size: 42px;
+    letter-spacing: 5px;
+    margin-top: 50px;
+}
+
+@media only screen and (min-width: 990px)
+{
+   
+    .card{
+        width: 50%;
+        margin-left: auto;
+        margin-right: auto;
+        
+    }
+}

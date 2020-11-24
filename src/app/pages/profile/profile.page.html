@@ -1,36 +1,36 @@
 <ion-header>
   <ion-toolbar color="light">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button>
+      <ion-back-button defaultHref="/home" mode="ios" text=""></ion-back-button>
     </ion-buttons>
     <ion-title>Profile</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content >
-
+<div class="wrapper">
  <!-- <section class="profile" class="ion-text-center">
   <img src="../../../assets/imgs/undraw_male_avatar_323b.svg" alt="" class="profileImg">
  </section> -->
- <ion-item lines="none">
+
    <ion-card class="card">
     <ion-col size="3">
       <img src="../../../assets/imgs/avatar1.jpg" alt="">
      </ion-col>
      <ion-col size="7" class="name">
-       <h5>Gautham Krishna G</h5>
-       <h6>gauthag4g@gmail.com</h6>
+       <h5>{{user?.name}}</h5>
+       <h6>{{user?.phone}}</h6>
      </ion-col>
      <ion-col size="2"  class="ion-text-center settings" >
-      <ion-icon name="settings-outline"></ion-icon>
+      <ion-icon name="settings-outline" (click)="goToSettings()"></ion-icon>
      </ion-col>
    </ion-card>
- </ion-item>
+
 
 
  <section class="details">
 <ion-item lines="none" detail="true" (click)="onClick()">
-    <ion-label><ion-icon name="person-outline"></ion-icon>My Orders</ion-label>
+    <ion-label><ion-icon name="cube-outline"></ion-icon>My Orders</ion-label>
 </ion-item>
 <ion-item lines="none" detail="true">
     <ion-label><ion-icon name="wallet-outline"></ion-icon>My Wallet</ion-label>
@@ -41,11 +41,14 @@
 <ion-item lines="none" detail="true">
     <ion-label><ion-icon name="help-outline"></ion-icon>Help</ion-label>
 </ion-item>
+<ion-item lines="none" detail="true" (click)="logout()">
+    <ion-label><ion-icon name="log-out-outline"></ion-icon>Sign Out</ion-label>
+</ion-item>
  </section>
-    
+</div>
 </ion-content>
 
-<ion-footer>
+<!-- <ion-footer>
   <ion-toolbar color="dark">
     <ion-button
       (click)="logout()"
@@ -57,7 +60,7 @@
       Sign out
     </ion-button>
   </ion-toolbar>
-</ion-footer>
+</ion-footer> -->
 
 
 <!-- <ion-content class="ion-padding">

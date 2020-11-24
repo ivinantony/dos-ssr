@@ -1,0 +1,41 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar >
+    <ion-buttons slot="start">
+      <ion-back-button
+        color="dark"
+        defaultHref="/profile"
+        text=""
+      ></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  
+  <ion-card mode="ios" class="card main ion-padding">
+  <div style="width: 100%" class="ion-text-center">
+    <ion-label>Please check your messages for the 4 digit OTP sent to your number.</ion-label>
+    <ion-item class="ion-text-center" lines="none">
+    <ion-input placeholder="-  -  -  -" autocapitalize="off" autocomplete="off" autocorrect="off" minlength="4" maxlength="4"  name="otp" type="tel" [(ngModel)]="inputOtp"  class="otp"></ion-input>
+    </ion-item>
+    <ion-button
+      (click)="continue()"
+      class="ion-margin-vertical"
+      expand="block"
+      color="dark"
+    >
+      Continue
+    </ion-button>
+    <ion-button
+      (click)="cancel()"
+      class="ion-margin-vertical"
+      expand="block"
+      fill="outline"
+      color="medium"
+    >
+      Cancel
+    </ion-button>
+  </div>
+</ion-card>
+
+</ion-content>

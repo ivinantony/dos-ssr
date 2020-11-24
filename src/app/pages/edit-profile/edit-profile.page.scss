@@ -1,0 +1,55 @@
+img {
+    width: 60%;
+    
+  }
+  
+  .card {
+    border-radius: 25px;
+    padding: 5%;
+    .Heading {
+      padding-top: 100px;
+      padding-top: 5px;
+      .icon {
+        padding-left: 7px;
+      }
+    }
+    .item {
+      padding-bottom: 20px;
+    }
+  }
+  
+  .content {
+    padding-top: 10%;
+    padding-left: 5%;
+    padding-bottom: 10%;
+    padding-right: 5%;
+    h4 {
+      padding-bottom: 3px;
+    }
+  }
+
+  @media only screen and (min-width: 740px) {
+    .wrapper {
+      width: 75%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+  @media only screen and (min-width: 970px) {
+    .wrapper {
+      width: 60%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+  @media only screen and (min-width: 1300px) {
+    img {
+        width: 40%;
+        
+      }
+    .wrapper {
+      width: 35%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }

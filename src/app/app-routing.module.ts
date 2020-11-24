@@ -79,7 +79,15 @@ const routes: Routes = [
   {
     path: 'brand-products',
     loadChildren: () => import('./pages/brand-products/brand-products.module').then( m => m.BrandProductsPageModule)
+  },  {
+    path: 'edit-profile',
+    loadChildren: () => import('./pages/edit-profile/edit-profile.module').then( m => m.EditProfilePageModule)
+  },
+  {
+    path: 'profile-otp',
+    loadChildren: () => import('./pages/profile-otp/profile-otp.module').then( m => m.ProfileOTPPageModule)
   }
+
 
 
 ];

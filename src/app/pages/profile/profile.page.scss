@@ -10,9 +10,16 @@
     
   }
 
+  ion-content{
+    --background: #f7fafe;
+  }
+
   .details{
     ion-item{
-      padding: 0px 10px;
+      padding: 12px 24px;
+      ion-label{
+        padding: 10px;
+      }
     }
     ion-icon{
       color: #479bfe;
@@ -36,14 +43,39 @@
       border-radius: 17px;
       padding-left: 4px;
     }
+ 
+    h6{
+      font-size: 1rem;
+    }
   }
 
   .name{
-    padding-left: 14px;
+    padding-left: 12px;
   }
   .settings{
     padding-right: 5px;
     font-size: 22px;
   }
 
-  
+
+  .settings{
+   ion-icon{
+     color: #479bfe;   }
+  }
+
+  @media only screen and (max-width: 321px)
+  {}
+  @media only screen and (max-width: 576px)
+  {}
+  @media only screen and (max-width: 768px)
+  {}
+  @media only screen and (max-width: 992px)
+  {}
+  @media only screen and (min-width: 992px)
+  {
+    .wrapper{
+      width: 30%;
+      margin-left:auto;
+      margin-right:auto;
+    }
+  }

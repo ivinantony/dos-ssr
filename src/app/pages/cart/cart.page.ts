@@ -196,6 +196,7 @@ export class CartPage implements OnInit {
          (error)=>this.handleError(error)
        )
        this.cart[index].count = this.cart[index].count+1
+       this.sumOfEachProduct(index)
   }
 
   subtract(index:number,id:number)
@@ -206,6 +207,7 @@ export class CartPage implements OnInit {
       (error)=>this.handleError(error)
     )
     this.cart[index].count = this.cart[index].count-1
+    this.sumOfEachProduct(index)
   }
 
   onQuantityChange()
@@ -223,7 +225,7 @@ export class CartPage implements OnInit {
   sumOfEachProduct(index)
   {
     let sum=this.cart[index].price*this.cart[index].count
-    this.cart.push(sum)
+    this.cart[index].push(sum)
     return
   }
 
