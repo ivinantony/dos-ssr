@@ -32,6 +32,8 @@ export class CartService {
        return res}));
    }
 
+
+
    public removeFromCart (client_id,product_id)
    {
      const headers = this.headerservice.getHttpHeaders()

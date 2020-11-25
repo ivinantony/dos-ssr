@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IonRouterOutlet, ModalController, Platform, ToastController } from '@ionic/angular';
+import { AddressService } from 'src/app/services/address/address.service';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { AddAddressPage } from '../add-address/add-address.page';
@@ -11,6 +12,7 @@ const GET_CART=200;
 const POST_DATA=210;
 const DEL_DATA=220;
 const REMOVE=230;
+const GET_ADDRESS=240;
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.page.html',
@@ -22,10 +24,17 @@ export class CartPage implements OnInit {
   s3url:string
   count:number=1
   cartLength:number
-  constructor(public modalController: ModalController, private routerOutlet: IonRouterOutlet, private toastController: ToastController,
-     private platform: Platform,private cartService:CartService,private utils:UtilsService) 
+  amountDetails:any
+  addresses:any
+  constructor(public modalController: ModalController, private routerOutlet: IonRouterOutlet, 
+    private toastController: ToastController,
+     private platform: Platform,
+     private cartService:CartService,
+     private utils:UtilsService,
+     private addressService:AddressService  ) 
      {
        this.getData()
+       this.getAddress()
        this.s3url = utils.getS3url()
       }
 
@@ -154,11 +163,22 @@ export class CartPage implements OnInit {
     )
   }
 
+  getAddress()
+  {
+    let client_id = localStorage.getItem('client_id')
+    this.addressService.getAddress(client_id).subscribe(
+      (data)=>this.handleResponse(data,GET_ADDRESS),
+      (error)=>this.handleError(error)
+    )
+  }
+
   handleResponse(data,type)
   {
     if(type == GET_CART)
     {
+      console.log(data)
       this.cart = data.cart
+      this.amountDetails = data
       this.cartLength = this.cart.length
       console.log(this.cart,"This is cart")
       for(let i=0;i<this.cart?.length;i++)
@@ -166,14 +186,13 @@ export class CartPage implements OnInit {
         this.cart[i].images[0].path = this.s3url+this.cart[i].images[0].path
        
       }
-      for(let i=0;i<this.cart.length;i++)
-      {
-        let sum=this.cart[i].price*this.cart[i].count
-        this.cart[i].sum = sum
-
-      }
-   
       
+      
+    }
+    else if(type  == GET_ADDRESS)
+    {
+      this.addresses = data.addresses
+      console.log(this.addresses,"addresses")
     }
 
     console.log(data)
@@ -195,8 +214,9 @@ export class CartPage implements OnInit {
          (data)=>this.handleResponse(data,POST_DATA),
          (error)=>this.handleError(error)
        )
-       this.cart[index].count = this.cart[index].count+1
-       this.sumOfEachProduct(index)
+      //  this.cart[index].count = this.cart[index].count+1
+      this.getData()
+      
   }
 
   subtract(index:number,id:number)
@@ -206,8 +226,9 @@ export class CartPage implements OnInit {
       (data)=>this.handleResponse(data,DEL_DATA),
       (error)=>this.handleError(error)
     )
-    this.cart[index].count = this.cart[index].count-1
-    this.sumOfEachProduct(index)
+    // this.cart[index].count = this.cart[index].count-1
+    this.getData()
+   
   }
 
   onQuantityChange()
@@ -222,12 +243,7 @@ export class CartPage implements OnInit {
     //    )
   }
 
-  sumOfEachProduct(index)
-  {
-    let sum=this.cart[index].price*this.cart[index].count
-    this.cart[index].push(sum)
-    return
-  }
+ 
 
   remove(index:number,id:number)
   {
@@ -237,5 +253,6 @@ export class CartPage implements OnInit {
       (error)=>this.handleError(error)
     )
     this.cart.splice(index,1)
+    this.getData()
   }
 }

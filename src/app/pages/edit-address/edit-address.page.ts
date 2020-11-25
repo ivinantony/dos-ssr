@@ -3,6 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult } from '@ionic-native/native-geocoder/ngx';
 import { LoadingController, ModalController, Platform, ToastController } from '@ionic/angular';
@@ -12,14 +13,15 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UtilsService } from 'src/app/services/utils.service';
 const GET_DELIVERY_LOC = 200;
 const POST_ADDRESS = 210;
+const GET_EDIT_ADDRESS = 220;
 declare var google;
 
 @Component({
-  selector: 'app-add-address',
-  templateUrl: './add-address.page.html',
-  styleUrls: ['./add-address.page.scss'],
+  selector: 'app-edit-address',
+  templateUrl: './edit-address.page.html',
+  styleUrls: ['./edit-address.page.scss'],
 })
-export class AddAddressPage implements OnInit {
+export class EditAddressPage implements OnInit {
   @ViewChild('map', { static: false }) mapElement: ElementRef;
   map: any;
 
@@ -38,7 +40,7 @@ export class AddAddressPage implements OnInit {
   locationAvailability:boolean
   delivery_locations:any
   selectedAddress:any
-
+  editAddress:any
   constructor(
     private geolocation: Geolocation,
     private zone: NgZone,
@@ -52,6 +54,7 @@ export class AddAddressPage implements OnInit {
     private addressService: AddressService
   ) {
     this.getData()
+    this.getEditAddress()
     this.addressForm = this.formBuilder.group({
       client_id: [''],
       name:['',Validators.required],
@@ -335,24 +338,6 @@ export class AddAddressPage implements OnInit {
 
 
 
-  saveAddress() {
-    console.log('this.addressForm.value', this.addressForm.value)
-    // this.addressService.postAddress(this.addressForm.value).subscribe(data => this.handleResponse(data), error => this.handleError(error))
-    // this.presentLoading().finally(() => {
-    //   this.presentToast()
-    // })
-
-
-
-  }
-  // handleResponse(data) {
-  //   console.log(data)
-  //   this.modalController.dismiss()
-  // }
-  // handleError(error) {
-  //   console.log(error)
-
-  // }
 
   async presentToast() {
     const toast = await this.toastController.create({
@@ -431,11 +416,16 @@ export class AddAddressPage implements OnInit {
       (data)=>this.handleResponse(data,GET_DELIVERY_LOC),
       (error)=>this.handleError(error)
     )
+   
   }
 
   handleResponse(data,type)
   {
-    
+    if(type == GET_EDIT_ADDRESS)
+    {
+      console.log("Edit data",data)
+      this.editAddress = data.address
+    }
     console.log(data,"Delivery loc")
     this.delivery_locations = data.delivery_locations
     
@@ -465,241 +455,34 @@ export class AddAddressPage implements OnInit {
     });
     toast.present();
   }
+
+
+  getEditAddress()
+  {
+    let address_id = Number(localStorage.getItem('address_id'))
+    this.addressService.getEditAddress(address_id).subscribe(
+      (data)=>this.handleResponse(data,GET_EDIT_ADDRESS),
+      (error)=>this.handleError(error)
+    )
+    
+  }
+
+  update()
+  {
+    console.log("edit address address",this.editAddress?.landmark)
+    document.getElementById("address").innerText = this.editAddress?.address;
+    this.addressForm.patchValue({name:this.editAddress?.name});
+   
+    this.addressForm.patchValue({alternate_phone:this.editAddress?.alternate_phone}); 
+    this.addressForm.patchValue({full_address:this.editAddress?.full_address});
+    
+    this.addressForm.patchValue({landmark:this.editAddress?.landmark});
+    this.addressForm.patchValue({latitude:this.editAddress?.latitude});
+    this.addressForm.patchValue({longitude:this.editAddress?.longitude});
+    this.addressForm.patchValue({client_id:this.editAddress?.client_id});
+    this.addressForm.patchValue({place_id:this.editAddress?.place_id});
+    // this.addressForm.patchValue({id:this.editAddress?.id});
+           
+  }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-// import { Router } from '@angular/router';
-// import { Geolocation } from '@ionic-native/geolocation/ngx';
-// import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult } from '@ionic-native/native-geocoder/ngx';
-// import { LoadingController, ModalController, Platform, ToastController } from '@ionic/angular';
-// import { AddressService } from 'src/app/services/address/address.service';
-// import { AreaSearchPage } from '../area-search/area-search.page';
-// const GET_DELIVERY_LOCATIONS=200;
-// declare var google;
-// @Component({
-//   selector: 'app-add-address',
-//   templateUrl: './add-address.page.html',
-//   styleUrls: ['./add-address.page.scss'],
-// })
-// export class AddAddressPage implements OnInit {
-//   @ViewChild('map', { static: false }) mapElement: ElementRef;
-//   map: any;
-//   address: string;
-
-//   latitude: number;
-//   longitude: number;
-//   local_address: boolean = false
-//   deliveryLocations:any
-//   selectedAddress:any
-//   //Geocoder configuration
-//   geoencoderOptions: NativeGeocoderOptions = {
-//     useLocale: true,
-//     maxResults: 5
-//   };
-//   constructor(
-//     private geolocation: Geolocation,
-//     private nativeGeocoder: NativeGeocoder,
-//     private platform: Platform,
-//     private toastController: ToastController,
-//     private router: Router,
-//     private loadingController: LoadingController,
-//     private modalController: ModalController,
-//     private addressService:AddressService
-//   ) {
-//     this.getData()
-//     this.platform.ready().then(() => {
-//       this.presentLoading().then(() => {
-//         console.log('presented')
-//         this.loadMap().finally(() => {
-//           this.dismiss()
-//         })
-//       })
-
-//     })
-
-//   }
-//   ngOnInit() {
-
-//   }
-
-//   async presentLoading() {
-//     const loading = await this.loadingController.create({
-//       spinner: 'bubbles',
-//       cssClass:'custom-spinner',
-//       message: 'Please wait...',
-//       duration:2000,
-//       showBackdrop: true
-//     });
-//     await loading.present();
-//   }
-
-//   async dismiss() {
-//     await this.loadingController.dismiss()
-//   }
-
-//   async loadMap() {
-
-//     await this.geolocation.getCurrentPosition().then((resp) => {
-
-//       this.latitude = resp.coords.latitude;
-//       this.longitude = resp.coords.longitude;
-
-//       let latLng = new google.maps.LatLng(resp.coords.latitude, resp.coords.longitude);
-//       let mapOptions = {
-//         center: latLng,
-//         // draggable: false,
-//         zoom: 16,
-//         disableDefaultUI: true,
-//         animation: google.maps.Animation.ZOOM,
-//         mapTypeId: google.maps.MapTypeId.ROADMAP
-//       }
-
-
-//       this.getAddressFromCoords(resp.coords.latitude, resp.coords.longitude);
-
-//       this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-//       var icon = {
-//         url: "assets/imgs/pin.svg", // url
-//         scaledSize: new google.maps.Size(50, 50), // scaled size
-//         origin: new google.maps.Point(0, 0), // origin
-//         anchor: new google.maps.Point(0, 0) // anchor
-//       };
-//       var marker = new google.maps.Marker({
-//         draggable: true,
-//         map: this.map,
-//         icon: icon,
-//         scaledSize: new google.maps.Size(50, 50),
-//         animation: google.maps.Animation.DROP,
-//         position: latLng
-//       });
-//       marker.addListener('dragend', () => {
-//         this.latitude = marker.getPosition().lat();
-//         this.longitude = marker.getPosition().lng();
-
-//         this.getAddressFromCoords(this.latitude, this.longitude)
-//       })
-
-//     }).catch((error) => {
-//       console.log('Error getting location', error);
-//     });
-
-
-//   }
-
-//   getAddressFromCoords(latitude, longitude) {
-//     console.log("getAddressFromCoords " + latitude + " " + longitude);
-//     let options: NativeGeocoderOptions = {
-//       useLocale: true,
-//       maxResults: 5
-//     };
-
-//     this.nativeGeocoder.reverseGeocode(latitude, longitude, options)
-//       .then((result: NativeGeocoderResult[]) => {
-//         this.address = "";
-//         let responseAddress = [];
-//         for (let [key, value] of Object.entries(result[0])) {
-//           if (value.length > 0)
-//             responseAddress.push(value);
-
-//         }
-//         responseAddress.reverse();
-//         for (let value of responseAddress) {
-//           this.address += value + ", ";
-//         }
-//         this.address = this.address.slice(0, -2);
-        
-//       })
-//       .catch((error: any) => {
-//         this.address = "Address Not Available!";
-//       });
-
-//       console.log(this.address)
-//   }
-
-//   onSubmit() {
-  
-//       this.presentLoading().finally(()=>{
-//         this.presentToast()
-//       })
-      
-      
-
-//   }
-//   async presentToast() {
-//     const toast = await this.toastController.create({
-//       cssClass: 'custom-toast',
-//       position: 'top',
-//       message: 'Your Address have been saved.',
-//       duration: 2000
-//     });
-//     toast.onDidDismiss().finally(() => {
-//       this.modalController.dismiss()
-//     })
-//     toast.present();
-//   }
-//   onSearchChange($event) {
-
-//   }
-//   async areaSearch() {
-//     const modal = await this.modalController.create({
-//       component: AreaSearchPage,
-//       swipeToClose: true,
-//       presentingElement: await this.modalController.getTop(),
-//       cssClass: 'my-custom-class'
-//     });
-
-//     modal.onDidDismiss().then(data=>{
-//       this.selectedAddress = data.data,
-//       console.log(this.selectedAddress,"HAi"),
-//       this.getAddressFromCoords(this.selectedAddress.lat,this.selectedAddress.lng)
-//     })
-//     return await modal.present();
-//   }
-//   dismissModal(){
-//     this.modalController.dismiss()
-//   }
-
-//   getData()
-//   {
-//     // let client_id = Number(localStorage.getItem('client_id'))
-//     this.addressService.getDeliveryLocations().subscribe(
-//       (data)=>this.handleResponse(data,GET_DELIVERY_LOCATIONS),
-//       (error)=>this.handleError(error)
-//     )
-//   }
-
-//   handleResponse(data,type)
-//   {
-//     if(type == GET_DELIVERY_LOCATIONS)
-//     {
-//       this.deliveryLocations = data.delivery_locations
-//       console.log(this.deliveryLocations)
-//     }
-//     else{
-//       console.log(data)
-//     }
-    
-//   }
-//   handleError(error)
-//   {
-//     console.log(error)
-//   }
-
-// }

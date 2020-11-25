@@ -23,14 +23,14 @@
                 mode="md"
                 (ionChange)="onChangeAddress($event)"
               >
-                <ion-item *ngFor="let item of [1,2,3,4]; let i=index">
+                <ion-item *ngFor="let item of addresses; let i=index">
                   <ion-label>
                     <ion-text color="primary">
-                      <h3>John Doe</h3>
+                      <h3>{{item.name}}</h3>
                     </ion-text>
-                    <p>3 Newyork Bridge, Chicago, Spain {{item}}</p>
+                    <p>{{item.full_address}}</p>
                   </ion-label>
-                  <ion-radio slot="start" value="{{item}}"></ion-radio>
+                  <ion-radio slot="start" value="{{i}}"></ion-radio>
                 </ion-item>
               </ion-radio-group>
             </ion-content>
@@ -75,7 +75,7 @@
           <ion-item>
             <ion-label><p>{{ item.price | currency:'AED  ' }} * {{item.count}}</p></ion-label>
             <ion-button expand="block" fill="clear" shape="round">
-              {{ item.sum | currency:'AED  ' }}
+              {{ item.total_price | currency:'AED  ' }}
             </ion-button>
           </ion-item>
           <hr />
@@ -111,7 +111,7 @@
               expand="block"
               fill="clear"
             >
-              {{ 180 | currency:'AED' }}
+              {{ amountDetails?.payable_amount | currency:'AED  ' }}
             </ion-button>
           </ion-item>
           <ion-item class="total">

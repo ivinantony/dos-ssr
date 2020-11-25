@@ -1,0 +1,79 @@
+
+
+<ion-content>
+
+  <div class="map-wrapper"> 
+    <div #map id="map"></div>
+  </div>
+  <ion-grid>
+  </ion-grid>
+
+  <ion-card class="card">
+    <ion-list>
+      <ion-item lines="none">
+        <ion-label>
+          <h2>Set your delivery location</h2>
+        </ion-label>
+        <ion-button slot="end" fill="clear" (click)="dismissModal()">
+          <ion-icon slot="icon-only" name="close" color="dark"></ion-icon>
+        </ion-button>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>DELIVERY AREA</ion-label>
+      </ion-item>
+      <ion-item class="area" lines="none">
+        <ion-label> <h2 id="address">{{selectedAddress}}</h2></ion-label>
+        <ion-button
+          color="danger"
+          slot="end"
+          (click)="areaSearch()"
+          fill="clear"
+        >
+          CHANGE
+        </ion-button>
+      </ion-item>
+
+      <form [formGroup]="addressForm" class="form">
+        <ion-item class="area" lines="none">
+          <ion-input
+            required
+            placeholder="Name*"
+            formControlName="name"
+          ></ion-input>
+        </ion-item>
+        <ion-item class="area" lines="none">
+          <ion-input
+            required
+            placeholder="House no./ Flat no./Floor/ Building*"
+            formControlName="full_address"
+          ></ion-input>
+        </ion-item>
+        <ion-item class="area" lines="none">
+          <ion-input
+            required
+            placeholder="Landmark*"
+            formControlName="landmark"
+          ></ion-input>
+        </ion-item>
+        <ion-item class="area" lines="none">
+          <ion-input required placeholder="Alternate number" formControlName="alternate_phone" type="tel"></ion-input>
+        </ion-item>
+        <ng-container  *ngFor="let validation of validation_messages.alternate_phone">
+          <div class="err_msg" *ngIf="
+          addressForm.get('alternate_phone').hasError(validation.type) &&
+          addressForm.get('alternate_phone').dirty &&
+          addressForm.get('alternate_phone').touched">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            {{ validation.message}}
+          </div>
+        </ng-container>
+      
+      </form>
+      
+
+
+    </ion-list>
+  </ion-card>
+
+
+</ion-content>

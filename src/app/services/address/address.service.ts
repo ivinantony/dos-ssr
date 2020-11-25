@@ -23,4 +23,36 @@ export class AddressService {
      ).pipe(map(res=>{
        return res}));
    }
+   public addAddress(data)
+   {
+     const headers = this.headerservice.getHttpHeaders()
+     return this.httpclient.post(
+      this.url + "address",data,{ headers }).pipe(map(res=>{
+       return res}));
+   }
+
+   
+   public getAddress(client_id:any)
+   {
+     const headers = this.headerservice.getHttpHeaders()
+     return this.httpclient.get(
+      this.url + "all-address?client_id="+client_id,{ headers }).pipe(map(res=>{
+       return res}));
+   }
+
+   public deleteAddress(address_id:number)
+  {
+    const headers = this.headerservice.getHttpHeaders()
+    return this.httpclient.delete(
+      this.url+"address?address_id="+address_id, { headers }).pipe(map(res=>{return res}));
+  }
+   public getEditAddress(address_id:number)
+  {
+    const headers = this.headerservice.getHttpHeaders()
+    return this.httpclient.get(
+      this.url+"address?address_id="+address_id, { headers }).pipe(map(res=>{return res}));
+  }
+
+
+   
 }

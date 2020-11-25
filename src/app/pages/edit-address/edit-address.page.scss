@@ -1,0 +1,24 @@
+#map {
+    position: relative;
+    width: 100%;
+    height: 30vh;
+  }
+
+  .area {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* padding: 0px 1.6rem; */
+    border: 1px solid #cfcfcf;
+    border-radius: 0.8rem;
+    cursor: pointer;
+    margin: 16px;
+  }
+  
+  @media only screen and (min-width:1024px){
+    #map {
+      
+      width: 100%;
+      height: 20vh;
+    }
+  }

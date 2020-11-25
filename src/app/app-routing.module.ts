@@ -86,6 +86,14 @@ const routes: Routes = [
   {
     path: 'profile-otp',
     loadChildren: () => import('./pages/profile-otp/profile-otp.module').then( m => m.ProfileOTPPageModule)
+  },
+  {
+    path: 'my-addresses',
+    loadChildren: () => import('./pages/my-addresses/my-addresses.module').then( m => m.MyAddressesPageModule)
+  },
+  {
+    path: 'edit-address',
+    loadChildren: () => import('./pages/edit-address/edit-address.module').then( m => m.EditAddressPageModule)
   }
 
 

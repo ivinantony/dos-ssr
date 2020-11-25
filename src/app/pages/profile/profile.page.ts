@@ -80,4 +80,8 @@ export class ProfilePage implements OnInit {
   {
     this.router.navigate(['edit-profile'])
   }
+  goToAddresses()
+  {
+    this.router.navigate(['my-addresses'])
+  }
 }

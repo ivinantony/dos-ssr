@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>myAddresses</ion-title>
+    <ion-buttons slot="start" mode="ios">
+      <ion-back-button defaultHref="profile" text=""></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<div class="wrapper">
+  <ion-card class="card">
+    <ion-row class="ion-text-right addnew">
+      <ion-col size="12">
+        <ion-chip outline color="secondary" (click)="navigateToAddAddress()">
+          <ion-label>Add New</ion-label>
+          <ion-icon name="add-circle-outline"></ion-icon>
+        </ion-chip>
+      </ion-col>
+    </ion-row>
+    <ion-row class="address" *ngFor="let item of addresses; let i=index">
+      <ion-col size="11">
+    
+        <ion-item lines="none">
+          
+          <ion-label >
+            <h2>{{ item.name }}</h2>
+            <h4>{{ item.phone }}</h4>
+       
+            <h4>{{ item.landmark }}</h4>
+            <h4>{{ item.full_address }}</h4>
+          </ion-label>           
+        </ion-item>
+      </ion-col>
+      <ion-col size="1">
+        <ion-icon name="ellipsis-vertical-outline" (click)="selectOptions(i)"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+</div>
+  
+  </ion-content>

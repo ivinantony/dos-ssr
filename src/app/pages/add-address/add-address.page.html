@@ -19,7 +19,7 @@
               <ion-label>DELIVERY AREA</ion-label>
             </ion-item>
             <ion-item class="area" lines="none">
-              <ion-label> <p>{{address}}</p></ion-label>
+              <ion-label> <h2>{{selectedAddress}}</h2></ion-label>
               <ion-button
                 color="danger"
                 slot="end"
@@ -29,7 +29,7 @@
                 CHANGE
               </ion-button>
             </ion-item>
-            <ion-item class="area" lines="none">
+            <!-- <ion-item class="area" lines="none">
               <ion-input
                 required
                 placeholder="House no./ Flat no./Floor/ Building"
@@ -43,7 +43,48 @@
             </ion-item>
             <ion-item class="area" lines="none">
               <ion-input required placeholder="Alternate number"></ion-input>
-            </ion-item>
+            </ion-item> -->
+
+
+            <form [formGroup]="addressForm" class="form">
+              <ion-item class="area" lines="none">
+                <ion-input
+                  required
+                  placeholder="Name*"
+                  formControlName="name"
+                ></ion-input>
+              </ion-item>
+              <ion-item class="area" lines="none">
+                <ion-input
+                  required
+                  placeholder="House no./ Flat no./Floor/ Building*"
+                  formControlName="full_address"
+                ></ion-input>
+              </ion-item>
+              <ion-item class="area" lines="none">
+                <ion-input
+                  required
+                  placeholder="Landmark*"
+                  formControlName="landmark"
+                ></ion-input>
+              </ion-item>
+              <ion-item class="area" lines="none">
+                <ion-input required placeholder="Alternate number" formControlName="alternate_phone" type="tel"></ion-input>
+              </ion-item>
+              <ng-container  *ngFor="let validation of validation_messages.alternate_phone">
+                <div class="err_msg" *ngIf="
+                addressForm.get('alternate_phone').hasError(validation.type) &&
+                addressForm.get('alternate_phone').dirty &&
+                addressForm.get('alternate_phone').touched">
+                  <ion-icon name="information-circle-outline"></ion-icon>
+                  {{ validation.message}}
+                </div>
+              </ng-container>
+            
+            </form>
+            
+
+
           </ion-list>
         </ion-card>
       </div>
@@ -57,7 +98,8 @@
   </div>
 </ion-content>
 <ion-footer>
-  <ion-toolbar color="dark">
+ 
+  <ion-toolbar color="danger">
     <ion-button
       color="light"
       id="btn"
