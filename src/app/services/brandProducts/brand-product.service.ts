@@ -16,11 +16,11 @@ export class BrandProductService {
      this.url = utils.getApiPath()
    } 
 
-   public getBrandProducts(brand_id:number)
+   public getBrandProducts(brand_id:number,page_no:number)
    {
      const headers = this.headerservice.getHttpHeaders()
      return this.httpclient.get(
-      this.url + "brand-products?brand_id="+brand_id,
+      this.url + "brand-products?brand_id="+brand_id+"&page_no="+page_no,
       { headers }
      ).pipe(map(res=>{
        return res}));

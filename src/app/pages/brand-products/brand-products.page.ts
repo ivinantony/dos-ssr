@@ -30,9 +30,11 @@ export class BrandProductsPage implements OnInit {
   brand_id:number
   brand_name:string
   page_limit:number
+  page_count:number
   current_page:number
   constructor(private brandProductService:BrandProductService,private platform: Platform,private utils:UtilsService,private activatedRoute:ActivatedRoute) 
   {
+    this.page_count = 1
     this.brand_id = activatedRoute.snapshot.params.brand_id
     this.s3url = utils.getS3url()
     this.checkWidth()
@@ -44,7 +46,7 @@ export class BrandProductsPage implements OnInit {
 
   getData()
   {
-    this.brandProductService.getBrandProducts(this.brand_id).subscribe(
+    this.brandProductService.getBrandProducts(this.brand_id,this.page_count).subscribe(
       (data)=>this.handleResponse(data,GET_DATA),
       (error)=>this.handleError(error)
     )
@@ -56,6 +58,7 @@ export class BrandProductsPage implements OnInit {
     if(type == GET_DATA)
     {
     this.page_limit = data.page_count
+    
     this.products = data.product
     this.brand_name = this.products[0].brand_name
     console.log(this.products)
@@ -90,17 +93,22 @@ export class BrandProductsPage implements OnInit {
     }
   }
 
-  // loadMoreContent()
-  // {
-  //   if (this.page_limit == 1000) {
-  //     event.target.disabled = true;
-  //   }
-  // }
+  loadMoreContent(event)
+  {
+    if (this.page_count == this.page_limit) {
+      event.target.disabled = true;
+    }
+    else{
+    this.page_count++
+    this.getData()
+      console.log("hello")
+    }
+  }
 
 
   navigateToProduct(index)
   {
-
+    
   }
 
   

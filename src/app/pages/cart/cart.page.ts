@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IonRouterOutlet, ModalController, Platform, ToastController } from '@ionic/angular';
 import { AddressService } from 'src/app/services/address/address.service';
 import { CartService } from 'src/app/services/cart/cart.service';
+import { CheckoutService } from 'src/app/services/checkout/checkout.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { AddAddressPage } from '../add-address/add-address.page';
 import { AddressPage } from '../address/address.page';
@@ -13,6 +14,7 @@ const POST_DATA=210;
 const DEL_DATA=220;
 const REMOVE=230;
 const GET_ADDRESS=240;
+const POST_ADDRESS_DETAILS = 250;
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.page.html',
@@ -31,7 +33,8 @@ export class CartPage implements OnInit {
      private platform: Platform,
      private cartService:CartService,
      private utils:UtilsService,
-     private addressService:AddressService  ) 
+     private addressService:AddressService,
+     private checkoutService:CheckoutService  ) 
      {
        this.getData()
        this.getAddress()
@@ -43,7 +46,7 @@ export class CartPage implements OnInit {
 
   onChangeAddress($event) {
     this.selectedAddress = $event.detail.value;
-    console.log('event', $event.detail.value)
+    console.log('selectedAddress', this.selectedAddress)
   }
 
   async addAddress() {
@@ -66,6 +69,17 @@ export class CartPage implements OnInit {
     return await modal.present();
   }
   payWithRazorpay() {
+    let client_id = localStorage.getItem('client_id')
+    let data={
+      client_id:client_id,
+      address_id:this.addresses[this.selectedAddress].id,
+      total_amount:this.amountDetails.payable_amount
+    }
+    console.log(data)
+    this.checkoutService.addressDetails(data).subscribe(
+      (data)=>this.handleResponse(data,POST_ADDRESS_DETAILS),
+      (error)=>this.handleError(error)
+    )
 
     this.platform.ready().then(() => {
       // 'hybrid' detects both Cordova and Capacitor
@@ -195,8 +209,11 @@ export class CartPage implements OnInit {
       console.log(this.addresses,"addresses")
     }
 
-    console.log(data)
+    else{
+      console.log(data)
    
+    }
+    
   }
   handleError(error)
   {

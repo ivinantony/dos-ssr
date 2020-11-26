@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { VerifyOtpService } from 'src/app/services/otp/verify-otp.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
@@ -16,7 +16,7 @@ export class ProfileOTPPage implements OnInit {
   email:any
   data:any
   constructor(private otpService:VerifyOtpService,private activatedRoute:ActivatedRoute,private alertController:AlertController,
-    private authService:AuthenticationService,private router:Router,private profileService:ProfileService) 
+    private authService:AuthenticationService,private router:Router,private profileService:ProfileService,private navController:NavController) 
   { 
     this.phone = this.activatedRoute.snapshot.params.phoneNo
     this.email = this.activatedRoute.snapshot.params.Email
@@ -83,5 +83,10 @@ export class ProfileOTPPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  cancel()
+  {
+    this.navController.pop()
   }
 }

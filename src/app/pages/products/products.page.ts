@@ -15,6 +15,8 @@ const GET_DATA = 200;
 export class ProductsPage implements OnInit {
   products: Array<any> = []
   banners: Array<any> = BANNERS;
+  page_count:number
+  page_limit:number
   bannerSlideOpts = {
     slidesPerView: 1,
     initialSlide: 0,
@@ -37,6 +39,7 @@ export class ProductsPage implements OnInit {
   ];
   constructor(private activatedRoute: ActivatedRoute, private platform: Platform, private router: Router, private modalController: ModalController,
     private CatProductService:SubcatProductsService,private utils:UtilsService,private loadingcontroller:LoadingController) {
+    this.page_count = 1
     this.checkWidth()
     this.s3url = utils.getS3url()
     this.catId = parseInt(this.activatedRoute.snapshot.paramMap.get('id'))
@@ -54,7 +57,7 @@ export class ProductsPage implements OnInit {
   {
     console.log("catid",this.catId)
     let member_id = Number(localStorage.getItem('member_id'))
-    this.CatProductService.getSubCatProducts(this.catId,member_id,1).subscribe(
+    this.CatProductService.getSubCatProducts(this.catId,member_id,this.page_count).subscribe(
       (data)=>this.handleResponse(data,GET_DATA),
       (error)=>this.handleError(error)
     )
@@ -64,6 +67,7 @@ export class ProductsPage implements OnInit {
   {
     if(type == GET_DATA)
     {
+      console.log(data)
     this.products = data.products
     console.log(this.products)
     for(let i=0;i<this.products.length;i++)
@@ -114,6 +118,18 @@ export class ProductsPage implements OnInit {
         speed: 400
       }
 
+    }
+  }
+
+  loadMoreContent(event)
+  {
+    if (this.page_count == this.page_limit) {
+      event.target.disabled = true;
+    }
+    else{
+      this.page_count++
+      this.getData()
+      console.log("hello")
     }
   }
 

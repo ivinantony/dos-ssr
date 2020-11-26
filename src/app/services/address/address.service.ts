@@ -54,5 +54,11 @@ export class AddressService {
   }
 
 
-   
+  public addEditAddress(data)
+  {
+    const headers = this.headerservice.getHttpHeaders()
+    return this.httpclient.post(
+     this.url + "address",data,{ headers }).pipe(map(res=>{
+      return res}));
+  }
 }

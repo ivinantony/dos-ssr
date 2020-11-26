@@ -62,6 +62,7 @@ export class AddAddressPage implements OnInit {
       place_id: [''],
       landmark: ['', Validators.required],
       alternate_phone: ['',Validators.compose([Validators.maxLength(10), Validators.minLength(10),Validators.pattern("[0-9]*")]),],
+      phone: ['',Validators.compose([Validators.required,Validators.maxLength(10), Validators.minLength(10),Validators.pattern("[0-9]*")]),],
       delivery_location_id:['']
 
     });
@@ -88,6 +89,21 @@ export class AddAddressPage implements OnInit {
       { type: "required", message: "House details are required." },
     ],
     alternate_phone: [
+      {
+        type: "minlength",
+        message: "Mobile number must be at least 10 digit.",
+      },
+      {
+        type: "maxlength",
+        message: "Mobile number cannot be more than 10 digit.",
+      },
+      {
+        type: "pattern",
+        message: "Your Mobile number must contain only numbers.",
+      },
+    ],
+    phone: [
+      { type: "required", message: "Phone number is required." },
       {
         type: "minlength",
         message: "Mobile number must be at least 10 digit.",

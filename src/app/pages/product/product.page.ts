@@ -35,7 +35,7 @@ export class ProductPage implements OnInit {
   s3url:string
   qty:number=1
   constructor(private platform: Platform, private modalController: ModalController, public authencationservice: AuthenticationService, 
-    public checkloginGuard: AuthGuard, private toastController: ToastController, private router: Router, 
+    public checkloginGuard: AuthGuard, private toastController: ToastController, public router: Router, 
     private activatedRoute: ActivatedRoute,private productsDetailsService:ProductDetailsService,private utils:UtilsService,private cartService:CartService) {
 
     this.productId = parseInt(this.activatedRoute.snapshot.paramMap.get('id'))

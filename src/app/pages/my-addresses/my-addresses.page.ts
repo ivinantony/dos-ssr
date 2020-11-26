@@ -17,6 +17,11 @@ addresses:any
   constructor(private addressService:AddressService,private actionSheetController:ActionSheetController,private router:Router,
     private modalController:ModalController) 
   { 
+    
+  }
+
+  ionViewWillEnter()
+  {
     this.getAddress()
   }
 
@@ -88,6 +93,9 @@ addresses:any
       // presentingElement: this.routerOutlet.nativeEl,
       cssClass: 'my-custom-class'
     });
+    modal.onDidDismiss().finally(()=>{
+      this.getAddress()
+    })
     return await modal.present();
   }
 
@@ -99,6 +107,9 @@ addresses:any
       // presentingElement: this.routerOutlet.nativeEl,
       cssClass: 'my-custom-class'
     });
+    modal.onDidDismiss().finally(()=>{
+      this.getAddress()
+    })
     return await modal.present();
   }
 

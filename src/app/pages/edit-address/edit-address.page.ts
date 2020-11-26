@@ -51,10 +51,14 @@ export class EditAddressPage implements OnInit {
     private modalController: ModalController,
     private formBuilder: FormBuilder,
     private authservice: AuthenticationService,
-    private addressService: AddressService
+    private addressService: AddressService,
+    
   ) {
-    this.getData()
     this.getEditAddress()
+    this.getData()
+    
+    
+    
     this.addressForm = this.formBuilder.group({
       client_id: [''],
       name:['',Validators.required],
@@ -65,7 +69,9 @@ export class EditAddressPage implements OnInit {
       place_id: [''],
       landmark: ['', Validators.required],
       alternate_phone: ['',Validators.compose([Validators.maxLength(10), Validators.minLength(10),Validators.pattern("[0-9]*")]),],
-      delivery_location_id:['']
+      phone: ['',Validators.compose([Validators.required,Validators.maxLength(10), Validators.minLength(10),Validators.pattern("[0-9]*")]),],
+      delivery_location_id:[''],
+      address_id:[Number(localStorage.getItem('address_id'))],
 
     });
     this.platform.ready().then(() => {
@@ -106,6 +112,21 @@ export class EditAddressPage implements OnInit {
     ],
     landmark: [
       { type: "required", message: "A landmark is required." },
+    ],
+    phone: [
+      { type: "required", message: "A landmark is required." },
+      {
+        type: "minlength",
+        message: "Mobile number must be at least 10 digit.",
+      },
+      {
+        type: "maxlength",
+        message: "Mobile number cannot be more than 10 digit.",
+      },
+      {
+        type: "pattern",
+        message: "Your Mobile number must contain only numbers.",
+      },
     ],
   };
 
@@ -388,7 +409,7 @@ export class EditAddressPage implements OnInit {
     
       if (this.addressForm.valid && this.locationAvailability == true) {
         console.log(this.addressForm.value)
-        this.addressService.addAddress(this.addressForm.value).subscribe(
+        this.addressService.addEditAddress(this.addressForm.value).subscribe(
           (data) => this.handleResponse(data, POST_ADDRESS),
           (error) => this.handleError(error)
         );
@@ -425,6 +446,7 @@ export class EditAddressPage implements OnInit {
     {
       console.log("Edit data",data)
       this.editAddress = data.address
+      this.update()
     }
     console.log(data,"Delivery loc")
     this.delivery_locations = data.delivery_locations
@@ -459,6 +481,7 @@ export class EditAddressPage implements OnInit {
 
   getEditAddress()
   {
+    
     let address_id = Number(localStorage.getItem('address_id'))
     this.addressService.getEditAddress(address_id).subscribe(
       (data)=>this.handleResponse(data,GET_EDIT_ADDRESS),
@@ -469,11 +492,12 @@ export class EditAddressPage implements OnInit {
 
   update()
   {
-    console.log("edit address address",this.editAddress?.landmark)
-    document.getElementById("address").innerText = this.editAddress?.address;
+    // console.log("edit address address",this.editAddress?.landmark)
+    // document.getElementById("address").innerText = this.editAddress?.full_address;
     this.addressForm.patchValue({name:this.editAddress?.name});
    
     this.addressForm.patchValue({alternate_phone:this.editAddress?.alternate_phone}); 
+    this.addressForm.patchValue({phone:this.editAddress?.phone}); 
     this.addressForm.patchValue({full_address:this.editAddress?.full_address});
     
     this.addressForm.patchValue({landmark:this.editAddress?.landmark});
@@ -481,7 +505,7 @@ export class EditAddressPage implements OnInit {
     this.addressForm.patchValue({longitude:this.editAddress?.longitude});
     this.addressForm.patchValue({client_id:this.editAddress?.client_id});
     this.addressForm.patchValue({place_id:this.editAddress?.place_id});
-    // this.addressForm.patchValue({id:this.editAddress?.id});
+    this.addressForm.patchValue({id:this.editAddress?.id});
            
   }
 }

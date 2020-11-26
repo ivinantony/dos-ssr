@@ -4,6 +4,9 @@
       <ion-menu-button color="dark"></ion-menu-button>
     </ion-buttons>
     <ion-title>home</ion-title>
+    <ion-buttons slot="end">
+      <ion-icon name="cart-outline"class="ion-padding" (click)="router.navigate(['/cart'])"></ion-icon>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -74,14 +77,19 @@
   <!-- Banner -1 start -->
   <section id="banr">
     <ion-slides class="banner" [options]="bannerSlideOpts1">
-      <ion-slide *ngFor="let item of banners_combined; let i=index">
-      <picture>
-        <source media="(min-width: 1024px)" srcset="{{item.desktopImg}}" >
-        <img src="{{item.mobileImg}}" />
-      </picture>
+      <ion-slide *ngFor="let item of data?.banner[2].desktop_images; let i=index" class="dsk" [ngStyle]="{'background-image': 'url( '+ item.path +' )'}">
+      <!-- <img src="{{item.path}}" alt="" > -->
+      </ion-slide> 
+
+      <ion-slide *ngFor="let item of data?.banner[2].mobile_images; let i=index" class="mob" [ngStyle]="{'background-image': 'url( '+ item.path +' )'}">
+      <!-- <img src="{{item.path}}" alt=""> -->
       </ion-slide>     
     </ion-slides>
   </section>
+  <!-- <picture *ngIf="item.type == 0">
+    <source media="(min-width: 1024px)" srcset="{{item.desktopImg}}" >
+    <img src="{{item.path}}" />
+  </picture> -->
   <!-- Banner -1 end -->
 
   <section id="cat">
@@ -150,16 +158,16 @@
 
   <section id="top">
     <ion-item lines="none">
-      <ion-label class="title">Top Searches</ion-label>
+      <ion-label class="title">Top Deals</ion-label>
       <ion-button expand="block" fill="clear" shape="round" slot="end">
         View all
       </ion-button>
     </ion-item>
     <ion-slides [options]="topSlides" class="top-search">
-      <ion-slide *ngFor="let item of products; let i=index">
+      <ion-slide *ngFor="let item of data?.products; let i=index">
         <ion-card
           (click)="viewProduct(i)"
-          [ngStyle]="{'background-image': 'url( '+ item.images[0].path+' )'}"
+          [ngStyle]="{'background-image': 'url( '+ item.images[0].path +' )'}"
         >
         </ion-card>
       </ion-slide>

@@ -69,6 +69,18 @@
                 ></ion-input>
               </ion-item>
               <ion-item class="area" lines="none">
+                <ion-input required placeholder="Phone*" formControlName="phone" type="tel"></ion-input>
+              </ion-item>
+              <ng-container  *ngFor="let validation of validation_messages.phone">
+                <div class="err_msg" *ngIf="
+                addressForm.get('phone').hasError(validation.type) &&
+                addressForm.get('phone').dirty &&
+                addressForm.get('phone').touched">
+                  <ion-icon name="information-circle-outline"></ion-icon>
+                  {{ validation.message}}
+                </div>
+              </ng-container>
+              <ion-item class="area" lines="none">
                 <ion-input required placeholder="Alternate number" formControlName="alternate_phone" type="tel"></ion-input>
               </ion-item>
               <ng-container  *ngFor="let validation of validation_messages.alternate_phone">
@@ -97,18 +109,18 @@
     </ion-fab>
   </div>
 </ion-content>
-<ion-footer>
- 
-  <ion-toolbar color="danger">
-    <ion-button
-      color="light"
-      id="btn"
-      expand="block"
-      fill="clear"
-      shape="round"
-      (click)="onSubmit()"
-    >
-      {{local_address? 'Save address' : 'Confirm and proceed' }}
-    </ion-button>
-  </ion-toolbar>
-</ion-footer>
+  <ion-footer>
+  
+    <ion-toolbar color="danger">
+      <ion-button
+        color="light"
+        id="btn"
+        expand="block"
+        fill="clear"
+        shape="round"
+        (click)="onSubmit()"
+      >
+        Confirm and proceed 
+      </ion-button>
+    </ion-toolbar>
+  </ion-footer>

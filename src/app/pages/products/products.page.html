@@ -146,7 +146,12 @@
                   </ion-label>
                 </ion-item>
               </ion-list> -->
+              
             </ion-col>
+            <ion-infinite-scroll (ionInfinite)="loadMoreContent($event)">
+              <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+              </ion-infinite-scroll-content>
+            </ion-infinite-scroll>
           </ion-row>
         </ion-grid>
       </ion-col>

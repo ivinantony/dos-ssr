@@ -229,18 +229,20 @@ export class HomePage implements OnInit {
   topSearches = PRODUCTS;
   // categories = CATEGORIES
   // products = PRODUCTS
-   banners = BANNERS;
+   banners :any
   s3url:string
   brands:any
   categories:any
   products:any
+  data:any
   banners_combined = BANNERS_COMBINED;
   public searchTerm: FormControl;
   public searchItems: any;
   searching: any = false;
 manufactures = MANUFACTURES
   myDate: String = new Date().toISOString();
-  constructor(private router: Router, private platform: Platform,
+  banner_image: any;
+  constructor(public router: Router, private platform: Platform,
     private searchService: ProductSearchService,private homeService:HomeService,
     private badge: Badge,private utils:UtilsService) {
       this.s3url = utils.getS3url()
@@ -338,9 +340,14 @@ manufactures = MANUFACTURES
   handleResponse(data){
     console.log(data)
 
+    this.data = data
+    console.log(data)
     this.brands = data.brands
     this.categories = data.categories
     this.products = data.products
+    console.log(this.products)
+    this.banners = data.banner
+   
     for(let i=0;i<this.brands.length;i++)
     {
       this.brands[i].path= this.s3url + this.brands[i].path
@@ -349,11 +356,35 @@ manufactures = MANUFACTURES
     {
       this.categories[i].path= this.s3url + this.categories[i].path
     }
-    for(let i=0;i<this.products.length;i++)
+    for(let i=0;i<this.data.products.length;i++)
     {
-      this.products[i].images[0].path = this.s3url + this.products[i].images[0].path
+      this.data.products[i].images[0].path = this.s3url + this.data.products[i].images[0].path
+    }
+    // for(let i=0;i<this.banners.length;i++){
+    //   for(let j=0;j<this.banners[i].desktop_images.length;j++)
+    //   {
+    //     this.banners[i].desktop_images[j].path = this.s3url + this.banners[i].desktop_images[j].path
+    //   }
+    //   for(let j=0;j<this.banners[i].mobile_images.length;j++)
+    //   {
+    //     this.banners[i].mobile_images[j].path = this.s3url + this.banners[i].mobile_images[j].path
+    //   }
+    // }
+    for(let i=0;i<this.data.banner.length;i++){
+      for(let j=0;j<this.data.banner[i].desktop_images.length;j++)
+      {
+        this.data.banner[i].desktop_images[j].path = this.s3url + this.data.banner[i].desktop_images[j].path
+      }
+      for(let j=0;j<this.banners[i].mobile_images.length;j++)
+      {
+        this.data.banner[i].mobile_images[j].path = this.s3url + this.data.banner[i].mobile_images[j].path
+      }
     }
     console.log(this.products,"this is products")
+    console.log(this.data,"this is banners")
+    // this.banner_image= this.banners[2].images;
+    
+    console.log( this.banner_image)
   }
   handleError(error)
   {
