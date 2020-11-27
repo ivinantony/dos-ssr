@@ -341,13 +341,13 @@ manufactures = MANUFACTURES
     console.log(data)
 
     this.data = data
-    console.log(data)
+    
     this.brands = data.brands
     this.categories = data.categories
     this.products = data.products
     console.log(this.products)
     this.banners = data.banner
-   
+    console.log(this.data,"this is banners")
     for(let i=0;i<this.brands.length;i++)
     {
       this.brands[i].path= this.s3url + this.brands[i].path
@@ -356,10 +356,11 @@ manufactures = MANUFACTURES
     {
       this.categories[i].path= this.s3url + this.categories[i].path
     }
-    for(let i=0;i<this.data.products.length;i++)
-    {
-      this.data.products[i].images[0].path = this.s3url + this.data.products[i].images[0].path
-    }
+    // for(let i=0;i<this.data.products.length;i++)
+    // {
+    //   console.log(i)
+    //   this.data.products[i].images[0].path = this.s3url + this.data.products[i].images[0].path
+    // }
     // for(let i=0;i<this.banners.length;i++){
     //   for(let j=0;j<this.banners[i].desktop_images.length;j++)
     //   {
@@ -371,6 +372,7 @@ manufactures = MANUFACTURES
     //   }
     // }
     for(let i=0;i<this.data.banner.length;i++){
+      console.log(this.s3url  )
       for(let j=0;j<this.data.banner[i].desktop_images.length;j++)
       {
         this.data.banner[i].desktop_images[j].path = this.s3url + this.data.banner[i].desktop_images[j].path
@@ -381,7 +383,7 @@ manufactures = MANUFACTURES
       }
     }
     console.log(this.products,"this is products")
-    console.log(this.data,"this is banners")
+    
     // this.banner_image= this.banners[2].images;
     
     console.log( this.banner_image)

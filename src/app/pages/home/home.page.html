@@ -167,7 +167,7 @@
       <ion-slide *ngFor="let item of data?.products; let i=index">
         <ion-card
           (click)="viewProduct(i)"
-          [ngStyle]="{'background-image': 'url( '+ item.images[0].path +' )'}"
+          [ngStyle]="{'background-image': 'url( '+ s3url + item.images[0]?.path +' )'}"
         >
         </ion-card>
       </ion-slide>
@@ -236,7 +236,7 @@
       <ion-slide *ngFor="let item of products; let i=index">
         <ion-card
           (click)="viewProduct(i)"
-          [ngStyle]="{'background-image': 'url( '+ item.images[0].path +' )'}"
+          [ngStyle]="{'background-image': 'url( '+ s3url + item.images[0]?.path +' )'}"
         >
         </ion-card>
       </ion-slide>
