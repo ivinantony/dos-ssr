@@ -16,11 +16,18 @@ export class SubcatProductsService {
     this.url = utils.getApiPath()
    }
 
-   public getSubCatProducts(category_id:number,member_id:any,page_no:number)
+   public getSubCatProducts(category_id:number,member_id:any,page_no:number,sort:string)
    {
      const headers = this.headerservice.getHttpHeaders()
      return this.httpclient.get(
-       this.url+"category-product?category_id="+category_id +"&member_id="+member_id+"&page_no="+page_no,{headers}
+       this.url+"category-product?category_id="+category_id +"&member_id="+member_id+"&page_no="+page_no+"&sort="+sort,{headers}
+     ).pipe(map(res=>{return res}));
+   }
+   public getSubCatProductsSorted(category_id:number,member_id:any,page_no:number,sort:string)
+   {
+     const headers = this.headerservice.getHttpHeaders()
+     return this.httpclient.get(
+       this.url+"category-product?category_id="+category_id +"&member_id="+member_id+"&page_no="+page_no+"&sort="+sort,{headers}
      ).pipe(map(res=>{return res}));
    }
 }

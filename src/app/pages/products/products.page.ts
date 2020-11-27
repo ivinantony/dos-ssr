@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LoadingController, ModalController, Platform } from '@ionic/angular';
+import { ActionSheetController, LoadingController, ModalController, Platform } from '@ionic/angular';
 import { utils } from 'protractor';
 import { SubcatProductsService } from 'src/app/services/subcatProducts/subcat-products.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { FiltersPage } from '../filters/filters.page';
+import { SortPage } from '../sort/sort.page';
 import { PRODUCTS, BANNERS } from '../home/home.page';
 const GET_DATA = 200;
 @Component({
@@ -17,6 +18,7 @@ export class ProductsPage implements OnInit {
   banners: Array<any> = BANNERS;
   page_count:number
   page_limit:number
+
   bannerSlideOpts = {
     slidesPerView: 1,
     initialSlide: 0,
@@ -38,7 +40,7 @@ export class ProductsPage implements OnInit {
     { val: 'Mushroom', isChecked: false }
   ];
   constructor(private activatedRoute: ActivatedRoute, private platform: Platform, private router: Router, private modalController: ModalController,
-    private CatProductService:SubcatProductsService,private utils:UtilsService,private loadingcontroller:LoadingController) {
+    private CatProductService:SubcatProductsService,private utils:UtilsService,private loadingcontroller:LoadingController,private actionSheetController:ActionSheetController) {
     this.page_count = 1
     this.checkWidth()
     this.s3url = utils.getS3url()
@@ -56,8 +58,8 @@ export class ProductsPage implements OnInit {
   getData()
   {
     console.log("catid",this.catId)
-    let member_id = Number(localStorage.getItem('member_id'))
-    this.CatProductService.getSubCatProducts(this.catId,member_id,this.page_count).subscribe(
+    let client_id = Number(localStorage.getItem('client_id'))
+    this.CatProductService.getSubCatProducts(this.catId,client_id,this.page_count,null).subscribe(
       (data)=>this.handleResponse(data,GET_DATA),
       (error)=>this.handleError(error)
     )
@@ -102,6 +104,10 @@ export class ProductsPage implements OnInit {
     await modal.present();
   }
 
+  openSort() {
+    this.presentActionSheet()
+  }
+
 
   checkWidth() {
     if (this.platform.width() > 768) {
@@ -133,4 +139,34 @@ export class ProductsPage implements OnInit {
     }
   }
 
+  async presentActionSheet() {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'SORT BY',
+      mode:'md',
+      cssClass: 'my-custom-class',
+      buttons: [{
+        text: 'Price - high to low',
+        handler: () => {
+          let client_id = Number(localStorage.getItem('client_id'))
+          this.CatProductService.getSubCatProducts(this.catId,client_id,this.page_count,'desc').subscribe(
+            (data)=>this.handleResponse(data,GET_DATA),
+            (error)=>this.handleError(error)
+          )
+        }
+      }, {
+        text: 'Price - low to high',
+        handler: () => {
+          let client_id = Number(localStorage.getItem('client_id'))
+          this.CatProductService.getSubCatProducts(this.catId,client_id,this.page_count,'asc').subscribe(
+            (data)=>this.handleResponse(data,GET_DATA),
+            (error)=>this.handleError(error)
+          )
+        }
+      }]
+    });
+    await actionSheet.present();
+  }
+
 }
+
+

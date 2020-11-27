@@ -163,12 +163,17 @@
         View all
       </ion-button>
     </ion-item>
-    <ion-slides [options]="topSlides" class="top-search">
+    <ion-slides [options]="productSlides" class="top-search">
       <ion-slide *ngFor="let item of data?.products; let i=index">
-        <ion-card
+        <!-- <ion-card
           (click)="viewProduct(i)"
-          [ngStyle]="{'background-image': 'url( '+ s3url + item.images[0]?.path +' )'}"
-        >
+          [ngStyle]="{'background-image': 'url( '+ s3url + item.images[0]?.path +' )'}">
+        </ion-card> -->
+        <ion-card (click)="viewProduct(i)">
+          <img src="{{s3url+item.images[0]?.path}}"alt="">
+        <ion-card-content>
+          <p>{{item.name}}</p>
+        </ion-card-content>
         </ion-card>
       </ion-slide>
     </ion-slides>
@@ -232,13 +237,19 @@
         View all
       </ion-button>
     </ion-item>
-    <ion-slides [options]="recommendedSlides" class="recommended">
+    <ion-slides [options]="productSlides" class="recommended">
       <ion-slide *ngFor="let item of products; let i=index">
-        <ion-card
+        <ion-card (click)="viewProduct(i)">
+          <img src="{{s3url+item.images[0]?.path}}"alt="">
+        <ion-card-content>
+          <p>{{item.name}}</p>
+        </ion-card-content>
+        </ion-card>
+        <!-- <ion-card
           (click)="viewProduct(i)"
           [ngStyle]="{'background-image': 'url( '+ s3url + item.images[0]?.path +' )'}"
         >
-        </ion-card>
+        </ion-card> -->
       </ion-slide>
       <!-- <ion-slide *ngFor="let item of categories; let i=index">
       <ion-card
@@ -260,6 +271,90 @@
     </ion-slide>     
   </ion-slides>
 </section>
+
+<section id="cards">
+<ion-row>
+  <ion-col size="12"
+  size-sm="6"
+  size-md="6"
+  size-lg="3"
+  size-xl="3">
+    <ion-card class="ion-text-center kard">
+      <ion-icon name="megaphone" class="icons"></ion-icon>
+      <h1>Call Us Anytime</h1>
+      <P>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.</P>
+    </ion-card>
+  </ion-col>
+  <ion-col 
+  size="12"
+  size-sm="6"
+  size-md="6"
+  size-lg="3"
+  size-xl="3">
+    <ion-card class="ion-text-center kard">
+      <ion-icon name="cube"  class="icons"></ion-icon>
+      <h1>Free Shipping</h1>
+      <P>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.</P>
+    </ion-card>
+  </ion-col>
+  <ion-col  size="12"
+  size-sm="6"
+  size-md="6"
+  size-lg="3"
+  size-xl="3">
+    <ion-card class="ion-text-center kard">
+      <ion-icon name="swap-horizontal"  class="icons"></ion-icon>
+      <h1>Easy Returns</h1>
+      <P>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.</P>
+    </ion-card>
+  </ion-col>
+  <ion-col size="12"
+  size-sm="6"
+  size-md="6"
+  size-lg="3"
+  size-xl="3">
+    <ion-card class="ion-text-center kard">
+      <ion-icon name="card"  class="icons"></ion-icon>
+      <h1>Secure Payments</h1>
+      <P>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.</P>
+    </ion-card>
+  </ion-col>
+  
+ 
+</ion-row>
+</section>
 <!-- Banner -4 end -->
 
+<ion-row>
+
+  <ion-col size="12" size-md="4" >
+    <h5>Useful Links</h5>
+    <p>Home | About | Product | Contact</p>
+  </ion-col>
+
+  <!-- <ion-col size="12" size-md="4" >
+    
+      <h5>Keep In Touch</h5>
+   
+    <ion-col size="12" class="socialIcons">
+        <img src="../../../assets/icon/icons8-facebook.svg" alt="">
+        <img src="../../../assets/icon/icons8-instagram.svg" alt="">
+        <img src="../../../assets/icon/icons8-twitter.svg" alt="">
+        <img src="../../../assets/icon/icons8-play-button.svg" alt="">
+    </ion-col>
+  </ion-col> -->
+
+  <ion-col size="12" class="address"  size-md="4" >
+      <h5>Registerd Address</h5>
+
+      <p>Buildings Alyssa,</p>
+      <P>Begonia and Clover situated in Embassy Tech Village,</P>
+      <P>Outer Ring Road,</P>
+      <P>Devarabeesanahalli Village,</P>
+      <P>Varthur Hobli,</P>
+      <p>Bengaluru – 560103, India</p>
+      
+  </ion-col>
+
+  </ion-row>
 </ion-content>

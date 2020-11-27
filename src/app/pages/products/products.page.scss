@@ -38,3 +38,32 @@
   text-decoration: line-through;
 
 }
+
+.text{
+  h1{
+    font-size: 16px;
+    color: #777;
+    text-align: center;
+    padding-bottom: 5px;
+  }
+  h2{
+    font-size: 20px;
+    text-align: center;
+    color: #444;
+    font-weight: bold;
+  }
+  p{
+    text-align: center;
+  }
+}
+
+.row{
+  display: flex;
+  
+}
+.prod{
+  border: .1px solid rgb(232, 232, 232);
+  margin-bottom: 5px;
+  
+  
+}

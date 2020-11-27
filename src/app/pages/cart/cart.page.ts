@@ -180,10 +180,10 @@ export class CartPage implements OnInit {
   getAddress()
   {
     let client_id = localStorage.getItem('client_id')
-    this.addressService.getAddress(client_id).subscribe(
-      (data)=>this.handleResponse(data,GET_ADDRESS),
-      (error)=>this.handleError(error)
-    )
+    // this.addressService.getAddress(client_id).subscribe(
+    //   (data)=>this.handleResponse(data,GET_ADDRESS),
+    //   (error)=>this.handleError(error)
+    // )
   }
 
   handleResponse(data,type)

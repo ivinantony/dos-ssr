@@ -215,16 +215,43 @@ export class HomePage implements OnInit {
     slidesPerView: 2.7,
     spaceBetween: 5,
   }
-  topSlides = {
-    slidesPerView: 2.2,
-    spaceBetween: 5,
-  }
-  recommendedSlides = {
+  // topSlides = {
+  //   slidesPerView: 2.2,
+  //   spaceBetween: 5,
+  // }
+  // recommendedSlides = {
+  //   slidesPerView: 1.5,
+  //   initialSlide: 1,
+  //   spaceBetween: 5,
+  //   centeredSlides: true,
+  // }
+
+
+  productSlides = window.matchMedia("(max-width: 320px)").matches ? {
     slidesPerView: 1.5,
-    initialSlide: 1,
-    spaceBetween: 5,
-    centeredSlides: true,
-  }
+    spaceBetween:8,
+    
+  } : window.matchMedia("(max-width: 576px)").matches ? {
+    slidesPerView:2.2,
+    spaceBetween:5,
+
+      //spaceBetween: 2
+  } : window.matchMedia(" (max-width: 768px)").matches ? {
+    slidesPerView: 4.2,
+    spaceBetween: 8
+  } : window.matchMedia(" (max-width: 992px)").matches ? {
+    slidesPerView: 4,
+      spaceBetween: 10,
+      speed: 200,
+  } : {
+        slidesPerView: 5.9,
+        spaceBetween: 10
+       
+      }
+
+
+
+
   selectedIndex = 0
   topSearches = PRODUCTS;
   // categories = CATEGORIES
@@ -312,17 +339,18 @@ manufactures = MANUFACTURES
         slidesPerView: 5.7,
         spaceBetween: 5,
       }
-      this.topSlides = {
-        slidesPerView: 4.2,
-        spaceBetween: 5,
-      }
-      this.recommendedSlides = {
-        slidesPerView: 3.5,
-        spaceBetween: 10,
-        initialSlide: 1,
-        centeredSlides: true,
-      }
+      // this.topSlides = {
+      //   slidesPerView: 4.2,
+      //   spaceBetween: 5,
+      // }
+      // this.recommendedSlides = {
+      //   slidesPerView: 3.5,
+      //   spaceBetween: 10,
+      //   initialSlide: 1,
+      //   centeredSlides: true,
+      // }
     }
+
   }
 
   onSearchChange($event) {
