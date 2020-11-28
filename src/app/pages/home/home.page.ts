@@ -10,6 +10,7 @@ import { ProductSearchService } from 'src/app/services/product-search.service';
 import { HomeService } from 'src/app/services/home/home.service';
 import { UtilsService } from 'src/app/services/utils.service';
 
+
 export const PRODUCTS = [
   { id: 1, cat_id: 1, name: 'Alternator 24v', price: 400, images: [{ id: 1, url: 'https://www.ikh.fi/images/wwwkuvat/Tuotekuvat/STL24005_S_1_web.jpg' }] },
   { id: 2, cat_id: 1, name: 'Dynamo', price: 400, images: [{ id: 1, url: 'https://auctions.c.yimg.jp/images.auctions.yahoo.co.jp/image/dr000/auc0409/users/c5473c99d15b9e041d17e6dfb2f2ef927382999a/i-img1200x900-1536215275pws7ks183838.jpg' }] },

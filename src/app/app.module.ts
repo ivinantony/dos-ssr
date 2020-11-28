@@ -15,6 +15,10 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { Badge } from '@ionic-native/badge/ngx';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { far } from '@fortawesome/free-regular-svg-icons'
+import { fab } from '@fortawesome/free-brands-svg-icons'
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -25,6 +29,7 @@ import { ReactiveFormsModule } from '@angular/forms';
       swipeBackEnabled: true,
     }),
     AppRoutingModule,
+    FontAwesomeModule,
     HttpClientModule,
     ReactiveFormsModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
@@ -39,4 +44,9 @@ import { ReactiveFormsModule } from '@angular/forms';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule 
+{
+  constructor(library: FaIconLibrary) { 
+		library.addIconPacks(fas, fab, far);
+	}
+}

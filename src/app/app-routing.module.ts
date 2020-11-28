@@ -94,6 +94,14 @@ const routes: Routes = [
   {
     path: 'edit-address',
     loadChildren: () => import('./pages/edit-address/edit-address.module').then( m => m.EditAddressPageModule)
+  },
+  {
+    path: 'modeofpayment',
+    loadChildren: () => import('./pages/modeofpayment/modeofpayment.module').then( m => m.ModeofpaymentPageModule)
+  },
+  {
+    path: 'paypal',
+    loadChildren: () => import('./pages/paypal/paypal.module').then( m => m.PaypalPageModule)
   }
 
 

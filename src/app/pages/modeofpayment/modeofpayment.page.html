@@ -1,0 +1,59 @@
+
+<ion-header mode="ios">
+  <ion-toolbar>
+    <ion-buttons slot="start" >
+      <ion-back-button text="" defaultHref="checkout"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <div class="ion-text-center">
+        <h1>Payment Options</h1>
+      </div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-text-center">
+    <!-- <img src="../../../assets/images/successful_purchase.svg" alt=""> -->
+  </div>
+  <div class="wrapper">
+
+
+    <ion-card class="card">
+      <h2>Please select a mode of payment.</h2>
+      <div id="paypal-button-container"></div>
+      <ion-list>
+  
+        <div class="ion-activatable ripple-parent" *ngFor="let item of paymentOptions?.payment_options; let i=index">
+          
+        <ion-item detail class="item" lines="none" (click)="selectPaymentMethod(i)">
+          
+          <ion-icon name="{{ item.icon }}" size="large" class="icon"></ion-icon>
+          <ion-ripple-effect></ion-ripple-effect>
+          <ion-label> {{ item.name }}</ion-label>
+          
+        </ion-item>
+        </div>
+        <!-- </div>
+        <div class="ion-activatable ripple-parent">
+        <ion-item detail class="item" lines="none" (click)="onClick()">
+          <ion-icon name="card-outline" size="large"  class="icon"></ion-icon>
+          <ion-ripple-effect></ion-ripple-effect>
+          <ion-label>Card/ UPI on delivery</ion-label>
+        </ion-item>
+      </div>
+      <div class="ion-activatable ripple-parent">
+        <ion-item detail class="item" lines="none" (click)="onClick()">
+          <ion-icon name="globe-outline" size="large" class="icon"></ion-icon>
+          <ion-ripple-effect></ion-ripple-effect>
+          <ion-label> Online payment</ion-label>
+        </ion-item> -->
+      
+      </ion-list>
+    </ion-card>
+  </div>
+
+
+
+
+</ion-content>

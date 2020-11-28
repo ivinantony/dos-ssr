@@ -1,0 +1,107 @@
+ion-header{
+    --background:#fcfeff;
+    
+    ion-toolbar{
+        margin-top: 10px;
+  
+        --background:#fcfeff;
+        background:#fcfeff;
+       
+    }
+}
+ion-title{
+        h1{
+          
+            font-size: 22px;
+            padding-bottom: 10px;
+        }  
+}
+
+
+ion-content{
+    --background:#fcfeff;
+   
+    }
+img{
+    padding-top: 20px;
+    width: 60%; 
+}
+
+.icon{
+    padding-right:10px;
+}
+
+
+.card{
+    padding: 10px;
+    
+    border-radius: 25px;
+    min-height: 340px;
+    
+    h2{
+        font-weight: 700;
+        font-size: 1.5rem;
+        padding: 20px;
+    }
+    .item{
+        padding-bottom: 20px;
+
+    }
+}
+
+
+.ripple-parent
+ {
+    position: relative;
+    overflow: hidden;
+    color: #DB7093;
+}
+
+@media only screen and (max-width: 320px){
+
+}
+@media only screen and (min-width: 576px){
+    img{
+        padding-top: 20px;
+        width: 45%; 
+    }
+.wrapper{
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+}
+@media only screen and (min-width: 724px){
+    img{
+        padding-top: 20px;
+        width: 40%; 
+    }
+    .wrapper{
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }  
+}
+@media only screen and (min-width: 992px){
+    img{
+        padding-top: 20px;
+        width: 30%; 
+    }
+    .wrapper{
+        width: 70%;
+        margin-left: auto;
+        margin-right: auto;
+    } 
+}
+@media only screen and (min-width: 1366px){
+    img{
+        padding-top: 20px;
+        width: 20%; 
+    }
+    .wrapper{
+        width: 50%;
+        margin-left: auto;
+        margin-right: auto;
+    } 
+}
+

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { IonRouterOutlet, ModalController, Platform, ToastController } from '@ionic/angular';
 import { AddressService } from 'src/app/services/address/address.service';
 import { CartService } from 'src/app/services/cart/cart.service';
@@ -34,7 +35,8 @@ export class CartPage implements OnInit {
      private cartService:CartService,
      private utils:UtilsService,
      private addressService:AddressService,
-     private checkoutService:CheckoutService  ) 
+     private checkoutService:CheckoutService,
+     private router:Router  ) 
      {
        this.getData()
        this.getAddress()
@@ -69,6 +71,7 @@ export class CartPage implements OnInit {
     return await modal.present();
   }
   payWithRazorpay() {
+    this.router.navigate(['modeofpayment'])
     let client_id = localStorage.getItem('client_id')
     let data={
       client_id:client_id,
