@@ -4,10 +4,12 @@ import { IonRouterOutlet, ModalController, Platform, ToastController } from '@io
 import { AddressService } from 'src/app/services/address/address.service';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { CheckoutService } from 'src/app/services/checkout/checkout.service';
+import { OrderService } from 'src/app/services/order/order.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { AddAddressPage } from '../add-address/add-address.page';
 import { AddressPage } from '../address/address.page';
 import { CouponPage } from '../coupon/coupon.page';
+import { ModeofpaymentPage } from '../modeofpayment/modeofpayment.page';
 declare var RazorpayCheckout: any;
 declare var Razorpay: any
 const GET_CART=200;
@@ -16,6 +18,7 @@ const DEL_DATA=220;
 const REMOVE=230;
 const GET_ADDRESS=240;
 const POST_ADDRESS_DETAILS = 250;
+const ORDER_RESPONSE = 260;
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.page.html',
@@ -23,12 +26,17 @@ const POST_ADDRESS_DETAILS = 250;
 })
 export class CartPage implements OnInit {
   selectedAddress: any
+  selectedPayment:any
   cart:any[]
   s3url:string
   count:number=1
   cartLength:number
   amountDetails:any
   addresses:any
+  discount_amount:number=0
+  promo_id:any
+  payment_id:any
+  address_id:any
   constructor(public modalController: ModalController, private routerOutlet: IonRouterOutlet, 
     private toastController: ToastController,
      private platform: Platform,
@@ -36,11 +44,13 @@ export class CartPage implements OnInit {
      private utils:UtilsService,
      private addressService:AddressService,
      private checkoutService:CheckoutService,
+     private orderService:OrderService,
      private router:Router  ) 
      {
        this.getData()
        this.getAddress()
        this.s3url = utils.getS3url()
+       
       }
 
   ngOnInit() {
@@ -49,6 +59,8 @@ export class CartPage implements OnInit {
   onChangeAddress($event) {
     this.selectedAddress = $event.detail.value;
     console.log('selectedAddress', this.selectedAddress)
+    this.address_id = this.addresses[this.selectedAddress].id
+    console.log(this.address_id)
   }
 
   async addAddress() {
@@ -58,109 +70,79 @@ export class CartPage implements OnInit {
       presentingElement: this.routerOutlet.nativeEl,
       cssClass: 'my-custom-class'
     });
+    modal.onDidDismiss().finally(()=>{
+          this.getAddress()
+        })
     return await modal.present();
   }
 
   async openPromo() {
+      this.amountDetails.payable_amount+=this.discount_amount
+      this.amountDetails.saved_amount-=this.discount_amount
     const modal = await this.modalController.create({
       component: CouponPage,
       swipeToClose: true,
       presentingElement: this.routerOutlet.nativeEl,
       cssClass: 'my-custom-class'
     });
+    modal.onDidDismiss().then((data) => {
+
+      const promo_Details = data['data'];
+      if(promo_Details)
+      {
+      console.log(promo_Details)
+      this.amountDetails.payable_amount-=promo_Details.discount_amount
+      this.amountDetails.saved_amount=promo_Details.discount_amount
+      this.discount_amount = promo_Details.discount_amount
+      this.promo_id = promo_Details.promo_Id
+      }
+      
+    }
+    );
     return await modal.present();
   }
-  payWithRazorpay() {
-    this.router.navigate(['modeofpayment'])
-    let client_id = localStorage.getItem('client_id')
-    let data={
-      client_id:client_id,
-      address_id:this.addresses[this.selectedAddress].id,
-      total_amount:this.amountDetails.payable_amount
+
+  async openPaymentModes()
+  {
+    
+    const modal = await this.modalController.create({
+      component: ModeofpaymentPage,
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl,
+      cssClass: 'paymentOptions'
+    });
+    modal.onDidDismiss().then((data) => {
+     
+      const paymentDetails = data['data'];
+      console.log(paymentDetails)
+      if(paymentDetails)
+      {
+      this.payment_id = paymentDetails.modeOfPayment_Id
+      console.log(this.payment_id)
+      }
+      
     }
-    console.log(data)
-    this.checkoutService.addressDetails(data).subscribe(
-      (data)=>this.handleResponse(data,POST_ADDRESS_DETAILS),
+    );
+    return await modal.present();
+  }
+
+  pay()
+  {
+    console.log(this.selectedAddress)
+    let data={
+      client_id:localStorage.getItem("client_id"),
+      promo_code_id:this.promo_id,
+      address_id:this.address_id,
+      payment_option_id:this.payment_id,
+      product_total:this.amountDetails.total_amount,
+      payable_amount:this.amountDetails.payable_amount  
+    }
+    this.orderService.captureOrder(data).subscribe(
+      (data)=> this.handleResponse(data,ORDER_RESPONSE),
       (error)=>this.handleError(error)
     )
-
-    this.platform.ready().then(() => {
-      // 'hybrid' detects both Cordova and Capacitor
-      if (this.platform.is('hybrid')) {
-        // make your native API calls
-        var options = {
-          description: 'Credits towards consultation',
-          image: 'https://i.imgur.com/3g7nmJC.png',
-          currency: 'INR',
-          key: 'rzp_test_SDfK1pitLCtbv1',
-          amount: '5000',
-          name: 'Acme Corp',
-          theme: { color: '#eb445a' },
-          prefill: {
-            name: 'Ivin Antony',
-            contact: 9633361540,
-            email: 'ivin@mermerapps.com'
-          }
-        }
-
-        var successCallback = (success) => {
-          console.log(success)
-          this.presentToast(success.razorpay_payment_id)
-          var orderId = success.razorpay_order_id;
-          var signature = success.razorpay_signature
-        }
-        var cancelCallback = (error) => {
-          console.log(error)
-          this.presentToast(error.description)
-        }
-        RazorpayCheckout.on('payment.success', successCallback)
-        RazorpayCheckout.on('payment.cancel', cancelCallback)
-        RazorpayCheckout.open(options)
-      } else {
-        // fallback to browser APIs
-        var pwa_options = {
-          "key": "rzp_test_SDfK1pitLCtbv1",
-          "amount": "50000",
-          "currency": "INR",
-          "name": "Acme Corp",
-          "description": "Test Transaction",
-          "image": "https://example.com/your_logo",
-          "handler": (response) => {
-            this.presentToast(response.razorpay_payment_id)
-            // alert(response.razorpay_payment_id);
-            // alert(response.razorpay_order_id);
-            // alert(response.razorpay_signature)
-          },
-          "prefill": {
-            "name": "Gaurav Kumar",
-            "email": "gaurav.kumar@example.com",
-            "contact": "9999999999"
-          },
-          "notes": {
-            "address": "Razorpay Corporate Office"
-          },
-          "theme": {
-            "color": "#3399cc"
-          }
-        };
-        var rzp1 = new Razorpay(pwa_options);
-        rzp1.on('payment.failed',  (response)=> {
-          // this.presentToast(response.error.description)
-          alert(response.error.code);
-          alert(response.error.description);
-          alert(response.error.source);
-          alert(response.error.step);
-          alert(response.error.reason);
-          alert(response.error.metadata.order_id);
-          alert(response.error.metadata.payment_id);
-        });
-
-        rzp1.open();
-
-      }
-    });
-
   }
+  
   async presentToast(msg) {
     const toast = await this.toastController.create({
       message: msg,
@@ -183,10 +165,10 @@ export class CartPage implements OnInit {
   getAddress()
   {
     let client_id = localStorage.getItem('client_id')
-    // this.addressService.getAddress(client_id).subscribe(
-    //   (data)=>this.handleResponse(data,GET_ADDRESS),
-    //   (error)=>this.handleError(error)
-    // )
+    this.addressService.getAddress(client_id).subscribe(
+      (data)=>this.handleResponse(data,GET_ADDRESS),
+      (error)=>this.handleError(error)
+    )
   }
 
   handleResponse(data,type)
@@ -210,6 +192,13 @@ export class CartPage implements OnInit {
     {
       this.addresses = data.addresses
       console.log(this.addresses,"addresses")
+    }
+    else if(type == ORDER_RESPONSE)
+    {
+     if(this.payment_id == 4) 
+     {
+      this.router.navigate(['paypal'])
+     }
     }
 
     else{
@@ -276,3 +265,105 @@ export class CartPage implements OnInit {
     this.getData()
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+// payWithRazorpay() {
+    
+//   let client_id = localStorage.getItem('client_id')
+//   let data={
+//     client_id:client_id,
+//     address_id:this.addresses[this.selectedAddress].id,
+//     total_amount:this.amountDetails.payable_amount
+//   }
+//   console.log(data)
+//   this.checkoutService.addressDetails(data).subscribe(
+//     (data)=>this.handleResponse(data,POST_ADDRESS_DETAILS),
+//     (error)=>this.handleError(error)
+//   )
+
+//   this.platform.ready().then(() => {
+//     // 'hybrid' detects both Cordova and Capacitor
+//     if (this.platform.is('hybrid')) {
+//       // make your native API calls
+//       var options = {
+//         description: 'Credits towards consultation',
+//         image: 'https://i.imgur.com/3g7nmJC.png',
+//         currency: 'INR',
+//         key: 'rzp_test_SDfK1pitLCtbv1',
+//         amount: '5000',
+//         name: 'Acme Corp',
+//         theme: { color: '#eb445a' },
+//         prefill: {
+//           name: 'Ivin Antony',
+//           contact: 9633361540,
+//           email: 'ivin@mermerapps.com'
+//         }
+//       }
+
+//       var successCallback = (success) => {
+//         console.log(success)
+//         this.presentToast(success.razorpay_payment_id)
+//         var orderId = success.razorpay_order_id;
+//         var signature = success.razorpay_signature
+//       }
+//       var cancelCallback = (error) => {
+//         console.log(error)
+//         this.presentToast(error.description)
+//       }
+//       RazorpayCheckout.on('payment.success', successCallback)
+//       RazorpayCheckout.on('payment.cancel', cancelCallback)
+//       RazorpayCheckout.open(options)
+//     } else {
+//       // fallback to browser APIs
+//       var pwa_options = {
+//         "key": "rzp_test_SDfK1pitLCtbv1",
+//         "amount": "50000",
+//         "currency": "INR",
+//         "name": "Acme Corp",
+//         "description": "Test Transaction",
+//         "image": "https://example.com/your_logo",
+//         "handler": (response) => {
+//           this.presentToast(response.razorpay_payment_id)
+//           // alert(response.razorpay_payment_id);
+//           // alert(response.razorpay_order_id);
+//           // alert(response.razorpay_signature)
+//         },
+//         "prefill": {
+//           "name": "Gaurav Kumar",
+//           "email": "gaurav.kumar@example.com",
+//           "contact": "9999999999"
+//         },
+//         "notes": {
+//           "address": "Razorpay Corporate Office"
+//         },
+//         "theme": {
+//           "color": "#3399cc"
+//         }
+//       };
+//       var rzp1 = new Razorpay(pwa_options);
+//       rzp1.on('payment.failed',  (response)=> {
+//         // this.presentToast(response.error.description)
+//         alert(response.error.code);
+//         alert(response.error.description);
+//         alert(response.error.source);
+//         alert(response.error.step);
+//         alert(response.error.reason);
+//         alert(response.error.metadata.order_id);
+//         alert(response.error.metadata.payment_id);
+//       });
+
+//       rzp1.open();
+
+//     }
+//   });
+
+// }

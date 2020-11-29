@@ -48,7 +48,7 @@ export class OtpPage implements OnInit {
 
   handleResponseData(data,type)
   {
-    console.log(data)
+    console.log("haiiiiiiiiiii",data)
     this.authService.login(data.data)
     localStorage.setItem('client_id',data.client_id)
     this.router.navigate(['home'])

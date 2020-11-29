@@ -9,16 +9,19 @@ import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class OrderService {
+export class PromoService {
   url:string
   constructor(private utils:UtilsService,private httpclient:HttpClient,private headerservice:HeadersService) 
   {
     this.url = utils.getApiPath()
    }
-   public captureOrder(data:any)
+   public getPromoCodes (client_id:any)
    {
      const headers = this.headerservice.getHttpHeaders()
-     return this.httpclient.post(
-      this.url + "capture-order",data,{ headers }).pipe(map(res=>{ return res}));
+     return this.httpclient.get(
+      this.url + "promo-code?client_id="+client_id,
+      { headers }
+     ).pipe(map(res=>{
+       return res}));
    }
 }

@@ -12,18 +12,26 @@
   <ion-grid fixed [ngClass]="cartLength > 0 ? 'active' : 'inactive'">
     <ion-row>
       <ion-col size-sm="12" size-md="12" size-lg="6" size-xl="6">
-        <ion-card style="box-shadow: none">
+        <ion-card style="box-shadow: none" class="card">
           <ion-list-header>
             <ion-label> Delivery Address </ion-label>
           </ion-list-header>
-          <ion-card-content style="max-height: 30vh" class="ion-no-padding" >
+          <ion-item class="ion-text-center" *ngIf="addresses?.length == 0">
+            <p >No Addresses Added </p>
+          </ion-item>
+          
+          <ion-card-content style="max-height: 30vh" class="ion-no-padding" *ngIf="addresses?.length != 0" class="" >
+            
+              
+          
             <ion-content style="height: 30vh" class="ion-padding">
               <ion-radio-group
                 [(ngModel)]="selectedAddress"
                 mode="md"
                 (ionChange)="onChangeAddress($event)"
               >
-                <ion-item *ngFor="let item of addresses; let i=index">
+                
+                <ion-item *ngFor="let item of addresses; let i=index" lines="none">
                   <ion-label>
                     <ion-text color="primary">
                       <h3>{{item.name}}</h3>
@@ -89,6 +97,19 @@
               src="assets/imgs/discount.svg"
             ></ion-icon>
             <ion-label color="danger">Apply Promo Code</ion-label>
+            <ion-icon
+              slot="end"
+              color="danger"
+              name="chevron-forward"
+            ></ion-icon>
+          </ion-item>
+          <ion-item lines="none" (click)="openPaymentModes()" class="payment">
+            <ion-icon
+              slot="start"
+              color="danger"
+              src="assets/imgs/credit-card.svg"
+            ></ion-icon>
+            <ion-label color="danger">Select payment Method</ion-label>
             <ion-icon
               slot="end"
               color="danger"
@@ -175,14 +196,14 @@
 <ion-footer>
   <ion-toolbar>
     <ion-button
-      [disabled]="!selectedAddress"
+      [disabled]="!selectedAddress || !payment_id"
       slot="end"
       shape="round"
       color="danger"
-      (click)="payWithRazorpay()"
+      (click)="pay()"
     >
       <ion-icon slot="end" name="chevron-forward"></ion-icon>
-      Continue to payment
+      PAY
     </ion-button>
   </ion-toolbar>
 </ion-footer>

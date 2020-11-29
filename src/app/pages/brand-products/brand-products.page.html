@@ -61,7 +61,7 @@
               class="prod"
             >
               <div style=" position: relative; overflow: hidden">
-                <picture>
+                <!-- <picture>
                   <source
                     media="(min-width:650px)"
                     [srcset]="item?.images[0].path"
@@ -75,8 +75,8 @@
                     alt="Flowers"
                     style="width: auto"
                   />
-                </picture>
-                <!-- <img [src]="item?.images[0].url" alt=""> -->
+                </picture> -->
+                <img [src]="item?.images[0].path" alt="">
               </div>
               <ion-list>
                 <ion-item lines="none">

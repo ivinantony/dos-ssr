@@ -5,7 +5,11 @@
     </ion-buttons>
     <ion-title>product</ion-title>
     <ion-buttons slot="end">
-      <ion-icon name="cart-outline"class="ion-padding" (click)="router.navigate(['/cart'])"></ion-icon>
+      <ion-icon
+        name="cart-outline"
+        class="ion-padding"
+        (click)="router.navigate(['/cart'])"
+      ></ion-icon>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -14,13 +18,7 @@
   <ion-grid fixed class="grid_top">
     <ion-row class="main_row_top">
       <!-- colum 1 start -->
-      <ion-col
-        size="12"
-        size-sm="12"
-        size-md="12"
-        size-lg="4"
-        size-xl="4"
-      >
+      <ion-col size="12" size-sm="12" size-md="12" size-lg="4" size-xl="4">
         <ion-slides pager [options]="productOpts" class="prod-slide">
           <ion-slide
             *ngFor="let item of productDetails?.images; let i=index"
@@ -40,77 +38,67 @@
         size-xl="4"
         class="col2"
       >
-      <ion-list>
-        <ion-item lines="none">
-          <ion-label>
-            <h1>{{productDetails?.name}}</h1>
-          </ion-label>
-        </ion-item>
-        <section class="ion-padding-horizontal details">
-          <ion-text color="dark">
-            <h3 class="ion-margin-top">Part Number</h3>
-            <h5 class="ion-no-margin">{{productDetails?.part_number}}</h5>
-          </ion-text>
-          <ion-text color="dark">
-            <h3 class="ion-margin-top">Manufacturer</h3>
-            <h5 class="ion-no-margin">{{productDetails?.brand_name}}</h5>
-          </ion-text>
-          <ion-text color="dark">
-            <h3 class="ion-margin-top">Description</h3>
-            <p>{{productDetails?.description}}</p>
-            <!-- <p> Front brake callipers for BMW M3.(Blue) </p> -->
-          </ion-text>
-        </section>    
+        <ion-list>
+          <ion-item lines="none">
+            <ion-label>
+              <h1>{{productDetails?.name}}</h1>
+            </ion-label>
+          </ion-item>
+          <section class="ion-padding-horizontal details">
+            <ion-text color="dark">
+              <h3 class="ion-margin-top">Part Number</h3>
+              <h5 class="ion-no-margin">{{productDetails?.part_number}}</h5>
+            </ion-text>
+            <ion-text color="dark">
+              <h3 class="ion-margin-top">Manufacturer</h3>
+              <h5 class="ion-no-margin">{{productDetails?.brand_name}}</h5>
+            </ion-text>
+            <ion-text color="dark">
+              <h3 class="ion-margin-top">Description</h3>
+              <p>{{productDetails?.description}}</p>
+              <!-- <p> Front brake callipers for BMW M3.(Blue) </p> -->
+            </ion-text>
+          </section>
         </ion-list>
       </ion-col>
 
       <!-- colum 2 end -->
 
-
       <!-- colum 3 start -->
 
       <ion-col
-      size="12"
-      size-sm="12"
-      size-md="12"
-      size-lg="4"
-      size-xl="4"
-      class="col3"
-    >
-    <section  class="ion-padding-horizontal">
-      <ion-row>
-        <ion-col size="6">
-          <ion-label color="danger" style="background: #f2f2f2;">
-          <h1 >
-            {{ productDetails?.offer_price | currency:'AED' }}
-          </h1>
-        </ion-label>
-        </ion-col>
-        <ion-col size="6" class="offerPrice">
-          <ion-label style="background: #f2f2f2;">
-            <h3>
-              {{ productDetails?.price | currency:'AED' }}
-            </h3>
-          </ion-label>
-        </ion-col>
-      </ion-row>
+        size="12"
+        size-sm="12"
+        size-md="12"
+        size-lg="4"
+        size-xl="4"
+        class="col3"
+      >
+        <section class="ion-padding-horizontal">
+          <ion-row>
+            <ion-col size="6">
+              <ion-label color="danger" style="background: #f2f2f2">
+                <!-- <h1>{{ productDetails?.offer_price | currency:'AED' }}</h1> -->
+                <h1>{{ productDetails?.offer_price | currency:'AED' }}</h1>
+                <h1 *ngIf="productDetails?.offer_price == null">{{ productDetails?.price | currency:'AED' }}</h1>
+              </ion-label>
+            </ion-col>
+            <ion-col size="6" class="offerPrice">
+              <ion-label style="background: #f2f2f2">
+                <!-- <h3>{{ productDetails?.price | currency:'AED' }}</h3> -->
+                <p class="offer-price" *ngIf="productDetails?.offer_price != null">{{ productDetails?.price | currency:'AED' }}</p>
+              </ion-label>
+            </ion-col>
+          </ion-row>
+        </section>
 
- 
-    
-    </section>
-      
+        <section class="ion-padding-horizontal details">
+          <ion-text color="dark">
+            <p><b>Free Shipping</b> on orders above AED 100</p>
+          </ion-text>
+        </section>
 
-    <section class="ion-padding-horizontal details">
-      <ion-text color="dark">
-        <p><b>Free Shipping</b> on orders above AED 100</p>
-      </ion-text>
-     
-    </section>  
-    
-
-    
-
-    <!-- <section class="ion-padding-horizontal details">
+        <!-- <section class="ion-padding-horizontal details">
       <ion-row class="quantity">
         <ion-col size="3">
           <p><b>Quantitiy</b>:</p>
@@ -127,33 +115,26 @@
         
     </section> -->
 
-    
-      
-      <!-- <ion-label>Quantity</ion-label>
+        <!-- <ion-label>Quantity</ion-label>
       <ion-select value="notifications" interface="action-sheet">
         <ion-select-option value="1">1</ion-select-option>
         <ion-select-option value="2">2</ion-select-option>
         <ion-select-option value="3">3</ion-select-option>
         <ion-select-option value="4">4</ion-select-option>
       </ion-select> -->
-  
-    <ion-button
-    (click)="authencationservice.isAuthenticated() ? onSubmit(): checkloginGuard.canActivate()"
-    size="medium"
-    expand="block"
-    color="dark"
-    shape="round"
-  >
-    ADD TO CART
-  </ion-button>
-    
-</ion-col>
 
- <!-- colum 3 end -->
+        <ion-button
+          (click)="authencationservice.isAuthenticated() ? onSubmit(): checkloginGuard.canActivate()"
+          size="medium"
+          expand="block"
+          color="dark"
+          shape="round"
+        >
+          ADD TO CART
+        </ion-button>
+      </ion-col>
 
-     
-   
-
+      <!-- colum 3 end -->
     </ion-row>
   </ion-grid>
 
@@ -170,16 +151,19 @@
             </ion-button>
           </ion-item>
           <ion-slides [options]="recommendedSlides" class="recommended">
-            <ion-slide *ngFor="let item of categories; let i=index">
-              <ion-card
-                [ngStyle]="{'background-image': 'url( https://images.pexels.com/photos/1536619/pexels-photo-1536619.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260 )'}"
-              >
+            <ion-slide *ngFor="let item of data?.category_products; let i=index">
+              <ion-card>
+                <img src="{{s3url+item.images[0]?.path}}" alt="" />
+                <ion-card-content>
+                  <p>{{item.name}}</p>
+                </ion-card-content>
               </ion-card>
             </ion-slide>
           </ion-slides>
         </section>
       </ion-col>
-    
     </ion-row>
   </ion-grid>
-  </ion-content>
+</ion-content>
+
+

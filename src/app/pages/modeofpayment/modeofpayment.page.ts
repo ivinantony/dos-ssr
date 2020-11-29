@@ -1,7 +1,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoadingController, Platform } from '@ionic/angular';
+import { LoadingController, ModalController, Platform } from '@ionic/angular';
 import { OrderService } from 'src/app/services/order/order.service';
 import { PaymentService } from 'src/app/services/payment/payment.service';
 
@@ -20,42 +20,11 @@ export class ModeofpaymentPage implements OnInit {
     currencyIcon: string = '₹';
   paymentOptions:any
   constructor(public router:Router,private paymentservice:PaymentService,private loadingController:LoadingController,
-    private platform:Platform,private orderService:OrderService) 
+    private platform:Platform,private orderService:OrderService,private modalController:ModalController) 
   { 
     this.getData()
 
-    let _this = this;
-    setTimeout(() => {
-      // Render the PayPal button into #paypal-button-container
-      <any>window['paypal'].Buttons({
-
-        // Set up the transaction
-        createOrder: function (data, actions) {
-          return actions.order.create({
-            purchase_units: [{
-              amount: {
-                value: _this.paymentAmount
-              }
-            }]
-          });
-        },
-
-        // Finalize the transaction
-        onApprove: function (data, actions) {
-          return actions.order.capture()
-            .then(function (details) {
-              console.log(details)
-              // Show a success message to the buyer
-              alert('Transaction completed by ' + details.payer.name.given_name + '!');
-            })
-            .catch(err => {
-              console.log(err);
-            })
-        }
-      }).render('#paypal-button-container');
-    }, 500)
   }
-
   ngOnInit() {
   }
 
@@ -72,9 +41,10 @@ export class ModeofpaymentPage implements OnInit {
   {
     if(type == GET_DATA)
     {
-      console.log(data)
+      
     this.paymentOptions = data
-    this.loadingController.dismiss()
+    console.log(this.paymentOptions)
+    // this.loadingController.dismiss()
     }
     else if(type == POST_DATA)
     {
@@ -100,10 +70,14 @@ export class ModeofpaymentPage implements OnInit {
 
   selectPaymentMethod(i)
   {
-    if(i == 2)
-    {
-      this.router.navigate(['paypal'])
+    // if(i == 2)
+    // {
+    //   this.router.navigate(['paypal'])
+    // }
+    let data={
+      modeOfPayment_Id :this.paymentOptions.payment_options[i].id 
     }
+    this.modalController.dismiss(data)
   }
  
 

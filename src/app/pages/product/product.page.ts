@@ -34,6 +34,7 @@ export class ProductPage implements OnInit {
   productDetails:any
   s3url:string
   qty:number=1
+  data:any
   constructor(private platform: Platform, private modalController: ModalController, public authencationservice: AuthenticationService, 
     public checkloginGuard: AuthGuard, private toastController: ToastController, public router: Router, 
     private activatedRoute: ActivatedRoute,private productsDetailsService:ProductDetailsService,private utils:UtilsService,private cartService:CartService) {
@@ -69,6 +70,9 @@ export class ProductPage implements OnInit {
   {
     if(type == GET_DATA)
     {
+      this.data = data
+      console.log(data)
+
       this.productDetails = data.product
       for(let i=0;i<this.productDetails.images.length;i++)
       {

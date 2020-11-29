@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { NavController, LoadingController, ToastController, ModalController } from '@ionic/angular';
+import { NavController, LoadingController, ToastController, ModalController, AlertController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { LoginService } from 'src/app/services/login/login.service';
 import { UsernameValidator } from 'src/app/validators/username';
@@ -18,6 +18,7 @@ export class LoginPage implements OnInit {
   currentUrl: string = null;
   branch_id:number=6
   phone:any
+  data:any
   constructor(private authService: AuthenticationService,
     private navCtrl: NavController,
     private loadingController: LoadingController,
@@ -25,7 +26,8 @@ export class LoginPage implements OnInit {
     private formBuilder: FormBuilder,
     private loginService:LoginService,
     private modalController:ModalController,
-    private router:Router) {
+    private router:Router,
+    public alertController: AlertController) {
     
     this.loginGroup = this.formBuilder.group({
       name: ['', Validators.compose([Validators.required, Validators.minLength(4)])],
@@ -82,7 +84,9 @@ export class LoginPage implements OnInit {
 
   handleResponse(data)
   {
+   this.data = data
     console.log(data)
+    this.presentAlert()
   }
 
   handleError(error)
@@ -104,4 +108,15 @@ export class LoginPage implements OnInit {
   //   return await modal.present();
    
   // }
+
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: ' YOUR OTP IS',
+      message: this.data.otp,
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  }
 }
