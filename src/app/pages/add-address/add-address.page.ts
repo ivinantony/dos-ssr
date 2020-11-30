@@ -5,7 +5,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult } from '@ionic-native/native-geocoder/ngx';
-import { LoadingController, ModalController, Platform, ToastController } from '@ionic/angular';
+import { ActionSheetController, LoadingController, ModalController, Platform, ToastController } from '@ionic/angular';
 import { AreaSearchPage } from 'src/app/pages/area-search/area-search.page';
 import { AddressService } from 'src/app/services/address/address.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -49,7 +49,8 @@ export class AddAddressPage implements OnInit {
     private modalController: ModalController,
     private formBuilder: FormBuilder,
     private authservice: AuthenticationService,
-    private addressService: AddressService
+    private addressService: AddressService,
+    private actionSheetController:ActionSheetController
   ) {
     this.getData()
     this.addressForm = this.formBuilder.group({
@@ -175,14 +176,17 @@ export class AddAddressPage implements OnInit {
             switch (error.code) {
               case error.PERMISSION_DENIED:
                 var msg = "User denied the request for Geolocation.";
+                this.showToastDanger(msg)
                 console.log(msg)
                 break;
               case error.POSITION_UNAVAILABLE:
                 var msg = "Location information is unavailable.";
+                this.showToastDanger(msg)
                 console.log(msg)
                 break;
               case error.TIMEOUT:
                 var msg = "The request to get user location timed out.";
+                this.showToastDanger(msg)
                 console.log(msg)
                 break;
             }
@@ -484,7 +488,21 @@ export class AddAddressPage implements OnInit {
     });
     toast.present();
   }
+  async showToastDanger(message) {
+    let toast = await this.toastController.create({
+      message: message,
+      duration: 2500,
+      position: "top",
+      color: "danger",
+    });
+    toast.present();
+  }
+
+
+ 
+
 }
+
 
 
 
