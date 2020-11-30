@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>orders</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-text-center whenEmpty" [ngClass]="wishlist?.length == 0 ? 'active': 'inactive'" alt="">
+    <img src="../../../assets/icon/orders.png">
+    <p>No orders yet.</p>
+    <ion-button (click)="onClick()" fill="outline" shape="round">
+      <ion-icon slot="start" name="add"></ion-icon>
+      Continue Shopping
+    </ion-button>
+  </div>
+
+
+
+<div class="wrapper">
+<ion-item *ngFor="let item of wishlist; let i=index">
+  <ion-thumbnail slot="start">
+    <img src="{{ item?.images[0].path }}">
+  </ion-thumbnail>
+  <ion-label>
+    <h3>{{ item.name }} {{ item.category }} {{ item.subcategory }}</h3>
+    <p></p>
+    <p>Rs. {{ item.price }}.</p>
+  </ion-label>
+  <ion-col size="3" class="btns">
+
+      <ion-icon name="cart-outline" (click)="moveToBag(i)" class="cart"></ion-icon>
+
+
+    <ion-icon name="close-outline" (click)="remove(i)" class="close"></ion-icon>
+
+
+  </ion-col>
+
+</ion-item>
+</div>
+
+</ion-content>
+
+
+<!-- <div class="wrapper">
+  <ion-row size="12" *ngFor="let item of wishlist; let i=index" class="sec">
+    <ion-col size="3">
+      <img src="{{ item.src }}" alt="">
+    </ion-col>
+    <ion-col size="8">
+      <h3>{{ item.brand }}</h3>
+      <p>{{ item.categories }}</p>
+      <h4>{{ item.price }}</h4>
+    </ion-col>
+    <ion-col size="1">
+        <ion-icon name="close-outline" (click)="remove(i)"></ion-icon>
+    </ion-col>
+    <ion-row size="12" class="ion-align-items-center btm_row" (click)="moveToBag(i)">
+        <P class="ion-text-center">MOVE TO BAG</P>
+    </ion-row>
+  </ion-row>
+</div> -->

@@ -84,4 +84,8 @@ export class ProfilePage implements OnInit {
   {
     this.router.navigate(['my-addresses'])
   }
+  goToOrders()
+  {
+    this.router.navigate(['orders'])
+  }
 }

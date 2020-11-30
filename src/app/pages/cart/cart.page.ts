@@ -10,6 +10,7 @@ import { AddAddressPage } from '../add-address/add-address.page';
 import { AddressPage } from '../address/address.page';
 import { CouponPage } from '../coupon/coupon.page';
 import { ModeofpaymentPage } from '../modeofpayment/modeofpayment.page';
+import { PayPal, PayPalPayment, PayPalConfiguration } from '@ionic-native/paypal/ngx';
 declare var RazorpayCheckout: any;
 declare var Razorpay: any
 const GET_CART=200;
@@ -45,7 +46,8 @@ export class CartPage implements OnInit {
      private addressService:AddressService,
      private checkoutService:CheckoutService,
      private orderService:OrderService,
-     private router:Router  ) 
+     private router:Router,
+     private payPal: PayPal) 
      {
        this.getData()
        this.getAddress()
@@ -197,6 +199,53 @@ export class CartPage implements OnInit {
     {
      if(this.payment_id == 4) 
      {
+      if (this.platform.is('cordova')) 
+      {
+        this.payPal.init({
+          PayPalEnvironmentProduction: 'YOUR_PRODUCTION_CLIENT_ID',
+          PayPalEnvironmentSandbox: 'AdQ56AEl3TVRxp-oPoMtdptdh-KIbMNCj5TBfv5gJxhQ7JVJJJTWb5T8digw3jpjyLhsJ_WpkXRGZs1G'
+        }).then(() => {
+          // Environments: PayPalEnvironmentNoNetwork, PayPalEnvironmentSandbox, PayPalEnvironmentProduction
+          this.payPal.prepareToRender('PayPalEnvironmentSandbox', new PayPalConfiguration({
+            // Only needed if you get an "Internal Service Error" after PayPal login!
+            //payPalShippingAddressOption: 2 // PayPalShippingAddressOptionPayPal
+          })).then(() => {
+            let payment = new PayPalPayment('3.33', 'INR', 'Description', 'sale');
+            this.payPal.renderSinglePaymentUI(payment).then((paymentDetails) => {
+              console.log(paymentDetails)
+              // Successfully paid
+        
+              // Example sandbox response
+              //
+              // {
+              //   "client": {
+              //     "environment": "sandbox",
+              //     "product_name": "PayPal iOS SDK",
+              //     "paypal_sdk_version": "2.16.0",
+              //     "platform": "iOS"
+              //   },
+              //   "response_type": "payment",
+              //   "response": {
+              //     "id": "PAY-1AB23456CD789012EF34GHIJ",
+              //     "state": "approved",
+              //     "create_time": "2016-10-03T13:33:33Z",
+              //     "intent": "sale"
+              //   }
+              // }
+            }, (error) => {
+              console.log(error)
+              
+              // Error or render dialog closed without being successful
+            });
+          }, (error) => {
+            console.log(error)
+            // Error in configuration
+          });
+        }, (error) => {
+          console.log(error)
+          // Error in initialization, maybe PayPal isn't supported or something else
+        });
+      }
       this.router.navigate(['paypal'])
      }
     }

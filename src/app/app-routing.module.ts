@@ -102,6 +102,10 @@ const routes: Routes = [
   {
     path: 'paypal',
     loadChildren: () => import('./pages/paypal/paypal.module').then( m => m.PaypalPageModule)
+  },
+  {
+    path: 'orders',
+    loadChildren: () => import('./pages/orders/orders.module').then( m => m.OrdersPageModule)
   }
 
 

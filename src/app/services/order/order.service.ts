@@ -21,4 +21,10 @@ export class OrderService {
      return this.httpclient.post(
       this.url + "capture-order",data,{ headers }).pipe(map(res=>{ return res}));
    }
+   public getOrderDetails(client_id:any)
+   {
+     const headers = this.headerservice.getHttpHeaders()
+     return this.httpclient.get(
+      this.url + "orders?client_id="+client_id,{ headers }).pipe(map(res=>{ return res}));
+   }
 }
