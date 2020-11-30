@@ -263,8 +263,8 @@ export class AddAddressPage implements OnInit {
           address = address.slice(0, -2);
           this.addressForm.controls['address'].setValue(address);
           
-          this.selectedAddress = address
-          console.log(this.selectedAddress,"hello")
+          // this.selectedAddress = address
+          // console.log(this.selectedAddress,"hello")
           
         })
         .catch((error: any) => {
