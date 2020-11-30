@@ -106,6 +106,14 @@ const routes: Routes = [
   {
     path: 'orders',
     loadChildren: () => import('./pages/orders/orders.module').then( m => m.OrdersPageModule)
+  },
+  {
+    path: 'order-details',
+    loadChildren: () => import('./pages/order-details/order-details.module').then( m => m.OrderDetailsPageModule)
+  },
+  {
+    path: 'cancelorder',
+    loadChildren: () => import('./pages/cancelorder/cancelorder.module').then( m => m.CancelorderPageModule)
   }
 
 

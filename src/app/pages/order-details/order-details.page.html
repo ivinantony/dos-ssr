@@ -1,0 +1,80 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>ORDER DETAILS</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="orders" text=""></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+
+
+
+<div class="wrapper">
+  <div>
+    <div class="ion-text-center boxImg">
+      <img src="../../../assets/imgs/box.svg">
+    </div>
+    <div class="ion-text-center">
+        <p>Order Id : {{data?.order.unique_id}}</p>
+        <p>Payment Type : {{data?.order.name}}</p>
+        <p>Order Date : {{data?.order.order_date}}</p>
+        <p>Total Amount Paid : {{data?.order.payable_amount}}</p>
+    </div>
+    
+  </div>
+ 
+<!-- 
+<ion-card *ngFor="let item of data?.order_products; let i=index">
+  <ion-thumbnail >
+    <img src="../../../assets/imgs/part.jpg">
+  </ion-thumbnail>
+  <ion-label>
+    <h3>{{ item.product_name }}  </h3>
+    <p>{{ item.order_date }}</p>
+    <h3 class="price">{{ item.product_name }} </h3>
+     <p>Rs. {{ item.payable_amount }}.</p>
+  </ion-label>
+</ion-card> -->
+
+
+<ion-card class="card" *ngFor="let item of data?.order_products; let i=index" (click)="navigateToProduct(i)">
+  <ion-col size="3">
+    <img src="../../../assets/imgs/part.jpg">
+   </ion-col>
+   <ion-col size="6" class="name">
+     <h5>{{ item.product_name }} </h5>
+     <h6>{{ item.product_offer_price | currency:'AED ' }}</h6>
+      <h6 *ngIf="item.product_offer_price == null">{{ item.product_price | currency:'AED  ' }}</h6>
+      
+   </ion-col>
+   <ion-col size="6">
+    <h5>Count: {{ item.count }} </h5>
+   </ion-col>
+   <!-- <ion-col size="2"  class="ion-text-center settings" >
+    
+    <ion-icon name="chevron-forward-outline"></ion-icon>
+   </ion-col> -->
+ </ion-card>
+
+</div>
+
+</ion-content>
+<ion-footer>
+  
+  <ion-toolbar color="danger">
+    <ion-button
+      class="btn"
+      color="light"
+      id="btn"
+      expand="block"
+      fill="clear"
+      shape="round"
+      (click)="cancelOrder()"
+    >
+      CANCEL ORDER
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

@@ -1,14 +1,14 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>orders</ion-title>
+    <ion-title>ORDERS</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="profile"></ion-back-button>
+      <ion-back-button defaultHref="profile" text=""></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div class="ion-text-center whenEmpty" [ngClass]="wishlist?.length == 0 ? 'active': 'inactive'" alt="">
+  <div class="ion-text-center whenEmpty" *ngIf="data?.orders.length == 0 " alt="">
     <img src="../../../assets/icon/orders.png">
     <p>No orders yet.</p>
     <ion-button (click)="continueShopping()" fill="outline" shape="round">
@@ -20,24 +20,20 @@
 
 
 <div class="wrapper">
-<ion-item *ngFor="let item of wishlist; let i=index">
+<ion-item *ngFor="let item of data?.orders; let i=index">
   <ion-thumbnail slot="start">
-    <img src="{{ item?.images[0].path }}">
+    <img src="../../../assets/imgs/delivery-box.svg">
   </ion-thumbnail>
   <ion-label>
-    <h3>{{ item.name }} {{ item.category }} {{ item.subcategory }}</h3>
-    <p></p>
-    <p>Rs. {{ item.price }}.</p>
+    <h3>{{ item.status }}  </h3>
+    <p>{{ item.order_date }}</p>
+    <p>Rs. {{ item.payable_amount }}.</p>
   </ion-label>
-  <ion-col size="3" class="btns">
-
-      <ion-icon name="cart-outline" (click)="moveToBag(i)" class="cart"></ion-icon>
-
-
-    <ion-icon name="close-outline" (click)="remove(i)" class="close"></ion-icon>
-
-
-  </ion-col>
+  
+    <ion-button (click)="details(i)" expand="block" fill="outline" shape="round" class="btn">
+      DETAILS
+    </ion-button>
+ 
 
 </ion-item>
 </div>

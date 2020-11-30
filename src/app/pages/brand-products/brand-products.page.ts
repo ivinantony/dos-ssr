@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { ActionSheetController, Platform } from "@ionic/angular";
 import { BrandProductService } from "src/app/services/brandProducts/brand-product.service";
 import { UtilsService } from "src/app/services/utils.service";
@@ -47,7 +47,8 @@ export class BrandProductsPage implements OnInit {
     private platform: Platform,
     private utils: UtilsService,
     private activatedRoute: ActivatedRoute,
-    private actionSheetController:ActionSheetController
+    private actionSheetController:ActionSheetController,
+    private router:Router
   ) {
     this.page_count = 1;
     this.brand_id = activatedRoute.snapshot.params.brand_id;
@@ -112,7 +113,12 @@ export class BrandProductsPage implements OnInit {
     }
   }
 
-  navigateToProduct(index) {}
+  navigateToProduct(index) 
+  {
+    let id=this.products[index].id
+    let catId= this.products[index].category_id
+    this.router.navigate(['product',{id,catId}])
+  }
 
   openSort() {
     this.presentActionSheet();

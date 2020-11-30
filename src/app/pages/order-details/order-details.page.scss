@@ -1,23 +1,40 @@
-.whenEmpty{
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    p{
-        color: #6CB4EE;
+.boxImg{
+    padding-top: 20px;
+    img{
+        width: 60px;
+        height: 60px;
+    }
+   
+}
+
+.card{
+    --backgroud:#eef3fa;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-left:15px;
+    margin-right: 15px;
+    img{
+      padding-left: 4px;
+    }
+ 
+    h6{
+      font-size: 1rem;
+    }
+    .name{
+        --backgroud:#eef3fa;
+    }
+    .settings{
+        --backgroud:#eef3fa;
     }
   }
 
-  .btn{
-      height: 32px;
-    width: 74px;
-  }
-
-.wrapper{
-    margin-top: 50px;
+.btn{
+    letter-spacing: 1.5px;
 }
-  @media only screen and (max-width: 321px){}
+
+@media only screen and (max-width: 321px){}
   @media only screen and (min-width: 576px)
   {
       .wrapper{

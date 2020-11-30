@@ -30,6 +30,7 @@ export class OrdersPage implements OnInit {
   {
     if(type == GET_DATA)
     {
+      this.data = data
       console.log(data)
     }
     
@@ -42,5 +43,10 @@ export class OrdersPage implements OnInit {
   continueShopping()
   {
     this.router.navigate(['home'])
+  }
+  details(index:number)
+  {
+    let order_id = this.data.orders[index].id
+    this.router.navigate(['order-details',{order_id}])
   }
 }

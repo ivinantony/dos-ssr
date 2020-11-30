@@ -71,6 +71,7 @@ export class ProductsPage implements OnInit {
     {
       console.log(data)
     this.products = data.products
+    this.page_limit = data.page_count;
     console.log(this.products)
     for(let i=0;i<this.products.length;i++)
     {

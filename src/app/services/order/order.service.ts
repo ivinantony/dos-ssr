@@ -27,4 +27,10 @@ export class OrderService {
      return this.httpclient.get(
       this.url + "orders?client_id="+client_id,{ headers }).pipe(map(res=>{ return res}));
    }
+   public getParticularOrderDetails(order_id:any)
+   {
+     const headers = this.headerservice.getHttpHeaders()
+     return this.httpclient.get(
+      this.url + "order-details?id="+order_id,{ headers }).pipe(map(res=>{ return res}));
+   }
 }

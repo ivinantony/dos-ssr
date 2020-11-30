@@ -1,0 +1,22 @@
+<ion-header mode="ios" >
+  <ion-toolbar color="danger">
+ 
+    <ion-title>Order Cancel</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="ion-padding">
+  
+  <ion-item>
+    <ion-textarea placeholder="Enter more information here..."></ion-textarea>
+  </ion-item>
+    <ion-item class="ion-margin" lines="none">
+      <ion-textarea autoGrow="true" type="text" formControlName="reason">
+      </ion-textarea>
+    </ion-item>
+    <div text-center>
+      <ion-button shape="round" (click)="cancel()">Cancel </ion-button>
+      <ion-button shape="round" (click)="orderCancel()">Submit </ion-button>
+    </div>
+  
+</ion-content>

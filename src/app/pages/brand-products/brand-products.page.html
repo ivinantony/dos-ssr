@@ -4,7 +4,7 @@
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
     <ion-title>{{brand_name}}</ion-title>
-    <ion-button  slot="end" fill="clear" shape="round" (click)="openSort()" color="dark">
+    <ion-button  slot="end" fill="clear" shape="round" (click)="openSort()" color="dark" class="ion-hide-md-down">
       <ion-icon name="funnel-outline"></ion-icon>
       SORT
     </ion-button>
@@ -60,7 +60,7 @@
               (click)="navigateToProduct(i)"
               class="prod"
             >
-              <div style=" position: relative; overflow: hidden">
+              <div style=" position: relative; overflow: hidden" class="ion-text-center">
                 <!-- <picture>
                   <source
                     media="(min-width:650px)"
