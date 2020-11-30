@@ -242,6 +242,8 @@ export class AddAddressPage implements OnInit {
       };
       this.nativeGeocoder.reverseGeocode(latitude, longitude, options)
         .then((result: NativeGeocoderResult[]) => {
+          console.log(result,"mobile")
+          
           this.addressForm.controls['address'].setValue(null);
           let responseAddress = [];
           for (let [key, value] of Object.entries(result[0])) {
@@ -256,6 +258,7 @@ export class AddAddressPage implements OnInit {
           }
           address = address.slice(0, -2);
           this.addressForm.controls['address'].setValue(address);
+          
           this.selectedAddress = address
           console.log(this.selectedAddress,"hello")
           

@@ -38,4 +38,9 @@ export class OrdersPage implements OnInit {
   {
     console.log(error)
   }
+
+  continueShopping()
+  {
+    this.router.navigate(['home'])
+  }
 }
