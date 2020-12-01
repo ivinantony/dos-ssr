@@ -79,9 +79,15 @@ export class ModeofpaymentPage implements OnInit {
     }
     this.modalController.dismiss(data)
   }
- 
+  
+  close()
+  {
+    this.modalController.dismiss()
+  }
 
 }
+
+
 
 
 // let orderData={

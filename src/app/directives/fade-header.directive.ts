@@ -24,7 +24,7 @@ export class FadeHeaderDirective {
     const hexDist = scrollTop.toString(16)
     this.domCtrl.write(() => {
       // this.toolbar.style.setProperty('--background', `#36b448${hexDist}`)
-      this.toolbar.style.setProperty('--background', `linear-gradient(45deg, #0083b0${hexDist} , #00b4db${hexDist}`)
+      // this.toolbar.style.setProperty('--background', `linear-gradient(45deg, #0083b0${hexDist} , #00b4db${hexDist}`)
     })
   }
 }

@@ -111,7 +111,8 @@ export class CartPage implements OnInit {
       component: ModeofpaymentPage,
       swipeToClose: true,
       presentingElement: this.routerOutlet.nativeEl,
-      cssClass: 'paymentOptions'
+      cssClass: 'paymentOptions',
+      backdropDismiss:true
     });
     modal.onDidDismiss().then((data) => {
      
@@ -246,7 +247,10 @@ export class CartPage implements OnInit {
           // Error in initialization, maybe PayPal isn't supported or something else
         });
       }
-      this.router.navigate(['paypal'])
+      else{
+        this.router.navigate(['paypal'])
+      }
+      
      }
     }
 

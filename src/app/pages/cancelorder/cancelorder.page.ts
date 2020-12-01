@@ -13,7 +13,7 @@ export class CancelorderPage implements OnInit {
   ngOnInit() {
   }
 
-  cancel()
+  close()
   {
     this.modalController.dismiss()
   }

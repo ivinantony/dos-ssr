@@ -13,18 +13,24 @@
 </ion-header> -->
 
 <ion-content>
-  <div class="ion-text-center">
-    <!-- <img src="../../../assets/images/successful_purchase.svg" alt=""> -->
+  <div class="ion-text-right">
+    <ion-button (click)="close()"  fill="clear" shape="round" >
+      <ion-icon name="close-outline"></ion-icon>
+    </ion-button>
+  </div>
+  
+  
+  
+  <div class="content">
+  <div class="ion-text-center image">
+    <img src="../../../assets/imgs/payment-method.svg" alt="">
   </div>
   <div class="wrapper">
-
-
-    <ion-card class="card">
       <h2>Please select a mode of payment.</h2>
 
       <ion-list>
   
-        <div class="ion-activatable ripple-parent" *ngFor="let item of paymentOptions?.payment_options; let i=index">
+        <div class="ion-activatable ripple-parent ripples" *ngFor="let item of paymentOptions?.payment_options; let i=index">
           
         <ion-item detail class="item" lines="none" (click)="selectPaymentMethod(i)">
           
@@ -50,10 +56,11 @@
         </ion-item> -->
       
       </ion-list>
-    </ion-card>
+    
   </div>
-
+</div>
 
 
 
 </ion-content>
+

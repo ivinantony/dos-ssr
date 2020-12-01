@@ -12,19 +12,19 @@ ion-header{
 ion-title{
         h1{
           
-            font-size: 22px;
+            font-size: 18px;
             padding-bottom: 10px;
         }  
 }
 
 
 ion-content{
-    --background:#fcfeff;
-   
+    --background:#f5f5f5;
+ 
     }
 img{
     padding-top: 20px;
-    width: 60%; 
+    width: 20%; 
 }
 
 .icon{
@@ -32,15 +32,15 @@ img{
 }
 
 
-.card{
+.wrapper{
     padding: 10px;
     
     border-radius: 25px;
-    min-height: 340px;
+    // min-height: 340px;
     
     h2{
         font-weight: 700;
-        font-size: 1.5rem;
+        font-size: 1.1rem;
         padding: 20px;
     }
     .item{
@@ -56,14 +56,32 @@ img{
     overflow: hidden;
     color: #DB7093;
 }
-
+.content{
+   
+        width: 95%;
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        ion-list{
+            .ripples{
+                background:#f5f5f5;
+            }
+            --background:#f5f5f5;
+            ion-item{
+                --background:#f5f5f5;
+            }
+        }
+  
+}
 @media only screen and (max-width: 320px){
 
 }
 @media only screen and (min-width: 576px){
     img{
         padding-top: 20px;
-        width: 45%; 
+        width: 20%; 
     }
 .wrapper{
     width: 95%;
@@ -74,7 +92,7 @@ img{
 @media only screen and (min-width: 724px){
     img{
         padding-top: 20px;
-        width: 40%; 
+        width: 20%; 
     }
     .wrapper{
         width: 80%;
@@ -85,7 +103,7 @@ img{
 @media only screen and (min-width: 992px){
     img{
         padding-top: 20px;
-        width: 30%; 
+        width: 20%; 
     }
     .wrapper{
         width: 70%;
