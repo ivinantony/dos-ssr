@@ -21,4 +21,10 @@ export class PaymentService {
      return this.httpclient.get(
       this.url + "payment-option",{ headers }).pipe(map(res=>{return res}));
    }
+   public capturePayment(data)
+   {
+     const headers = this.headerservice.getHttpHeaders()
+     return this.httpclient.post(
+      this.url + "capture-payment",data,{ headers }).pipe(map(res=>{return res}));
+   }
 }

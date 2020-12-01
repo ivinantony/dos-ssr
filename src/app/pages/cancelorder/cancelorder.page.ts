@@ -17,7 +17,7 @@ export class CancelorderPage implements OnInit {
   {
     this.modalController.dismiss()
   }
-  orderCancel()
+  cancelOrder()
   {
     this.modalController.dismiss()
   }
