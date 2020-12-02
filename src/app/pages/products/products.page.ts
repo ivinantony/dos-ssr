@@ -134,7 +134,9 @@ export class ProductsPage implements OnInit {
       event.target.disabled = true;
     }
     else{
+      console.log(this.page_count,"before")
       this.page_count++
+      console.log(this.page_count,"after")
       this.getData()
       console.log("hello")
     }

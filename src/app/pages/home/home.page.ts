@@ -429,4 +429,9 @@ manufactures = MANUFACTURES
     let brand_name = this.brands[index].brand_name
     this.router.navigate(['brand-products',{brand_id,brand_name}])
   }
+
+  viewAll()
+  {
+    this.router.navigate(['categories'])
+  }
 }

@@ -2,7 +2,7 @@
   height: 180px;
   width: 350px;
   background-color: #00b4dbff;
-  background: linear-gradient(90deg, #0083b0ff, #00b4dbff);;
+  // background: linear-gradient(90deg, #0083b0ff, #00b4dbff);;
   box-shadow: 0px 1px 10px rgba(0, 180, 219, 0.5);  
   transform: rotate(-15deg);
   border-radius: 10px 10px 10px 50px;
@@ -16,7 +16,14 @@
   left: 15px;
   display: flex;
   align-items: center;
+
+    img{
+      max-width: 73%;
+    }
   
+}
+.ftrtlbr{
+  --background: rgb(19, 76, 89);
 }
 
 ion-split-pane {
@@ -155,6 +162,28 @@ ion-toolbar {
   --border-width: 0px !important;
   display: block !important;
 }
+
+.links{
+  ion-label{
+    font-size: 1.2rem;
+  }
+  img{
+    width: 32px;
+    height: 32px;
+    fill: #444;
+    padding-right: 10px;
+  }
+}
+
+.footer{
+  img{
+    width: 48px;
+    height: 48px;
+    padding-right: 10px;
+  }
+}
+
+
 @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) and (-webkit-min-device-pixel-ratio: 1) {
   .ion-toolbar {
     --min-height: 80px !important;

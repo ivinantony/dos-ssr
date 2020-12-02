@@ -114,6 +114,10 @@ const routes: Routes = [
   {
     path: 'cancelorder',
     loadChildren: () => import('./pages/cancelorder/cancelorder.module').then( m => m.CancelorderPageModule)
+  },
+  {
+    path: 'categories',
+    loadChildren: () => import('./pages/categories/categories.module').then( m => m.CategoriesPageModule)
   }
 
 
