@@ -40,6 +40,7 @@
 }
 
 .text{
+  margin-bottom: 60px;
   h1{
     font-size: 16px;
     color: #777;
@@ -77,4 +78,19 @@
     font-size: 16px;
     color: #444;
   }
+}
+
+
+.btn{
+  z-index: 1;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  width: 180px;
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  .icon{
+    padding-right: 5px;
+  }
+  
 }

@@ -57,9 +57,10 @@
               size-lg="3"
               size-xl="3"
               *ngFor="let item of products; let i=index"
-              (click)="navigateToProduct(i)"
+              
               class="prod"
             >
+              <div class="select" (click)="navigateToProduct(i)">
               <div style=" position: relative; overflow: hidden" class="ion-text-center">
                 <!-- <picture>
                   <source
@@ -93,9 +94,12 @@
                     </ion-label>
                     <!-- <p class="price">{{ 225 | currency:'AED' }}</p>
                     <p class="offer-price">{{ 225 | currency:'AED' }}</p> -->
+                    
                   </ion-label>
+                  
                 </ion-item>
               </ion-list>
+            </div>
               <!-- <ion-card
                 class="product-img ion-no-margin"
                 [ngStyle]="{'background-image': 'url('+ item?.images[0].url +' )'}"
@@ -110,6 +114,14 @@
                   </ion-label>
                 </ion-item>
               </ion-list> -->
+              <ion-button (click)="test()" expand="full-width" fill="outline" shape="round" color="dark" class="btn" *ngIf="item.cart_count == 0">
+                <ion-icon name="add-outline" class="icon"></ion-icon> ADD TO CART
+              </ion-button>
+              <ion-chip>
+                <ion-icon name="pin" color="primary"></ion-icon>
+                <ion-label>Icon Chip</ion-label>
+                <ion-icon name="close"></ion-icon>
+              </ion-chip>
             </ion-col>
             
             <ion-infinite-scroll (ionInfinite)="loadMoreContent($event)">
