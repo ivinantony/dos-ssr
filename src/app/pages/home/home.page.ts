@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Badge } from '@ionic-native/badge/ngx';
@@ -9,6 +9,7 @@ import { Platform } from '@ionic/angular';
 import { ProductSearchService } from 'src/app/services/product-search.service';
 import { HomeService } from 'src/app/services/home/home.service';
 import { UtilsService } from 'src/app/services/utils.service';
+import { IonSlides} from '@ionic/angular';
 
 
 export const PRODUCTS = [
@@ -159,6 +160,12 @@ export const MANUFACTURES: Array<any> = [
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+
+  @ViewChild('mySlider')  slides: IonSlides;
+  swipeNext(){
+    this.slides.slideNext();
+  }
+  
   bannerSlideOpts1 = {
     slidesPerView: 1,
     initialSlide: 0,

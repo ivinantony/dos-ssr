@@ -2,9 +2,12 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ActionSheetController, Platform } from "@ionic/angular";
 import { BrandProductService } from "src/app/services/brandProducts/brand-product.service";
+import { CartService } from 'src/app/services/cart/cart.service';
 import { UtilsService } from "src/app/services/utils.service";
 import { BANNERS } from "../home/home.page";
 const GET_DATA = 200;
+const POST_DATA = 210;
+const DEL_DATA = 220;
 @Component({
   selector: "app-brand-products",
   templateUrl: "./brand-products.page.html",
@@ -42,26 +45,34 @@ export class BrandProductsPage implements OnInit {
   page_limit: number;
   page_count: number;
   current_page: number;
+  client_id:any
   constructor(
     private brandProductService: BrandProductService,
     private platform: Platform,
     private utils: UtilsService,
     private activatedRoute: ActivatedRoute,
     private actionSheetController:ActionSheetController,
-    private router:Router
+    private router:Router,
+    private cartService:CartService
   ) {
+    this.client_id = localStorage.getItem('client_id')
     this.page_count = 1;
     this.brand_id = activatedRoute.snapshot.params.brand_id;
     this.s3url = utils.getS3url();
     this.checkWidth();
     this.getData();
   }
+  ionViewWillEnter()
+  {
+    this.getData()
+  }
 
   ngOnInit() {}
 
   getData() {
+   
     this.brandProductService
-      .getBrandProducts(this.brand_id, this.page_count)
+      .getBrandProducts(this.brand_id, this.page_count,this.client_id)
       .subscribe(
         (data) => this.handleResponse(data, GET_DATA),
         (error) => this.handleError(error)
@@ -69,7 +80,7 @@ export class BrandProductsPage implements OnInit {
   }
 
   handleResponse(data, type) {
-    console.log(data);
+    
     if (type == GET_DATA) {
       this.page_limit = data.page_count;
 
@@ -81,6 +92,7 @@ export class BrandProductsPage implements OnInit {
           this.s3url + this.products[i].images[0].path;
       }
     }
+    console.log(data);
   }
   handleError(error) {
     console.log(error);
@@ -120,6 +132,7 @@ export class BrandProductsPage implements OnInit {
     this.router.navigate(['product',{id,catId}])
   }
 
+
   openSort() {
     this.presentActionSheet();
   }
@@ -133,7 +146,7 @@ export class BrandProductsPage implements OnInit {
         {
           text: "Price - high to low",
           handler: () => {
-        this.brandProductService.getBrandProducts(this.brand_id, this.page_count).subscribe(
+        this.brandProductService.getBrandProducts(this.brand_id, this.page_count,this.client_id).subscribe(
         (data) => this.handleResponse(data, GET_DATA),
         (error) => this.handleError(error)
         );
@@ -142,7 +155,7 @@ export class BrandProductsPage implements OnInit {
         {
           text: "Price - low to high",
           handler: () => {
-            this.brandProductService.getBrandProducts(this.brand_id, this.page_count).subscribe(
+            this.brandProductService.getBrandProducts(this.brand_id, this.page_count,this.client_id).subscribe(
               (data) => this.handleResponse(data, GET_DATA),
               (error) => this.handleError(error)
               );
@@ -152,4 +165,29 @@ export class BrandProductsPage implements OnInit {
     });
     await actionSheet.present();
   }
+
+
+  addToCart(index:number)
+  {
+    let data={
+      product_id :this.products[index].id,
+      client_id :this.client_id
+       }
+       this.cartService.addToCart(data).subscribe(
+         (data)=>this.handleResponse(data,POST_DATA),
+         (error)=>this.handleError(error)
+       )
+       this.products[index].cart_count++
+      //  this.getData()
+  }
+  removeFromcart(index:number)
+  {
+    this.cartService.removeFromCart(this.client_id,this.products[index].id,).subscribe(
+      (data)=>this.handleResponse(data,DEL_DATA),
+      (error)=>this.handleError(error)
+    )
+    // this.getData()
+    this.products[index].cart_count--
+  }
+  
 }
