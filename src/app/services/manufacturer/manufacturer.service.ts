@@ -9,18 +9,20 @@ import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class OfferService {
+export class ManufacturerService {
   url:string
   constructor(private utils:UtilsService,private httpclient:HttpClient,private headerservice:HeadersService) 
   {
     this.url = utils.getApiPath()
    }
-   public getOfferProducts(client_id:any,page_count:any)
+   public getManufacturers()
    {
      const headers = this.headerservice.getHttpHeaders()
      return this.httpclient.get(
-      this.url + "offer-product?client_id="+client_id+"page_count="+page_count,{ headers }
+      this.url + "brand",
+      { headers }
      ).pipe(map(res=>{
        return res}));
    }
 }
+

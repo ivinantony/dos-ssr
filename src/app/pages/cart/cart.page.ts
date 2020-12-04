@@ -181,6 +181,7 @@ export class CartPage implements OnInit {
       console.log(data)
       this.cart = data.cart
       this.amountDetails = data
+      this.amountDetails.payable_amount = this.amountDetails.payable_amount + this.amountDetails.delivery_charge
       this.cartLength = this.cart.length
       console.log(this.cart,"This is cart")
       for(let i=0;i<this.cart?.length;i++)
@@ -215,7 +216,7 @@ export class CartPage implements OnInit {
             //payPalShippingAddressOption: 2 // PayPalShippingAddressOptionPayPal
               })).then(() => {
               console.log("heyyyyy")
-              let payment = new PayPalPayment('3.33','INR', 'Description', 'sale');
+              let payment = new PayPalPayment(this.amountDetails.payable_amount,'AED', 'Description', 'sale');
               this.payPal.renderSinglePaymentUI(payment).then((paymentDetails) => {
               console.log(paymentDetails);
               // Successfully paid
@@ -251,7 +252,7 @@ export class CartPage implements OnInit {
            // Error in initialization, maybe PayPal isn't supported or something else
             });
         }
-      
+        localStorage.setItem('total_amount',this.amountDetails.payable_amount)
         console.log("cordova not supported")
         this.router.navigate(['paypal'])
      

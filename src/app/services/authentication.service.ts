@@ -28,6 +28,7 @@ export class AuthenticationService {
 
   async logout() {
     await localStorage.removeItem(TOKEN_KEY)
+    await localStorage.removeItem('client_id')
     console.log('token cleared')
   }
 

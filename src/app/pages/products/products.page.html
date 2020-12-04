@@ -1,13 +1,16 @@
 <ion-header>
   <ion-toolbar color="light">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button>
+      <ion-back-button defaultHref="/home" text=""></ion-back-button>
     </ion-buttons>
     <ion-title>{{category_name}}</ion-title>
     <ion-button  slot="end" fill="clear" shape="round" (click)="openSort()" color="dark" class="ion-hide-md-down">
       <ion-icon name="funnel-outline"></ion-icon>
       SORT
     </ion-button>
+    <ion-buttons slot="end"  class="ion-hide-md-up">
+      <ion-icon name="cart-outline"class="ion-padding icon" (click)="router.navigate(['/cart'])"></ion-icon>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -22,7 +25,7 @@
     </ion-slides>
   </section>
 
-  <ion-grid>
+  <!-- <ion-grid>
     <ion-row>
       
       <ion-col size="12" size-sm="12" size-md="12" size-xl="12" size-lg="12">
@@ -39,21 +42,52 @@
               class="prod"
             >
               <div class="ion-text-center" style=" position: relative; overflow: hidden">
-                <!-- <picture>
-                  <source
-                    media="(min-width:650px)"
-                    [srcset]="item?.images[0].path"
-                  />
-                  <source
-                    media="(min-width:465px)"
-                    [srcset]="item?.images[0].path"
-                  />
-                  <img
-                    [src]="item?.images[0].path"
-                    style="width: auto"
-                  />
-                </picture> -->
                 <img [src]="item?.images[0].path" alt="">
+              </div>
+              <ion-list>
+                <ion-item lines="none">
+                  <ion-label class="text">
+                    <h1>{{item.name}}</h1>
+                    <ion-label>
+                      <ion-text color="dark" class="price">
+                        <h2>{{ item.offer_price | currency:'AED' }}</h2>
+                        <h2 *ngIf="item.offer_price == null">{{ item.price | currency:'AED' }}</h2>
+                      </ion-text>
+                      <ion-text color="danger">
+                        <p class="offer-price" *ngIf="item.offer_price != null">{{ item.price | currency:'AED' }}</p>
+                      </ion-text>
+                    </ion-label>                 
+                  </ion-label>
+                </ion-item>
+              </ion-list>
+            </ion-col>
+            <ion-infinite-scroll (ionInfinite)="loadMoreContent($event)">
+              <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+              </ion-infinite-scroll-content>
+            </ion-infinite-scroll>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid> -->
+
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-sm="12" size-md="12" size-xl="12" size-lg="12">
+        <ion-grid fixed>
+          <ion-row class="row">
+            <ion-col
+              size="6"
+              size-sm="6"
+              size-md="6"
+              size-lg="3"
+              size-xl="3"
+              *ngFor="let item of products; let i=index"
+              class="prod" >
+              <div class="select" (click)="navigateToProduct(i)">
+              <div style=" position: relative; overflow: hidden" class="ion-text-center">
+                <img [src]="item.images[0].path" alt="">
               </div>
               <ion-list>
                 <ion-item lines="none">
@@ -70,25 +104,23 @@
                     </ion-label>
                     <!-- <p class="price">{{ 225 | currency:'AED' }}</p>
                     <p class="offer-price">{{ 225 | currency:'AED' }}</p> -->
+                    
                   </ion-label>
+                  
                 </ion-item>
               </ion-list>
-              <!-- <ion-card
-                class="product-img ion-no-margin"
-                [ngStyle]="{'background-image': 'url('+ item?.images[0].url +' )'}"
-              >
-              </ion-card> -->
-              <!-- <ion-list>
-                <ion-item lines="none">
-                  <ion-label>
-                    <p>Alternator 24v</p>
-                    <p class="price">{{ 225 | currency:'AED' }}</p>
-                    <p class="offer-price">{{ 225 | currency:'AED' }}</p>
-                  </ion-label>
-                </ion-item>
-              </ion-list> -->
-              
-            </ion-col>
+            </div>
+             <ion-button (click)="addToCart(i)" expand="full-width" fill="outline" shape="round" color="dark" class="btn" *ngIf="item.cart_count == 0">
+                <ion-icon name="add-outline" class="icon"></ion-icon> ADD TO CART
+              </ion-button>
+            <div class="addbutton" *ngIf="item.cart_count != 0">
+              <ion-icon name="remove-outline" class="icon" (click)="removeFromcart(i)"></ion-icon>
+               {{item.cart_count}}
+               <ion-icon name="add-outline"  class="icon" (click)="addToCart(i)"></ion-icon>
+            </div>
+            </ion-col> 
+            
+            
             <ion-infinite-scroll (ionInfinite)="loadMoreContent($event)">
               <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
               </ion-infinite-scroll-content>
@@ -98,6 +130,7 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
 </ion-content>
 <ion-footer class="ion-hide-md-up">
   <ion-toolbar>

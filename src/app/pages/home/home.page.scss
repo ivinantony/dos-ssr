@@ -78,7 +78,7 @@ ion-toolbar {
       // background-position: center;
       // background-repeat: no-repeat;
       // background-size: cover;
-      height: 50vh;
+      // height: 50vh;
      
       
     }
@@ -164,10 +164,17 @@ ion-toolbar {
     padding: 0;
   }
 }
+
+  // .sliderWrapper{
+  //   width: 90%;
+  //   margin-left: auto;
+  //   margin-right: auto;
+  // }
   
   .top-search {
     padding-bottom: 16px;
     padding-top: 16px;
+    width:90%;
     
     ion-card {
       margin: 16px 0px 16px 16px;
@@ -329,6 +336,7 @@ color: #fff;
 }
 
 .morebtn{
+  opacity: 0.7;
   margin-bottom: 19px;
   margin-top: 15px;
   letter-spacing: 1.5px;
@@ -338,15 +346,51 @@ color: #fff;
 }
 
 .btnslide{
+ background-color: #fff;
+  opacity: .9;  
   z-index: 1;
-  position: absolute;
+  margin: 0;
   right: 0px;
-  bottom: 50%;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
   color: #444;
-  font-size: 36px;
+  font-size: 28px;
+  width: 73px;
 }
+.btnslideleft{
+  background-color: #fff;
+  opacity: .9;
+   z-index: 1;
+   margin: 0;
+   left: 0px;
+   position: absolute;
+   top: 50%;
+   -ms-transform: translateY(-50%);
+   transform: translateY(-50%);
+   color: #444;
+   font-size: 28px;
+   width: 73px;
+ }
 
-  @media only screen and (min-width: 1024px) {
+ .banner{
+   .mob{
+     img{
+      object-fit: cover;
+     }
+   }
+ }
+
+ @media only screen and (max-width: 768px){
+  .btnslide{
+    display: none;
+  }
+  .btnslideleft{
+    display: none;
+  }
+ }
+  @media only screen and (min-width: 475px) {
   .mob{
     display: none;
   }

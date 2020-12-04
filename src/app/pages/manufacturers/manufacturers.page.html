@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>BRANDS</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home" text="" color="dark"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid fixed>
+    <ion-row class="row">
+      <ion-col
+        size="6"
+        size-sm="6"
+        size-md="6"
+        size-lg="3"
+        size-xl="3"
+        *ngFor="let item of data?.brands; let i=index">
+        <ion-card class="ion-no-margin card" (click)="navigateToBrandProducts(i)">
+          <ion-card-content class="ion-text-center">
+            <img
+              style="
+                height: 120px;
+                width: 120px;
+                object-fit: contain;
+                object-position: center;
+              "
+              [src]="s3url + item.path"
+              alt=""
+            />
+          </ion-card-content>
+          <ion-card-header class="ion-text-center">
+            <ion-card-title class="text">{{item.brand_name}}</ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+      
+  </ion-grid>
+</ion-content>

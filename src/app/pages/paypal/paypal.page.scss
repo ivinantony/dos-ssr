@@ -48,7 +48,23 @@ img{
 
     }
 }
-
+.wrapper{
+    min-width: 334px;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    .imgWrapper{
+        h2{
+            padding: 0px;
+        }
+        img{
+            width: 50%;
+            padding-bottom: 15px;
+        }
+    }
+}
 
 .ripple-parent
  {
@@ -57,7 +73,25 @@ img{
     color: #DB7093;
 }
 
+
 @media only screen and (max-width: 320px){
+    .wrapper{
+        min-width: 334px;
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        .imgWrapper{
+            h2{
+                padding: 0px;
+            }
+            img{
+                width: 30%;
+                margin-bottom: 15px;
+            }
+        }
+    }
 
 }
 @media only screen and (min-width: 576px){
@@ -70,6 +104,24 @@ img{
     margin-left: auto;
     margin-right: auto;
 }
+.wrapper{
+    min-width: 334px;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    .imgWrapper{
+        h2{
+            padding: 0px;
+        }
+        img{
+            width: 30%;
+            margin-bottom: 15px;
+        }
+    }
+}
+
 }
 @media only screen and (min-width: 724px){
     img{
@@ -81,6 +133,24 @@ img{
         margin-left: auto;
         margin-right: auto;
     }  
+    .wrapper{
+        min-width: 334px;
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        .imgWrapper{
+            h2{
+                padding: 0px;
+            }
+            img{
+                width: 30%;
+                margin-bottom: 15px;
+            }
+        }
+    }
+
 }
 @media only screen and (min-width: 992px){
     img{
@@ -92,6 +162,24 @@ img{
         margin-left: auto;
         margin-right: auto;
     } 
+    .wrapper{
+        min-width: 334px;
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        .imgWrapper{
+            h2{
+                padding: 0px;
+            }
+            img{
+                width: 30%;
+                margin-bottom: 15px;
+            }
+        }
+    }
+
 }
 @media only screen and (min-width: 1366px){
     img{
@@ -103,5 +191,24 @@ img{
         margin-left: auto;
         margin-right: auto;
     } 
+
+    .wrapper{
+        min-width: 334px;
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        .imgWrapper{
+            h2{
+                padding: 0px;
+            }
+            img{
+                width: 30%;
+                margin-bottom: 15px;
+            }
+        }
+    }
+
 }
 

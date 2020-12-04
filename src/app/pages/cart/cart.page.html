@@ -136,7 +136,25 @@
               {{ amountDetails?.total_amount | currency:'AED  ' }}
             </ion-button>
           </ion-item>
-          <ion-item class="total">
+          <ion-item lines="none"> 
+            <ion-button
+              color="dark"
+              slot="start"
+              expand="block"
+              fill="clear"
+            >
+              Delivery Charges
+            </ion-button>
+            <ion-button
+              color="dark"
+              slot="end"
+              expand="block"
+              fill="clear"
+            >
+              {{ amountDetails?.delivery_charge | currency:'AED  ' }}
+            </ion-button>
+          </ion-item >
+          <ion-item class="total" lines="none">
             <ion-button
               size="small"
               color="dark"

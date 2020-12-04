@@ -1,9 +1,126 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>offer</ion-title>
+    <ion-title>OFFERS</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home" text="" color="dark"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end"  class="ion-hide-md-up">
+      <ion-icon name="cart-outline"class="ion-padding icon" (click)="router.navigate(['/cart'])"></ion-icon>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <section id="banr">
+    <ion-slides class="banner" [options]="bannerSlideOpts1">
+      <ion-slide *ngFor="let item of data?.banner[0].desktop_images; let i=index" class="dsk" >
+        <img [src]="s3url+item?.path" alt="">
+      
+      </ion-slide> 
+
+      <ion-slide *ngFor="let item of data?.banner[0].mobile_images; let i=index" class="mob" >
+      
+      <img [src]="s3url+item?.path" alt="">
+      </ion-slide>     
+    </ion-slides>
+  </section>
+
+  <!-- <ion-grid>
+    <ion-row>
+      
+      <ion-col size="12" size-sm="12" size-md="12" size-xl="12" size-lg="12">
+        <ion-grid fixed>
+          <ion-row class="row">
+            <ion-col
+              size="6"
+              size-sm="6"
+              size-md="6"
+              size-lg="3"
+              size-xl="3"
+              *ngFor="let item of data?.product; let i=index"
+              (click)="navigateToProducts(i)"
+              
+              class="prod"
+            >
+              <div class="ion-text-center" style=" position: relative; overflow: hidden">
+                <img [src]="s3url+item?.images[0].path" alt="">
+              </div>
+              <ion-list>
+                <ion-item class="text" lines="none" >
+                    <h1 >{{item.name}}</h1>
+                </ion-item>
+              </ion-list>
+            </ion-col>
+            <ion-infinite-scroll (ionInfinite)="loadMoreContent($event)">
+              <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+              </ion-infinite-scroll-content>
+            </ion-infinite-scroll>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid> -->
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-sm="12" size-md="12" size-xl="12" size-lg="12">
+        <ion-grid fixed>
+          <ion-row class="row">
+            <ion-col
+              size="6"
+              size-sm="6"
+              size-md="6"
+              size-lg="3"
+              size-xl="3"
+              *ngFor="let item of data?.product; let i=index"
+              class="prod" >
+              <div class="select" (click)="navigateToProduct(i)">
+              <div style=" position: relative; overflow: hidden" class="ion-text-center">
+                <img [src]="s3url+item?.images[0].path" alt="">
+              </div>
+              <ion-list>
+                <ion-item lines="none">
+                  <ion-label class="text">
+                    <h1>{{item.name}}</h1>
+                    <ion-label>
+                      <ion-text color="dark" class="price">
+                        <h2>{{ item.offer_price | currency:'AED' }}</h2>
+                        <h2 *ngIf="item.offer_price == null">{{ item.price | currency:'AED' }}</h2>
+                      </ion-text>
+                      <ion-text color="danger">
+                        <p class="offer-price" *ngIf="item.offer_price != null">{{ item.price | currency:'AED' }}</p>
+                      </ion-text>
+                    </ion-label>
+                    <!-- <p class="price">{{ 225 | currency:'AED' }}</p>
+                    <p class="offer-price">{{ 225 | currency:'AED' }}</p> -->
+                    
+                  </ion-label>
+                  
+                </ion-item>
+              </ion-list>
+            </div>
+             <ion-button (click)="addToCart(i)" expand="full-width" fill="outline" shape="round" color="dark" class="btn" *ngIf="item.cart_count == 0">
+                <ion-icon name="add-outline" class="icon"></ion-icon> ADD TO CART
+              </ion-button>
+            <div class="addbutton" *ngIf="item.cart_count != 0">
+              <ion-icon name="remove-outline" class="icon" (click)="removeFromcart(i)"></ion-icon>
+               {{item.cart_count}}
+               <ion-icon name="add-outline"  class="icon" (click)="addToCart(i)"></ion-icon>
+            </div>
+            </ion-col> 
+            
+            
+            <ion-infinite-scroll (ionInfinite)="loadMoreContent($event)">
+              <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+              </ion-infinite-scroll-content>
+            </ion-infinite-scroll>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+
 
 </ion-content>

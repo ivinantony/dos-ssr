@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { ActionSheetController, Platform } from "@ionic/angular";
+import { ActionSheetController, AlertController, Platform } from "@ionic/angular";
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { BrandProductService } from "src/app/services/brandProducts/brand-product.service";
 import { CartService } from 'src/app/services/cart/cart.service';
 import { UtilsService } from "src/app/services/utils.service";
@@ -53,7 +54,9 @@ export class BrandProductsPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private actionSheetController:ActionSheetController,
     private router:Router,
-    private cartService:CartService
+    private cartService:CartService,
+    private authService:AuthenticationService,
+    private alertController:AlertController
   ) {
     this.client_id = localStorage.getItem('client_id')
     this.page_count = 1;
@@ -166,19 +169,47 @@ export class BrandProductsPage implements OnInit {
     await actionSheet.present();
   }
 
+  async presentLogin() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'You Are Not Logged In',
+      message: 'Log in to continue.',
+      buttons: [
+         {
+          text: 'Login',
+          handler: () => {
+            this.router.navigate(['login'])
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+ 
+
 
   addToCart(index:number)
   {
-    let data={
-      product_id :this.products[index].id,
-      client_id :this.client_id
-       }
-       this.cartService.addToCart(data).subscribe(
-         (data)=>this.handleResponse(data,POST_DATA),
-         (error)=>this.handleError(error)
-       )
-       this.products[index].cart_count++
-      //  this.getData()
+    if(this.authService.isAuthenticated())
+    {
+      let data={
+        product_id :this.products[index].id,
+        client_id :this.client_id
+         }
+         this.cartService.addToCart(data).subscribe(
+           (data)=>this.handleResponse(data,POST_DATA),
+           (error)=>this.handleError(error)
+         )
+         this.products[index].cart_count++
+        //  this.getData()
+    }
+  else{
+  this.presentLogin()
+  }
+   
+   
+    
   }
   removeFromcart(index:number)
   {

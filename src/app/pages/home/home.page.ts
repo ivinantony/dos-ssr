@@ -162,8 +162,18 @@ export const MANUFACTURES: Array<any> = [
 export class HomePage implements OnInit {
 
   @ViewChild('mySlider')  slides: IonSlides;
+  @ViewChild('recommended')  slides1: IonSlides;
   swipeNext(){
     this.slides.slideNext();
+  }
+  swipePrev(){
+    this.slides.slidePrev();
+  }
+  swipeNextRec(){
+    this.slides1.slideNext();
+  }
+  swipePrevRec(){
+    this.slides1.slidePrev();
   }
   
   bannerSlideOpts1 = {
@@ -238,22 +248,36 @@ export class HomePage implements OnInit {
   productSlides = window.matchMedia("(max-width: 320px)").matches ? {
     slidesPerView: 1.5,
     spaceBetween:8,
+    autoplay:true,
+    speed:900,
+    loop:true
     
   } : window.matchMedia("(max-width: 576px)").matches ? {
     slidesPerView:2.2,
     spaceBetween:5,
+    autoplay:true,
+    speed:900,
+    loop:true
 
       //spaceBetween: 2
   } : window.matchMedia(" (max-width: 768px)").matches ? {
     slidesPerView: 4.2,
-    spaceBetween: 8
+    spaceBetween: 8,
+    autoplay:true,
+    speed:900,
+    loop:true
   } : window.matchMedia(" (max-width: 992px)").matches ? {
     slidesPerView: 4,
       spaceBetween: 10,
-      speed: 200,
+      autoplay:true,
+      speed: 900,
+      loop:true
   } : {
         slidesPerView: 5.9,
-        spaceBetween: 10
+        spaceBetween: 10,
+        autoplay:true,
+        speed:900,
+        loop:true
        
       }
 
