@@ -1,9 +1,9 @@
 <ion-header class="ion-no-border">
   <ion-toolbar color="light">
     <ion-buttons slot="start">
-      <ion-back-button color="danger" defaultHref="/home"></ion-back-button>
+      <ion-back-button color="dark" defaultHref="/home" text=""></ion-back-button>
     </ion-buttons>
-    <ion-title>cart</ion-title>
+    <ion-title>CART</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -200,28 +200,31 @@
     </ion-row>
   </ion-grid>
 
-<ion-grid fixed [ngClass]="cartLength > 0 ? 'inactive' : 'active' ">
-  <ion-row>
-    <ion-col size="12" class="ion-text-center">
-      <p>The cart is empty</p>
-    </ion-col>
-  
-  </ion-row>
-</ion-grid>
+
+<div class="ion-text-center whenEmpty" [ngClass]="cartLength > 0 ? 'inactive' : 'active' " alt="">
+  <img src="../../../assets/icon/empty-cart.png">
+  <p>The cart is empty.</p>
+  <ion-button (click)="continueShopping()" fill="outline" shape="round">
+    <ion-icon slot="start" name="add"></ion-icon>
+    Continue Shopping
+  </ion-button>
+</div>
 
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
     <ion-button
-      [disabled]="!selectedAddress || !payment_id"
+      
       slot="end"
       shape="round"
       color="danger"
       (click)="pay()"
     >
       <ion-icon slot="end" name="chevron-forward"></ion-icon>
-      PAY
+      CONTINUE
     </ion-button>
   </ion-toolbar>
 </ion-footer>
+
+<!-- [disabled]="!selectedAddress || !payment_id" -->

@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Badge } from '@ionic-native/badge/ngx';
 import { debounceTime } from "rxjs/operators";
-import { Platform } from '@ionic/angular';
+import { LoadingController, Platform } from '@ionic/angular';
 
 
 import { ProductSearchService } from 'src/app/services/product-search.service';
@@ -303,13 +303,15 @@ manufactures = MANUFACTURES
   banner_image: any;
   constructor(public router: Router, private platform: Platform,
     private searchService: ProductSearchService,private homeService:HomeService,
-    private badge: Badge,private utils:UtilsService) {
+    private badge: Badge,private utils:UtilsService,private loadingController:LoadingController) {
+      
       this.s3url = utils.getS3url()
     this.badge.set(10);
     // this.badge.increase(1);
     // this.badge.clear();
     this.searchTerm = new FormControl();
     this.checkWidth()
+    // this.presentLoading()
     this.getData()
   }
 
@@ -391,13 +393,16 @@ manufactures = MANUFACTURES
 
   getData()
   {
+    
     this.homeService.getHomeDetails().subscribe(
       (data)=> this.handleResponse(data),
-      (error)=>this.handleError(error)
+      (error)=>this.handleError(error),
     )
+    
   }
 
   handleResponse(data){
+   
     console.log(data)
 
     this.data = data
@@ -447,10 +452,13 @@ manufactures = MANUFACTURES
     // this.banner_image= this.banners[2].images;
     
     console.log( this.banner_image)
+    // this.dismiss();
   }
   handleError(error)
   {
     console.log(error);
+    // this.dismiss()
+   
   }
 
 
@@ -464,5 +472,20 @@ manufactures = MANUFACTURES
   viewAll()
   {
     this.router.navigate(['categories'])
+  }
+
+
+  async presentLoading() {
+    console.log('Loader')
+    const loading = await this.loadingController.create({
+      spinner: 'bubbles',
+      cssClass: 'custom-spinner',
+      message: 'Please wait...',
+      showBackdrop: true
+    });
+    await loading.present();
+  }
+  async dismiss() {
+    await this.loadingController.dismiss()
   }
 }

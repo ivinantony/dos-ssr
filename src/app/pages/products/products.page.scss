@@ -1,7 +1,6 @@
 .icon{
   font-size: 1.2rem;
 }
-
 .banner {
     ion-slide {
       background-position: center;
@@ -44,6 +43,7 @@
 }
 
 .text{
+  margin-bottom: 60px;
   h1{
     font-size: 16px;
     color: #777;
@@ -73,6 +73,31 @@
     height: 180px;
   }
   
+  
+}
+
+.sortSideMenu{
+  h2{
+    font-size: 16px;
+    color: #444;
+  }
+}
+
+
+.btn{
+  z-index: 1;
+  width: 75%;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  margin: 0px;
+  .icon{
+    padding-right: 5px;
+  }
+  
 }
 
 .addbutton{
@@ -80,7 +105,7 @@
   position: absolute;
   bottom: 10px;
   left: 50%;
-  width: 138px;
+  width: 75%;
   -ms-transform: translateX(-50%);
   transform: translateX(-50%);
   height:44.8px;

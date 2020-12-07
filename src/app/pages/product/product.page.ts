@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonFab, ModalController, Platform, ToastController } from '@ionic/angular';
+import { AlertController, IonFab, ModalController, Platform, ToastController } from '@ionic/angular';
 import { AuthGuard } from 'src/app/guards/auth.guard';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { CartService } from 'src/app/services/cart/cart.service';
@@ -11,6 +11,7 @@ import { ImagemodalPage } from '../imagemodal/imagemodal.page';
 const GET_DATA=200;
 const POST_DATA=210;
 const GET_CART=220;
+const DEL_DATA=230;
 @Component({
   selector: 'app-product',
   templateUrl: './product.page.html',
@@ -35,9 +36,11 @@ export class ProductPage implements OnInit {
   s3url:string
   qty:number=1
   data:any
+  client_id:any
   constructor(private platform: Platform, private modalController: ModalController, public authencationservice: AuthenticationService, 
     public checkloginGuard: AuthGuard, private toastController: ToastController, public router: Router, 
-    private activatedRoute: ActivatedRoute,private productsDetailsService:ProductDetailsService,private utils:UtilsService,private cartService:CartService) {
+    private activatedRoute: ActivatedRoute,private productsDetailsService:ProductDetailsService,private utils:UtilsService,private cartService:CartService,
+    private authService:AuthenticationService,private alertController:AlertController) {
 
     this.productId = parseInt(this.activatedRoute.snapshot.paramMap.get('id'))
     this.catId = parseInt(this.activatedRoute.snapshot.paramMap.get('catId'))
@@ -49,8 +52,9 @@ export class ProductPage implements OnInit {
       this.checkWidth()
     });
 
+    
+    this.client_id = localStorage.getItem('client_id')
     this.getData()
-
   }
 
   ngOnInit() {
@@ -59,8 +63,8 @@ export class ProductPage implements OnInit {
 
   getData()
   {
-    
-    this.productsDetailsService.getProductDetails(this.productId).subscribe(
+    let client_id = localStorage.getItem('client_id')
+    this.productsDetailsService.getProductDetails(this.productId,client_id).subscribe(
       (data)=>this.handleResponse(data,GET_DATA),
       (error)=>this.handleError(error)
     )
@@ -153,5 +157,56 @@ export class ProductPage implements OnInit {
   subtract()
   {
     this.qty-=1
+  }
+
+  addToCart()
+  {
+    if(this.authService.isAuthenticated())
+    {
+      let data={
+        product_id :this.productDetails.id,
+        client_id :this.client_id
+         }
+         this.cartService.addToCart(data).subscribe(
+           (data)=>this.handleResponse(data,POST_DATA),
+           (error)=>this.handleError(error)
+         )
+         this.productDetails.cart_count++
+        //  this.getData()
+    }
+  else{
+  this.presentLogin()
+  }
+   
+   
+    
+  }
+  removeFromcart()
+  {
+    this.cartService.removeFromCart(this.client_id,this.productDetails.id,).subscribe(
+      (data)=>this.handleResponse(data,DEL_DATA),
+      (error)=>this.handleError(error)
+    )
+    // this.getData()
+    this.productDetails.cart_count--
+  }
+
+
+  async presentLogin() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'You Are Not Logged In',
+      message: 'Log in to continue.',
+      buttons: [
+         {
+          text: 'Login',
+          handler: () => {
+            this.router.navigate(['login'])
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 }

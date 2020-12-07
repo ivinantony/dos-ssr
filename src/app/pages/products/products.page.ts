@@ -44,7 +44,7 @@ export class ProductsPage implements OnInit {
     { val: 'Sausage', isChecked: false },
     { val: 'Mushroom', isChecked: false }
   ];
-  constructor(private activatedRoute: ActivatedRoute, private platform: Platform, private router: Router, private modalController: ModalController,
+  constructor(private activatedRoute: ActivatedRoute, private platform: Platform, public router: Router, private modalController: ModalController,
     private CatProductService:SubcatProductsService,private utils:UtilsService,private loadingcontroller:LoadingController,
     private actionSheetController:ActionSheetController,private cartService:CartService,private authService:AuthenticationService,private alertController:AlertController) {
     this.page_count = 1
@@ -86,7 +86,7 @@ export class ProductsPage implements OnInit {
       this.products[i].images[0].path = this.s3url+this.products[i].images[0].path
     }
     }
-    
+   console.log(data) 
     
   }
   handleError(error)
@@ -201,6 +201,7 @@ export class ProductsPage implements OnInit {
   {
     if(this.authService.isAuthenticated())
     {
+      console.log("hai")
       let data={
         product_id :this.products[index].id,
         client_id :this.client_id
@@ -217,9 +218,8 @@ export class ProductsPage implements OnInit {
       this.presentLogin()
     }
     
-   
-    
   }
+  
   removeFromcart(index:number)
   {
     this.cartService.removeFromCart(this.client_id,this.products[index].id,).subscribe(

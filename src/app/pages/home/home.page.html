@@ -81,11 +81,11 @@
   [ngStyle]="{'background-image': 'url( '+ item.path +' )'}" -->
   <section id="banr">
     <ion-slides class="banner" [options]="bannerSlideOpts1">
-      <ion-slide *ngFor="let item of data?.banner[2].desktop_images; let i=index" class="dsk" >
+      <ion-slide *ngFor="let item of data?.banner[0]?.desktop_images; let i=index" class="dsk" >
       <img src="{{item.path}}" alt="" >
       </ion-slide> 
 
-      <ion-slide *ngFor="let item of data?.banner[2].mobile_images; let i=index" class="mob" >
+      <ion-slide *ngFor="let item of data?.banner[0]?.mobile_images; let i=index" class="mob" >
       <img src="{{item.path}}" alt="">
       </ion-slide>     
     </ion-slides>
@@ -155,12 +155,13 @@
 
   <!-- Banner -2 start -->
   <section id="banr">
-    <ion-slides class="banner" [options]="bannerSlideOpts2">
-      <ion-slide *ngFor="let item of banners_combined; let i=index">
-      <picture>
-        <source media="(min-width: 1024px)" srcset="{{item.desktopImg}}" >
-        <img src="{{item.mobileImg}}" />
-      </picture>
+    <ion-slides class="banner" [options]="bannerSlideOpts1">
+      <ion-slide *ngFor="let item of data?.banner[1]?.desktop_images; let i=index" class="dsk" >
+      <img src="{{item.path}}" alt="" >
+      </ion-slide> 
+
+      <ion-slide *ngFor="let item of data?.banner[1]?.mobile_images; let i=index" class="mob" >
+      <img src="{{item.path}}" alt="">
       </ion-slide>     
     </ion-slides>
   </section>
@@ -266,25 +267,25 @@
   <ion-row class="main_row">
     <ion-col size="12" size-md="6"  class="firstCol">
       <div class="main">
-        <img class="imge" src="../../../assets/imgs/main11.jpg" alt="">
+        <img class="imge" [src]="data?.banner[2]?.desktop_images[0]?.path" alt="">
       </div>
           
     </ion-col>
     <ion-col size="12" size-md="6" class="col">
       <ion-row>
         <ion-col size="6" class="col">
-          <img src="../../../assets/imgs/2.jpg" alt="">
+          <img [src]="data?.banner[2]?.desktop_images[1]?.path" alt="">
         </ion-col>
         <ion-col size="6" class="col">
-          <img src="../../../assets/imgs/3.jpg" alt="">
+          <img [src]="data?.banner[2]?.desktop_images[2]?.path" alt="">
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col size="6" class="col">
-          <img src="../../../assets/imgs/4.jpg" alt="">
+          <img [src]="data?.banner[2]?.desktop_images[3]?.path" alt="">
         </ion-col>
         <ion-col size="6" class="col">
-          <img src="../../../assets/imgs/2.jpg" alt="">
+          <img [src]="data?.banner[2]?.desktop_images[4]?.path" alt="">
         </ion-col>
       </ion-row>
 
@@ -362,12 +363,13 @@
 
 <!-- Banner -4 start -->
 <section id="banr">
-  <ion-slides class="banner" [options]="bannerSlideOpts4">
-    <ion-slide *ngFor="let item of banners_combined; let i=index">
-    <picture>
-      <source media="(min-width: 1024px)" srcset="{{item.desktopImg}}" >
-      <img src="{{item.mobileImg}}" />
-    </picture>
+  <ion-slides class="banner" [options]="bannerSlideOpts1">
+    <ion-slide *ngFor="let item of data?.banner[3]?.desktop_images; let i=index" class="dsk" >
+    <img src="{{item.path}}" alt="" >
+    </ion-slide> 
+
+    <ion-slide *ngFor="let item of data?.banner[3]?.mobile_images; let i=index" class="mob" >
+    <img src="{{item.path}}" alt="">
     </ion-slide>     
   </ion-slides>
 </section>

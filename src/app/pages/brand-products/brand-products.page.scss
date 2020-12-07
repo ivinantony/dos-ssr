@@ -86,10 +86,11 @@
 
 .btn{
   z-index: 1;
+  width: 75%;
   position: absolute;
   bottom: 10px;
   left: 50%;
-  width: 180px;
+  
   -ms-transform: translateX(-50%);
   transform: translateX(-50%);
   margin: 0px;
@@ -104,7 +105,7 @@
   position: absolute;
   bottom: 10px;
   left: 50%;
-  width: 138px;
+  width: 75%;
   -ms-transform: translateX(-50%);
   transform: translateX(-50%);
   height:44.8px;

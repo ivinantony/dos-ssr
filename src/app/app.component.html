@@ -9,8 +9,9 @@
       </ion-buttons>
       <ion-buttons slot="start" class="nav-btns ion-margin-horizontal">
         <ion-button (click)="router.navigate(['/home'])"> Home </ion-button>
-        <ion-button (click)="menuController.toggle()"> Categories </ion-button>
-        <ion-button> Offers </ion-button>
+        <!-- <ion-button (click)="menuController.toggle()"> Categories </ion-button> -->
+        <ion-button (click)="router.navigate(['/offer'])"> Offers </ion-button>
+        <ion-button (click)="router.navigate(['/categories'])"> Categories </ion-button>
       </ion-buttons>
       <ion-buttons slot="end">
         <ion-button
@@ -89,14 +90,14 @@
     <ion-menu contentId="main-content" type="overlay">
       <ion-content>
         <div class="menu-header-bg"></div>
-      <ion-menu-toggle>
+        <ion-menu-toggle>
+          
         <div class="header-content user" [routerLink]="['/profile']">
           <img src="../assets/imgs/user.svg"alt="" />
           <ion-label class="ion-margin-horizontal"
             ><ion-text color="light">
               <h2><b>Gautham</b></h2>
-            </ion-text></ion-label
-          >
+            </ion-text></ion-label>
         </div>
       </ion-menu-toggle>
         <ion-list id="inbox-list">

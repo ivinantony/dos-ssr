@@ -53,7 +53,7 @@ export class BrandProductsPage implements OnInit {
     private utils: UtilsService,
     private activatedRoute: ActivatedRoute,
     private actionSheetController:ActionSheetController,
-    private router:Router,
+    public router:Router,
     private cartService:CartService,
     private authService:AuthenticationService,
     private alertController:AlertController

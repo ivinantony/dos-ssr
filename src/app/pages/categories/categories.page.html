@@ -44,7 +44,7 @@
                 </ion-item>
               </ion-list>
             </ion-col>
-            <ion-infinite-scroll (ionInfinite)="loadMoreContent($event)">
+            <ion-infinite-scroll (ionInfinite)="loadMoreContent($event)" *ngIf="page_count != page_limit">
               <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
               </ion-infinite-scroll-content>
             </ion-infinite-scroll>

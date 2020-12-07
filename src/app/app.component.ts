@@ -11,6 +11,7 @@ import { SwUpdate } from '@angular/service-worker';
 import { FormControl } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { ProductSearchService } from './services/product-search.service';
+import { ProfileService } from './services/profile/profile.service';
 
 @Component({
   selector: 'app-root',
@@ -34,10 +35,13 @@ export class AppComponent implements OnInit {
     private toastController: ToastController,
     public router: Router,
     private swUpdate: SwUpdate,
-    private searchService: ProductSearchService
+    private searchService: ProductSearchService,
+    private profileService:ProfileService
   ) {
+    
     this.searchTerm = new FormControl();
     this.initializeApp();
+    
     this.searchService.searchValues.subscribe(data => {
       console.log('data', data)
       if (data) {
@@ -52,6 +56,7 @@ export class AppComponent implements OnInit {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+     
     });
   }
 
@@ -136,5 +141,21 @@ export class AppComponent implements OnInit {
       duration: 2000
     });
     toast.present();
+  }
+
+  getData()
+  {
+    this.profileService.getMenuDetails().subscribe(
+      (data)=>this.handleResponse(data),
+      (error)=>this.handleError(error)
+    )
+  }
+
+  handleResponse(data)
+  {
+    console.log(data)
+  }
+  handleError(error){
+    console.log(error)
   }
 }

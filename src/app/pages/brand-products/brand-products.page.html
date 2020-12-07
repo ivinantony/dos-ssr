@@ -25,31 +25,13 @@
     </ion-slides>
   </section>
 
+  
+
+
+
+<!-- hello -->
   <ion-grid>
     <ion-row>
-      <!-- <ion-col class="ion-hide-md-down sortSideMenu" size-md="3" size-xl="2" size-lg="2">
-        <ion-list>
-          <ion-list-header>
-            <ion-label>
-              <p>Sort</p>
-            </ion-label>
-            <ion-button size="small" color="danger">Clear All</ion-button>
-          </ion-list-header>
-          <ion-item lines="none" *ngFor="let item of sortOptions" onchange="" >
-            <h2>{{item.option}}</h2>
-            <ion-checkbox
-            mode="md"
-              color="danger"
-              slot="start"
-              [(ngModel)]="item.isChecked">
-              
-            </ion-checkbox>
-          </ion-item>  
-           
-          <hr />
-        </ion-list>
-      </ion-col> -->
-      
       <ion-col size="12" size-sm="12" size-md="12" size-xl="12" size-lg="12">
         <ion-grid fixed>
           <ion-row class="row">
@@ -126,7 +108,7 @@
                 <ion-icon name="add-outline"></ion-icon>
               </ion-chip> -->
              <ion-button (click)="addToCart(i)" expand="full-width" fill="outline" shape="round" color="dark" class="btn" *ngIf="item.cart_count == 0">
-                <ion-icon name="add-outline" class="icon"></ion-icon> ADD TO CART
+                <ion-icon name="add-outline" class="icon"></ion-icon> ADD
               </ion-button>
             <div class="addbutton" *ngIf="item.cart_count != 0">
               <ion-icon name="remove-outline" class="icon" (click)="removeFromcart(i)"></ion-icon>
@@ -142,9 +124,13 @@
             </ion-infinite-scroll>
           </ion-row>
         </ion-grid>
+
       </ion-col>
     </ion-row>
   </ion-grid>
+
+
+
 </ion-content>
 <ion-footer class="ion-hide-md-up">
   <ion-toolbar>

@@ -68,6 +68,7 @@ export class AddAddressPage implements OnInit {
 
     });
     this.platform.ready().then(() => {
+      
       this.presentLoading().then(() => {
         console.log('presented')
         this.loadMap().finally(() => {

@@ -13,11 +13,11 @@ url:string
   { 
     this.url = utils.getApiPath()
   }
-  public getProductDetails(product_id:number)       
+  public getProductDetails(product_id:number,client_id:any)       
   {
     const headers = this.headerService.getHttpHeaders()
     return this.httpclient.get(
-      this.url + "product?product_id="+product_id,
+      this.url + "product?product_id="+product_id+"&client_id="+client_id,
       { headers }
     ).pipe(map(res=>{return res}));
   }

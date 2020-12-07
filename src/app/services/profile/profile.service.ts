@@ -63,4 +63,14 @@ export class ProfileService {
      ).pipe(map(res=>{
        return res}));
    }
+   public getMenuDetails ()
+   {
+     const headers = this.headerservice.getHttpHeaders()
+     return this.httpclient.get(
+      this.url + "sidemenu-details",{ headers }
+     ).pipe(map(res=>{
+       return res}));
+   }
+
+
 }

@@ -131,7 +131,15 @@ export class CartPage implements OnInit {
 
   pay()
   {
-    console.log(this.selectedAddress)
+    if(!this.selectedAddress)
+    {
+      this.presentToastDanger("Please select a Delivery Location.")
+    }
+    else if(!this.payment_id){
+      this.presentToastDanger("Please select a Payment Method.")
+    }
+    else{
+      console.log(this.selectedAddress)
     let data={
       client_id:localStorage.getItem("client_id"),
       promo_code_id:this.promo_id,
@@ -144,6 +152,8 @@ export class CartPage implements OnInit {
       (data)=> this.handleResponse(data,ORDER_RESPONSE),
       (error)=>this.handleError(error)
     )
+    }
+    
   }
   
   async presentToast(msg) {
@@ -151,6 +161,16 @@ export class CartPage implements OnInit {
       message: msg,
       cssClass: 'custom-toast',
       position: 'top',
+      duration: 2000
+    });
+    toast.present();
+  }
+  async presentToastDanger(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: 'custom-toast',
+      color:"danger",
+      position: 'middle',
       duration: 2000
     });
     toast.present();
@@ -255,8 +275,11 @@ export class CartPage implements OnInit {
         localStorage.setItem('total_amount',this.amountDetails.payable_amount)
         console.log("cordova not supported")
         this.router.navigate(['paypal'])
-     
-      
+     }
+     else{
+        this.presentToastSuccess("Order placed Successfully")
+
+       this.router.navigate(['home'])
      }
 
     }
@@ -324,8 +347,25 @@ export class CartPage implements OnInit {
     this.cart.splice(index,1)
     this.getData()
   }
+
+  continueShopping()
+{
+  this.router.navigate(['home'])
 }
 
+
+
+ async presentToastSuccess(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: 'custom-toast',
+      position: 'middle',
+      color:'success',
+      duration: 2000
+    });
+    toast.present();
+  }
+}
 
 
 

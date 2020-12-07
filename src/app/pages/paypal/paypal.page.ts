@@ -9,13 +9,14 @@ const POST_DATA=200;
   styleUrls: ['./paypal.page.scss'],
 })
 export class PaypalPage implements OnInit {
-  paymentAmount: string = '3.33';
+  paymentAmount: string;
   currency: string = 'INR';
   currencyIcon: string = '₹';
   order_id:any
   details:any
   constructor(private pay:PaymentService,private router:Router,private toastController:ToastController,private zone:NgZone) 
   { 
+    this.paymentAmount = localStorage.getItem('total_amount')
     
     this.paypal()
   }
