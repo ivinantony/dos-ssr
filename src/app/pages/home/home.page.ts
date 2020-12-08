@@ -12,53 +12,48 @@ import { UtilsService } from 'src/app/services/utils.service';
 import { IonSlides} from '@ionic/angular';
 
 
-export const PRODUCTS = [
-  { id: 1, cat_id: 1, name: 'Alternator 24v', price: 400, images: [{ id: 1, url: 'https://www.ikh.fi/images/wwwkuvat/Tuotekuvat/STL24005_S_1_web.jpg' }] },
-  { id: 2, cat_id: 1, name: 'Dynamo', price: 400, images: [{ id: 1, url: 'https://auctions.c.yimg.jp/images.auctions.yahoo.co.jp/image/dr000/auc0409/users/c5473c99d15b9e041d17e6dfb2f2ef927382999a/i-img1200x900-1536215275pws7ks183838.jpg' }] },
-  { id: 3, cat_id: 1, name: 'Rectifier', price: 400, images: [{ id: 1, url: 'https://sc02.alicdn.com/kf/HTB11rPPKXmWBuNjSspdq6zugXXa9/220802964/HTB11rPPKXmWBuNjSspdq6zugXXa9.jpg_.webp' }] },
+// export const PRODUCTS = [
+//   { id: 1, cat_id: 1, name: 'Alternator 24v', price: 400, images: [{ id: 1, url: 'https://www.ikh.fi/images/wwwkuvat/Tuotekuvat/STL24005_S_1_web.jpg' }] },
+//   { id: 2, cat_id: 1, name: 'Dynamo', price: 400, images: [{ id: 1, url: 'https://auctions.c.yimg.jp/images.auctions.yahoo.co.jp/image/dr000/auc0409/users/c5473c99d15b9e041d17e6dfb2f2ef927382999a/i-img1200x900-1536215275pws7ks183838.jpg' }] },
+//   { id: 3, cat_id: 1, name: 'Rectifier', price: 400, images: [{ id: 1, url: 'https://sc02.alicdn.com/kf/HTB11rPPKXmWBuNjSspdq6zugXXa9/220802964/HTB11rPPKXmWBuNjSspdq6zugXXa9.jpg_.webp' }] },
 
 
-  { id: 5, cat_id: 2, name: 'Ball Bearings', price: 400, images: [{ id: 1, url: 'https://5.imimg.com/data5/SC/VI/MY-25319/volvo-truck-bearings-500x500.jpg' }] },
-  { id: 6, cat_id: 2, name: 'Tapper Roller Bearing', price: 400, images: [{ id: 1, url: 'https://www.skf.com/binaries/pub12/Images/0901d19680a53c26-SKF-Cooper-split-tapered-roller-bearing_40_0_768_763_tcm_12-562696.png' }] },
-  { id: 7, cat_id: 2, name: 'Pillow Block Bearing', price: 400, images: [{ id: 1, url: 'https://pimimages.buyersproducts.com/products/MD/P16_front.jpg' }] },
+//   { id: 5, cat_id: 2, name: 'Ball Bearings', price: 400, images: [{ id: 1, url: 'https://5.imimg.com/data5/SC/VI/MY-25319/volvo-truck-bearings-500x500.jpg' }] },
+//   { id: 6, cat_id: 2, name: 'Tapper Roller Bearing', price: 400, images: [{ id: 1, url: 'https://www.skf.com/binaries/pub12/Images/0901d19680a53c26-SKF-Cooper-split-tapered-roller-bearing_40_0_768_763_tcm_12-562696.png' }] },
+//   { id: 7, cat_id: 2, name: 'Pillow Block Bearing', price: 400, images: [{ id: 1, url: 'https://pimimages.buyersproducts.com/products/MD/P16_front.jpg' }] },
 
-  { id: 8, cat_id: 3, name: 'Brake Disc', price: 400, images: [{ id: 1, url: 'https://www.trt.co.nz/assets/Parts/Brakes/Disk-Brake/Images/0b5b3761a5/Truck-Brakes-Rotor-ID__FillWzgwMCw1NzRd.jpg ' }] },
-  { id: 9, cat_id: 3, name: 'Brake Pad Set', price: 400, images: [{ id: 1, url: 'https://i.pinimg.com/originals/58/7f/59/587f59cad22147ed416e5e60611d019e.jpg ' }] },
-  { id: 10, cat_id: 3, name: 'ABS Braking System', price: 400, images: [{ id: 1, url: 'https://5.imimg.com/data5/VW/UY/MY-35223123/anti-lock-braking-system-500x500.jpg' }] },
+//   { id: 8, cat_id: 3, name: 'Brake Disc', price: 400, images: [{ id: 1, url: 'https://www.trt.co.nz/assets/Parts/Brakes/Disk-Brake/Images/0b5b3761a5/Truck-Brakes-Rotor-ID__FillWzgwMCw1NzRd.jpg ' }] },
+//   { id: 9, cat_id: 3, name: 'Brake Pad Set', price: 400, images: [{ id: 1, url: 'https://i.pinimg.com/originals/58/7f/59/587f59cad22147ed416e5e60611d019e.jpg ' }] },
+//   { id: 10, cat_id: 3, name: 'ABS Braking System', price: 400, images: [{ id: 1, url: 'https://5.imimg.com/data5/VW/UY/MY-35223123/anti-lock-braking-system-500x500.jpg' }] },
 
-  { id: 11, cat_id: 4, name: '3482081232 Clutch Pressure Plate', price: 400, images: [{ id: 1, url: 'https://image.made-in-china.com/202f0j00kJQTeAmCEEuW/Heavy-Truck-430mm-Clutch-Cover-Clutch-Dis-Pressure-Plate-3482081232-for-Man-Daf-Volvo-Truck.jpg' }] },
-  { id: 12, cat_id: 4, name: '1888063137 Clutch Cover', price: 400, images: [{ id: 1, url: 'https://sc01.alicdn.com/kf/Hf835b6e53289421c96a55e40d35b7e23T.png' }] },
-  { id: 13, cat_id: 4, name: ' Clutch Bearing', price: 400, images: [{ id: 1, url: 'https://partnerportal.dieseltechnic.com/dtwsassets/zoom/2/2_30000/2_30256_M.jpg' }] },
+//   { id: 11, cat_id: 4, name: '3482081232 Clutch Pressure Plate', price: 400, images: [{ id: 1, url: 'https://image.made-in-china.com/202f0j00kJQTeAmCEEuW/Heavy-Truck-430mm-Clutch-Cover-Clutch-Dis-Pressure-Plate-3482081232-for-Man-Daf-Volvo-Truck.jpg' }] },
+//   { id: 12, cat_id: 4, name: '1888063137 Clutch Cover', price: 400, images: [{ id: 1, url: 'https://sc01.alicdn.com/kf/Hf835b6e53289421c96a55e40d35b7e23T.png' }] },
+//   { id: 13, cat_id: 4, name: ' Clutch Bearing', price: 400, images: [{ id: 1, url: 'https://partnerportal.dieseltechnic.com/dtwsassets/zoom/2/2_30000/2_30256_M.jpg' }] },
 
-  { id: 14, cat_id: 5, name: 'Fifth Wheel Couplings & Mounting Plates', price: 400, images: [{ id: 1, url: 'https://www.utilityaz.com/assets/Uploads/parts/fifth_wheels/image052.jpg' }] },
-  { id: 15, cat_id: 5, name: 'Modul CS - Jost World', price: 400, images: [{ id: 1, url: 'https://semitrailers.net/wp-content/uploads/2017/10/jost_landing_gear_set_logo.jpg' }] },
-  { id: 16, cat_id: 5, name: 'Wheel Stoppers', price: 400, images: [{ id: 1, url: 'https://valueautoparts.co.sz/wp-content/uploads/2019/08/Wheel-Chocks-600x600.jpg' }] },
+//   { id: 14, cat_id: 5, name: 'Fifth Wheel Couplings & Mounting Plates', price: 400, images: [{ id: 1, url: 'https://www.utilityaz.com/assets/Uploads/parts/fifth_wheels/image052.jpg' }] },
+//   { id: 15, cat_id: 5, name: 'Modul CS - Jost World', price: 400, images: [{ id: 1, url: 'https://semitrailers.net/wp-content/uploads/2017/10/jost_landing_gear_set_logo.jpg' }] },
+//   { id: 16, cat_id: 5, name: 'Wheel Stoppers', price: 400, images: [{ id: 1, url: 'https://valueautoparts.co.sz/wp-content/uploads/2019/08/Wheel-Chocks-600x600.jpg' }] },
 
-  { id: 17, cat_id: 6, name: '441 030 29 01 Crankshaft ', price: 400, images: [{ id: 1, url: 'https://sc02.alicdn.com/kf/HTB11bkxKFXXXXboXXXXq6xXFXXXM.jpg_350x350.jpg' }] },
-  { id: 18, cat_id: 6, name: 'Piston With Con Rod', price: 400, images: [{ id: 1, url: 'https://www.chevydiy.com/wp-content/uploads/2014/08/101.jpg' }] },
-  { id: 19, cat_id: 6, name: 'Engine Bearing', price: 400, images: [{ id: 1, url: 'https://5.imimg.com/data5/RF/OF/MY-3237327/man-bearings-500x500.jpg' }] },
+//   { id: 17, cat_id: 6, name: '441 030 29 01 Crankshaft ', price: 400, images: [{ id: 1, url: 'https://sc02.alicdn.com/kf/HTB11bkxKFXXXXboXXXXq6xXFXXXM.jpg_350x350.jpg' }] },
+//   { id: 18, cat_id: 6, name: 'Piston With Con Rod', price: 400, images: [{ id: 1, url: 'https://www.chevydiy.com/wp-content/uploads/2014/08/101.jpg' }] },
+//   { id: 19, cat_id: 6, name: 'Engine Bearing', price: 400, images: [{ id: 1, url: 'https://5.imimg.com/data5/RF/OF/MY-3237327/man-bearings-500x500.jpg' }] },
 
-  { id: 20, cat_id: 7, name: 'Hydraulic Motor', price: 400, images: [{ id: 1, url: 'https://img2.exportersindia.com/product_images/bc-full/dir_183/5479244/hydraulic-motor-1521020443-3719190.jpeg' }] },
-  { id: 21, cat_id: 7, name: 'Mixer Water Pump', price: 400, images: [{ id: 1, url: 'https://lh3.googleusercontent.com/proxy/xVFrFb2jlS_dta2WeT81l0Mryri3-XXHMZyab_ufQiecPHy52h1mHW_Jb3IzKBWMD2ZQG8TjWSO3xKtCs6f0wZUfxfEVRi2FCPl5HGdPetwZ3jTgmfcApHdoMPukxFe9QB4' }] },
-  { id: 22, cat_id: 7, name: '', price: 400, images: [{ id: 1, url: '' }] },
+//   { id: 20, cat_id: 7, name: 'Hydraulic Motor', price: 400, images: [{ id: 1, url: 'https://img2.exportersindia.com/product_images/bc-full/dir_183/5479244/hydraulic-motor-1521020443-3719190.jpeg' }] },
+//   { id: 21, cat_id: 7, name: 'Mixer Water Pump', price: 400, images: [{ id: 1, url: 'https://lh3.googleusercontent.com/proxy/xVFrFb2jlS_dta2WeT81l0Mryri3-XXHMZyab_ufQiecPHy52h1mHW_Jb3IzKBWMD2ZQG8TjWSO3xKtCs6f0wZUfxfEVRi2FCPl5HGdPetwZ3jTgmfcApHdoMPukxFe9QB4' }] },
+//   { id: 22, cat_id: 7, name: '', price: 400, images: [{ id: 1, url: '' }] },
 
-  { id: 23, cat_id: 8, name: 'Syncronizer Gear', price: 400, images: [{ id: 1, url: 'https://sc01.alicdn.com/kf/Had7a3319583c4f2280a7026b5fd02b6ch/200856212/Had7a3319583c4f2280a7026b5fd02b6ch.jpg_q50.jpg' }] },
-  { id: 24, cat_id: 8, name: 'Synchronizer Hub 1292304041', price: 400, images: [{ id: 1, url: 'https://s.alicdn.com/@sc01/kf/H2b7377a574d64a3c95e6a898a71b824b0.jpg_300x300.jpg' }] },
-  { id: 25, cat_id: 8, name: '', price: 400, images: [{ id: 1, url: '' }] },
+//   { id: 23, cat_id: 8, name: 'Syncronizer Gear', price: 400, images: [{ id: 1, url: 'https://sc01.alicdn.com/kf/Had7a3319583c4f2280a7026b5fd02b6ch/200856212/Had7a3319583c4f2280a7026b5fd02b6ch.jpg_q50.jpg' }] },
+//   { id: 24, cat_id: 8, name: 'Synchronizer Hub 1292304041', price: 400, images: [{ id: 1, url: 'https://s.alicdn.com/@sc01/kf/H2b7377a574d64a3c95e6a898a71b824b0.jpg_300x300.jpg' }] },
+//   { id: 25, cat_id: 8, name: '', price: 400, images: [{ id: 1, url: '' }] },
 
-  { id: 26, cat_id: 9, name: 'Starter Motor', price: 400, images: [{ id: 1, url: 'https://lh3.googleusercontent.com/proxy/QI6Qxfkj3Qw4i7wLLavZADcTd5quoZmzqcjnK2TYr31ydE-JD1QPBJBy5uQtQNLkuNBSoEy-_hQdoAjNg7SZiyVLjxM-k01GeUM1beuW2ZkKKZ7rH83dUXAwHpBTFx81lWmNslap7NvqZPU2LLcjug' }] },
-  { id: 27, cat_id: 9, name: 'Armature', price: 400, images: [{ id: 1, url: 'https://image.made-in-china.com/202f0j00hQIfDMoFOCzt/Original-Sinotruk-HOWO-Truck-Spare-Parts-Starter-Armature-Vg1560090001-01.jpg' }] },
-  { id: 28, cat_id: 9, name: 'Starter Solenoid', price: 400, images: [{ id: 1, url: 'https://media.napaonline.com/is/image/GenuinePartsCompany/NWMDC?$Product=GenuinePartsCompany/755651' }] },
+//   { id: 26, cat_id: 9, name: 'Starter Motor', price: 400, images: [{ id: 1, url: 'https://lh3.googleusercontent.com/proxy/QI6Qxfkj3Qw4i7wLLavZADcTd5quoZmzqcjnK2TYr31ydE-JD1QPBJBy5uQtQNLkuNBSoEy-_hQdoAjNg7SZiyVLjxM-k01GeUM1beuW2ZkKKZ7rH83dUXAwHpBTFx81lWmNslap7NvqZPU2LLcjug' }] },
+//   { id: 27, cat_id: 9, name: 'Armature', price: 400, images: [{ id: 1, url: 'https://image.made-in-china.com/202f0j00hQIfDMoFOCzt/Original-Sinotruk-HOWO-Truck-Spare-Parts-Starter-Armature-Vg1560090001-01.jpg' }] },
+//   { id: 28, cat_id: 9, name: 'Starter Solenoid', price: 400, images: [{ id: 1, url: 'https://media.napaonline.com/is/image/GenuinePartsCompany/NWMDC?$Product=GenuinePartsCompany/755651' }] },
 
-  { id: 29, cat_id: 10, name: 'Power Steering Box', price: 400, images: [{ id: 1, url: 'https://5.imimg.com/data5/LR/OB/HZ/SELLER-66273618/power-steering-box-500x500.jpg' }] },
-  { id: 30, cat_id: 10, name: 'Power Steering Pump', price: 400, images: [{ id: 1, url: 'https://sc02.alicdn.com/kf/HTB1xaSLrL5TBuNjSspcq6znGFXaN.jpg' }] },
+//   { id: 29, cat_id: 10, name: 'Power Steering Box', price: 400, images: [{ id: 1, url: 'https://5.imimg.com/data5/LR/OB/HZ/SELLER-66273618/power-steering-box-500x500.jpg' }] },
+//   { id: 30, cat_id: 10, name: 'Power Steering Pump', price: 400, images: [{ id: 1, url: 'https://sc02.alicdn.com/kf/HTB1xaSLrL5TBuNjSspcq6znGFXaN.jpg' }] },
 
-
-
-
-
-
-]
+// ]
 export const CATEGORIES = [
   { id: 1, name: 'Alternator & Parts' },
   { id: 2, name: 'Bearings' },
@@ -285,7 +280,7 @@ export class HomePage implements OnInit {
 
 
   selectedIndex = 0
-  topSearches = PRODUCTS;
+  // topSearches = PRODUCTS;
   // categories = CATEGORIES
   // products = PRODUCTS
    banners :any
@@ -346,7 +341,10 @@ manufactures = MANUFACTURES
     this.router.navigate(['product', {id,catId}])
   }
   viewSearchProduct(index: number) {
-    this.router.navigate(['product', this.searchItems[index].id])
+    // this.router.navigate(['product', this.searchItems[index].id])
+    let id = this.searchItems[index].id
+    let catId =this.searchItems[index].category_id
+    this.router.navigate(['product', {id,catId}])
     this.searchItems = [];
   }
   filterItems(searchTerm) {
@@ -410,6 +408,7 @@ manufactures = MANUFACTURES
     this.brands = data.brands
     this.categories = data.categories
     this.products = data.products
+    
     console.log(this.products)
     this.banners = data.banner
     console.log(this.data,"this is banners")

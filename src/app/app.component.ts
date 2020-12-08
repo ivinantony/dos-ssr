@@ -46,6 +46,7 @@ export class AppComponent implements OnInit {
       console.log('data', data)
       if (data) {
         this.searchItems = data
+        console.log(this.searchItems,"searchItems")
       } else {
         this.searchItems = []
       }
@@ -100,7 +101,9 @@ export class AppComponent implements OnInit {
     this.searching = true;
   }
   viewSearchProduct(index: number) {
-    this.router.navigate(['product', this.searchItems[index].id])
+    let id = this.searchItems[index].id
+    let catId =this.searchItems[index].category_id
+    this.router.navigate(['product', {id,catId}])
     this.searchItems = [];
   }
   onCancel() {

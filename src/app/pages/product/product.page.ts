@@ -6,7 +6,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { ProductDetailsService } from 'src/app/services/productDetails/product-details.service';
 import { UtilsService } from 'src/app/services/utils.service';
-import { PRODUCTS, CATEGORIES } from '../home/home.page';
+import { CATEGORIES } from '../home/home.page';
 import { ImagemodalPage } from '../imagemodal/imagemodal.page';
 const GET_DATA=200;
 const POST_DATA=210;
@@ -44,7 +44,7 @@ export class ProductPage implements OnInit {
 
     this.productId = parseInt(this.activatedRoute.snapshot.paramMap.get('id'))
     this.catId = parseInt(this.activatedRoute.snapshot.paramMap.get('catId'))
-    this.product = PRODUCTS.find(data => data.id == this.productId)
+    // this.product = PRODUCTS.find(data => data.id == this.productId)
     this.s3url = utils.getS3url()
     this.checkWidth()
     this.platform.resize.subscribe(async () => {

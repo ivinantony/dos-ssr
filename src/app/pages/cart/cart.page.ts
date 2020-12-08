@@ -11,6 +11,10 @@ import { AddressPage } from '../address/address.page';
 import { CouponPage } from '../coupon/coupon.page';
 import { ModeofpaymentPage } from '../modeofpayment/modeofpayment.page';
 import { PayPal, PayPalPayment, PayPalConfiguration } from '@ionic-native/paypal/ngx';
+import { PaytabsService } from 'src/app/services/paytabs.service';
+import { Renderer2, Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+
 declare var RazorpayCheckout: any;
 declare var Razorpay: any
 const GET_CART=200;
@@ -20,6 +24,8 @@ const REMOVE=230;
 const GET_ADDRESS=240;
 const POST_ADDRESS_DETAILS = 250;
 const ORDER_RESPONSE = 260;
+const GET_PAY = 270;
+const  paytabs = require('paytabs_api');
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.page.html',
@@ -47,16 +53,52 @@ export class CartPage implements OnInit {
      private checkoutService:CheckoutService,
      private orderService:OrderService,
      private router:Router,
-     private payPal: PayPal) 
+     private payPal: PayPal,
+     private paytabService:PaytabsService,
+     private renderer2: Renderer2, 
+     @Inject(DOCUMENT) private _document: Document) 
      {
+      
+      
        this.getData()
        this.getAddress()
        this.s3url = utils.getS3url()
        
       }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+        const s = this.renderer2.createElement('script');
+        s.onload = this.loadNextScript.bind(this);
+        s.type = 'text/javascript';
+        s.src = 'https://paytabs.com/express/v4/paytabs-express-checkout.js'; // Defines someGlobalObject
+        s.text = `id="paytabs-express-checkout"
+        data-secret-key="nY2ClkDOnRgUi7XmVHRvMp3v9NdK6knuiq7DKKs8CI3VP0hLI8hvyk0H8esezQJRgQu1AX9dFc8vdqhWyyr7TsP1Hhgg7Z7oPCpq"
+        data-ui-type="button"
+        data-merchant-id="10074150"
+        data-url-redirect="http://localhost:8100/home"
+        data-amount="3.3"
+        data-currency="SAR"
+        data-title="John Doe"
+        data-product-names="click"
+        data-order-id="25"
+        data-ui-show-header="true"
+        data-customer-phone-number="5486253"
+        data-customer-email-address="john.deo@paytabs.com"
+        data-customer-country-code="973"
+        data-ui-show-billing-address="false"
+        data-billing-full-address="test test test"
+        data-billing-city="test"
+        data-billing-state="test"
+        data-billing-country="BHR"
+        data-billing-postal-code="123"`;
+        this.renderer2.appendChild(this._document.body, s);
+     }
+      
+     loadNextScript() {
+        const s = this.renderer2.createElement('script');
+        s.text = `Paytabs.openPaymentPage(); `
+        this.renderer2.appendChild(this._document.body, s);
+     }
 
   onChangeAddress($event) {
     this.selectedAddress = $event.detail.value;
@@ -131,28 +173,77 @@ export class CartPage implements OnInit {
 
   pay()
   {
-    if(!this.selectedAddress)
-    {
-      this.presentToastDanger("Please select a Delivery Location.")
-    }
-    else if(!this.payment_id){
-      this.presentToastDanger("Please select a Payment Method.")
-    }
-    else{
-      console.log(this.selectedAddress)
-    let data={
-      client_id:localStorage.getItem("client_id"),
-      promo_code_id:this.promo_id,
-      address_id:this.address_id,
-      payment_option_id:this.payment_id,
-      product_total:this.amountDetails.total_amount,
-      payable_amount:this.amountDetails.payable_amount  
-    }
-    this.orderService.captureOrder(data).subscribe(
-      (data)=> this.handleResponse(data,ORDER_RESPONSE),
-      (error)=>this.handleError(error)
-    )
-    }
+ 
+    
+    // let data={
+    //   "merchant_email" : "gautham.krishna@mermerapps.com",
+    //   "secret_key" : "	nY2ClkDOnRgUi7XmVHRvMp3v9NdK6knuiq7DKKs8CI3VP0hLI8hvyk0H8esezQJRgQu1AX9dFc8vdqhWyyr7TsP1Hhgg7Z7oPCpq",
+    //   "site_url" : "https://localhost:8100/home",
+    //   "return_url" : "https://localhost:8100/home",
+    //   "title" : "JohnDoe And Co.",
+    //   "cc_first_name" : "John",
+    //   "cc_last_name" : "Doe",
+    //   "cc_phone_number" : "00973",
+    //   "phone_number" : "123123123456",
+    //   "email" : "johndoe@example.com",
+    //   "products_per_title" : "MobilePhone || Charger || Camera",
+    //   "unit_price" : "12.123 || 21.345 || 35.678 ",
+    //   "quantity" : "2 || 3 || 1",
+    //   "other_charges" : "12.123",
+    //   "amount" : "136.082",
+    //   "discount" : "10.123",
+    //   "currency" : "BHD",
+    //   "reference_no" : "ABC-123",
+    //   "ip_customer" :"1.1.1.0",
+    //   "ip_merchant" :"1.1.1.0",
+    //   "billing_address" : "Flat 3021 Manama Bahrain",
+    //   "city" : "Manama",
+    //   "state" : "Manama",
+    //   "postal_code" : "12345",
+    //   "country" : "BHR",
+    //   "shipping_first_name" : "John",
+    //   "shipping_last_name" : "Doe",
+    //   "address_shipping" : "Flat 3021 Manama Bahrain",
+    //   "state_shipping" : "Manama",
+    //   "city_shipping" : "Manama",
+    //   "postal_code_shipping" : "1234",
+    //   "country_shipping" : "BHR",
+    //   "msg_lang" : "English",
+    //   "cms_with_version" : "WordPress4.0-WooCommerce2.3.9"
+    // }
+    // this.paytabService.getPaymentUi(data).subscribe(
+    //   (data)=>this.handleResponse(data,GET_PAY),
+    //   (error) => this.handleError(error)
+
+    // )
+      
+
+    
+      
+
+    
+    // if(!this.selectedAddress)
+    // {
+    //   this.presentToastDanger("Please select a Delivery Location.")
+    // }
+    // else if(!this.payment_id){
+    //   this.presentToastDanger("Please select a Payment Method.")
+    // }
+    // else{
+    //   console.log(this.selectedAddress)
+    // let data={
+    //   client_id:localStorage.getItem("client_id"),
+    //   promo_code_id:this.promo_id,
+    //   address_id:this.address_id,
+    //   payment_option_id:this.payment_id,
+    //   product_total:this.amountDetails.total_amount,
+    //   payable_amount:this.amountDetails.payable_amount  
+    // }
+    // this.orderService.captureOrder(data).subscribe(
+    //   (data)=> this.handleResponse(data,ORDER_RESPONSE),
+    //   (error)=>this.handleError(error)
+    // )
+    // }
     
   }
   
@@ -365,6 +456,66 @@ export class CartPage implements OnInit {
     });
     toast.present();
   }
+
+
+
+
+  /**
+  * Please refere to Paytabs Documentation to understand all variables and different payment methods https://dev.paytabs.com/docs/paypage.html
+  You can get your email and secret key from paytabs merchant dashboard
+  * https://www.paytabs.com/login/
+
+  */
+//  paytabs.createPayPage({
+//       'merchant_email':'<YOUR EMAIL>',
+//       'secret_key':'<YOUR SECRET KEY>',
+//       'currency':'USD',//change this to the required currency
+//       'amount':'10',//change this to the required amount
+//       'site_url':'<YOUR SITE URL>',//change this to reflect your site
+//       'title':'Order for Shoes',//Change this to reflect your order title
+//       'quantity':1,//Quantity of the product
+//       'unit_price':10, //Quantity * price must be equal to amount
+//       'products_per_title':'Shoes | Jeans', //Change this to your products
+//       'return_url':'<YOUR SITE CALLBACK URL>',//This should be your callback url
+//       'cc_first_name':'Samy',//Customer First Name
+//       'cc_last_name':'Saad',//Customer Last Name
+//       'cc_phone_number':'00973', //Country code
+//       'phone_number':'12332323', //Customer Phone
+//       'billing_address':'Address', //Billing Address
+//       'city':'Manama',//Billing City
+//       'state':'Manama',//Billing State
+//       'postal_code':'1234',//Postal Code
+//       'country':'BHR',//Iso 3 country code
+//       'email':'<CUSTOMER EMAIL>',//Customer Email
+//       'ip_customer':'<CUSTOMER IP>',//Pass customer IP here
+//       'ip_merchant':'<MERCHANT IP>',//Change this to your server IP
+//       'address_shipping':'Shipping',//Shipping Address
+//       'city_shipping':'Manama',//Shipping City
+//       'state_shipping':'Manama',//Shipping State
+//       'postal_code_shipping':'973',
+//       'country_shipping':'BHR',
+//       'other_charges':0,//Other chargs can be here
+//       'reference_no':1234,//Pass the order id on your system for your reference
+//       'msg_lang':'en',//The language for the response
+//       'cms_with_version':'Nodejs Lib v1',//Feel free to change this
+//   },createPayPage);
+   
+//    createPayPage(result){
+//       if(result.response_code == 4012){
+//           //Redirect your merchant to the payment link
+//           console.log(result.payment_url);
+//       }else{
+//           //Handle the error
+//           console.log(result);
+//       }
+//   }
+
+
+
+
+
+
+
 }
 
 
@@ -376,94 +527,3 @@ export class CartPage implements OnInit {
 
 
 
-// payWithRazorpay() {
-    
-//   let client_id = localStorage.getItem('client_id')
-//   let data={
-//     client_id:client_id,
-//     address_id:this.addresses[this.selectedAddress].id,
-//     total_amount:this.amountDetails.payable_amount
-//   }
-//   console.log(data)
-//   this.checkoutService.addressDetails(data).subscribe(
-//     (data)=>this.handleResponse(data,POST_ADDRESS_DETAILS),
-//     (error)=>this.handleError(error)
-//   )
-
-//   this.platform.ready().then(() => {
-//     // 'hybrid' detects both Cordova and Capacitor
-//     if (this.platform.is('hybrid')) {
-//       // make your native API calls
-//       var options = {
-//         description: 'Credits towards consultation',
-//         image: 'https://i.imgur.com/3g7nmJC.png',
-//         currency: 'INR',
-//         key: 'rzp_test_SDfK1pitLCtbv1',
-//         amount: '5000',
-//         name: 'Acme Corp',
-//         theme: { color: '#eb445a' },
-//         prefill: {
-//           name: 'Ivin Antony',
-//           contact: 9633361540,
-//           email: 'ivin@mermerapps.com'
-//         }
-//       }
-
-//       var successCallback = (success) => {
-//         console.log(success)
-//         this.presentToast(success.razorpay_payment_id)
-//         var orderId = success.razorpay_order_id;
-//         var signature = success.razorpay_signature
-//       }
-//       var cancelCallback = (error) => {
-//         console.log(error)
-//         this.presentToast(error.description)
-//       }
-//       RazorpayCheckout.on('payment.success', successCallback)
-//       RazorpayCheckout.on('payment.cancel', cancelCallback)
-//       RazorpayCheckout.open(options)
-//     } else {
-//       // fallback to browser APIs
-//       var pwa_options = {
-//         "key": "rzp_test_SDfK1pitLCtbv1",
-//         "amount": "50000",
-//         "currency": "INR",
-//         "name": "Acme Corp",
-//         "description": "Test Transaction",
-//         "image": "https://example.com/your_logo",
-//         "handler": (response) => {
-//           this.presentToast(response.razorpay_payment_id)
-//           // alert(response.razorpay_payment_id);
-//           // alert(response.razorpay_order_id);
-//           // alert(response.razorpay_signature)
-//         },
-//         "prefill": {
-//           "name": "Gaurav Kumar",
-//           "email": "gaurav.kumar@example.com",
-//           "contact": "9999999999"
-//         },
-//         "notes": {
-//           "address": "Razorpay Corporate Office"
-//         },
-//         "theme": {
-//           "color": "#3399cc"
-//         }
-//       };
-//       var rzp1 = new Razorpay(pwa_options);
-//       rzp1.on('payment.failed',  (response)=> {
-//         // this.presentToast(response.error.description)
-//         alert(response.error.code);
-//         alert(response.error.description);
-//         alert(response.error.source);
-//         alert(response.error.step);
-//         alert(response.error.reason);
-//         alert(response.error.metadata.order_id);
-//         alert(response.error.metadata.payment_id);
-//       });
-
-//       rzp1.open();
-
-//     }
-//   });
-
-// }

@@ -6,7 +6,7 @@ import { SubcatProductsService } from 'src/app/services/subcatProducts/subcat-pr
 import { UtilsService } from 'src/app/services/utils.service';
 import { FiltersPage } from '../filters/filters.page';
 import { SortPage } from '../sort/sort.page';
-import { PRODUCTS, BANNERS } from '../home/home.page';
+import { BANNERS } from '../home/home.page';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 const GET_DATA = 200;
