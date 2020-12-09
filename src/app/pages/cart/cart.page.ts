@@ -67,38 +67,9 @@ export class CartPage implements OnInit {
       }
 
     ngOnInit() {
-        const s = this.renderer2.createElement('script');
-        s.onload = this.loadNextScript.bind(this);
-        s.type = 'text/javascript';
-        s.src = 'https://paytabs.com/express/v4/paytabs-express-checkout.js'; // Defines someGlobalObject
-        s.text = `id="paytabs-express-checkout"
-        data-secret-key="nY2ClkDOnRgUi7XmVHRvMp3v9NdK6knuiq7DKKs8CI3VP0hLI8hvyk0H8esezQJRgQu1AX9dFc8vdqhWyyr7TsP1Hhgg7Z7oPCpq"
-        data-ui-type="button"
-        data-merchant-id="10074150"
-        data-url-redirect="http://localhost:8100/home"
-        data-amount="3.3"
-        data-currency="SAR"
-        data-title="John Doe"
-        data-product-names="click"
-        data-order-id="25"
-        data-ui-show-header="true"
-        data-customer-phone-number="5486253"
-        data-customer-email-address="john.deo@paytabs.com"
-        data-customer-country-code="973"
-        data-ui-show-billing-address="false"
-        data-billing-full-address="test test test"
-        data-billing-city="test"
-        data-billing-state="test"
-        data-billing-country="BHR"
-        data-billing-postal-code="123"`;
-        this.renderer2.appendChild(this._document.body, s);
+        
      }
-      
-     loadNextScript() {
-        const s = this.renderer2.createElement('script');
-        s.text = `Paytabs.openPaymentPage(); `
-        this.renderer2.appendChild(this._document.body, s);
-     }
+  
 
   onChangeAddress($event) {
     this.selectedAddress = $event.detail.value;
@@ -175,47 +146,47 @@ export class CartPage implements OnInit {
   {
  
     
-    // let data={
-    //   "merchant_email" : "gautham.krishna@mermerapps.com",
-    //   "secret_key" : "	nY2ClkDOnRgUi7XmVHRvMp3v9NdK6knuiq7DKKs8CI3VP0hLI8hvyk0H8esezQJRgQu1AX9dFc8vdqhWyyr7TsP1Hhgg7Z7oPCpq",
-    //   "site_url" : "https://localhost:8100/home",
-    //   "return_url" : "https://localhost:8100/home",
-    //   "title" : "JohnDoe And Co.",
-    //   "cc_first_name" : "John",
-    //   "cc_last_name" : "Doe",
-    //   "cc_phone_number" : "00973",
-    //   "phone_number" : "123123123456",
-    //   "email" : "johndoe@example.com",
-    //   "products_per_title" : "MobilePhone || Charger || Camera",
-    //   "unit_price" : "12.123 || 21.345 || 35.678 ",
-    //   "quantity" : "2 || 3 || 1",
-    //   "other_charges" : "12.123",
-    //   "amount" : "136.082",
-    //   "discount" : "10.123",
-    //   "currency" : "BHD",
-    //   "reference_no" : "ABC-123",
-    //   "ip_customer" :"1.1.1.0",
-    //   "ip_merchant" :"1.1.1.0",
-    //   "billing_address" : "Flat 3021 Manama Bahrain",
-    //   "city" : "Manama",
-    //   "state" : "Manama",
-    //   "postal_code" : "12345",
-    //   "country" : "BHR",
-    //   "shipping_first_name" : "John",
-    //   "shipping_last_name" : "Doe",
-    //   "address_shipping" : "Flat 3021 Manama Bahrain",
-    //   "state_shipping" : "Manama",
-    //   "city_shipping" : "Manama",
-    //   "postal_code_shipping" : "1234",
-    //   "country_shipping" : "BHR",
-    //   "msg_lang" : "English",
-    //   "cms_with_version" : "WordPress4.0-WooCommerce2.3.9"
-    // }
-    // this.paytabService.getPaymentUi(data).subscribe(
-    //   (data)=>this.handleResponse(data,GET_PAY),
-    //   (error) => this.handleError(error)
+    let data={
+      "merchant_email" : "gautham.krishna@mermerapps.com",
+      "secret_key" : "	nY2ClkDOnRgUi7XmVHRvMp3v9NdK6knuiq7DKKs8CI3VP0hLI8hvyk0H8esezQJRgQu1AX9dFc8vdqhWyyr7TsP1Hhgg7Z7oPCpq",
+      "site_url" : "http://localhost:8100",
+      "return_url" : "http://localhost:8100",
+      "title" : "ABC>CO",
+      "cc_first_name" : "Gautham",
+      "cc_last_name" : "G",
+      "cc_phone_number" : "9946166081",
+      "phone_number" : "9946166081",
+      "email" : "gautham.krishna@mermerapps.com",
+      "products_per_title" : "MobilePhone || Charger || Camera",
+      "unit_price" : "12.123 || 21.345 || 35.678 ",
+      "quantity" : "2 || 3 || 1",
+      "other_charges" : "12.123",
+      "amount" : "136.082",
+      "discount" : "10.123",
+      "currency" : "INR",
+      "reference_no" : "ABC-123",
+      "ip_customer" :"1.1.1.0",
+      "ip_merchant" :"1.1.1.0",
+      "billing_address" : "Flat 3021 Manama Bahrain",
+      "city" : "Kottayam",
+      "state" : "Kerala",
+      "postal_code" : "686541",
+      "country" : "INDIA",
+      "shipping_first_name" : "John",
+      "shipping_last_name" : "Doe",
+      "address_shipping" : "Flat 3021 Manama Bahrain",
+      "state_shipping" : "Kerala",
+      "city_shipping" : "Kottyam",
+      "postal_code_shipping" : "686541",
+      "country_shipping" : "India",
+      "msg_lang" : "English",
+      "cms_with_version" : "Nodejs Lib v1"
+    }
+    this.paytabService.getPaymentUi(data).subscribe(
+      (data)=>this.handleResponse(data,GET_PAY),
+      (error) => this.handleError(error)
 
-    // )
+    )
       
 
     
