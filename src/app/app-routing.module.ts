@@ -126,6 +126,10 @@ const routes: Routes = [
   {
     path: 'manufacturers',
     loadChildren: () => import('./pages/manufacturers/manufacturers.module').then( m => m.ManufacturersPageModule)
+  },
+  {
+    path: 'paytabs',
+    loadChildren: () => import('./pages/paytabs/paytabs.module').then( m => m.PaytabsPageModule)
   }
 
 

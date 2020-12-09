@@ -14,6 +14,7 @@ export class CategoriesPage implements OnInit {
   s3url:any
   page_count:number
   page_limit:number
+  categories:Array<any>=[]
 
   bannerSlideOpts = {
     slidesPerView: 1,
@@ -51,6 +52,8 @@ export class CategoriesPage implements OnInit {
   {
     console.log(data)
     this.data=data
+    this.data.categories.forEach(element => {this.categories.push(element)});
+
     this.page_limit = data.page_count;
   }
   handleError(error)

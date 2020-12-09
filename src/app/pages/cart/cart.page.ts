@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, NgZone, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import {
   IonRouterOutlet,
@@ -23,6 +23,8 @@ import {
 import { PaytabsService } from "src/app/services/paytabs.service";
 import { Renderer2, Inject } from "@angular/core";
 import { DOCUMENT } from "@angular/common";
+import { hasLifecycleHook } from '@angular/compiler/src/lifecycle_reflector';
+import { Console } from 'console';
 
 declare var RazorpayCheckout: any;
 declare var Razorpay: any;
@@ -35,6 +37,7 @@ const POST_ADDRESS_DETAILS = 250;
 const ORDER_RESPONSE = 260;
 const GET_PAY = 270;
 const paytabs = require("paytabs_api");
+
 @Component({
   selector: "app-cart",
   templateUrl: "./cart.page.html",
@@ -53,6 +56,7 @@ export class CartPage implements OnInit {
   promo_id: any;
   payment_id: any;
   address_id: any;
+  url:any;
   constructor(
     public modalController: ModalController,
     private routerOutlet: IonRouterOutlet,
@@ -67,6 +71,7 @@ export class CartPage implements OnInit {
     private payPal: PayPal,
     private paytabService: PaytabsService,
     private renderer2: Renderer2,
+    private zone:NgZone,
     @Inject(DOCUMENT) private _document: Document
   ) {
     this.getData();
@@ -138,71 +143,33 @@ export class CartPage implements OnInit {
   }
 
   pay() {
-    let data = {
-      merchant_email: "gautham.krishna@mermerapps.com",
-      secret_key:
-        "	nY2ClkDOnRgUi7XmVHRvMp3v9NdK6knuiq7DKKs8CI3VP0hLI8hvyk0H8esezQJRgQu1AX9dFc8vdqhWyyr7TsP1Hhgg7Z7oPCpq",
-      site_url: "http://localhost:8100",
-      return_url: "http://localhost:8100",
-      title: "ABC>CO",
-      cc_first_name: "Gautham",
-      cc_last_name: "G",
-      cc_phone_number: "9946166081",
-      phone_number: "9946166081",
-      email: "gautham.krishna@mermerapps.com",
-      products_per_title: "MobilePhone || Charger || Camera",
-      unit_price: "12.123 || 21.345 || 35.678 ",
-      quantity: "2 || 3 || 1",
-      other_charges: "12.123",
-      amount: "136.082",
-      discount: "10.123",
-      currency: "INR",
-      reference_no: "ABC-123",
-      ip_customer: "1.1.1.0",
-      ip_merchant: "1.1.1.0",
-      billing_address: "Flat 3021 Manama Bahrain",
-      city: "Kottayam",
-      state: "Kerala",
-      postal_code: "686541",
-      country: "INDIA",
-      shipping_first_name: "John",
-      shipping_last_name: "Doe",
-      address_shipping: "Flat 3021 Manama Bahrain",
-      state_shipping: "Kerala",
-      city_shipping: "Kottyam",
-      postal_code_shipping: "686541",
-      country_shipping: "India",
-      msg_lang: "English",
-      cms_with_version: "Nodejs Lib v1",
-    };
-    this.paytabService.getPaymentUi(data).subscribe(
-      (data) => this.handleResponse(data, GET_PAY),
-      (error) => this.handleError(error)
-    );
-
-    // if(!this.selectedAddress)
-    // {
-    //   this.presentToastDanger("Please select a Delivery Location.")
-    // }
-    // else if(!this.payment_id){
-    //   this.presentToastDanger("Please select a Payment Method.")
-    // }
-    // else{
-    //   console.log(this.selectedAddress)
-    // let data={
-    //   client_id:localStorage.getItem("client_id"),
-    //   promo_code_id:this.promo_id,
-    //   address_id:this.address_id,
-    //   payment_option_id:this.payment_id,
-    //   product_total:this.amountDetails.total_amount,
-    //   payable_amount:this.amountDetails.payable_amount
-    // }
-    // this.orderService.captureOrder(data).subscribe(
-    //   (data)=> this.handleResponse(data,ORDER_RESPONSE),
-    //   (error)=>this.handleError(error)
-    // )
-    // }
+    if(!this.selectedAddress)
+    {
+      this.presentToastDanger("Please select a Delivery Location.")
+    }
+    else if(!this.payment_id){
+      this.presentToastDanger("Please select a Payment Method.")
+    }
+    else{
+      console.log(this.selectedAddress)
+      let data={
+      client_id:localStorage.getItem("client_id"),
+      promo_code_id:this.promo_id,
+      address_id:this.address_id,
+      payment_option_id:this.payment_id,
+      product_total:this.amountDetails.total_amount,
+      payable_amount:this.amountDetails.payable_amount
+    }
+    this.orderService.captureOrder(data).subscribe(
+      (data)=> this.handleResponse(data,ORDER_RESPONSE),
+      (error)=>this.handleError(error)
+    )
+    }
   }
+
+ 
+
+
 
   async presentToast(msg) {
     const toast = await this.toastController.create({
@@ -332,7 +299,65 @@ export class CartPage implements OnInit {
         localStorage.setItem("total_amount", this.amountDetails.payable_amount);
         console.log("cordova not supported");
         this.router.navigate(["paypal"]);
-      } else {
+      } 
+      else if(this.payment_id == 5)
+      {
+        paytabs.createPayPage({
+          'merchant_email':'dealonstoreuae@gmail.com',
+          'secret_key':'Wlo2xFHTvSKmALAZpfiFtS74loAAaje7ED9cjQ5OJPakAKkZ0CFuvNzQc9qmsFu7iDjBuppeezyPkSPkvuO0ioRuxiR0Xl8fZrQt',
+          'currency':'AED',//change this to the required currency
+          'amount':'10',//change this to the required amount
+          'site_url':'https://arba.mermerapps.com',//change this to reflect your site
+          'title':'Order for Shoes',//Change this to reflect your order title
+          'quantity':1,//Quantity of the product
+          'unit_price':10, //Quantity * price must be equal to amount
+          'products_per_title':'Shoes | Jeans', //Change this to your products
+          'return_url':'https://arba.mermerapps.com/home',//This should be your callback url
+          'cc_first_name':'Samy',//Customer First Name
+          'cc_last_name':'Saad',//Customer Last Name
+          'cc_phone_number':'00973', //Country code
+          'phone_number':'12332323', //Customer Phone
+          'billing_address':'Address', //Billing Address
+          'city':'Manama',//Billing City
+          'state':'Manama',//Billing State
+          'postal_code':'1234',//Postal Code
+          'country':'ARE',//Iso 3 country code
+          'email':'gautham@gmail.com',//Customer Email
+          'ip_customer':'<CUSTOMER IP>',//Pass customer IP here
+          'ip_merchant':'<MERCHANT IP>',//Change this to your server IP
+          'address_shipping':'Shipping',//Shipping Address
+          'city_shipping':'Manama',//Shipping City
+          'state_shipping':'Manama',//Shipping State
+          'postal_code_shipping':'973',
+          'country_shipping':'ARE',
+          'other_charges':0,//Other chargs can be here
+          'reference_no':1234,//Pass the order id on your system for your reference
+          'msg_lang':'en',//The language for the response
+          'cms_with_version':'Nodejs Lib v1',//Feel free to change this
+       },createPayPage);
+      
+        function createPayPage(result)
+        {
+          
+       
+          if(result.response_code == 4012)
+          {
+              //Redirect your merchant to the payment link
+              console.log(result.payment_url)
+              window.open(result.payment_url);
+              
+
+              // this.handle(this.result)
+          }
+          else{
+              //Handle the error
+              console.log(result);
+              
+          }
+        }
+       
+      }
+      else {
         this.presentToastSuccess("Order placed Successfully");
 
         this.router.navigate(["home"]);
@@ -403,4 +428,10 @@ export class CartPage implements OnInit {
     });
     toast.present();
   }
+
+  handle(url:any)
+  {
+    this.router.navigate(['paytabs'])
+  }
+  
 }
