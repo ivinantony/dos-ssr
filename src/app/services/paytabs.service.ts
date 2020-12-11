@@ -12,7 +12,7 @@ export class PaytabsService {
   url:string
   constructor(private httpclient:HttpClient) 
   {
-    this.url = "https://www.paytabs.com/apiv2/create_pay_page"
+    this.url = "https://apitest.cybersource.com/pts/v2/payments	"
    }
    public getPaymentUi (data:any)
    {

@@ -34,14 +34,40 @@
           <ion-item color="light" class="ion-text-center input" lines="none">
             <ion-input  required placeholder="Name" formControlName="name"></ion-input>
           </ion-item>
+            <ng-container  *ngFor="let validation of validation_messages.name">
+              <div class="err_msg" *ngIf="loginGroup.get('name').hasError(validation.type) &&
+              loginGroup.get('name').dirty &&
+              loginGroup.get('name').touched">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                {{ validation.message}}
+              </div>
+            </ng-container>
+    
+          
           <ion-item color="light" class="ion-text-center input" lines="none">
             <ion-input required placeholder="Phone number" formControlName="phone"></ion-input>
           </ion-item>
+          <ng-container  *ngFor="let validation of validation_messages.phone">
+            <div class="err_msg" *ngIf="loginGroup.get('phone').hasError(validation.type) &&
+            loginGroup.get('phone').dirty &&
+            loginGroup.get('phone').touched">
+              <ion-icon name="information-circle-outline"></ion-icon>
+              {{ validation.message}}
+            </div>
+          </ng-container>
           <ion-item color="light" class="ion-text-center input" lines="none">
             <ion-input placeholder="Email" formControlName="email"></ion-input>
           </ion-item>
+          <ng-container  *ngFor="let validation of validation_messages.email">
+            <div class="err_msg" *ngIf="loginGroup.get('email').hasError(validation.type) &&
+            loginGroup.get('email').dirty &&
+            loginGroup.get('email').touched">
+              <ion-icon name="information-circle-outline"></ion-icon>
+              {{ validation.message}}
+            </div>
+          </ng-container>
         </ion-list>
-        <ion-button color="dark" type="submit" [disabled]="!loginGroup.valid"  expand="block"
+        <ion-button color="dark" type="submit"  expand="block"
           >Login</ion-button
         >
         </form>
@@ -49,3 +75,5 @@
     </ion-row>
   </ion-grid>
 </ion-content>
+
+<!-- [disabled]="!loginGroup.valid"  -->

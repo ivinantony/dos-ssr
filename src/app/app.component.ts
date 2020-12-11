@@ -24,6 +24,7 @@ export class AppComponent implements OnInit {
   searching: boolean = false
   public searchTerm: FormControl;
   searchItems: Array<any>;
+  client_id:any = null
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -38,7 +39,7 @@ export class AppComponent implements OnInit {
     private searchService: ProductSearchService,
     private profileService:ProfileService
   ) {
-    
+    this.client_id = localStorage.getItem('client_id')
     this.searchTerm = new FormControl();
     this.initializeApp();
     

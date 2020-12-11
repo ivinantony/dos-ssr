@@ -62,7 +62,7 @@ export class CategoriesPage implements OnInit {
   }
   navigateToProducts(index: number) {
     
-    this.router.navigate(['products', this.data.categories[index].id, { name: this.data.categories[index].category_name }])
+    this.router.navigate(['products', this.categories[index].id, { name: this.categories[index].category_name }])
   }
 
   loadMoreContent(event)

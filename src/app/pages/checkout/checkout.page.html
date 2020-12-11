@@ -1,0 +1,149 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Checkout</ion-title>
+    <ion-buttons slot="start" mode="ios">
+      <ion-back-button defaultHref="cart" text=""></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<div class="wrapper">
+  <ion-card class="card">
+    <div class="ion-text-center cartImage">
+      <img src="../../../assets/imgs/shopping-cart.svg" /> 
+    </div>
+    
+    <ion-card-header>
+      <ion-card-subtitle>Bill Details</ion-card-subtitle>
+      
+    </ion-card-header>
+    <div class="payDetails">
+      <ion-list>
+        <ion-item lines="none" class="total">
+          <ion-button
+            color="dark"
+            slot="start"
+            expand="block"
+            fill="clear"
+          >
+            Total amount
+          </ion-button>
+          <ion-button
+            color="dark"
+            slot="end"
+            expand="block"
+            fill="clear"
+          >
+            {{ data?.total_amount | currency:'AED  ' }}
+          </ion-button>
+        </ion-item>
+        <ion-item lines="none"> 
+          <ion-button
+            color="dark"
+            slot="start"
+            expand="block"
+            fill="clear"
+          >
+            Delivery Charges
+          </ion-button>
+          <ion-button
+            color="dark"
+            slot="end"
+            expand="block"
+            fill="clear"
+          >
+            {{ data?.delivery_charge | currency:'AED  ' }}
+          </ion-button>
+        </ion-item >
+        <ion-item class="total" lines="none">
+          <ion-button
+            size="small"
+            color="dark"
+            slot="start"
+            expand="block"
+            fill="clear"
+          >
+            Discount
+          </ion-button>
+          <ion-button
+            color="dark"
+            slot="end"
+            expand="block"
+            fill="clear"
+            size="small"
+          >
+          {{ data?.saved_amount | currency:'AED  ' }}
+          </ion-button>
+        </ion-item>
+
+        <ion-item class="total" lines="none">
+          <ion-button
+            size="small"
+            color="dark"
+            slot="start"
+            expand="block"
+            fill="clear"
+            (click)="openPromo()"
+          >
+          <ion-icon
+         slot="start"
+         color="danger"
+        src="assets/imgs/discount.svg">
+        </ion-icon>
+            Apply Promo Code
+          </ion-button>
+        </ion-item>
+        
+        <ion-item lines="none" class="total">
+          <ion-button
+            style="font-weight: bold"
+            color="dark"
+            slot="start"
+            expand="block"
+            fill="clear"
+          >
+            Payable Amount
+          </ion-button>
+          <ion-button
+            style="font-weight: bold"
+            color="dark"
+            slot="end"
+            expand="block"
+            fill="clear"
+            size="small"
+          >
+          {{ data?.payable_amount | currency:'AED  ' }}
+          </ion-button>
+        </ion-item>
+        
+        <ion-item lines=none>
+          <ion-col size="12" class="btnWrapper">
+            <ion-button class="btn" (click)="checkOut()" expand="full" fill="solid" shape="round" color="tertiary"  >
+              CHECKOUT
+            </ion-button>
+          </ion-col>
+        </ion-item>
+      </ion-list>
+    </div>
+    
+    
+    <ion-row class="address" *ngFor="let item of addresses; let i=index">
+      <ion-col size="11">
+    
+        
+      </ion-col>
+      <ion-col size="1">
+        <ion-icon name="ellipsis-vertical-outline" (click)="selectOptions(i)"></ion-icon>
+      </ion-col>
+    </ion-row>
+    <div class="ion-text-center" style="width: 100%;" *ngIf="addresses?.length == 0">
+      <h1>Add an address</h1>
+    </div>
+   
+  </ion-card>
+</div>
+  
+  </ion-content>
+
+ 

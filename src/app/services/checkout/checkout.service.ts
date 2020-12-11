@@ -20,4 +20,10 @@ export class CheckoutService {
      return this.httpclient.post(
       this.url + "addressDetails",data,{ headers }).pipe(map(res=>{return res}));
    }
+   public getAmountDetails (client_id:any,address_id)
+   {
+     const headers = this.headerservice.getHttpHeaders()
+     return this.httpclient.get(
+      this.url + "checkout?client_id="+client_id+"&address_id="+address_id,{ headers }).pipe(map(res=>{return res}));
+   }
 }

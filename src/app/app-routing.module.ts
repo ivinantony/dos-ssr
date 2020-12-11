@@ -79,7 +79,8 @@ const routes: Routes = [
   {
     path: 'brand-products',
     loadChildren: () => import('./pages/brand-products/brand-products.module').then( m => m.BrandProductsPageModule)
-  },  {
+  },
+  {
     path: 'edit-profile',
     loadChildren: () => import('./pages/edit-profile/edit-profile.module').then( m => m.EditProfilePageModule)
   },
@@ -130,6 +131,11 @@ const routes: Routes = [
   {
     path: 'paytabs',
     loadChildren: () => import('./pages/paytabs/paytabs.module').then( m => m.PaytabsPageModule)
+  },
+  
+  {
+    path: 'checkout',
+    loadChildren: () => import('./pages/checkout/checkout.module').then( m => m.CheckoutPageModule)
   }
 
 

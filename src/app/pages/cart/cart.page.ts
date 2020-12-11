@@ -101,27 +101,27 @@ export class CartPage implements OnInit {
     return await modal.present();
   }
 
-  async openPromo() {
-    this.amountDetails.payable_amount += this.discount_amount;
-    this.amountDetails.saved_amount -= this.discount_amount;
-    const modal = await this.modalController.create({
-      component: CouponPage,
-      swipeToClose: true,
-      presentingElement: this.routerOutlet.nativeEl,
-      cssClass: "my-custom-class",
-    });
-    modal.onDidDismiss().then((data) => {
-      const promo_Details = data["data"];
-      if (promo_Details) {
-        console.log(promo_Details);
-        this.amountDetails.payable_amount -= promo_Details.discount_amount;
-        this.amountDetails.saved_amount = promo_Details.discount_amount;
-        this.discount_amount = promo_Details.discount_amount;
-        this.promo_id = promo_Details.promo_Id;
-      }
-    });
-    return await modal.present();
-  }
+  // async openPromo() {
+  //   this.amountDetails.payable_amount += this.discount_amount;
+  //   this.amountDetails.saved_amount -= this.discount_amount;
+  //   const modal = await this.modalController.create({
+  //     component: CouponPage,
+  //     swipeToClose: true,
+  //     presentingElement: this.routerOutlet.nativeEl,
+  //     cssClass: "my-custom-class",
+  //   });
+  //   modal.onDidDismiss().then((data) => {
+  //     const promo_Details = data["data"];
+  //     if (promo_Details) {
+  //       console.log(promo_Details);
+  //       this.amountDetails.payable_amount -= promo_Details.discount_amount;
+  //       this.amountDetails.saved_amount = promo_Details.discount_amount;
+  //       this.discount_amount = promo_Details.discount_amount;
+  //       this.promo_id = promo_Details.promo_Id;
+  //     }
+  //   });
+  //   return await modal.present();
+  // }
 
   async openPaymentModes() {
     const modal = await this.modalController.create({
@@ -143,6 +143,7 @@ export class CartPage implements OnInit {
   }
 
   pay() {
+    
     if(!this.selectedAddress)
     {
       this.presentToastDanger("Please select a Delivery Location.")
@@ -151,19 +152,23 @@ export class CartPage implements OnInit {
       this.presentToastDanger("Please select a Payment Method.")
     }
     else{
+      let address_id = this.address_id
+      this.router.navigate(['checkout',{address_id}])
       console.log(this.selectedAddress)
-      let data={
-      client_id:localStorage.getItem("client_id"),
-      promo_code_id:this.promo_id,
-      address_id:this.address_id,
-      payment_option_id:this.payment_id,
-      product_total:this.amountDetails.total_amount,
-      payable_amount:this.amountDetails.payable_amount
-    }
-    this.orderService.captureOrder(data).subscribe(
-      (data)=> this.handleResponse(data,ORDER_RESPONSE),
-      (error)=>this.handleError(error)
-    )
+    //   let data={
+    //   client_id:localStorage.getItem("client_id"),
+    //   promo_code_id:this.promo_id,
+    //   address_id:this.address_id,
+      
+    //   payment_option_id:this.payment_id,
+    //   product_total:this.amountDetails.total_amount,
+    //   payable_amount:this.amountDetails.payable_amount
+    // }
+   
+    // this.orderService.captureOrder(data).subscribe(
+    //   (data)=> this.handleResponse(data,ORDER_RESPONSE),
+    //   (error)=>this.handleError(error)
+    // )
     }
   }
 
@@ -219,10 +224,16 @@ export class CartPage implements OnInit {
       for (let i = 0; i < this.cart?.length; i++) {
         this.cart[i].images[0].path = this.s3url + this.cart[i].images[0].path;
       }
-    } else if (type == GET_ADDRESS) {
+    } 
+    else if (type == GET_PAY)
+    {
+      console.log(data)
+    }
+    else if (type == GET_ADDRESS) {
       this.addresses = data.addresses;
       console.log(this.addresses, "addresses");
-    } else if (type == ORDER_RESPONSE) {
+    } 
+    else if (type == ORDER_RESPONSE) {
       console.log(data, "pay response");
       localStorage.setItem("order_id", data.payable_order_id);
       if (this.payment_id == 4) {
@@ -302,60 +313,16 @@ export class CartPage implements OnInit {
       } 
       else if(this.payment_id == 5)
       {
-        paytabs.createPayPage({
-          'merchant_email':'dealonstoreuae@gmail.com',
-          'secret_key':'Wlo2xFHTvSKmALAZpfiFtS74loAAaje7ED9cjQ5OJPakAKkZ0CFuvNzQc9qmsFu7iDjBuppeezyPkSPkvuO0ioRuxiR0Xl8fZrQt',
-          'currency':'AED',//change this to the required currency
-          'amount':'10',//change this to the required amount
-          'site_url':'https://arba.mermerapps.com',//change this to reflect your site
-          'title':'Order for Shoes',//Change this to reflect your order title
-          'quantity':1,//Quantity of the product
-          'unit_price':10, //Quantity * price must be equal to amount
-          'products_per_title':'Shoes | Jeans', //Change this to your products
-          'return_url':'https://arba.mermerapps.com/home',//This should be your callback url
-          'cc_first_name':'Samy',//Customer First Name
-          'cc_last_name':'Saad',//Customer Last Name
-          'cc_phone_number':'00973', //Country code
-          'phone_number':'12332323', //Customer Phone
-          'billing_address':'Address', //Billing Address
-          'city':'Manama',//Billing City
-          'state':'Manama',//Billing State
-          'postal_code':'1234',//Postal Code
-          'country':'ARE',//Iso 3 country code
-          'email':'gautham@gmail.com',//Customer Email
-          'ip_customer':'<CUSTOMER IP>',//Pass customer IP here
-          'ip_merchant':'<MERCHANT IP>',//Change this to your server IP
-          'address_shipping':'Shipping',//Shipping Address
-          'city_shipping':'Manama',//Shipping City
-          'state_shipping':'Manama',//Shipping State
-          'postal_code_shipping':'973',
-          'country_shipping':'ARE',
-          'other_charges':0,//Other chargs can be here
-          'reference_no':1234,//Pass the order id on your system for your reference
-          'msg_lang':'en',//The language for the response
-          'cms_with_version':'Nodejs Lib v1',//Feel free to change this
-       },createPayPage);
-      
-        function createPayPage(result)
-        {
-          
-       
-          if(result.response_code == 4012)
+        let data=
           {
-              //Redirect your merchant to the payment link
-              console.log(result.payment_url)
-              window.open(result.payment_url);
-              
+            
+          }
+        
+        this.paytabService.getPaymentUi(data).subscribe(
+          (data)=>this.handleResponse(data,GET_PAY),
+          (error)=>this.handleError(error)
 
-              // this.handle(this.result)
-          }
-          else{
-              //Handle the error
-              console.log(result);
-              
-          }
-        }
-       
+        )
       }
       else {
         this.presentToastSuccess("Order placed Successfully");
@@ -435,3 +402,59 @@ export class CartPage implements OnInit {
   }
   
 }
+
+
+
+// paytabs.createPayPage({
+//   'merchant_email':'dealonstoreuae@gmail.com',
+//   'secret_key':'Wlo2xFHTvSKmALAZpfiFtS74loAAaje7ED9cjQ5OJPakAKkZ0CFuvNzQc9qmsFu7iDjBuppeezyPkSPkvuO0ioRuxiR0Xl8fZrQt',
+//   'currency':'AED',//change this to the required currency
+//   'amount':'10',//change this to the required amount
+//   'site_url':'https://arba.mermerapps.com',//change this to reflect your site
+//   'title':'Order for Shoes',//Change this to reflect your order title
+//   'quantity':1,//Quantity of the product
+//   'unit_price':10, //Quantity * price must be equal to amount
+//   'products_per_title':'Shoes | Jeans', //Change this to your products
+//   'return_url':'https://arba.mermerapps.com/home',//This should be your callback url
+//   'cc_first_name':'Samy',//Customer First Name
+//   'cc_last_name':'Saad',//Customer Last Name
+//   'cc_phone_number':'00973', //Country code
+//   'phone_number':'12332323', //Customer Phone
+//   'billing_address':'Address', //Billing Address
+//   'city':'Manama',//Billing City
+//   'state':'Manama',//Billing State
+//   'postal_code':'1234',//Postal Code
+//   'country':'ARE',//Iso 3 country code
+//   'email':'gautham@gmail.com',//Customer Email
+//   'ip_customer':'<CUSTOMER IP>',//Pass customer IP here
+//   'ip_merchant':'<MERCHANT IP>',//Change this to your server IP
+//   'address_shipping':'Shipping',//Shipping Address
+//   'city_shipping':'Manama',//Shipping City
+//   'state_shipping':'Manama',//Shipping State
+//   'postal_code_shipping':'973',
+//   'country_shipping':'ARE',
+//   'other_charges':0,//Other chargs can be here
+//   'reference_no':1234,//Pass the order id on your system for your reference
+//   'msg_lang':'en',//The language for the response
+//   'cms_with_version':'Nodejs Lib v1',//Feel free to change this
+// },createPayPage);
+
+// function createPayPage(result)
+// {
+  
+
+//   if(result.response_code == 4012)
+//   {
+//       //Redirect your merchant to the payment link
+//       console.log(result.payment_url)
+//       window.open(result.payment_url);
+      
+
+//       // this.handle(this.result)
+//   }
+//   else{
+//       //Handle the error
+//       console.log(result);
+      
+//   }
+// }

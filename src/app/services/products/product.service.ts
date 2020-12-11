@@ -19,7 +19,7 @@ export class ProductService {
    {
      const headers = this.headerservice.getHttpHeaders()
      return this.httpclient.get(
-      this.url + "products",{ headers }).pipe(map(res=>{
+      this.url + "all-product",{ headers }).pipe(map(res=>{
        return res}));
    }
 }

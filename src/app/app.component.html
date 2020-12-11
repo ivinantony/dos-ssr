@@ -128,9 +128,21 @@
               class="links"
 
             >
-              <img src="../assets/imgs/categories.svg" alt="">
+            <ion-icon class="icon" name="grid-outline" color="tertiary"></ion-icon>
               <ion-label>Categories</ion-label>
             </ion-item>
+
+
+            <ion-item
+              (click)="router.navigate(['/offer'])"
+              routerDirection="root"
+              lines="none"
+              detail="false"
+              class="links">
+              <ion-icon name="flash-outline" class="icon" color="tertiary"></ion-icon>
+              <ion-label>Offers</ion-label>
+            </ion-item>
+
             <ion-item
               (click)="router.navigate(['/cart'])"
               routerDirection="root"
@@ -139,18 +151,17 @@
               class="links"
 
             >
-              <img src="../assets/imgs/cart.svg" alt="">
+            <ion-icon class="icon" name="cart-outline" color="tertiary"></ion-icon>
               <ion-label>Cart</ion-label>
             </ion-item>
+
             <ion-item
               (click)="router.navigate(['/profile'])"
               routerDirection="root"
               lines="none"
               detail="false"
-              class="links"
-
-            >
-              <img src="../assets/imgs/userSide.svg" alt="">
+              class="links">
+            <ion-icon class="icon" name="person-circle-outline" color="tertiary"></ion-icon>
               <ion-label>Profile</ion-label>
             </ion-item>
             
@@ -158,7 +169,7 @@
 
         </ion-list>
       </ion-content>
-      <ion-footer>
+      <ion-footer *ngIf="client_id != null">
         <ion-toolbar  class="ftrtlbr">
           <ion-button
             (click)="logout()"
