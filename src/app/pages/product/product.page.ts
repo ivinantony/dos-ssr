@@ -209,4 +209,10 @@ export class ProductPage implements OnInit {
 
     await alert.present();
   }
+
+  navigateToProduct(index: number) {
+    let id=this.data.category_products[index].id
+    let catId= this.data.category_products[index].category_id
+    this.router.navigate(['product',{id,catId}])
+  }
 }

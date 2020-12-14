@@ -95,9 +95,13 @@
         <div class="header-content user" [routerLink]="['/profile']">
           <img src="../assets/imgs/user.svg"alt="" />
           <ion-label class="ion-margin-horizontal"
-            ><ion-text color="light">
-              <h2><b>Gautham</b></h2>
-            </ion-text></ion-label>
+            ><ion-text color="light" *ngIf="!user_name">
+              <h2><b>Username</b></h2 >
+            </ion-text>
+            <ion-text color="light" *ngIf="user_name">
+              <h2><b>{{user_name}}</b></h2 >
+            </ion-text>
+          </ion-label>
         </div>
       </ion-menu-toggle>
         <ion-list id="inbox-list">
@@ -164,7 +168,7 @@
             <ion-icon class="icon" name="person-circle-outline" color="tertiary"></ion-icon>
               <ion-label>Profile</ion-label>
             </ion-item>
-            
+      
           </ion-menu-toggle>
 
         </ion-list>
@@ -175,12 +179,12 @@
             (click)="logout()"
             expand="block"
             fill="clear"
-            color="light"
+            color="dark"
             shape="round"
             class="footer"
           >
             <img src="../assets/imgs/door.svg" alt="">
-            Sign out
+            Sign Out
           </ion-button>
         </ion-toolbar>
       </ion-footer>

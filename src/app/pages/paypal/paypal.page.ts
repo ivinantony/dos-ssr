@@ -10,8 +10,8 @@ const POST_DATA=200;
 })
 export class PaypalPage implements OnInit {
   paymentAmount: string;
-  currency: string = 'INR';
-  currencyIcon: string = '₹';
+  currency: string = 'USD';
+  currencyIcon: string = '$';
   order_id:any
   details:any
   constructor(private pay:PaymentService,private router:Router,private toastController:ToastController,private zone:NgZone) 

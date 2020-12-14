@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
   public searchTerm: FormControl;
   searchItems: Array<any>;
   client_id:any = null
+  user_name:any
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -40,8 +41,11 @@ export class AppComponent implements OnInit {
     private profileService:ProfileService
   ) {
     this.client_id = localStorage.getItem('client_id')
+
+    console.log(this.client_id)
     this.searchTerm = new FormControl();
     this.initializeApp();
+    
     
     this.searchService.searchValues.subscribe(data => {
       console.log('data', data)
@@ -149,7 +153,8 @@ export class AppComponent implements OnInit {
 
   getData()
   {
-    this.profileService.getMenuDetails().subscribe(
+  
+    this.profileService.getProfileDetails(this.client_id).subscribe(
       (data)=>this.handleResponse(data),
       (error)=>this.handleError(error)
     )
@@ -158,6 +163,7 @@ export class AppComponent implements OnInit {
   handleResponse(data)
   {
     console.log(data)
+    this.user_name = data.client_Details.name
   }
   handleError(error){
     console.log(error)

@@ -75,17 +75,17 @@
  
 
 
-  <ion-grid>
+
     <ion-row>
       <ion-col size="12" size-sm="12" size-md="12" size-xl="12" size-lg="12">
-        <ion-grid fixed>
+        <ion-grid>
           <ion-row class="row">
             <ion-col
               size="6"
-              size-sm="6"
-              size-md="6"
+              size-sm="4"
+              size-md="4"
               size-lg="3"
-              size-xl="3"
+              size-xl="2"
               *ngFor="let item of products; let i=index"
               
               class="prod"
@@ -107,7 +107,7 @@
                     style="width: auto"
                   />
                 </picture> -->
-                <img [src]="item?.images[0].path" alt="">
+                <img [src]="s3url + item?.images[0].path" alt="">
               </div>
               <ion-list>
                 <ion-item lines="none">
@@ -163,7 +163,7 @@
             </ion-col> 
             
             
-            <ion-infinite-scroll (ionInfinite)="loadMoreContent($event)">
+            <ion-infinite-scroll (ionInfinite)="loadMoreContent($event)" *ngIf="page_count != page_limit">
               <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
               </ion-infinite-scroll-content>
             </ion-infinite-scroll>
@@ -172,7 +172,7 @@
 
       </ion-col>
     </ion-row>
-  </ion-grid>
+
 
 
 

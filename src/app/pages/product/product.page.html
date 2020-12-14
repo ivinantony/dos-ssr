@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home" text=""></ion-back-button>
     </ion-buttons>
-    
+    <ion-title>PRODUCT</ion-title>
     <ion-buttons slot="end" class="ion-hide-md-up">
       <ion-icon
         name="cart-outline"
@@ -132,7 +132,7 @@
             </ion-button>
           </ion-item>
           <ion-slides [options]="recommendedSlides" class="recommended">
-            <ion-slide *ngFor="let item of data?.category_products; let i=index">
+            <ion-slide *ngFor="let item of data?.category_products; let i=index"  (click)="navigateToProduct(i)">
               <ion-card>
                 <img src="{{s3url+item.images[0]?.path}}" alt="" />
                 <ion-card-content>

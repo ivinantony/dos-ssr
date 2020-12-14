@@ -142,15 +142,15 @@ export class CartPage implements OnInit {
     return await modal.present();
   }
 
-  pay() {
+  continue() {
     
     if(!this.selectedAddress)
     {
       this.presentToastDanger("Please select a Delivery Location.")
     }
-    else if(!this.payment_id){
-      this.presentToastDanger("Please select a Payment Method.")
-    }
+    // else if(!this.payment_id){
+    //   this.presentToastDanger("Please select a Payment Method.")
+    // }
     else{
       let address_id = this.address_id
       this.router.navigate(['checkout',{address_id}])

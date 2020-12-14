@@ -1,9 +1,13 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { ActionSheetController, AlertController, Platform } from "@ionic/angular";
-import { AuthenticationService } from 'src/app/services/authentication.service';
+import {
+  ActionSheetController,
+  AlertController,
+  Platform,
+} from "@ionic/angular";
+import { AuthenticationService } from "src/app/services/authentication.service";
 import { BrandProductService } from "src/app/services/brandProducts/brand-product.service";
-import { CartService } from 'src/app/services/cart/cart.service';
+import { CartService } from "src/app/services/cart/cart.service";
 import { UtilsService } from "src/app/services/utils.service";
 import { BANNERS } from "../home/home.page";
 const GET_DATA = 200;
@@ -17,17 +21,16 @@ const DEL_DATA = 220;
 export class BrandProductsPage implements OnInit {
   products: Array<any> = [];
   banners: Array<any> = BANNERS;
-  sortOptions:Array<any> = [
+  sortOptions: Array<any> = [
     {
-      option:"Price - High to low",
-      isChecked:false
+      option: "Price - High to low",
+      isChecked: false,
     },
     {
-      option:"Price - Low to high",
-      isChecked:false
-    }
-  
-  ]
+      option: "Price - Low to high",
+      isChecked: false,
+    },
+  ];
   bannerSlideOpts = {
     slidesPerView: 1,
     initialSlide: 0,
@@ -46,36 +49,35 @@ export class BrandProductsPage implements OnInit {
   page_limit: number;
   page_count: number;
   current_page: number;
-  client_id:any
+  client_id: any;
+  data: any;
   constructor(
     private brandProductService: BrandProductService,
     private platform: Platform,
     private utils: UtilsService,
     private activatedRoute: ActivatedRoute,
-    private actionSheetController:ActionSheetController,
-    public router:Router,
-    private cartService:CartService,
-    private authService:AuthenticationService,
-    private alertController:AlertController
+    private actionSheetController: ActionSheetController,
+    public router: Router,
+    private cartService: CartService,
+    private authService: AuthenticationService,
+    private alertController: AlertController
   ) {
-    this.client_id = localStorage.getItem('client_id')
+    this.client_id = localStorage.getItem("client_id");
     this.page_count = 1;
     this.brand_id = activatedRoute.snapshot.params.brand_id;
     this.s3url = utils.getS3url();
     this.checkWidth();
     this.getData();
   }
-  ionViewWillEnter()
-  {
-    this.getData()
+  ionViewWillEnter() {
+    this.getData();
   }
 
   ngOnInit() {}
 
   getData() {
-   
     this.brandProductService
-      .getBrandProducts(this.brand_id, this.page_count,this.client_id)
+      .getBrandProducts(this.brand_id, this.page_count, this.client_id)
       .subscribe(
         (data) => this.handleResponse(data, GET_DATA),
         (error) => this.handleError(error)
@@ -83,17 +85,24 @@ export class BrandProductsPage implements OnInit {
   }
 
   handleResponse(data, type) {
-    
     if (type == GET_DATA) {
+      console.log(data);
       this.page_limit = data.page_count;
+      this.data = data;
+      this.data.product.forEach((element) => {
+        this.products.push(element);
+      });
 
-      this.products = data.product;
-      this.brand_name = this.products[0].brand_name;
-      console.log(this.products);
-      for (let i = 0; i < this.products.length; i++) {
-        this.products[i].images[0].path =
-          this.s3url + this.products[i].images[0].path;
-      }
+      // console.log(data)
+      // this.page_limit = data.page_count;
+
+      // this.products = data.product;
+      // this.brand_name = this.products[0].brand_name;
+      console.log(this.products, "API called");
+      // for (let i = 0; i < this.products.length; i++) {
+      //   this.products[i].images[0].path =
+      //     this.s3url + this.products[i].images[0].path;
+      // }
     }
     console.log(data);
   }
@@ -122,19 +131,19 @@ export class BrandProductsPage implements OnInit {
     if (this.page_count == this.page_limit) {
       event.target.disabled = true;
     } else {
+      console.log(this.page_count, "before");
       this.page_count++;
+      console.log(this.page_count, "after");
       this.getData();
       console.log("hello");
     }
   }
 
-  navigateToProduct(index) 
-  {
-    let id=this.products[index].id
-    let catId= this.products[index].category_id
-    this.router.navigate(['product',{id,catId}])
+  navigateToProduct(index) {
+    let id = this.products[index].id;
+    let catId = this.products[index].category_id;
+    this.router.navigate(["product", { id, catId }]);
   }
-
 
   openSort() {
     this.presentActionSheet();
@@ -149,18 +158,22 @@ export class BrandProductsPage implements OnInit {
         {
           text: "Price - high to low",
           handler: () => {
-        this.brandProductService.getBrandProducts(this.brand_id, this.page_count,this.client_id).subscribe(
-        (data) => this.handleResponse(data, GET_DATA),
-        (error) => this.handleError(error)
-        );
+            this.brandProductService
+              .getBrandProducts(this.brand_id, this.page_count, this.client_id)
+              .subscribe(
+                (data) => this.handleResponse(data, GET_DATA),
+                (error) => this.handleError(error)
+              );
           },
         },
         {
           text: "Price - low to high",
           handler: () => {
-            this.brandProductService.getBrandProducts(this.brand_id, this.page_count,this.client_id).subscribe(
-              (data) => this.handleResponse(data, GET_DATA),
-              (error) => this.handleError(error)
+            this.brandProductService
+              .getBrandProducts(this.brand_id, this.page_count, this.client_id)
+              .subscribe(
+                (data) => this.handleResponse(data, GET_DATA),
+                (error) => this.handleError(error)
               );
           },
         },
@@ -171,54 +184,46 @@ export class BrandProductsPage implements OnInit {
 
   async presentLogin() {
     const alert = await this.alertController.create({
-      cssClass: 'my-custom-class',
-      header: 'You Are Not Logged In',
-      message: 'Log in to continue.',
+      cssClass: "my-custom-class",
+      header: "You Are Not Logged In",
+      message: "Log in to continue.",
       buttons: [
-         {
-          text: 'Login',
+        {
+          text: "Login",
           handler: () => {
-            this.router.navigate(['login'])
-          }
-        }
-      ]
+            this.router.navigate(["login"]);
+          },
+        },
+      ],
     });
 
     await alert.present();
   }
- 
 
-
-  addToCart(index:number)
-  {
-    if(this.authService.isAuthenticated())
-    {
-      let data={
-        product_id :this.products[index].id,
-        client_id :this.client_id
-         }
-         this.cartService.addToCart(data).subscribe(
-           (data)=>this.handleResponse(data,POST_DATA),
-           (error)=>this.handleError(error)
-         )
-         this.products[index].cart_count++
-        //  this.getData()
+  addToCart(index: number) {
+    if (this.authService.isAuthenticated()) {
+      let data = {
+        product_id: this.products[index].id,
+        client_id: this.client_id,
+      };
+      this.cartService.addToCart(data).subscribe(
+        (data) => this.handleResponse(data, POST_DATA),
+        (error) => this.handleError(error)
+      );
+      this.products[index].cart_count++;
+      //  this.getData()
+    } else {
+      this.presentLogin();
     }
-  else{
-  this.presentLogin()
   }
-   
-   
-    
-  }
-  removeFromcart(index:number)
-  {
-    this.cartService.removeFromCart(this.client_id,this.products[index].id,).subscribe(
-      (data)=>this.handleResponse(data,DEL_DATA),
-      (error)=>this.handleError(error)
-    )
+  removeFromcart(index: number) {
+    this.cartService
+      .removeFromCart(this.client_id, this.products[index].id)
+      .subscribe(
+        (data) => this.handleResponse(data, DEL_DATA),
+        (error) => this.handleError(error)
+      );
     // this.getData()
-    this.products[index].cart_count--
+    this.products[index].cart_count--;
   }
-  
 }

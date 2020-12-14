@@ -38,7 +38,8 @@ export class ProductsPage implements OnInit {
   }
   catId:any
   category_name: any;
-  s3url:string
+  s3url:string;
+  data:any
   public form = [
     { val: 'Pepperoni', isChecked: true },
     { val: 'Sausage', isChecked: false },
@@ -77,14 +78,18 @@ export class ProductsPage implements OnInit {
   {
     if(type == GET_DATA)
     {
-      console.log(data)
-    this.products = data.products
+    console.log(data)
+    this.data=data
+    this.data.products.forEach(element => {this.products.push(element)});
     this.page_limit = data.page_count;
-    console.log(this.products)
-    for(let i=0;i<this.products.length;i++)
-    {
-      this.products[i].images[0].path = this.s3url+this.products[i].images[0].path
-    }
+    //   console.log(data)
+    // this.products = data.products
+    // this.page_limit = data.page_count;
+    // console.log(this.products)
+    // for(let i=0;i<this.products.length;i++)
+    // {
+    //   this.products[i].images[0].path = this.s3url+this.products[i].images[0].path
+    // }
     }
    console.log(data) 
     

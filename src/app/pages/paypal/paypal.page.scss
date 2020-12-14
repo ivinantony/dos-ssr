@@ -24,7 +24,8 @@ ion-content{
     }
 img{
     padding-top: 20px;
-    width: 60%; 
+    width: 44%;
+    padding-bottom: 20px;
 }
 
 .icon{
@@ -34,9 +35,9 @@ img{
 
 .card{
     padding: 10px;
-    
+    min-height: 459px;
     border-radius: 25px;
-    min-height: 340px;
+   
     
     h2{
         font-weight: 700;
@@ -48,23 +49,23 @@ img{
 
     }
 }
-.wrapper{
-    min-width: 334px;
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    .imgWrapper{
-        h2{
-            padding: 0px;
-        }
-        img{
-            width: 50%;
-            padding-bottom: 15px;
-        }
-    }
-}
+// .wrapper{
+//     min-width: 380px;
+//     margin: 0;
+//     position: absolute;
+//     top: 50%;
+//     left: 50%;
+//     transform: translate(-50%, -50%);
+//     .imgWrapper{
+//         h2{
+//             padding: 0px;
+//         }
+//         img{
+//             width: 50%;
+//             padding-bottom: 15px;
+//         }
+//     }
+// }
 
 .ripple-parent
  {

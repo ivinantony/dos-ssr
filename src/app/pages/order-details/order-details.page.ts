@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { OrderService } from 'src/app/services/order/order.service';
+import { UtilsService } from 'src/app/services/utils.service';
 import { CancelorderPage } from '../cancelorder/cancelorder.page';
 const GET_DATA = 200;
 @Component({
@@ -10,11 +11,12 @@ const GET_DATA = 200;
   styleUrls: ['./order-details.page.scss'],
 })
 export class OrderDetailsPage implements OnInit {
-
+  s3url:string
   id:any
   data:any
-  constructor(private orderService:OrderService,private activatedRoute:ActivatedRoute,private router:Router,private modalController:ModalController) 
+  constructor(private orderService:OrderService,private activatedRoute:ActivatedRoute,private router:Router,private modalController:ModalController,private utilsService:UtilsService) 
   { this.id = activatedRoute.snapshot.params.order_id
+    this.s3url = utilsService.getS3url()
     this.getData()
   }
 
