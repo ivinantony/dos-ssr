@@ -67,6 +67,8 @@ export class CategoriesPage implements OnInit {
 
   loadMoreContent(event)
   {
+    console.log(this.page_count,"pageCount")
+    console.log(this.page_limit,"pageLimit")
     if (this.page_count == this.page_limit) {
       event.target.disabled = true;
     }

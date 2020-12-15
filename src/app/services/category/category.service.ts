@@ -18,7 +18,7 @@ export class CategoryService {
    {
      const headers = this.headerservice.getHttpHeaders()
      return this.httpclient.get(
-      this.url + "category?page_count="+page_count,{ headers }).pipe(map(res=>{
+      this.url + "category?page="+page_count,{ headers }).pipe(map(res=>{
        return res}));
    }
 }
