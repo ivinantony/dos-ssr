@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CategoryService } from 'src/app/services/category/category.service';
 import { UtilsService } from 'src/app/services/utils.service';
-const GET_CAT = 200;
 @Component({
   selector: 'app-categories',
   templateUrl: './categories.page.html',
@@ -10,11 +9,11 @@ const GET_CAT = 200;
 })
 export class CategoriesPage implements OnInit {
 
-  data:any;
-  s3url:any
-  page_count:number
-  page_limit:number
-  categories:Array<any>=[]
+  data: any;
+  s3url: any
+  page_count: number = 1
+  page_limit: number
+  categories: Array<any> = []
 
   bannerSlideOpts = {
     slidesPerView: 1,
@@ -29,9 +28,8 @@ export class CategoriesPage implements OnInit {
     speed: 400
   }
 
-  constructor(public router:Router,private categoryService:CategoryService,private utils:UtilsService) 
-  { 
-    this.page_count = 1
+  constructor(public router: Router, private categoryService: CategoryService, private utils: UtilsService) {
+
     this.s3url = utils.getS3url()
     this.getData()
   }
@@ -39,45 +37,38 @@ export class CategoriesPage implements OnInit {
   ngOnInit() {
   }
 
-  getData()
-  {
-    
+  getData(infiniteScoll?) {
     this.categoryService.getCategories(this.page_count).subscribe(
-      (data)=>this.handleResponse(data,GET_CAT),
-      (error)=>this.handleError(error)
+      (data) => this.handleResponse(data, infiniteScoll),
+      (error) => this.handleError(error)
     )
   }
 
-  handleResponse(data,type)
-  {
-    console.log(data)
-    this.data=data
-    this.data.categories.forEach(element => {this.categories.push(element)});
 
-    this.page_limit = data.page_count;
-  }
-  handleError(error)
-  {
-    console.log(error)
-  }
   navigateToProducts(index: number) {
-    
+
     this.router.navigate(['products', this.categories[index].id, { name: this.categories[index].category_name }])
   }
 
-  loadMoreContent(event)
-  {
-    console.log(this.page_count,"pageCount")
-    console.log(this.page_limit,"pageLimit")
+  loadMoreContent(infiniteScoll) {
     if (this.page_count == this.page_limit) {
-      event.target.disabled = true;
+      infiniteScoll.target.disabled = true;
     }
-    else{
-      console.log(this.page_count,"before")
-      this.page_count++
-      console.log(this.page_count,"after")
-      this.getData()
-      console.log("hello")
+    else {
+      this.page_count++;
+      this.getData(infiniteScoll)
     }
+  }
+  handleResponse(data, infiniteScroll) {
+    console.log(data)
+    this.data = data;
+    this.data.categories.forEach(element => { this.categories.push(element) });
+    this.page_limit = data.page_count;
+    if (infiniteScroll) {
+      infiniteScroll.target.complete();
+    }
+  }
+  handleError(error) {
+    console.log(error)
   }
 }
