@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { LoadingController } from '@ionic/angular';
 import { CategoryService } from 'src/app/services/category/category.service';
 import { UtilsService } from 'src/app/services/utils.service';
 @Component({
@@ -28,7 +29,7 @@ export class CategoriesPage implements OnInit {
     speed: 400
   }
 
-  constructor(public router: Router, private categoryService: CategoryService, private utils: UtilsService) {
+  constructor(public router: Router, private categoryService: CategoryService, private utils: UtilsService,private loadingController:LoadingController) {
     this.s3url = utils.getS3url()
     this.getData()
   }
@@ -37,9 +38,12 @@ export class CategoriesPage implements OnInit {
   }
 
   getData(infiniteScroll?) {
-    this.categoryService.getCategories(this.page_count).subscribe(
-      (data) => this.handleResponse(data, infiniteScroll),
-      (error) => this.handleError(error)
+    this.presentLoading().then(()=>{
+      this.categoryService.getCategories(this.page_count).subscribe(
+        (data) => this.handleResponse(data, infiniteScroll),
+        (error) => this.handleError(error)
+      )
+    }
     )
   }
 
@@ -59,6 +63,7 @@ export class CategoriesPage implements OnInit {
     }
   }
   handleResponse(data, infiniteScroll) {
+    this.loadingController.dismiss()
     console.log(data)
     this.data = data;
     this.data.categories.forEach(element => { this.categories.push(element) });
@@ -68,6 +73,17 @@ export class CategoriesPage implements OnInit {
     }
   }
   handleError(error) {
+    this.loadingController.dismiss()
     console.log(error)
   }
+
+  async presentLoading() {
+        const loading = await this.loadingController.create({
+          spinner: 'bubbles',
+          cssClass:'custom-spinner',
+          message: 'Please wait...',
+          showBackdrop: true
+        });
+        await loading.present();
+      }
 }

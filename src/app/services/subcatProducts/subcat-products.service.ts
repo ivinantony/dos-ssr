@@ -20,14 +20,14 @@ export class SubcatProductsService {
    {
      const headers = this.headerservice.getHttpHeaders()
      return this.httpclient.get(
-       this.url+"category-product?category_id="+category_id +"&client_id="+client_id+"&page_no="+page_no+"&sort="+sort,{headers}
+       this.url+"category-product?category_id="+category_id +"&client_id="+client_id+"&page="+page_no+"&sort="+sort,{headers}
      ).pipe(map(res=>{return res}));
    }
    public getSubCatProductsSorted(category_id:number,member_id:any,page_no:number,sort:string)
    {
      const headers = this.headerservice.getHttpHeaders()
      return this.httpclient.get(
-       this.url+"category-product?category_id="+category_id +"&member_id="+member_id+"&page_no="+page_no+"&sort="+sort,{headers}
+       this.url+"category-product?category_id="+category_id +"&member_id="+member_id+"&page="+page_no+"&sort="+sort,{headers}
      ).pipe(map(res=>{return res}));
    }
 }
