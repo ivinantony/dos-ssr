@@ -53,6 +53,7 @@ export class CategoriesPage implements OnInit {
     console.log(data)
     this.data=data
     this.data.categories.forEach(element => {this.categories.push(element)});
+    console.log(this.categories,"pushed array")
 
     this.page_limit = data.page_count;
   }
