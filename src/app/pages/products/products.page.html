@@ -162,11 +162,13 @@
                  <ion-icon name="add-outline"  class="icon" (click)="addToCart(i)"></ion-icon>
               </div>
               </div>
+
              
               <div class="stock" *ngIf="item.in_stock == 0">
-              Out Of Stock
+                
+             <ion-label></ion-label>Out Of Stock</ion-label>
+                
               </div>
-              
             </ion-col> 
             
             
