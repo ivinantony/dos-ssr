@@ -1,7 +1,8 @@
 import { Route } from '@angular/compiler/src/core';
 import { Component, OnInit } from '@angular/core';
 import { Data, Router } from '@angular/router';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, AlertController } from '@ionic/angular';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { OfferService } from 'src/app/services/offer/offer.service';
 import { UtilsService } from 'src/app/services/utils.service';
@@ -21,7 +22,9 @@ export class OfferPage implements OnInit {
   page_count: number;
   current_page: number;
   client_id:any
-  constructor(private offerService:OfferService,private utils:UtilsService,public router:Router,private actionSheetController:ActionSheetController,private cartService:CartService) 
+  constructor(private offerService:OfferService,private utils:UtilsService,public router:Router,
+    private actionSheetController:ActionSheetController,private cartService:CartService,
+    private alertController:AlertController,private authService:AuthenticationService) 
   { 
     this.client_id = localStorage.getItem('client_id')
     this.page_count = 1;
@@ -104,16 +107,20 @@ export class OfferPage implements OnInit {
 
   addToCart(index:number)
   {
-    let data={
-      product_id :this.data.product[index].id,
-      client_id :this.client_id
-       }
-       this.cartService.addToCart(data).subscribe(
-         (data)=>this.handleResponse(data,POST_DATA),
-         (error)=>this.handleError(error)
-       )
-       this.data.product[index].cart_count++
-      //  this.getData()
+      if (this.authService.isAuthenticated()) {
+        let data = {
+          product_id: this.data.product[index].id,
+          client_id: this.client_id,
+        };
+        this.cartService.addToCart(data).subscribe(
+          (data) => this.handleResponse(data, POST_DATA),
+          (error) => this.handleError(error)
+        );
+        this.data.product[index].cart_count++;
+        //  this.getData()
+      } else {
+        this.presentLogin();
+      }
   }
   removeFromcart(index:number)
   {
@@ -125,4 +132,22 @@ export class OfferPage implements OnInit {
     this.data.product[index].cart_count--
   }
 
+
+  async presentLogin() {
+    const alert = await this.alertController.create({
+      cssClass: "my-custom-class",
+      header: "You Are Not Logged In",
+      message: "Log in to continue.",
+      buttons: [
+        {
+          text: "Login",
+          handler: () => {
+            this.router.navigate(["login"]);
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
 }

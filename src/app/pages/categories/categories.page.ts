@@ -49,7 +49,6 @@ export class CategoriesPage implements OnInit {
 
 
   navigateToProducts(index: number) {
-
     this.router.navigate(['products', this.categories[index].id, { name: this.categories[index].category_name }])
   }
 
@@ -62,6 +61,7 @@ export class CategoriesPage implements OnInit {
       this.getData(infiniteScroll)
     }
   }
+  
   handleResponse(data, infiniteScroll) {
     this.loadingController.dismiss()
     console.log(data)

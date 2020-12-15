@@ -1,10 +1,10 @@
 ion-header{
   // --background:#37966f;
-  --background:#9f1f63;
+  --background:#ffffff;
 }
 ion-toolbar {
     // --background:#fd5523;
-    --background:#9f1f63;
+    --background:	#C0C0C0;
     --border-width: 0px !important;
     ion-icon{
       font-size: 1.2rem;
@@ -108,7 +108,7 @@ ion-toolbar {
       background-size: cover;
       height: 9rem;
       width: 9rem;
-      border-radius: 10rem;
+      border-radius: 9rem;
       margin-left: auto;
       margin-right: auto;
 
@@ -148,6 +148,9 @@ ion-toolbar {
     0 41.8px 33.4px rgba(0, 0, 0, 0.086),
     0 100px 80px rgba(0, 0, 0, 0.12)
   ;
+
+  background-size: cover;
+  background-repeat: no-repeat;
 
 }
 
@@ -190,6 +193,9 @@ ion-toolbar {
 }
 .catSection{
   background: #e047d414;
+  ion-item{
+    --background: #fff0;
+  }
 }
 
   // .sliderWrapper{

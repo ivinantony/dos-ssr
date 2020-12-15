@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import {
   ActionSheetController,
   AlertController,
+  LoadingController,
   Platform,
 } from "@ionic/angular";
 import { AuthenticationService } from "src/app/services/authentication.service";
@@ -31,23 +32,55 @@ export class BrandProductsPage implements OnInit {
       isChecked: false,
     },
   ];
+  // bannerSlideOpts = {
+  //   slidesPerView: 1,
+  //   initialSlide: 0,
+  //   spaceBetween: 20,
+  //   loop: true,
+  //   centeredSlides: true,
+  //   autoplay: {
+  //     delay: 3000,
+  //     disableOnInteraction: false,
+  //   },
+  //   speed: 400,
+  // };
   bannerSlideOpts = {
-    slidesPerView: 1,
-    initialSlide: 0,
-    spaceBetween: 20,
-    loop: true,
-    centeredSlides: true,
-    autoplay: {
-      delay: 3000,
-      disableOnInteraction: false,
-    },
-    speed: 400,
-  };
+    updateOnWindowResize: true,
+    breakpoints: {
+
+      // when window width is <= 320px
+      320: {
+        slidesPerView: 1,
+        initialSlide: 0,
+        spaceBetween: 20,
+        loop: true,
+        centeredSlides: true,
+        autoplay: {
+          delay: 3000,
+          disableOnInteraction: false,
+        },
+        speed: 400,
+      },
+      // when window width is <= 640px
+      768: {
+        slidesPerView: 3,
+        initialSlide: 0,
+        spaceBetween: 10,
+        loop: true,
+        centeredSlides: true,
+        autoplay: {
+          delay: 3000,
+          disableOnInteraction: false,
+        },
+        speed: 400,
+      }
+    }
+  }
   s3url: string;
   brand_id: number;
   brand_name: string;
   page_limit: number;
-  page_count: number;
+  page_count: number = 1;
   current_page: number;
   client_id: any;
   data: any;
@@ -60,82 +93,88 @@ export class BrandProductsPage implements OnInit {
     public router: Router,
     private cartService: CartService,
     private authService: AuthenticationService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private loadingController:LoadingController
   ) {
     this.client_id = localStorage.getItem("client_id");
-    this.page_count = 1;
+
     this.brand_id = activatedRoute.snapshot.params.brand_id;
     this.s3url = utils.getS3url();
     this.checkWidth();
+    console.log("first")
     this.getData();
+    
   }
-  ionViewWillEnter() {
-    this.getData();
+  checkWidth() {
+    // if (this.platform.width() > 768) {
+    //   this.bannerSlideOpts = {
+    //     slidesPerView: 3,
+    //     initialSlide: 0,
+    //     spaceBetween: 10,
+    //     loop: true,
+    //     centeredSlides: true,
+    //     autoplay: {
+    //       delay: 3000,
+    //       disableOnInteraction: false,
+    //     },
+    //     speed: 400,
+    //   };
+    // }
   }
+  
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  getData() {
-    this.brandProductService
-      .getBrandProducts(this.brand_id, this.page_count, this.client_id)
+  getData(infiniteScroll?) {
+    this.presentLoading().then(()=>{
+      this.brandProductService.getBrandProducts(this.brand_id, this.page_count, this.client_id)
       .subscribe(
-        (data) => this.handleResponse(data, GET_DATA),
+        (data) => this.handleResponse(data, GET_DATA, infiniteScroll),
         (error) => this.handleError(error)
-      );
+      )
+    }
+    )
+    
   }
 
-  handleResponse(data, type) {
+  handleResponse(data, type, infiniteScroll?) {
+    this.loadingController.dismiss()
+    console.log(infiniteScroll)
     if (type == GET_DATA) {
+      
       console.log(data);
       this.page_limit = data.page_count;
       this.data = data;
       this.data.product.forEach((element) => {
         this.products.push(element);
       });
-
-      // console.log(data)
-      // this.page_limit = data.page_count;
-
-      // this.products = data.product;
-      // this.brand_name = this.products[0].brand_name;
       console.log(this.products, "API called");
-      // for (let i = 0; i < this.products.length; i++) {
-      //   this.products[i].images[0].path =
-      //     this.s3url + this.products[i].images[0].path;
-      // }
+
+
     }
     console.log(data);
+
+    if (infiniteScroll) {
+      infiniteScroll.target.complete();
+    }
   }
   handleError(error) {
+    this.loadingController.dismiss()
     console.log(error);
   }
 
-  checkWidth() {
-    if (this.platform.width() > 768) {
-      this.bannerSlideOpts = {
-        slidesPerView: 3,
-        initialSlide: 0,
-        spaceBetween: 10,
-        loop: true,
-        centeredSlides: true,
-        autoplay: {
-          delay: 3000,
-          disableOnInteraction: false,
-        },
-        speed: 400,
-      };
-    }
-  }
 
-  loadMoreContent(event) {
+
+  loadMoreContent(infiniteScroll) {
     if (this.page_count == this.page_limit) {
-      event.target.disabled = true;
-    } else {
-      console.log(this.page_count, "before");
-      this.page_count++;
-      console.log(this.page_count, "after");
-      this.getData();
-      console.log("hello");
+      infiniteScroll.target.disabled = true;
+    } 
+    else {
+
+
+      this.page_count+=1;
+      console.log(this.page_count)
+      this.getData(infiniteScroll);
     }
   }
 
@@ -225,5 +264,14 @@ export class BrandProductsPage implements OnInit {
       );
     // this.getData()
     this.products[index].cart_count--;
+  }
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      spinner: 'bubbles',
+      cssClass:'custom-spinner',
+      message: 'Please wait...',
+      showBackdrop: true
+    });
+    await loading.present();
   }
 }

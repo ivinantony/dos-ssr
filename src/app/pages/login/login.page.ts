@@ -31,6 +31,7 @@ export class LoginPage implements OnInit {
     
     this.loginGroup = this.formBuilder.group({
       name: ['', Validators.compose([Validators.required, Validators.minLength(4)])],
+   
       phone: ['', Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern("[0-9]*"),])],
       
       email: ['', Validators.compose([Validators.maxLength(70), Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$'), Validators.required])]
@@ -81,6 +82,7 @@ export class LoginPage implements OnInit {
 
   }
   login(data) {
+
     if(this.loginGroup.valid)
     {
       let phone= data.phone
@@ -96,14 +98,6 @@ export class LoginPage implements OnInit {
         (data)=>this.handleResponse(data),
         (error)=>this.handleError(error))
         this.router.navigate(['otp',{phone,email}])
-      // this.presentLoading().then(() => {
-      //   this.authService.login().then(() => {
-      //     this.presentToast().finally(() => {
-      //       this.navCtrl.back()
-      //     })
-  
-      //   })
-      // })
   
     }
     else

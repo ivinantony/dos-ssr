@@ -15,11 +15,11 @@ export class ManufacturerService {
   {
     this.url = utils.getApiPath()
    }
-   public getManufacturers()
+   public getManufacturers(page_count:any)
    {
      const headers = this.headerservice.getHttpHeaders()
      return this.httpclient.get(
-      this.url + "brand",
+      this.url + "brand?page="+page_count,
       { headers }
      ).pipe(map(res=>{
        return res}));
