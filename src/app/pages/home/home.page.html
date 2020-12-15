@@ -100,7 +100,7 @@
   </picture> -->
   <!-- Banner -1 end -->
 
-  <section id="cat">
+  <section class="catSection">
     <ion-item lines="none">
       <ion-label class="title">All Categories</ion-label>
     </ion-item>
@@ -119,6 +119,7 @@
           
         >
           <ion-card [class.selected]="selectedIndex == i" class="roundCard" [ngStyle]="{'background-image': 'url( '+ item.path +' )'}" >
+          <!-- <ion-card [class.selected]="selectedIndex == i" class="roundCard" [ngStyle]="{'background-image': 'url( '+ item.path +' )'}" > -->
             <!-- <ion-item lines="none">
               <ion-icon slot="start" color="light" name="car"></ion-icon>
             </ion-item> -->
