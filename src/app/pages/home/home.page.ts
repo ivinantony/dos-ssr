@@ -487,4 +487,11 @@ manufactures = MANUFACTURES
   async dismiss() {
     await this.loadingController.dismiss()
   }
+
+  doRefresh(event) {
+    this.getData();
+    setTimeout(() => {
+      event.target.complete();
+    }, 1000);
+  }
 }

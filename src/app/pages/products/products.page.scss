@@ -119,3 +119,24 @@
     font-weight: 700;
   }
 }
+
+.stock{
+  border: 1px solid #444;
+  width: 37%;
+  margin-bottom: 15px;
+  height:44.8px;
+  border-radius: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  .icon{
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  .outofstock
+  {
+    opacity: 0.5;
+  }
+}

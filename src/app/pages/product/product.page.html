@@ -95,7 +95,7 @@
           </ion-text>
         </section>
 
-        <section class="ion-padding-horizontal details">
+        <section class="ion-padding-horizontal stock">
            <ion-chip color="success" *ngIf="data?.product.in_stock == 1">
           <ion-label>In Stock</ion-label>
         </ion-chip>
@@ -104,7 +104,7 @@
         </ion-chip>
         </section>
 
-        <section class="ion-padding-horizontal details">
+        <section class="ion-padding-horizontal details" *ngIf="data?.product.in_stock == 1">
           <div  class="ion-text-center">
             <ion-button (click)="addToCart()" expand="full-width" fill="outline" shape="round" color="dark" class="btn" *ngIf="data?.product.cart_count == 0">
               <ion-icon name="add-outline" class="icon"></ion-icon> ADD TO CART
