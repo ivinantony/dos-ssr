@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar color="light">
+  <ion-toolbar  color="primary">
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home" text=""></ion-back-button>
     </ion-buttons>
@@ -122,17 +122,18 @@
             </ion-col> 
             
             
-            <ion-infinite-scroll (ionInfinite)="loadMoreContent($event)" *ngIf="page_count != page_limit">
-              <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
-              </ion-infinite-scroll-content>
-            </ion-infinite-scroll>
+            
           </ion-row>
         </ion-grid>
 
       </ion-col>
     </ion-row>
   
-
+   
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreContent($event)" >
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
 
 
 </ion-content>

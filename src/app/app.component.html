@@ -11,7 +11,9 @@
         <ion-button (click)="router.navigate(['/home'])"> Home </ion-button>
         <!-- <ion-button (click)="menuController.toggle()"> Categories </ion-button> -->
         <ion-button (click)="router.navigate(['/offer'])"> Offers </ion-button>
-        <ion-button (click)="router.navigate(['/categories'])"> Categories </ion-button>
+        <ion-button (click)="router.navigate(['/categories'])">
+          Categories
+        </ion-button>
       </ion-buttons>
       <ion-buttons slot="end">
         <ion-button
@@ -91,27 +93,25 @@
       <ion-content>
         <div class="menu-header-bg"></div>
         <ion-menu-toggle>
-          
-        <div class="header-content user" [routerLink]="['/profile']">
-          <img src="../assets/imgs/user.svg"alt="" />
-          <ion-label class="ion-margin-horizontal"
-            ><ion-text color="light" *ngIf="!user_name">
-              <h2><b>Username</b></h2 >
-            </ion-text>
-            <ion-text color="light" *ngIf="user_name">
-              <h2><b>{{user_name}}</b></h2 >
-            </ion-text>
-          </ion-label>
-        </div>
-      </ion-menu-toggle>
+          <div class="header-content user" [routerLink]="['/profile']">
+            <img src="../assets/imgs/user.svg" alt="" />
+            <ion-label class="ion-margin-horizontal"
+              ><ion-text color="light" *ngIf="!user_name">
+                <h2><b>Username</b></h2>
+              </ion-text>
+              <ion-text color="light" *ngIf="user_name">
+                <h2>
+                  <b>{{ user_name }}</b>
+                </h2>
+              </ion-text>
+            </ion-label>
+          </div>
+        </ion-menu-toggle>
         <ion-list id="inbox-list">
           <!-- <ion-list-header>Inbox</ion-list-header>
           <ion-note>hi@ionicframework.com</ion-note> -->
 
-          <ion-menu-toggle
-            auto-hide="false"
-            
-          >
+          <ion-menu-toggle auto-hide="false">
             <!-- <ion-item
               *ngFor="let p of categories; let i = index"
               (click)="navigateToProducts(i)"
@@ -122,7 +122,6 @@
             >
               <ion-label>{{ p.name }}</ion-label>
             </ion-item> -->
-            
 
             <ion-item
               (click)="router.navigate(['/categories'])"
@@ -130,20 +129,27 @@
               lines="none"
               detail="false"
               class="links"
-
             >
-            <ion-icon class="icon" name="grid-outline" color="tertiary"></ion-icon>
+              <ion-icon
+                class="icon"
+                name="grid-outline"
+                color="primary"
+              ></ion-icon>
               <ion-label>Categories</ion-label>
             </ion-item>
-
 
             <ion-item
               (click)="router.navigate(['/offer'])"
               routerDirection="root"
               lines="none"
               detail="false"
-              class="links">
-              <ion-icon name="flash-outline" class="icon" color="tertiary"></ion-icon>
+              class="links"
+            >
+              <ion-icon
+                name="flash-outline"
+                class="icon"
+                color="primary"
+              ></ion-icon>
               <ion-label>Offers</ion-label>
             </ion-item>
 
@@ -153,9 +159,12 @@
               lines="none"
               detail="false"
               class="links"
-
             >
-            <ion-icon class="icon" name="cart-outline" color="tertiary"></ion-icon>
+              <ion-icon
+                class="icon"
+                name="cart-outline"
+                color="primary"
+              ></ion-icon>
               <ion-label>Cart</ion-label>
             </ion-item>
 
@@ -164,17 +173,20 @@
               routerDirection="root"
               lines="none"
               detail="false"
-              class="links">
-            <ion-icon class="icon" name="person-circle-outline" color="tertiary"></ion-icon>
+              class="links"
+            >
+              <ion-icon
+                class="icon"
+                name="person-circle-outline"
+                color="primary"
+              ></ion-icon>
               <ion-label>Profile</ion-label>
             </ion-item>
-      
           </ion-menu-toggle>
-
         </ion-list>
       </ion-content>
       <ion-footer *ngIf="client_id != null">
-        <ion-toolbar  class="ftrtlbr">
+        <ion-toolbar class="ftrtlbr">
           <ion-button
             (click)="logout()"
             expand="block"
@@ -183,7 +195,7 @@
             shape="round"
             class="footer"
           >
-            <img src="../assets/imgs/door.svg" alt="">
+            <img src="../assets/imgs/door.svg" alt="" />
             Sign Out
           </ion-button>
         </ion-toolbar>

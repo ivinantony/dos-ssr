@@ -1,13 +1,17 @@
 <ion-header transclusent class="ion-no-border" class="ion-hide-md-up">
-  <ion-toolbar #toolbar>
+  <ion-toolbar #toolbar color="primary">
     <ion-buttons slot="start">
       <ion-menu-button color="light"></ion-menu-button>
     </ion-buttons>
-  <ion-title><ion-text color="dark"> <b>DEAL</b> </ion-text>
-    <ion-text color="light"> <b>ON STORE</b> </ion-text></ion-title>
-      
+    <ion-title
+      ><ion-text color="dark"> <b>DEAL</b> </ion-text>
+      <ion-text color="light"> <b>ON STORE</b> </ion-text></ion-title
+    >
+
     <ion-buttons slot="end">
-      <ion-icon name="cart-outline"class="ion-padding" (click)="router.navigate(['/cart'])" color="light"></ion-icon>
+      <ion-button (click)="router.navigate(['/cart'])">
+        <ion-icon name="cart-outline" color="light"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -81,13 +85,19 @@
   [ngStyle]="{'background-image': 'url( '+ item.path +' )'}" -->
   <section id="banr">
     <ion-slides class="banner" [options]="bannerSlideOpts1">
-      <ion-slide *ngFor="let item of data?.banner[0]?.desktop_images; let i=index" class="dsk" >
-      <img src="{{item.path}}" alt="" >
-      </ion-slide> 
+      <ion-slide
+        *ngFor="let item of data?.banner[0]?.desktop_images; let i=index"
+        class="dsk"
+      >
+        <img src="{{item.path}}" alt="" />
+      </ion-slide>
 
-      <ion-slide *ngFor="let item of data?.banner[0]?.mobile_images; let i=index" class="mob" >
-      <img src="{{item.path}}" alt="">
-      </ion-slide>     
+      <ion-slide
+        *ngFor="let item of data?.banner[0]?.mobile_images; let i=index"
+        class="mob"
+      >
+        <img src="{{item.path}}" alt="" />
+      </ion-slide>
     </ion-slides>
   </section>
   <!-- <picture *ngIf="item.type == 0">
@@ -111,9 +121,12 @@
           size-xl="2"
           *ngFor="let item of categories; let i=index"
           (click)="navigateToProducts(i)"
-          
         >
-          <ion-card [class.selected]="selectedIndex == i" class="roundCard" [ngStyle]="{'background-image': 'url( '+ item.path +' )'}" >
+          <ion-card
+            [class.selected]="selectedIndex == i"
+            class="roundCard"
+            [ngStyle]="{'background-image': 'url( '+ item.path +' )'}"
+          >
             <!-- <ion-item lines="none">
               <ion-icon slot="start" color="light" name="car"></ion-icon>
             </ion-item> -->
@@ -125,14 +138,17 @@
           </ion-card>
         </ion-col>
       </ion-row>
-    <div class="ion-text-center morebtn">
-      <ion-button (click)="viewAll()" shape="round" fill="outline" color="dark">
-        <ion-icon slot="start" name="add" ></ion-icon>
-        VIEW ALL CATEGORIES
-      </ion-button>
-    </div>
-      
-   
+      <div class="ion-text-center morebtn">
+        <ion-button
+          (click)="viewAll()"
+          shape="round"
+          fill="outline"
+          color="dark"
+        >
+          <ion-icon slot="start" name="add"></ion-icon>
+          VIEW ALL CATEGORIES
+        </ion-button>
+      </div>
     </ion-grid>
     <!-- <ion-slides [options]="categorySlides" class="category">
       <ion-slide
@@ -156,13 +172,19 @@
   <!-- Banner -2 start -->
   <section id="banr">
     <ion-slides class="banner" [options]="bannerSlideOpts1">
-      <ion-slide *ngFor="let item of data?.banner[1]?.desktop_images; let i=index" class="dsk" >
-      <img src="{{item.path}}" alt="" >
-      </ion-slide> 
+      <ion-slide
+        *ngFor="let item of data?.banner[1]?.desktop_images; let i=index"
+        class="dsk"
+      >
+        <img src="{{item.path}}" alt="" />
+      </ion-slide>
 
-      <ion-slide *ngFor="let item of data?.banner[1]?.mobile_images; let i=index" class="mob" >
-      <img src="{{item.path}}" alt="">
-      </ion-slide>     
+      <ion-slide
+        *ngFor="let item of data?.banner[1]?.mobile_images; let i=index"
+        class="mob"
+      >
+        <img src="{{item.path}}" alt="" />
+      </ion-slide>
     </ion-slides>
   </section>
   <!-- Banner -2 end -->
@@ -170,7 +192,6 @@
   <div id="top">
     <ion-item lines="none">
       <ion-label class="title">Top Deals</ion-label>
-      
     </ion-item>
     <div class="sliderWrapper">
       <ion-slides [options]="productSlides" class="top-search" #mySlider>
@@ -180,29 +201,44 @@
             [ngStyle]="{'background-image': 'url( '+ s3url + item.images[0]?.path +' )'}">
           </ion-card> -->
           <ion-card (click)="viewProduct(i)">
-            <img src="{{s3url+item.images[0]?.path}}"alt="">
-          <ion-card-content>
-            <p>{{item.name}}</p>
-          </ion-card-content>
+            <img src="{{s3url+item.images[0]?.path}}" alt="" />
+            <ion-card-content>
+              <p>{{item.name}}</p>
+            </ion-card-content>
           </ion-card>
         </ion-slide>
-        
+
         <!-- <ion-button (click)="swipeNext()">Next</ion-button>
         <ion-button (click)="swipeNext()">Next</ion-button> -->
-        
-  
       </ion-slides>
-      <ion-button (click)="swipeNext()" expand="block" fill="clear" shape="round" class="btnslide ion-no-padding">
+      <ion-button
+        (click)="swipeNext()"
+        expand="block"
+        fill="clear"
+        shape="round"
+        class="btnslide ion-no-padding"
+      >
         <ion-icon name="chevron-forward-outline"></ion-icon>
       </ion-button>
-      <ion-button (click)="swipePrev()" expand="block" fill="clear" shape="round" class="btnslideleft ion-no-padding">
+      <ion-button
+        (click)="swipePrev()"
+        expand="block"
+        fill="clear"
+        shape="round"
+        class="btnslideleft ion-no-padding"
+      >
         <ion-icon name="chevron-back-outline"></ion-icon>
       </ion-button>
     </div>
 
     <div class="ion-text-center morebtn">
-      <ion-button (click)="router.navigate(['/offer'])" shape="round" fill="outline" color="dark">
-        <ion-icon slot="start" name="add" ></ion-icon>
+      <ion-button
+        (click)="router.navigate(['/offer'])"
+        shape="round"
+        fill="outline"
+        color="dark"
+      >
+        <ion-icon slot="start" name="add"></ion-icon>
         VIEW ALL DEALS
       </ion-button>
     </div>
@@ -211,7 +247,6 @@
   <section id="searchByManufactures">
     <ion-item lines="none">
       <ion-label class="title">Search by Manufacturers</ion-label>
-     
     </ion-item>
     <ion-grid fixed>
       <ion-row>
@@ -221,7 +256,8 @@
           size-md="6"
           size-lg="3"
           size-xl="3"
-          *ngFor="let item of brands; let i=index">
+          *ngFor="let item of brands; let i=index"
+        >
           <ion-card class="ion-no-margin" (click)="navigateToBrandProducts(i)">
             <ion-card-content class="ion-text-center">
               <img
@@ -235,24 +271,28 @@
                 alt=""
               />
             </ion-card-content>
-            <ion-card-header class="ion-text-center logoHdr" >
+            <ion-card-header class="ion-text-center logoHdr">
               <ion-card-title>{{item.brand_name}}</ion-card-title>
             </ion-card-header>
           </ion-card>
         </ion-col>
       </ion-row>
       <div class="ion-text-center morebtn">
-        <ion-button (click)="router.navigate(['/manufacturers'])" shape="round" fill="outline" color="dark">
-          <ion-icon slot="start" name="add" ></ion-icon>
+        <ion-button
+          (click)="router.navigate(['/manufacturers'])"
+          shape="round"
+          fill="outline"
+          color="dark"
+        >
+          <ion-icon slot="start" name="add"></ion-icon>
           VIEW ALL MANUFACTURERS
         </ion-button>
       </div>
-        
     </ion-grid>
   </section>
 
- <!-- Banner -3 start -->
- <!-- <section id="banr">
+  <!-- Banner -3 start -->
+  <!-- <section id="banr">
   <ion-slides class="banner" [options]="bannerSlideOpts3">
     <ion-slide *ngFor="let item of banners_combined; let i=index">
     <picture>
@@ -263,39 +303,39 @@
   </ion-slides>
 </section> -->
 
-<section class="banr">
-  <ion-row class="main_row">
-    <ion-col size="12" size-md="6"  class="firstCol">
-      <div class="main">
-        <img class="imge" [src]="data?.banner[2]?.desktop_images[0]?.path" alt="">
-      </div>
-          
-    </ion-col>
-    <ion-col size="12" size-md="6" class="col">
-      <ion-row>
-        <ion-col size="6" class="col">
-          <img [src]="data?.banner[2]?.desktop_images[1]?.path" alt="">
-        </ion-col>
-        <ion-col size="6" class="col">
-          <img [src]="data?.banner[2]?.desktop_images[2]?.path" alt="">
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col size="6" class="col">
-          <img [src]="data?.banner[2]?.desktop_images[3]?.path" alt="">
-        </ion-col>
-        <ion-col size="6" class="col">
-          <img [src]="data?.banner[2]?.desktop_images[4]?.path" alt="">
-        </ion-col>
-      </ion-row>
+  <section class="banr">
+    <ion-row class="main_row">
+      <ion-col size="12" size-md="6" class="firstCol">
+        <div class="main">
+          <img
+            class="imge"
+            [src]="data?.banner[2]?.desktop_images[0]?.path"
+            alt=""
+          />
+        </div>
+      </ion-col>
+      <ion-col size="12" size-md="6" class="col">
+        <ion-row>
+          <ion-col size="6" class="col">
+            <img [src]="data?.banner[2]?.desktop_images[1]?.path" alt="" />
+          </ion-col>
+          <ion-col size="6" class="col">
+            <img [src]="data?.banner[2]?.desktop_images[2]?.path" alt="" />
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="6" class="col">
+            <img [src]="data?.banner[2]?.desktop_images[3]?.path" alt="" />
+          </ion-col>
+          <ion-col size="6" class="col">
+            <img [src]="data?.banner[2]?.desktop_images[4]?.path" alt="" />
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </section>
 
-    </ion-col>
-  </ion-row>
-</section>
-
-
-
-<!-- Banner -3 end -->
+  <!-- Banner -3 end -->
 
   <!-- <section id="recommended">
     <ion-item lines="none">
@@ -340,154 +380,151 @@
             [ngStyle]="{'background-image': 'url( '+ s3url + item.images[0]?.path +' )'}">
           </ion-card> -->
           <ion-card (click)="viewProduct(i)">
-            <img src="{{s3url+item.images[0]?.path}}"alt="">
-          <ion-card-content>
-            <p>{{item.name}}</p>
-          </ion-card-content>
+            <img src="{{s3url+item.images[0]?.path}}" alt="" />
+            <ion-card-content>
+              <p>{{item.name}}</p>
+            </ion-card-content>
           </ion-card>
         </ion-slide>
-        
+
         <!-- <ion-button (click)="swipeNext()">Next</ion-button>
         <ion-button (click)="swipeNext()">Next</ion-button> -->
-        
-  
       </ion-slides>
-      <ion-button (click)="swipeNextRec()" expand="block" fill="clear" shape="round" class="btnslide ion-no-padding">
+      <ion-button
+        (click)="swipeNextRec()"
+        expand="block"
+        fill="clear"
+        shape="round"
+        class="btnslide ion-no-padding"
+      >
         <ion-icon name="chevron-forward-outline"></ion-icon>
       </ion-button>
-      <ion-button (click)="swipePrevRec()" expand="block" fill="clear" shape="round" class="btnslideleft ion-no-padding">
+      <ion-button
+        (click)="swipePrevRec()"
+        expand="block"
+        fill="clear"
+        shape="round"
+        class="btnslideleft ion-no-padding"
+      >
         <ion-icon name="chevron-back-outline"></ion-icon>
       </ion-button>
     </div>
   </div>
 
-<!-- Banner -4 start -->
-<section id="banr">
-  <ion-slides class="banner" [options]="bannerSlideOpts1">
-    <ion-slide *ngFor="let item of data?.banner[3]?.desktop_images; let i=index" class="dsk" >
-    <img src="{{item.path}}" alt="" >
-    </ion-slide> 
+  <!-- Banner -4 start -->
+  <section id="banr">
+    <ion-slides class="banner" [options]="bannerSlideOpts1">
+      <ion-slide
+        *ngFor="let item of data?.banner[3]?.desktop_images; let i=index"
+        class="dsk"
+      >
+        <img src="{{item.path}}" alt="" />
+      </ion-slide>
 
-    <ion-slide *ngFor="let item of data?.banner[3]?.mobile_images; let i=index" class="mob" >
-    <img src="{{item.path}}" alt="">
-    </ion-slide>     
-  </ion-slides>
-</section>
+      <ion-slide
+        *ngFor="let item of data?.banner[3]?.mobile_images; let i=index"
+        class="mob"
+      >
+        <img src="{{item.path}}" alt="" />
+      </ion-slide>
+    </ion-slides>
+  </section>
 
-<section id="cards">
-  
-<ion-row>
-  
-  
-  <ion-col size="12"
-  size-sm="6"
-  size-md="6"
-  size-lg="3"
-  size-xl="3">
-    <ion-card class="ion-text-center kard">
-      <ion-icon name="megaphone" class="icons"></ion-icon>
-      <h1>Call Us Anytime</h1>
-      <P>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.</P>
-    </ion-card>
-  </ion-col>
-  <ion-col 
-  size="12"
-  size-sm="6"
-  size-md="6"
-  size-lg="3"
-  size-xl="3">
-    <ion-card class="ion-text-center kard">
-      <ion-icon name="cube"  class="icons"></ion-icon>
-      <h1>Free Shipping</h1>
-      <P>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.</P>
-    </ion-card>
-  </ion-col>
-  <ion-col  size="12"
-  size-sm="6"
-  size-md="6"
-  size-lg="3"
-  size-xl="3">
-    <ion-card class="ion-text-center kard">
-      <ion-icon name="swap-horizontal"  class="icons"></ion-icon>
-      <h1>Easy Returns</h1>
-      <P>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.</P>
-    </ion-card>
-  </ion-col>
-  <ion-col size="12"
-  size-sm="6"
-  size-md="6"
-  size-lg="3"
-  size-xl="3">
-    <ion-card class="ion-text-center kard">
-      <ion-icon name="card"  class="icons"></ion-icon>
-      <h1>Secure Payments</h1>
-      <P>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.</P>
-    </ion-card>
-  </ion-col>
-  
- 
-</ion-row>
-</section>
-<!-- Banner -4 end -->
-
-<ion-row class="footer">
-  <ion-col size="10" class="footerWrapper" >
+  <section id="cards">
     <ion-row>
-      <ion-col size="12" size-md="4" >
-        <h5>KEEP IN TOUCH</h5>
+      <ion-col size="12" size-sm="6" size-md="6" size-lg="3" size-xl="3">
+        <ion-card class="ion-text-center kard">
+          <ion-icon name="megaphone" class="icons"></ion-icon>
+          <h1>Call Us Anytime</h1>
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry's standard.
+          </p>
+        </ion-card>
+      </ion-col>
+      <ion-col size="12" size-sm="6" size-md="6" size-lg="3" size-xl="3">
+        <ion-card class="ion-text-center kard">
+          <ion-icon name="cube" class="icons"></ion-icon>
+          <h1>Free Shipping</h1>
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry's standard.
+          </p>
+        </ion-card>
+      </ion-col>
+      <ion-col size="12" size-sm="6" size-md="6" size-lg="3" size-xl="3">
+        <ion-card class="ion-text-center kard">
+          <ion-icon name="swap-horizontal" class="icons"></ion-icon>
+          <h1>Easy Returns</h1>
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry's standard.
+          </p>
+        </ion-card>
+      </ion-col>
+      <ion-col size="12" size-sm="6" size-md="6" size-lg="3" size-xl="3">
+        <ion-card class="ion-text-center kard">
+          <ion-icon name="card" class="icons"></ion-icon>
+          <h1>Secure Payments</h1>
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry's standard.
+          </p>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </section>
+  <!-- Banner -4 end -->
+
+  <ion-row class="footer">
+    <ion-col size="10" class="footerWrapper">
+      <ion-row>
+        <ion-col size="12" size-md="4">
+          <h5>KEEP IN TOUCH</h5>
           <ul class="social">
             <li><ion-icon name="logo-facebook"></ion-icon></li>
             <li><ion-icon name="logo-twitter"></ion-icon></li>
             <li><ion-icon name="logo-instagram"></ion-icon></li>
           </ul>
-      </ion-col>
-
-      <ion-col size="12" size-md="4"class="usefulLinks" >
-        <h5>USEFUL LINKS</h5>
-        <ul class="links">
-          <li><p>Home</p></li>
-          <li><p>About</p></li>
-          <li><p>Products</p></li>
-          <li><p>Contact</p></li>
-          
-        </ul>
-      </ion-col>
-
-      <ion-col size="12" class="address"  size-md="4" >
-        <ion-row>
-        <ion-col size="6">
-        <h5>OUR STORE</h5>
-        <p>Ras Al Khor, Dubai, UAE</p>
-        <h5 class="accept">WE ACCEPT</h5>
-        <ion-icon name="logo-paypal" class="payIcon"></ion-icon>
         </ion-col>
-        <ion-col size="6">
-          <p>Return & Refund Policy</p>
-          <p>Privacy Policy</p>
-          <p>Terms and Conditions</p>
-          <p>Shipping Policy</p>
-          <p>Customer Support</p>
+
+        <ion-col size="12" size-md="4" class="usefulLinks">
+          <h5>USEFUL LINKS</h5>
+          <ul class="links">
+            <li><p>Home</p></li>
+            <li><p>About</p></li>
+            <li><p>Products</p></li>
+            <li><p>Contact</p></li>
+          </ul>
         </ion-col>
-        </ion-row>
-        
 
+        <ion-col size="12" class="address" size-md="4">
+          <ion-row>
+            <ion-col size="6">
+              <h5>OUR STORE</h5>
+              <p>Ras Al Khor, Dubai, UAE</p>
+              <h5 class="accept">WE ACCEPT</h5>
+              <ion-icon name="logo-paypal" class="payIcon"></ion-icon>
+            </ion-col>
+            <ion-col size="6">
+              <p>Return & Refund Policy</p>
+              <p>Privacy Policy</p>
+              <p>Terms and Conditions</p>
+              <p>Shipping Policy</p>
+              <p>Customer Support</p>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+        <ion-col size="12">
+          <p class="ion-text-center">
+            © 2020 Deal on Store. All rights reserved. Design by Mermer
+            Technologies.
+          </p>
+        </ion-col>
+      </ion-row>
     </ion-col>
-    <ion-col size="12">
-      <p class="ion-text-center">
-        © 2020 Deal on Store. All rights reserved. Design by Mermer Technologies.
-      </p>
-    </ion-col>
-    
-    
-    </ion-row>
- 
-   
 
-  </ion-col>
-
-  
-
-  <!-- <ion-col size="12" size-md="4" >
+    <!-- <ion-col size="12" size-md="4" >
     
       <h5>Keep In Touch</h5>
    
@@ -498,11 +535,5 @@
         <img src="../../../assets/icon/icons8-play-button.svg" alt="">
     </ion-col>
   </ion-col> -->
-
- 
-
   </ion-row>
-
-
-  
 </ion-content>
