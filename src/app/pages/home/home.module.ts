@@ -8,6 +8,7 @@ import { HomePageRoutingModule } from './home-routing.module';
 import { SharedDirectivesModule } from 'src/app/directives/shared-directives.module';
 import { HomePage } from './home.page';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     SharedDirectivesModule,
     ReactiveFormsModule,
     FontAwesomeModule,
+    RouterModule,
   ],
   declarations: [HomePage]
 })

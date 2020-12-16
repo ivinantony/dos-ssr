@@ -99,7 +99,7 @@
       <ion-content>
         <div class="menu-header-bg"></div>
         <ion-menu-toggle>
-          <div class="header-content user" [routerLink]="['/profile']">
+          <div class="header-content user" [routerLink]="['/home']">
             <img src="../assets/icon/dos logo png.png" alt="" />
             <!-- <ion-label class="ion-margin-horizontal"
               ><ion-text color="light" *ngIf="!user_name">
@@ -160,7 +160,7 @@
             </ion-item>
 
             <ion-item
-              (click)="router.navigate(['/offer'])"
+              (click)="router.navigate(['/manufacturers'])"
               routerDirection="root"
               lines="none"
               detail="false"
@@ -174,7 +174,7 @@
             </ion-item>
 
             <ion-item
-              (click)="router.navigate(['/offer'])"
+              (click)="router.navigate(['/recommended'])"
               routerDirection="root"
               lines="none"
               detail="false"
