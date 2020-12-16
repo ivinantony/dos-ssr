@@ -20,7 +20,7 @@ import { RouterModule } from '@angular/router';
     SharedDirectivesModule,
     ReactiveFormsModule,
     FontAwesomeModule,
-    RouterModule,
+    RouterModule
   ],
   declarations: [HomePage]
 })
