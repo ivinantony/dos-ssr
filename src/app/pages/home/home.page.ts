@@ -389,18 +389,18 @@ manufactures = MANUFACTURES
     console.log($event);
   }
 
-  getData()
-  {
-    
-    this.homeService.getHomeDetails().subscribe(
-      (data)=> this.handleResponse(data),
-      (error)=>this.handleError(error),
-    )
-    
+
+  getData() {
+    this.presentLoading().then(()=>{
+      this.homeService.getHomeDetails().subscribe(
+        (data) => this.handleResponse(data),
+        (error) => this.handleError(error)
+      )})
   }
 
-  handleResponse(data){
-   
+  handleResponse(data)
+  {
+   this.loadingController.dismiss()
     console.log(data)
 
     this.data = data
@@ -455,6 +455,8 @@ manufactures = MANUFACTURES
   }
   handleError(error)
   {
+   this.loadingController.dismiss()
+
     console.log(error);
     // this.dismiss()
    
@@ -473,25 +475,20 @@ manufactures = MANUFACTURES
     this.router.navigate(['categories'])
   }
 
-
-  async presentLoading() {
-    console.log('Loader')
-    const loading = await this.loadingController.create({
-      spinner: 'bubbles',
-      cssClass: 'custom-spinner',
-      message: 'Please wait...',
-      showBackdrop: true
-    });
-    await loading.present();
-  }
-  async dismiss() {
-    await this.loadingController.dismiss()
-  }
-
   doRefresh(event) {
     this.getData();
     setTimeout(() => {
       event.target.complete();
     }, 1000);
+  }
+
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      spinner: 'crescent',
+      cssClass:'custom-spinner',
+      message: 'Please wait...',
+      showBackdrop: true
+    });
+    await loading.present();
   }
 }

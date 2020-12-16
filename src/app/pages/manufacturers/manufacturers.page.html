@@ -8,6 +8,11 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="refresh" pullingText="Pull to refresh" refreshingSpinner="crescent"
+      refreshingText="Refreshing..."></ion-refresher-content>
+  </ion-refresher>
+  
   <ion-grid fixed>
     <ion-row class="row">
       <ion-col
@@ -16,7 +21,7 @@
         size-md="6"
         size-lg="3"
         size-xl="3"
-        *ngFor="let item of data?.brands; let i=index">
+        *ngFor="let item of brands; let i=index">
         <ion-card class="ion-no-margin card" (click)="navigateToBrandProducts(i)">
           <ion-card-content class="ion-text-center">
             <img

@@ -15,66 +15,10 @@
 </ion-header>
 
 <ion-content>
-  <!-- <section id="banr" class="ion-margin-vertical">
-    <ion-slides class="banner" [options]="bannerSlideOpts">
-      <ion-slide
-        *ngFor="let item of banners; let i=index"
-        [ngStyle]="{'background-image': 'url(' + item.imgUrl + ')'}"
-      >
-      </ion-slide>
-    </ion-slides>
-  </section> -->
-
-  <!-- <ion-grid>
-    <ion-row>
-      
-      <ion-col size="12" size-sm="12" size-md="12" size-xl="12" size-lg="12">
-        <ion-grid fixed>
-          <ion-row class="row">
-            <ion-col
-              size="6"
-              size-sm="6"
-              size-md="6"
-              size-lg="3"
-              size-xl="3"
-              *ngFor="let item of products; let i=index"
-              (click)="navigateToProduct(i)"
-              class="prod"
-            >
-              <div class="ion-text-center" style=" position: relative; overflow: hidden">
-                <img [src]="item?.images[0].path" alt="">
-              </div>
-              <ion-list>
-                <ion-item lines="none">
-                  <ion-label class="text">
-                    <h1>{{item.name}}</h1>
-                    <ion-label>
-                      <ion-text color="dark" class="price">
-                        <h2>{{ item.offer_price | currency:'AED' }}</h2>
-                        <h2 *ngIf="item.offer_price == null">{{ item.price | currency:'AED' }}</h2>
-                      </ion-text>
-                      <ion-text color="danger">
-                        <p class="offer-price" *ngIf="item.offer_price != null">{{ item.price | currency:'AED' }}</p>
-                      </ion-text>
-                    </ion-label>                 
-                  </ion-label>
-                </ion-item>
-              </ion-list>
-            </ion-col>
-            <ion-infinite-scroll (ionInfinite)="loadMoreContent($event)">
-              <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
-              </ion-infinite-scroll-content>
-            </ion-infinite-scroll>
-          </ion-row>
-        </ion-grid>
-      </ion-col>
-    </ion-row>
-  </ion-grid> -->
-
-
- 
-
-
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="refresh" pullingText="Pull to refresh" refreshingSpinner="crescent"
+      refreshingText="Refreshing..."></ion-refresher-content>
+  </ion-refresher>
 
     <ion-row>
       <ion-col size="12" size-sm="12" size-md="12" size-xl="12" size-lg="12">
@@ -171,10 +115,7 @@
             </ion-col> 
             
             
-            <ion-infinite-scroll (ionInfinite)="loadMoreContent($event)" *ngIf="page_count != page_limit">
-              <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
-              </ion-infinite-scroll-content>
-            </ion-infinite-scroll>
+          
           </ion-row>
         </ion-grid>
 
@@ -182,7 +123,16 @@
     </ion-row>
 
 
-
+    <ion-infinite-scroll
+    threshold="100px"
+    (ionInfinite)="loadMoreContent($event)"
+  >
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
 </ion-content>
 <ion-footer class="ion-hide-md-up">

@@ -136,9 +136,9 @@
         <section id="recommended">
           <ion-item lines="none">
             <ion-label class="title">Recommended for You</ion-label>
-            <ion-button expand="block" fill="clear" shape="round" slot="end">
+            <!-- <ion-button expand="block" fill="clear" shape="round" slot="end">
               View all
-            </ion-button>
+            </ion-button> -->
           </ion-item>
           <ion-slides [options]="recommendedSlides" class="recommended">
             <ion-slide *ngFor="let item of data?.category_products; let i=index"  (click)="navigateToProduct(i)">

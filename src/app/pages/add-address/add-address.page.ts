@@ -338,7 +338,7 @@ export class AddAddressPage implements OnInit {
         );
         if (
           shortest_distance <
-          this.delivery_locations[shop_index].radius * 10000
+          this.delivery_locations[shop_index].radius * 1000
         ) {
           var msg =
             "Delivery available from " +

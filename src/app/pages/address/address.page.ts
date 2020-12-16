@@ -9,7 +9,8 @@ import { AddAddressPage } from '../add-address/add-address.page';
 })
 export class AddressPage implements OnInit {
   selectedAddress: any
-  constructor(private loadingController: LoadingController, private modalController: ModalController) { }
+  constructor(private loadingController: LoadingController, private modalController: ModalController) 
+  { }
 
   ngOnInit() {
   }

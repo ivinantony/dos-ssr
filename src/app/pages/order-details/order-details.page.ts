@@ -61,4 +61,11 @@ export class OrderDetailsPage implements OnInit {
     });
     return await modal.present();
   }
+
+  doRefresh(event) {
+    this.getData();
+    setTimeout(() => {
+      event.target.complete();
+    }, 1000);
+  }
 }

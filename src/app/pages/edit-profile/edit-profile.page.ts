@@ -21,21 +21,24 @@ export class EditProfilePage implements OnInit {
   phone:any
   email:any
   type:any
+  client_id:any
+
   constructor(private modalController:ModalController,private toastController:ToastController,private loadingController:LoadingController,
     private profileService:ProfileService,private router:Router) {
+    this.client_id = localStorage.getItem('client_id')
     this.getData()
    }
-  ionViewWillEnter()
-  {
-    console.log("hello")
-  }
+  
   ngOnInit() {
   }
-  getData()
-  { this.presentLoading()
-    this.profileService.getProfileDetails(Number(localStorage.getItem('client_id'))).subscribe(
-      (data)=>this.handleResponseData(data,GET_DATA),
-      (error) => this.handleResponseError(error)
+ 
+  getData() {
+    this.presentLoading().then(()=>{
+      this.profileService.getProfileDetails(this.client_id).subscribe(
+        (data) => this.handleResponseData(data,GET_DATA),
+        (error) => this.handleResponseError(error)
+      )
+    }
     )
   }
 
@@ -117,6 +120,7 @@ export class EditProfilePage implements OnInit {
 
   handleResponseData(data,type)
   {
+    this.loadingController.dismiss()
     if(type==GET_DATA)
     {
       console.log(data)
@@ -139,6 +143,7 @@ export class EditProfilePage implements OnInit {
   }
   handleResponseError(error)
   {
+    this.loadingController.dismiss()
     console.log(error)
   }
 
@@ -197,16 +202,14 @@ export class EditProfilePage implements OnInit {
       return true
     }
   }
+
   async presentLoading() {
     const loading = await this.loadingController.create({
-      cssClass: 'my-custom-class',
+      spinner: 'crescent',
+      cssClass:'custom-spinner',
       message: 'Please wait...',
-      duration: 2000
+      showBackdrop: true
     });
     await loading.present();
-
-    const { role, data } = await loading.onDidDismiss();
-    console.log('Loading dismissed!');
   }
-
 }

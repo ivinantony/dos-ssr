@@ -20,8 +20,8 @@ const DEL_DATA = 220;
 export class ProductsPage implements OnInit {
   products: Array<any> = []
   banners: Array<any> = BANNERS;
-  page_count:number
-  page_limit:number
+  page_limit: number;
+  page_count: number = 1;
   client_id:any
 
   bannerSlideOpts = {
@@ -46,8 +46,9 @@ export class ProductsPage implements OnInit {
     { val: 'Mushroom', isChecked: false }
   ];
   constructor(private activatedRoute: ActivatedRoute, private platform: Platform, public router: Router, private modalController: ModalController,
-    private CatProductService:SubcatProductsService,private utils:UtilsService,private loadingcontroller:LoadingController,
-    private actionSheetController:ActionSheetController,private cartService:CartService,private authService:AuthenticationService,private alertController:AlertController) {
+    private CatProductService:SubcatProductsService,private utils:UtilsService,private loadingController:LoadingController,
+    private actionSheetController:ActionSheetController,private cartService:CartService,private authService:AuthenticationService,
+    private alertController:AlertController) {
     this.page_count = 1
     this.checkWidth()
     this.s3url = utils.getS3url()
@@ -63,19 +64,32 @@ export class ProductsPage implements OnInit {
   ngOnInit() {
   }
 
-  getData()
-  {
+  // getData()
+  // {
     
-    console.log("catid",this.catId)
-    let client_id = Number(localStorage.getItem('client_id'))
-    this.CatProductService.getSubCatProducts(this.catId,client_id,this.page_count,null).subscribe(
-      (data)=>this.handleResponse(data,GET_DATA),
-      (error)=>this.handleError(error)
+  //   console.log("catid",this.catId)
+  //   let client_id = Number(localStorage.getItem('client_id'))
+  //   this.CatProductService.getSubCatProducts(this.catId,client_id,this.page_count,null).subscribe(
+  //     (data)=>this.handleResponse(data,GET_DATA),
+  //     (error)=>this.handleError(error)
+  //   )
+  // }
+
+  getData(infiniteScroll?) {
+    this.presentLoading().then(()=>{
+
+      this.CatProductService.getSubCatProducts(this.catId,this.client_id,this.page_count,null).subscribe(
+        (data)=>this.handleResponse(data,GET_DATA,infiniteScroll),
+        (error)=>this.handleError(error)
+      )
+    }
     )
+    
   }
 
-  handleResponse(data,type)
+  handleResponse(data,type,infiniteScroll?)
   {
+    this.loadingController.dismiss()
     if(type == GET_DATA)
     {
     console.log(data)
@@ -91,11 +105,15 @@ export class ProductsPage implements OnInit {
     //   this.products[i].images[0].path = this.s3url+this.products[i].images[0].path
     // }
     }
+    if (infiniteScroll) {
+      infiniteScroll.target.complete();
+    }
    console.log(data) 
     
   }
   handleError(error)
   {
+    this.loadingController.dismiss()
     console.log(error)
   }
   navigateToProduct(index: number) {
@@ -141,17 +159,18 @@ export class ProductsPage implements OnInit {
     }
   }
 
-  loadMoreContent(event)
-  {
+  
+
+  loadMoreContent(infiniteScroll) {
     if (this.page_count == this.page_limit) {
-      event.target.disabled = true;
-    }
-    else{
-      console.log(this.page_count,"before")
-      this.page_count++
-      console.log(this.page_count,"after")
-      this.getData()
-      console.log("hello")
+      infiniteScroll.target.disabled = true;
+    } 
+    else {
+
+
+      this.page_count+=1;
+      console.log(this.page_count)
+      this.getData(infiniteScroll);
     }
   }
 
@@ -233,6 +252,23 @@ export class ProductsPage implements OnInit {
     )
     // this.getData()
     this.products[index].cart_count--
+  }
+
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      spinner: 'crescent',
+      cssClass:'custom-spinner',
+      message: 'Please wait...',
+      showBackdrop: true
+    });
+    await loading.present();
+  }
+
+  doRefresh(event) {
+    this.getData();
+    setTimeout(() => {
+      event.target.complete();
+    }, 1000);
   }
 
 }

@@ -2,6 +2,7 @@ import { Component, NgZone, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import {
   IonRouterOutlet,
+  LoadingController,
   ModalController,
   Platform,
   ToastController,
@@ -57,6 +58,7 @@ export class CartPage implements OnInit {
   payment_id: any;
   address_id: any;
   url:any;
+  client_id:any
   constructor(
     public modalController: ModalController,
     private routerOutlet: IonRouterOutlet,
@@ -72,8 +74,10 @@ export class CartPage implements OnInit {
     private paytabService: PaytabsService,
     private renderer2: Renderer2,
     private zone:NgZone,
+    private loadingController:LoadingController,
     @Inject(DOCUMENT) private _document: Document
   ) {
+    this.client_id=localStorage.getItem("client_id")
     this.getData();
     this.getAddress();
     this.s3url = utils.getS3url();
@@ -197,12 +201,17 @@ export class CartPage implements OnInit {
   }
 
   getData() {
-    let client_id = localStorage.getItem("client_id");
-    this.cartService.getCart(client_id).subscribe(
-      (data) => this.handleResponse(data, GET_CART),
-      (error) => this.handleError(error)
-    );
+    this.presentLoading().then(()=>{
+      this.cartService.getCart(this.client_id).subscribe(
+        (data) => this.handleResponse(data,GET_CART),
+        (error) => this.handleError(error)
+      )
+    }
+    )
+
   }
+
+
 
   getAddress() {
     let client_id = localStorage.getItem("client_id");
@@ -213,6 +222,7 @@ export class CartPage implements OnInit {
   }
 
   handleResponse(data, type) {
+    this.loadingController.dismiss()
     if (type == GET_CART) {
       console.log(data);
       this.cart = data.cart;
@@ -334,6 +344,7 @@ export class CartPage implements OnInit {
     }
   }
   handleError(error) {
+    this.loadingController.dismiss()
     console.log(error);
   }
 
@@ -401,6 +412,23 @@ export class CartPage implements OnInit {
     this.router.navigate(['paytabs'])
   }
   
+
+  doRefresh(event) {
+    this.getData();
+    setTimeout(() => {
+      event.target.complete();
+    }, 1000);
+  }
+
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      spinner: 'crescent',
+      cssClass:'custom-spinner',
+      message: 'Please wait...',
+      showBackdrop: true
+    });
+    await loading.present();
+  }
 }
 
 

@@ -49,4 +49,11 @@ export class OrdersPage implements OnInit {
     let order_id = this.data.orders[index].id
     this.router.navigate(['order-details',{order_id}])
   }
+
+  doRefresh(event) {
+    this.getData();
+    setTimeout(() => {
+      event.target.complete();
+    }, 1000);
+  }
 }

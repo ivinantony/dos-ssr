@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { IonRouterOutlet, ModalController, Platform, ToastController } from "@ionic/angular";
+import { IonRouterOutlet, LoadingController, ModalController, Platform, ToastController } from "@ionic/angular";
 import { CheckoutService } from "src/app/services/checkout/checkout.service";
 import { OrderService } from "src/app/services/order/order.service";
 import { CouponPage } from "../coupon/coupon.page";
@@ -41,7 +41,8 @@ export class CheckoutPage implements OnInit {
     private payPal: PayPal,
     private router:Router,
     private paytabService: PaytabsService,
-    private toastController:ToastController
+    private toastController:ToastController,
+    private loadingController:LoadingController,
     
   ) {
     this.client_id = Number(localStorage.getItem("client_id"));
@@ -51,16 +52,28 @@ export class CheckoutPage implements OnInit {
 
   ngOnInit() {}
 
-  getData() {
-    this.checkoutService
-      .getAmountDetails(this.client_id, this.address_id)
-      .subscribe(
-        (data) => this.handleResponse(data, GET_AMOUNTDETAILS),
-        (error) => this.handleError(error)
-      );
+  // getData() {
+  //   this.checkoutService
+  //     .getAmountDetails(this.client_id, this.address_id)
+  //     .subscribe(
+  //       (data) => this.handleResponse(data, GET_AMOUNTDETAILS),
+  //       (error) => this.handleError(error)
+  //     );
+  // }
+
+  
+getData() {
+  this.presentLoading().then(()=>{
+    this.checkoutService.getAmountDetails(this.client_id,this.address_id).subscribe(
+      (data) => this.handleResponse(data, GET_AMOUNTDETAILS),
+      (error) => this.handleError(error)
+    )
   }
+  )
+}
 
   handleResponse(data, type) {
+this.loadingController.dismiss()
     if (type == GET_AMOUNTDETAILS) 
     {
       console.log(data);
@@ -169,6 +182,7 @@ export class CheckoutPage implements OnInit {
     }
   }
   handleError(error) {
+    this.loadingController.dismiss()
     console.log(error);
   }
 
@@ -240,5 +254,17 @@ export class CheckoutPage implements OnInit {
     });
     toast.present();
   }
+
+
+    
+async presentLoading() {
+  const loading = await this.loadingController.create({
+    spinner: 'crescent',
+    cssClass:'custom-spinner',
+    message: 'Please wait...',
+    showBackdrop: true
+  });
+  await loading.present();
+}
 
 }

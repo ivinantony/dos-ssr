@@ -19,36 +19,11 @@
   [appFadeHeader]="toolbar"
 >
 <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-  <ion-refresher-content pullingIcon="refresh" pullingText="Pull to refresh" refreshingSpinner="bubbles"
+  <ion-refresher-content pullingIcon="refresh" pullingText="Pull to refresh" refreshingSpinner="crescent"
     refreshingText="Refreshing..."></ion-refresher-content>
 </ion-refresher>
-  <!-- <ion-header collapse="condense" >
-  <ion-toolbar class="ion-no-border">
-    <ion-item lines="none" class="ion-margin-top">
-      <ion-avatar
-        style="position: relative"
-        slot="end"
-        [routerLink]="[ '/profile' ]"
-      >
-        <img
-          src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/128.jpg"
-          alt=""
-        />
-        <div class="notification"></div>
-      </ion-avatar>
 
-      <ion-label>
-        <ion-text color="primary">
-          <p>{{myDate | date}}</p>
-        </ion-text>
-        <ion-text color="dark" class="ion-text-uppercase">
-          <b> Deal </b>
-        </ion-text>
-        <ion-text color="primary">On Store </ion-text>
-      </ion-label>
-    </ion-item>
-  </ion-toolbar>
-</ion-header> -->
+  
   <ion-grid fixed>
     <ion-row>
       <ion-col size="12" size-lg="8" push-lg="4" size-xl="8" push-xl="4">
@@ -397,8 +372,8 @@
   size-xl="3">
     <ion-card class="ion-text-center kard">
       <ion-icon name="megaphone" class="icons"></ion-icon>
-      <h1>Call Us Anytime</h1>
-      <P>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.</P>
+      <h1>Vast Inventory</h1>
+      <P>Get any kind of spare parts for your vehicles from our vast range of inventory.</P>
     </ion-card>
   </ion-col>
   <ion-col 
@@ -409,8 +384,8 @@
   size-xl="3">
     <ion-card class="ion-text-center kard">
       <ion-icon name="cube"  class="icons"></ion-icon>
-      <h1>Free Shipping</h1>
-      <P>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.</P>
+      <h1>Delivery Across UAE</h1>
+      <P>Select your required item and get it delivered anywhere in the UAE.</P>
     </ion-card>
   </ion-col>
   <ion-col  size="12"
@@ -420,8 +395,9 @@
   size-xl="3">
     <ion-card class="ion-text-center kard">
       <ion-icon name="swap-horizontal"  class="icons"></ion-icon>
-      <h1>Easy Returns</h1>
-      <P>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.</P>
+      <h1>Multiple Search Criteria</h1>
+      <P>Not sure about the name of the part? No problem, search by manufacturers, part number or
+        substitute part number and get everything found.</P>
     </ion-card>
   </ion-col>
   <ion-col size="12"
@@ -432,7 +408,8 @@
     <ion-card class="ion-text-center kard">
       <ion-icon name="card"  class="icons"></ion-icon>
       <h1>Secure Payments</h1>
-      <P>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.</P>
+      <P>Find your item and pay for it via multiple payment options such as cash on delivery, credit cards,
+        debit cards, net banking, PayPal, Amazon Pay etc.</P>
     </ion-card>
   </ion-col>
   
@@ -456,10 +433,12 @@
       <ion-col size="12" size-md="4"class="usefulLinks" >
         <h5>USEFUL LINKS</h5>
         <ul class="links">
-          <li><p>Home</p></li>
-          <li><p>About</p></li>
-          <li><p>Products</p></li>
-          <li><p>Contact</p></li>
+          
+          <ion-router-link color="Home" href="#"></ion-router-link>
+          <li><p><ion-router-link color="medium" href="#">Home</ion-router-link></p></li>
+          <li (click)="router.navigate(['about'])"><p>About Us</p></li>
+          <li><p><ion-router-link color="medium" href="#">Products</ion-router-link></p></li>
+          <li><p><ion-router-link color="medium" href="#">Offers</ion-router-link></p></li>
           
         </ul>
       </ion-col>

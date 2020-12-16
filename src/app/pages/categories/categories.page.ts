@@ -79,11 +79,18 @@ export class CategoriesPage implements OnInit {
 
   async presentLoading() {
         const loading = await this.loadingController.create({
-          spinner: 'bubbles',
+          spinner: 'crescent',
           cssClass:'custom-spinner',
           message: 'Please wait...',
           showBackdrop: true
         });
         await loading.present();
+      }
+
+      doRefresh(event) {
+        this.getData();
+        setTimeout(() => {
+          event.target.complete();
+        }, 1000);
       }
 }

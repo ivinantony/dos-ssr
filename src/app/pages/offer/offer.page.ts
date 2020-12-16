@@ -1,7 +1,7 @@
 import { Route } from '@angular/compiler/src/core';
 import { Component, OnInit } from '@angular/core';
 import { Data, Router } from '@angular/router';
-import { ActionSheetController, AlertController } from '@ionic/angular';
+import { ActionSheetController, AlertController, LoadingController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { OfferService } from 'src/app/services/offer/offer.service';
@@ -15,16 +15,16 @@ const DEL_DATA=220;
   styleUrls: ['./offer.page.scss'],
 })
 export class OfferPage implements OnInit {
-
+  products: Array<any> = [];
   data:any
   s3url:any
   page_limit: number;
-  page_count: number;
+  page_count: number = 1;
   current_page: number;
   client_id:any
   constructor(private offerService:OfferService,private utils:UtilsService,public router:Router,
     private actionSheetController:ActionSheetController,private cartService:CartService,
-    private alertController:AlertController,private authService:AuthenticationService) 
+    private alertController:AlertController,private authService:AuthenticationService,private loadingController:LoadingController) 
   { 
     this.client_id = localStorage.getItem('client_id')
     this.page_count = 1;
@@ -40,40 +40,52 @@ export class OfferPage implements OnInit {
   ngOnInit() {
   }
 
-  getData()
-  {
-    let client_id = Number(localStorage.getItem('client_id'))
-    this.offerService.getOfferProducts(client_id,this.page_count).subscribe(
-      (data)=>this.handleResponse(data,GET_DATA),
-      (error)=>this.handleError(error)
+  // getData()
+  // {
+    
+  //   this.offerService.getOfferProducts(client_id,this.page_count).subscribe(
+  //     (data)=>this.handleResponse(data,GET_DATA),
+  //     (error)=>this.handleError(error)
+  //   )
+  // }
+
+  getData(infiniteScroll?) {
+    this.presentLoading().then(()=>{
+      this.offerService.getOfferProducts(this.client_id,this.page_count).subscribe(
+        (data)=>this.handleResponse(data,GET_DATA,infiniteScroll),
+        (error)=>this.handleError(error)
+      )
+    }
     )
+    
   }
 
-  handleResponse(data,type)
+  handleResponse(data,type,infiniteScroll?)
   {
+    this.loadingController.dismiss()
     if(type == GET_DATA)
     {
+      console.log(data);
       this.page_limit = data.page_count;
-      this.data = data
-      console.log(data)
+      data.product.forEach((element) => {
+        this.products.push(element);
+      });
+      console.log(this.products, "API called");
+
     }
    
     console.log(data)
+    if (infiniteScroll) {
+      infiniteScroll.target.complete();
+    }
   }
   handleError(error)
   {
+    this.loadingController.dismiss()
     console.log(error)
   }
 
-  loadMoreContent(event) {
-    if (this.page_count == this.page_limit) {
-      event.target.disabled = true;
-    } else {
-      this.page_count++;
-      this.getData();
-      console.log("hello");
-    }
-  }
+ 
 
   navigateToProduct(index) 
   {
@@ -149,5 +161,35 @@ export class OfferPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  loadMoreContent(infiniteScroll) {
+    if (this.page_count == this.page_limit) {
+      infiniteScroll.target.disabled = true;
+    } 
+    else {
+
+
+      this.page_count+=1;
+      console.log(this.page_count)
+      this.getData(infiniteScroll);
+    }
+  }
+
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      spinner: 'bubbles',
+      cssClass:'custom-spinner',
+      message: 'Please wait...',
+      showBackdrop: true
+    });
+    await loading.present();
+  }
+
+  doRefresh(event) {
+    this.getData();
+    setTimeout(() => {
+      event.target.complete();
+    }, 1000);
   }
 }

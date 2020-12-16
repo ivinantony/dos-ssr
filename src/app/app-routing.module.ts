@@ -136,7 +136,15 @@ const routes: Routes = [
   {
     path: 'checkout',
     loadChildren: () => import('./pages/checkout/checkout.module').then( m => m.CheckoutPageModule)
+  },  {
+    path: 'about',
+    loadChildren: () => import('./pages/about/about.module').then( m => m.AboutPageModule)
+  },
+  {
+    path: 'recommended',
+    loadChildren: () => import('./pages/recommended/recommended.module').then( m => m.RecommendedPageModule)
   }
+
 
 
 

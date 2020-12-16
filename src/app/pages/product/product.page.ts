@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController, IonFab, ModalController, Platform, ToastController } from '@ionic/angular';
+import { AlertController, IonFab, LoadingController, ModalController, Platform, ToastController } from '@ionic/angular';
 import { AuthGuard } from 'src/app/guards/auth.guard';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { CartService } from 'src/app/services/cart/cart.service';
@@ -40,11 +40,12 @@ export class ProductPage implements OnInit {
   constructor(private platform: Platform, private modalController: ModalController, public authencationservice: AuthenticationService, 
     public checkloginGuard: AuthGuard, private toastController: ToastController, public router: Router, 
     private activatedRoute: ActivatedRoute,private productsDetailsService:ProductDetailsService,private utils:UtilsService,private cartService:CartService,
-    private authService:AuthenticationService,private alertController:AlertController) {
+    private authService:AuthenticationService,private alertController:AlertController,private loadingController:LoadingController) {
 
     this.productId = parseInt(this.activatedRoute.snapshot.paramMap.get('id'))
     this.catId = parseInt(this.activatedRoute.snapshot.paramMap.get('catId'))
     // this.product = PRODUCTS.find(data => data.id == this.productId)
+    this.client_id = localStorage.getItem('client_id')
     this.s3url = utils.getS3url()
     this.checkWidth()
     this.platform.resize.subscribe(async () => {
@@ -61,17 +62,29 @@ export class ProductPage implements OnInit {
 
   }
 
-  getData()
-  {
-    let client_id = localStorage.getItem('client_id')
-    this.productsDetailsService.getProductDetails(this.productId,client_id).subscribe(
-      (data)=>this.handleResponse(data,GET_DATA),
-      (error)=>this.handleError(error)
-    )
+  // getData()
+  // {
+  
+  //   this.productsDetailsService.getProductDetails().subscribe(
+  //     (data)=>this.handleResponse(data,GET_DATA),
+  //     (error)=>this.handleError(error)
+  //   )
+  // }
+
+  getData() {
+    this.presentLoading().then(()=>{
+      this.productsDetailsService.getProductDetails(this.productId,this.client_id).subscribe(
+        (data) => this.handleResponse(data,GET_DATA),
+        (error) => this.handleError(error)
+      )})
   }
+
+ 
+  
 
   handleResponse(data,type)
   {
+    this.loadingController.dismiss()
     if(type == GET_DATA)
     {
       this.data = data
@@ -87,6 +100,7 @@ export class ProductPage implements OnInit {
   }
   handleError(error)
   {
+    this.loadingController.dismiss
     console.log(error)
   }
 
@@ -215,4 +229,15 @@ export class ProductPage implements OnInit {
     let catId= this.data.category_products[index].category_id
     this.router.navigate(['product',{id,catId}])
   }
+
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      spinner: 'crescent',
+      cssClass:'custom-spinner',
+      message: 'Please wait...',
+      showBackdrop: true
+    });
+    await loading.present();
+  }
+
 }

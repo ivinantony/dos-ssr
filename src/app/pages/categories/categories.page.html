@@ -12,6 +12,12 @@
 </ion-header>
 
 <ion-content>
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="refresh" pullingText="Pull to refresh" refreshingSpinner="crescent"
+      refreshingText="Refreshing..."></ion-refresher-content>
+  </ion-refresher>
+  
   <section id="banr">
     <ion-slides class="banner" [options]="bannerSlideOpts">
       <!-- <ion-slide

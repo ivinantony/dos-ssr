@@ -1,10 +1,16 @@
 <ion-app>
   <ion-header class="ion-hide-md-down">
     <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button color="dark"></ion-menu-button>
+      </ion-buttons>
       <ion-buttons slot="start" class="ion-margin-horizontal">
+        
         <ion-button (click)="router.navigate(['/home'])">
-          <ion-text color="magenta"><b>DEAL </b> </ion-text>
-          <ion-text color="dark"> <b>ON STORE</b> </ion-text>
+        <img src="../assets/icon/dos logo png.png" width="50px" style="display:inline-block" height="40px"/>
+
+          <!-- <ion-text color="magenta"><b>DEAL </b> </ion-text>
+          <ion-text color="dark"> <b>ON STORE</b> </ion-text> -->
         </ion-button>
       </ion-buttons>
       <ion-buttons slot="start" class="nav-btns ion-margin-horizontal">
@@ -165,6 +171,21 @@
             class="icon"
             color="magenta"></ion-icon>
               <ion-label>Manufacturers</ion-label>
+            </ion-item>
+
+            <ion-item
+              (click)="router.navigate(['/offer'])"
+              routerDirection="root"
+              lines="none"
+              detail="false"
+              class="links"
+            >
+            
+            <ion-icon 
+            name="thumbs-up-outline" 
+            class="icon"
+            color="magenta"></ion-icon>
+              <ion-label>Recommended</ion-label>
             </ion-item>
 
             <ion-item

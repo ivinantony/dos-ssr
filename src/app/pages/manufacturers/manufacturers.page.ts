@@ -15,6 +15,7 @@ s3url:any
 page_count: number = 1
 page_limit: number
 client_id:any
+brands:Array<any>=[]
   constructor(private manufacturerService:ManufacturerService,private utils:UtilsService,private router:Router,private loadingController:LoadingController) 
   { 
     this.client_id = localStorage.getItem('client_id')
@@ -40,6 +41,10 @@ client_id:any
     this.loadingController.dismiss()
     this.data = data
     this.page_limit = data.page_count;
+    this.data.brands.forEach((element) => {
+      this.brands.push(element);
+    });
+    console.log(this.brands, "API called");
     if (infiniteScroll) {
       infiniteScroll.target.complete();
     }
@@ -76,5 +81,12 @@ client_id:any
       showBackdrop: true
     });
     await loading.present();
+  }
+
+  doRefresh(event) {
+    this.getData();
+    setTimeout(() => {
+      event.target.complete();
+    }, 1000);
   }
 }

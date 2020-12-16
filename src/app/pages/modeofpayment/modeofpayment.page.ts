@@ -82,6 +82,9 @@ export class ModeofpaymentPage implements OnInit {
   
   close()
   {
+    let data={
+      modeOfPayment_Id :null
+    }
     this.modalController.dismiss()
   }
 

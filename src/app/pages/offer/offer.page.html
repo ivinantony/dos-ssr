@@ -15,6 +15,11 @@
 </ion-header>
 
 <ion-content>
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="refresh" pullingText="Pull to refresh" refreshingSpinner="crescent"
+      refreshingText="Refreshing..."></ion-refresher-content>
+  </ion-refresher>
   <!-- <section id="banr" class="ion-margin-vertical">
     <ion-slides class="banner" [options]="bannerSlideOpts">
       <ion-slide
@@ -36,7 +41,7 @@
               size-md="6"
               size-lg="3"
               size-xl="3"
-              *ngFor="let item of data?.product; let i=index"
+              *ngFor="let item of products; let i=index"
               
               class="prod"
             >
@@ -65,7 +70,9 @@
                 </ion-item>
               </ion-list>
             </div>
-             <ion-button (click)="addToCart(i)" expand="full-width" fill="outline" shape="round" color="dark" class="btn" *ngIf="item.cart_count == 0">
+
+            <div *ngIf="item.in_stock == 1">
+              <ion-button (click)="addToCart(i)" expand="full-width" fill="outline" shape="round" color="dark" class="btn" *ngIf="item.cart_count == 0">
                 <ion-icon name="add-outline" class="icon"></ion-icon> ADD
               </ion-button>
             <div class="addbutton" *ngIf="item.cart_count != 0">
@@ -73,13 +80,17 @@
                {{item.cart_count}}
                <ion-icon name="add-outline"  class="icon" (click)="addToCart(i)"></ion-icon>
             </div>
+            </div>
+            <ion-button (click)="addToCart(i)" expand="full-width" fill="solid" shape="round" color="danger" class="btn" *ngIf="item.in_stock == 0">
+              Out of Stock
+            </ion-button>
+            
+            
+
             </ion-col> 
             
             
-            <ion-infinite-scroll (ionInfinite)="loadMoreContent($event)">
-              <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
-              </ion-infinite-scroll-content>
-            </ion-infinite-scroll>
+            
           </ion-row>
         </ion-grid>
 
@@ -88,6 +99,16 @@
   </ion-grid>
 
 
+  <ion-infinite-scroll
+    threshold="100px"
+    (ionInfinite)="loadMoreContent($event)"
+  >
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
 </ion-content>
 <ion-footer class="ion-hide-md-up">
