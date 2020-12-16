@@ -28,7 +28,7 @@
     </ion-slides>
   </section>
 
-  <ion-grid>
+  <ion-grid class="catSection">
     <ion-row>
       <ion-col size="12" size-sm="12" size-md="12" size-xl="12" size-lg="12">
         <ion-grid>
@@ -42,14 +42,21 @@
               size-xl="3"
               *ngFor="let item of categories; let i=index"
               (click)="navigateToProducts(i)"
-              class="prod"
+              class="ion-text-center prod"
             >
               <div
-                class="ion-text-center"
-                style="position: relative; overflow: hidden"
+                class="ion-text-center round"
+                
+                [ngStyle]="{'background-image': 'url( '+ s3url + item?.path +' )'}"
               >
-                <img [src]="s3url+item?.path" alt="" />
+              <!-- style="position: relative; overflow: hidden" -->
+                <!-- <img [src]="s3url+item?.path" alt="" /> -->
               </div>
+              <!-- <ion-label class="ion-text-center cat">
+                <ion-text color="dark">
+                  <h3><b>{{item.category_name}}</b></h3>
+                </ion-text>
+              </ion-label> -->
           
                 <ion-item class="text" lines="none">
                   <h1>{{item.category_name}}</h1>
@@ -64,18 +71,18 @@
       </ion-col>
       
     </ion-row>
-   
+
   </ion-grid>
+ 
 
   <ion-infinite-scroll
-    threshold="100px"
-    (ionInfinite)="loadMoreContent($event)"
+  threshold="100px"
+  (ionInfinite)="loadMoreContent($event)"
+>
+  <ion-infinite-scroll-content
+    loadingSpinner="bubbles"
+    loadingText="Loading more data..."
   >
-    <ion-infinite-scroll-content
-      loadingSpinner="bubbles"
-      loadingText="Loading more data..."
-    >
-    </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
-  
+  </ion-infinite-scroll-content>
+</ion-infinite-scroll>
 </ion-content>

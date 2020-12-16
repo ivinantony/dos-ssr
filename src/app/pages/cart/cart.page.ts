@@ -26,6 +26,7 @@ import { Renderer2, Inject } from "@angular/core";
 import { DOCUMENT } from "@angular/common";
 import { hasLifecycleHook } from '@angular/compiler/src/lifecycle_reflector';
 import { Console } from 'console';
+declare var google;
 
 declare var RazorpayCheckout: any;
 declare var Razorpay: any;
@@ -59,6 +60,9 @@ export class CartPage implements OnInit {
   address_id: any;
   url:any;
   client_id:any
+  delivery_locations:Array<any>
+  current_selection:any
+  data:any
   constructor(
     public modalController: ModalController,
     private routerOutlet: IonRouterOutlet,
@@ -81,11 +85,14 @@ export class CartPage implements OnInit {
     this.getData();
     this.getAddress();
     this.s3url = utils.getS3url();
+    
   }
 
   ngOnInit() {}
 
   onChangeAddress($event) {
+    this.current_selection= $event.detail.value;
+    // this.getDistance()
     this.selectedAddress = $event.detail.value;
     console.log("selectedAddress", this.selectedAddress);
     this.address_id = this.addresses[this.selectedAddress].id;
@@ -225,6 +232,7 @@ export class CartPage implements OnInit {
     this.loadingController.dismiss()
     if (type == GET_CART) {
       console.log(data);
+      this.data = data
       this.cart = data.cart;
       this.amountDetails = data;
       this.amountDetails.payable_amount =
@@ -428,6 +436,95 @@ export class CartPage implements OnInit {
       showBackdrop: true
     });
     await loading.present();
+  }
+
+
+
+
+
+  // getDistance(latitude,longitude) {
+  //   console.log("GEt Distance started",this.latitude,this.longitude)
+  //   const service = new google.maps.DistanceMatrixService();
+  //   var current_coords = new google.maps.LatLng(this.latitude, this.longitude);
+  //   console.log("current coords getdistance", current_coords);
+  //   var lat: string = this.latitude.toString();
+  //   var long: string = this.longitude.toString();
+  //   var destination = lat + "," + long;
+  //   // var origin = '10.008,76.329'
+
+  //   var shop_coords = new Array();
+
+  //   this.delivery_locations?.forEach((element) => {
+  //     shop_coords.push(element.location);
+  //   });
+  //   console.log("shop", shop_coords);
+  //   console.log("current_coords", this.latitude, this.longitude);
+  //   const matrixOptions = {
+  //     origins: shop_coords, // shop coords
+  //     destinations: [destination], // customer coords
+  //     travelMode: "DRIVING",
+  //     unitSystem: google.maps.UnitSystem.IMPERIAL,
+  //   };
+  //   console.log("matrix", matrixOptions);
+  //   service.getDistanceMatrix(matrixOptions, (response, status) => {
+  //     console.log("GET DISTANCE MATRIX");
+  //     if (status !== "OK") {
+  //       var msg = "Error with distance matrix";
+  //       this.showToast(msg);
+  //     } else {
+  //       var response_data = new Array();
+  //       var distances = new Array();
+  //       let shortest_distance;
+  //       let shop_index: number;
+  //       response_data = response.rows;
+  //       console.log("responsee data", response_data);
+  //       response_data.forEach((ele) => {
+  //         distances.push(ele.elements[0].distance.value);
+  //       });
+  //       shortest_distance = Math.min.apply(null, distances);
+  //       shop_index = distances.findIndex(
+  //         (element) => element == shortest_distance
+  //       );
+  //       if (
+  //         shortest_distance <
+  //         this.delivery_locations[shop_index].radius * 1000
+  //       ) {
+  //         var msg =
+  //           "Delivery available from " +
+  //           this.delivery_locations[shop_index].location;
+  //         this.showToastSuccess(msg);
+  //         this.locationAvailability = true;
+  //         // this.addressForm.patchValue({delivery_location_id:this.delivery_locations[shop_index].id})
+  //       } else {
+  //         this.locationAvailability = false;
+  //         var msg = "Sorry, this location is currently not serviceable";
+  //         // this.addressForm.patchValue({ latitude: null });
+  //         // this.addressForm.patchValue({ longitude: null });
+  //         this.showToast(msg);
+  //       }
+  //     }
+  //   });
+  // }
+
+
+  async showToast(message) {
+    let toast = await this.toastController.create({
+      message: message,
+      duration: 2500,
+      position: "top",
+      color: "danger",
+    });
+    toast.present();
+  }
+
+  async showToastSuccess(message) {
+    let toast = await this.toastController.create({
+      message: message,
+      duration: 2500,
+      position: "top",
+      color: "success",
+    });
+    toast.present();
   }
 }
 

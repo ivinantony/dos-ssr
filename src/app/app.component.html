@@ -14,6 +14,7 @@
         </ion-button>
       </ion-buttons>
       <ion-buttons slot="start" class="nav-btns ion-margin-horizontal">
+        
         <ion-button (click)="router.navigate(['/home'])"> Home </ion-button>
         <!-- <ion-button (click)="menuController.toggle()"> Categories </ion-button> -->
         <ion-button (click)="router.navigate(['/offer'])"> Offers </ion-button>
@@ -22,6 +23,9 @@
         </ion-button>
       </ion-buttons>
       <ion-buttons slot="end">
+
+        
+        
         <ion-button
           color="dark"
           style="height: 100%"
@@ -42,7 +46,29 @@
             <span style="font-size: 10px; font-weight: bold"> Cart</span>
           </div>
         </ion-button>
+
+       
+
       </ion-buttons>
+
+      
+      <ion-buttons slot="end">
+        <ion-button
+          color="dark"
+          style="height: 100%"
+         
+        >
+          <div>
+            <ion-icon name="language-outline"></ion-icon><br />
+            <span style="font-size: 10px; font-weight: bold"> Language </span>
+          </div>
+        </ion-button>
+      </ion-buttons>
+     
+   
+ 
+    
+
       <ion-grid fixed>
         <ion-row>
           <ion-col size="7" push="3">
@@ -63,7 +89,9 @@
         </ion-row>
       </ion-grid>
     </ion-toolbar>
+
   </ion-header>
+
   <ion-content>
     <ion-grid fixed>
       <ion-row>
@@ -90,6 +118,8 @@
               </ion-item>
             </ion-list>
           </ion-content>
+
+         
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -173,7 +203,7 @@
               <ion-label>Manufacturers</ion-label>
             </ion-item>
 
-            <ion-item
+            <!-- <ion-item
               (click)="router.navigate(['/recommended'])"
               routerDirection="root"
               lines="none"
@@ -186,7 +216,7 @@
             class="icon"
             color="magenta"></ion-icon>
               <ion-label>Recommended</ion-label>
-            </ion-item>
+            </ion-item> -->
 
             <ion-item
               (click)="router.navigate(['/cart'])"

@@ -51,6 +51,7 @@ export class OrdersPage implements OnInit {
   }
 
   doRefresh(event) {
+   
     this.getData();
     setTimeout(() => {
       event.target.complete();

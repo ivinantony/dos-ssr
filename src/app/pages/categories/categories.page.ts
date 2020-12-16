@@ -88,6 +88,8 @@ export class CategoriesPage implements OnInit {
       }
 
       doRefresh(event) {
+        this.page_count=1
+        this.categories= []
         this.getData();
         setTimeout(() => {
           event.target.complete();

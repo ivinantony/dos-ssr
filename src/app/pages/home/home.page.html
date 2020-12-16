@@ -75,9 +75,9 @@
   </picture> -->
   <!-- Banner -1 end -->
 
-  <section class="catSection">
-    <ion-item lines="none">
-      <ion-label class="title">All Categories</ion-label>
+  <section class="catSection" >
+    <ion-item lines="none" class="ion-text-center">
+      <ion-label class="title" color="magenta" >All Categories</ion-label>
     </ion-item>
     <ion-grid fixed>
       <ion-row>
@@ -154,8 +154,8 @@
   <!-- Banner -2 end -->
 
   <div id="top">
-    <ion-item lines="none">
-      <ion-label class="title">Top Deals</ion-label>
+    <ion-item lines="none" class="ion-text-center">
+      <ion-label class="title" color="magenta">Top Deals</ion-label>
       
     </ion-item>
     <div class="sliderWrapper">
@@ -195,18 +195,18 @@
   </div>
 
   <section id="searchByManufactures">
-    <ion-item lines="none">
-      <ion-label class="title">Search by Manufacturers</ion-label>
+    <ion-item lines="none" class="ion-text-center">
+      <ion-label class="title" color="magenta">Search by Manufacturers</ion-label>
      
     </ion-item>
-    <ion-grid fixed>
+    <ion-grid >
       <ion-row>
         <ion-col
           size="6"
           size-sm="6"
-          size-md="6"
-          size-lg="3"
-          size-xl="3"
+          size-md="4"
+          size-lg="4"
+          size-xl="2"
           *ngFor="let item of brands; let i=index">
           <ion-card class="ion-no-margin" (click)="navigateToBrandProducts(i)">
             <ion-card-content class="ion-text-center">
@@ -312,8 +312,8 @@
   </section> -->
 
   <div id="top">
-    <ion-item lines="none">
-      <ion-label class="title">Recommended</ion-label>
+    <ion-item lines="none" class="ion-text-center">
+      <ion-label class="title" color="magenta">Recommended</ion-label>
       <!-- <ion-button expand="block" fill="clear" shape="round" slot="end">
         View all
       </ion-button> -->
@@ -368,10 +368,11 @@
   <ion-col size="12"
   size-sm="6"
   size-md="6"
-  size-lg="3"
+  size-lg="6"
   size-xl="3">
     <ion-card class="ion-text-center kard">
-      <ion-icon name="megaphone" class="icons"></ion-icon>
+      
+      <ion-icon name="business-outline"  class="icons"></ion-icon>
       <h1>Vast Inventory</h1>
       <P>Get any kind of spare parts for your vehicles from our vast range of inventory.</P>
     </ion-card>
@@ -380,7 +381,7 @@
   size="12"
   size-sm="6"
   size-md="6"
-  size-lg="3"
+  size-lg="6"
   size-xl="3">
     <ion-card class="ion-text-center kard">
       <ion-icon name="cube"  class="icons"></ion-icon>
@@ -391,10 +392,11 @@
   <ion-col  size="12"
   size-sm="6"
   size-md="6"
-  size-lg="3"
+  size-lg="6"
   size-xl="3">
     <ion-card class="ion-text-center kard">
-      <ion-icon name="swap-horizontal"  class="icons"></ion-icon>
+      <!-- <ion-icon name="swap-horizontal"  class="icons"></ion-icon> -->
+      <ion-icon name="search-outline"  class="icons"></ion-icon>
       <h1>Multiple Search Criteria</h1>
       <P>Not sure about the name of the part? No problem, search by manufacturers, part number or
         substitute part number and get everything found.</P>
@@ -403,7 +405,7 @@
   <ion-col size="12"
   size-sm="6"
   size-md="6"
-  size-lg="3"
+  size-lg="6"
   size-xl="3">
     <ion-card class="ion-text-center kard">
       <ion-icon name="card"  class="icons"></ion-icon>
@@ -435,10 +437,10 @@
         <ul class="links">
           
       
-            <li (click)="router.navigate(['home'])"><p>Home</p></li>
+            <!-- <li (click)="router.navigate(['home'])"><p>Home</p></li> -->
             <li (click)="router.navigate(['about'])"><p>About Us</p></li>
-            <li><p>Products</p></li>
-            <li><p>Offers</p></li>
+            <li (click)="router.navigate(['categories'])"><p>Categories</p></li>
+            <li (click)="router.navigate(['offer'])"><p>Offers</p></li>
           
         </ul>
       </ion-col>

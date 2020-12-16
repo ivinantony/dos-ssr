@@ -58,8 +58,10 @@ brands:Array<any>=[]
 
   navigateToBrandProducts(index:number)
   {
-    let brand_id = this.data.brands[index].id
-    let brand_name = this.data.brands[index].brand_name
+    console.log( this.data.brands[index],"index")
+    let brand_id = this.brands[index].id
+    let brand_name = this.brands[index].brand_name
+    console.log(brand_id,"brand id")
     this.router.navigate(['brand-products',{brand_id,brand_name}])
   }
 
@@ -84,6 +86,8 @@ brands:Array<any>=[]
   }
 
   doRefresh(event) {
+    this.page_count=1
+        this.brands= []
     this.getData();
     setTimeout(() => {
       event.target.complete();
