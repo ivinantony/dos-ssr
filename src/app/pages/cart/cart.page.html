@@ -86,7 +86,11 @@
           </ion-item>
 
           <ion-item>
-            <ion-label><p>{{ item.price | currency:'AED  ' }} * {{item.count}}</p></ion-label>
+            <ion-label *ngIf="item.offer_price != null"><p>{{ item.offer_price | currency:'AED  ' }} * {{item.count}}</p></ion-label>
+            <ion-label *ngIf="item.offer_price == null"><p>{{ item.price | currency:'AED  ' }} * {{item.count}}</p></ion-label>
+
+
+           
             <ion-button expand="block" fill="clear" shape="round">
               {{ item.total_price | currency:'AED  ' }}
             </ion-button>

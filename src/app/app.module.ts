@@ -20,6 +20,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { Component, ViewChild } from '@angular/core';
+import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
   declarations: [AppComponent],
@@ -30,6 +31,7 @@ import { Component, ViewChild } from '@angular/core';
       mode:'ios',
       swipeBackEnabled: true,
     }),
+    IonicStorageModule.forRoot(),
     AppRoutingModule,
     FontAwesomeModule,
     HttpClientModule,

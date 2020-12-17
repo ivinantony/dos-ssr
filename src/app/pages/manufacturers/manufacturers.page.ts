@@ -62,7 +62,8 @@ brands:Array<any>=[]
     let brand_id = this.brands[index].id
     let brand_name = this.brands[index].brand_name
     console.log(brand_id,"brand id")
-    this.router.navigate(['brand-products',{brand_id,brand_name}])
+    this.router.navigate(['brand-products',brand_id, {brand_name}])
+    
   }
 
   loadMoreContent(infiniteScroll) {

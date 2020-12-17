@@ -242,13 +242,13 @@ export class HomePage implements OnInit {
 
   productSlides = window.matchMedia("(max-width: 320px)").matches ? {
     slidesPerView: 1.5,
-    spaceBetween:8,
+    loop:true,
+    spaceBetween:2,
     autoplay:true,
     speed:900,
-    loop:true
-    
+
   } : window.matchMedia("(max-width: 576px)").matches ? {
-    slidesPerView:2.2,
+    slidesPerView:1.5,
     spaceBetween:5,
     autoplay:true,
     speed:900,
@@ -256,7 +256,7 @@ export class HomePage implements OnInit {
 
       //spaceBetween: 2
   } : window.matchMedia(" (max-width: 768px)").matches ? {
-    slidesPerView: 4.2,
+    slidesPerView: 4,
     spaceBetween: 8,
     autoplay:true,
     speed:900,
@@ -310,6 +310,11 @@ manufactures = MANUFACTURES
     this.getData()
   }
 
+  ionViewWillEnter() {
+    console.log("view")
+    this.searchTerm.reset()
+  }
+
   ngOnInit() {
 
     this.searchTerm.valueChanges
@@ -338,13 +343,13 @@ manufactures = MANUFACTURES
   viewProduct(index: number) {
     let id = this.products[index].id
     let catId =this.products[index].category_id
-    this.router.navigate(['product', {id,catId}])
+    this.router.navigate(['product',id, {catId}])
   }
   viewSearchProduct(index: number) {
     // this.router.navigate(['product', this.searchItems[index].id])
     let id = this.searchItems[index].id
     let catId =this.searchItems[index].category_id
-    this.router.navigate(['product', {id,catId}])
+    this.router.navigate(['product',id, {catId}])
     this.searchItems = [];
   }
   filterItems(searchTerm) {
@@ -467,7 +472,7 @@ manufactures = MANUFACTURES
   {
     let brand_id = this.brands[index].id
     let brand_name = this.brands[index].brand_name
-    this.router.navigate(['brand-products',{brand_id,brand_name}])
+    this.router.navigate(['brand-products',brand_id,{brand_name}])
   }
 
   viewAll()

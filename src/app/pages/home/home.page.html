@@ -156,11 +156,11 @@
   <div id="top">
     <ion-item lines="none" class="ion-text-center">
       <ion-label class="title" color="magenta">Top Deals</ion-label>
-      
+
     </ion-item>
     <div class="sliderWrapper">
       <ion-slides [options]="productSlides" class="top-search" #mySlider>
-        <ion-slide *ngFor="let item of data?.products; let i=index">
+        <ion-slide *ngFor="let item of data?.offer_products; let i=index">
           <!-- <ion-card
             (click)="viewProduct(i)"
             [ngStyle]="{'background-image': 'url( '+ s3url + item.images[0]?.path +' )'}">

@@ -63,6 +63,7 @@ export class CartPage implements OnInit {
   delivery_locations:Array<any>
   current_selection:any
   data:any
+  valid_address:boolean=false
   constructor(
     public modalController: ModalController,
     private routerOutlet: IonRouterOutlet,
@@ -92,11 +93,12 @@ export class CartPage implements OnInit {
 
   onChangeAddress($event) {
     this.current_selection= $event.detail.value;
-    // this.getDistance()
-    this.selectedAddress = $event.detail.value;
-    console.log("selectedAddress", this.selectedAddress);
-    this.address_id = this.addresses[this.selectedAddress].id;
-    console.log(this.address_id);
+    console.log(this.current_selection,"current selected address")
+    this.getDistance(this.data.address[this.current_selection].latitude,this.data.address[this.current_selection].longitude)
+    // this.selectedAddress = $event.detail.value;
+    // console.log("selectedAddress", this.selectedAddress);
+    // this.address_id = this.addresses[this.selectedAddress].id;
+    // console.log(this.address_id);
   }
 
   async addAddress() {
@@ -155,9 +157,9 @@ export class CartPage implements OnInit {
 
   continue() {
     
-    if(!this.selectedAddress)
+    if(!this.valid_address)
     {
-      this.presentToastDanger("Please select a Delivery Location.")
+      this.presentToastDanger("Please select aservicable delivery Location.")
     }
     // else if(!this.payment_id){
     //   this.presentToastDanger("Please select a Payment Method.")
@@ -235,8 +237,8 @@ export class CartPage implements OnInit {
       this.data = data
       this.cart = data.cart;
       this.amountDetails = data;
-      this.amountDetails.payable_amount =
-        this.amountDetails.payable_amount + this.amountDetails.delivery_charge;
+      // this.amountDetails.payable_amount =
+        // this.amountDetails.payable_amount + this.amountDetails.delivery_charge;
       this.cartLength = this.cart.length;
       console.log(this.cart, "This is cart");
       for (let i = 0; i < this.cart?.length; i++) {
@@ -442,69 +444,76 @@ export class CartPage implements OnInit {
 
 
 
-  // getDistance(latitude,longitude) {
-  //   console.log("GEt Distance started",this.latitude,this.longitude)
-  //   const service = new google.maps.DistanceMatrixService();
-  //   var current_coords = new google.maps.LatLng(this.latitude, this.longitude);
-  //   console.log("current coords getdistance", current_coords);
-  //   var lat: string = this.latitude.toString();
-  //   var long: string = this.longitude.toString();
-  //   var destination = lat + "," + long;
-  //   // var origin = '10.008,76.329'
+  getDistance(latitude,longitude) {
+    console.log("GEt Distance started",latitude,longitude)
+    const service = new google.maps.DistanceMatrixService();
+    var current_coords = new google.maps.LatLng(latitude,longitude);
+    console.log("current coords getdistance", current_coords);
+    var lat: string = latitude.toString();
+    var long: string = longitude.toString();
+    var destination = lat + "," + long;
+    // var origin = '10.008,76.329'
 
-  //   var shop_coords = new Array();
+    var shop_coords = new Array();
 
-  //   this.delivery_locations?.forEach((element) => {
-  //     shop_coords.push(element.location);
-  //   });
-  //   console.log("shop", shop_coords);
-  //   console.log("current_coords", this.latitude, this.longitude);
-  //   const matrixOptions = {
-  //     origins: shop_coords, // shop coords
-  //     destinations: [destination], // customer coords
-  //     travelMode: "DRIVING",
-  //     unitSystem: google.maps.UnitSystem.IMPERIAL,
-  //   };
-  //   console.log("matrix", matrixOptions);
-  //   service.getDistanceMatrix(matrixOptions, (response, status) => {
-  //     console.log("GET DISTANCE MATRIX");
-  //     if (status !== "OK") {
-  //       var msg = "Error with distance matrix";
-  //       this.showToast(msg);
-  //     } else {
-  //       var response_data = new Array();
-  //       var distances = new Array();
-  //       let shortest_distance;
-  //       let shop_index: number;
-  //       response_data = response.rows;
-  //       console.log("responsee data", response_data);
-  //       response_data.forEach((ele) => {
-  //         distances.push(ele.elements[0].distance.value);
-  //       });
-  //       shortest_distance = Math.min.apply(null, distances);
-  //       shop_index = distances.findIndex(
-  //         (element) => element == shortest_distance
-  //       );
-  //       if (
-  //         shortest_distance <
-  //         this.delivery_locations[shop_index].radius * 1000
-  //       ) {
-  //         var msg =
-  //           "Delivery available from " +
-  //           this.delivery_locations[shop_index].location;
-  //         this.showToastSuccess(msg);
-  //         this.locationAvailability = true;
-  //         // this.addressForm.patchValue({delivery_location_id:this.delivery_locations[shop_index].id})
-  //       } else {
-  //         this.locationAvailability = false;
-  //         var msg = "Sorry, this location is currently not serviceable";
-  //         // this.addressForm.patchValue({ latitude: null });
-  //         // this.addressForm.patchValue({ longitude: null });
-  //         this.showToast(msg);
-  //       }
-  //     }
-  //   });
-  // }
+    this.data.delivery_location?.forEach((element) => {
+      shop_coords.push(element.location);
+    });
+    console.log("shop", shop_coords);
+    console.log("current_coords", latitude,longitude);
+    const matrixOptions = {
+      origins: shop_coords, // shop coords
+      destinations: [destination], // customer coords
+      travelMode: "DRIVING",
+      unitSystem: google.maps.UnitSystem.IMPERIAL,
+    };
+    console.log("matrix", matrixOptions);
+    service.getDistanceMatrix(matrixOptions, (response, status) => {
+      console.log("GET DISTANCE MATRIX");
+      if (status !== "OK") {
+        var msg = "Error with distance matrix";
+        this.showToast(msg);
+      } else {
+        var response_data = new Array();
+        var distances = new Array();
+        let shortest_distance;
+        let shop_index: number;
+        response_data = response.rows;
+        console.log("responsee data", response_data);
+        response_data.forEach((ele) => {
+          distances.push(ele.elements[0].distance.value);
+        });
+        shortest_distance = Math.min.apply(null, distances);
+        shop_index = distances.findIndex(
+          (element) => element == shortest_distance
+        );
+        if (
+          shortest_distance <
+          this.data.delivery_location[shop_index].radius * 1000
+        ) {
+          var msg =
+            "Delivery available from " +
+            this.data.delivery_location[shop_index].location;
+          this.showToastSuccess(msg);
+          // this.locationAvailability = true;
+          // this.addressForm.patchValue({delivery_location_id:this.delivery_locations[shop_index].id})
+          this.selectedAddress = this.current_selection;
+          console.log("selectedAddress", this.selectedAddress);
+          this.address_id = this.addresses[this.selectedAddress].id;
+          console.log(this.address_id);
+          this.valid_address=true
+        } else {
+          // this.locationAvailability = false;
+          var msg = "Sorry, this location is currently not serviceable";
+          // this.addressForm.patchValue({ latitude: null });
+          // this.addressForm.patchValue({ longitude: null });
+          this.showToast(msg);
+          this.valid_address=false
+
+        }
+      }
+    });
+  }
 
 
   async showToast(message) {

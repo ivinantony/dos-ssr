@@ -17,8 +17,8 @@
  </section> -->
 
    <ion-card class="card">
-    <ion-col size="3">
-      <img src="../../../assets/imgs/avatar1.jpg" alt="">
+    <ion-col size="3" class="profileImg">
+      <img src="../../../assets/imgs/user.png" alt="">
      </ion-col>
      <ion-col size="7" class="name">
        <h5>{{user?.name}}</h5>
@@ -35,13 +35,13 @@
 <ion-item lines="none" detail="true" (click)="goToOrders()">
     <ion-label><ion-icon name="cube-outline"></ion-icon>My Orders</ion-label>
 </ion-item>
-<ion-item lines="none" detail="true" >
+<!-- <ion-item lines="none" detail="true" >
     <ion-label><ion-icon name="wallet-outline"></ion-icon>My Wallet</ion-label>
-</ion-item>
+</ion-item> -->
 <ion-item lines="none" detail="true" (click)="goToAddresses()">
     <ion-label><ion-icon name="compass-outline"></ion-icon>My Addresses</ion-label>
 </ion-item>
-<ion-item lines="none" detail="true">
+<ion-item lines="none" detail="true" (click)="help()">
     <ion-label><ion-icon name="help-outline"></ion-icon>Help</ion-label>
 </ion-item>
 <ion-item lines="none" detail="true" (click)="logout()">

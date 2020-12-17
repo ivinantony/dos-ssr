@@ -18,13 +18,25 @@
       refreshingText="Refreshing..."></ion-refresher-content>
   </ion-refresher>
   
-  <section id="banr">
+  <!-- <section id="banr">
     <ion-slides class="banner" [options]="bannerSlideOpts">
-      <!-- <ion-slide
+      <ion-slide
         *ngFor="let item of banners; let i=index"
         [ngStyle]="{'background-image': 'url(' + item.imgUrl + ')'}"
       >
-      </ion-slide> -->
+      </ion-slide>
+    </ion-slides>
+  </section> -->
+
+  <section id="banr">
+    <ion-slides class="banner">
+      <ion-slide *ngFor="let item of data?.banner?.desktop_images; let i=index" class="dsk" >
+      <img src="{{s3url+item.path}}" alt="" >
+      </ion-slide> 
+
+      <ion-slide *ngFor="let item of data?.banner?.mobile_images; let i=index" class="mob" >
+      <img src="{{s3url + item.path}}" alt="">
+      </ion-slide>     
     </ion-slides>
   </section>
 

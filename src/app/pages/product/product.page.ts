@@ -227,7 +227,7 @@ export class ProductPage implements OnInit {
   navigateToProduct(index: number) {
     let id=this.data.category_products[index].id
     let catId= this.data.category_products[index].category_id
-    this.router.navigate(['product',{id,catId}])
+    this.router.navigate(['product',id,{catId}])
   }
 
   async presentLoading() {

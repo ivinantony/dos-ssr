@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { VerifyOtpService } from 'src/app/services/otp/verify-otp.service';
+import { Storage } from '@ionic/storage';
 const POST_OTP=200;
 @Component({
   selector: 'app-otp',
@@ -16,6 +17,7 @@ export class OtpPage implements OnInit {
   email:any
   constructor(private otpService:VerifyOtpService,private activatedRoute:ActivatedRoute,
     private alertController:AlertController,private authService:AuthenticationService,
+    private storage: Storage,private ngZone:NgZone,
     private router:Router) 
   {
     this.phone = this.activatedRoute.snapshot.params.phone
@@ -28,7 +30,7 @@ export class OtpPage implements OnInit {
 
   cancel()
   {
-
+    this.router.navigate(['login'])
   }
 
   continue()
@@ -51,8 +53,31 @@ export class OtpPage implements OnInit {
     console.log("haiiiiiiiiiii",data)
     this.authService.login(data.data)
     localStorage.setItem('client_id',data.client_id)
-    this.router.navigate(['home'])
+    this.storage.get('prev_url').then((val) => {
+      console.log(val,"prev url")
+      this.ngZone.run(()=>{
+      this.router.navigate([val] || ['/'], { replaceUrl: true })
+    });
+  })
+    // this.router.navigate(['home'])
   }
+
+//   handleResponse(data) {
+//     this.loadingController.dismiss()
+//     this.authService.setMemberId(data.member_id).then(() => {
+//       let message = "Succesfully Logged In"
+//       this.presentToast(message).finally(() => {
+//         // this.navCtrl.back()
+//         this.storage.get('prev_url').then((val) => {
+//           this.ngZone.run(()=>{
+//           this.router.navigate([val] || ['/'], { replaceUrl: true })
+//         });
+//       })
+
+//       })
+
+//     })
+// }
 
   handleError(error)
   {

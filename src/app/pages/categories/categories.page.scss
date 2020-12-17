@@ -62,3 +62,18 @@ ion-content{
     --background: #e047d414;
   }
   
+  
+  .dsk{
+    display: none;
+  }
+
+
+  @media only screen and (min-width: 475px) {
+    .mob{
+      display: none;
+    }
+    .dsk{
+      display: block;
+    }
+    }
+  

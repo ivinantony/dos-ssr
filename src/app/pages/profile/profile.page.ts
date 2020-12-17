@@ -88,4 +88,8 @@ export class ProfilePage implements OnInit {
   {
     this.router.navigate(['orders'])
   }
+  help()
+  {
+    window.open('https://mail.google.com/mail/?view=cm&fs=1&to=dealonstoreuae@gmail.com');
+  }
 }

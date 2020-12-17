@@ -5,13 +5,17 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { HttpClient } from '@angular/common/http';
 import { CATEGORIES } from './pages/home/home.page';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router, RoutesRecognized } from '@angular/router';
 import { AuthenticationService } from './services/authentication.service';
 import { SwUpdate } from '@angular/service-worker';
 import { FormControl } from '@angular/forms';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, filter, pairwise } from 'rxjs/operators';
 import { ProductSearchService } from './services/product-search.service';
 import { ProfileService } from './services/profile/profile.service';
+import { Storage } from '@ionic/storage';
+// import { NavigationEnd, Router, RoutesRecognized } from '@angular/router';
+
+
 
 @Component({
   selector: 'app-root',
@@ -38,7 +42,8 @@ export class AppComponent implements OnInit {
     public router: Router,
     private swUpdate: SwUpdate,
     private searchService: ProductSearchService,
-    private profileService:ProfileService
+    private profileService:ProfileService,
+    private storage: Storage,
   ) {
     this.client_id = localStorage.getItem('client_id')
 
@@ -68,6 +73,21 @@ export class AppComponent implements OnInit {
 
 
   async ngOnInit() {
+
+
+    this.router.events
+    .pipe(filter((e: any) => e instanceof NavigationEnd),
+      pairwise()
+    ).subscribe((e: any) => {
+      console.log(e,"array")
+      if (e[0].urlAfterRedirects.startsWith('/login') || e[0].urlAfterRedirects.startsWith('/otp')) 
+      {
+
+      } else {
+        this.storage.set('prev_url', e[0].urlAfterRedirects);
+      }
+    });
+ 
 
     this.searchTerm.valueChanges
       .pipe(debounceTime(700))

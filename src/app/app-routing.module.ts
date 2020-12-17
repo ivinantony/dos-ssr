@@ -13,7 +13,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)
   },
   {
-    path: 'product',
+    path: 'product/:id',
     loadChildren: () => import('./pages/product/product.module').then( m => m.ProductPageModule)
   },
   {
@@ -77,7 +77,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/otpmodal/otpmodal.module').then( m => m.OtpmodalPageModule)
   },
   {
-    path: 'brand-products',
+    path: 'brand-products/:brand_id',
     loadChildren: () => import('./pages/brand-products/brand-products.module').then( m => m.BrandProductsPageModule)
   },
   {
@@ -136,7 +136,8 @@ const routes: Routes = [
   {
     path: 'checkout',
     loadChildren: () => import('./pages/checkout/checkout.module').then( m => m.CheckoutPageModule)
-  },  {
+  },
+  {
     path: 'about',
     loadChildren: () => import('./pages/about/about.module').then( m => m.AboutPageModule)
   },

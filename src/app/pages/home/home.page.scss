@@ -430,6 +430,12 @@ color: #fff;
    padding-bottom: 25px;
  }
 
+ .footer{
+   li:hover{
+     cursor: pointer;
+   }
+ }
+
  @media only screen and (max-width: 768px){
   .btnslide{
     display: none;

@@ -72,23 +72,13 @@
           </div>
         </ng-container>
         <ion-item class="area" lines="none">
-          <ion-input
-            required
-            placeholder="Alternate number"
-            formControlName="alternate_phone"
-            type="tel"
-          ></ion-input>
+          <ion-input placeholder="Alternate number" formControlName="alternate_phone" type="tel"></ion-input>
         </ion-item>
-        <ng-container
-          *ngFor="let validation of validation_messages.alternate_phone"
-        >
-          <div
-            class="err_msg"
-            *ngIf="
+        <ng-container  *ngFor="let validation of validation_messages.alternate_phone">
+          <div class="err_msg" *ngIf="
           addressForm.get('alternate_phone').hasError(validation.type) &&
           addressForm.get('alternate_phone').dirty &&
-          addressForm.get('alternate_phone').touched"
-          >
+          addressForm.get('alternate_phone').touched">
             <ion-icon name="information-circle-outline"></ion-icon>
             {{ validation.message}}
           </div>

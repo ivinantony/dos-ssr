@@ -89,9 +89,9 @@ export class OfferPage implements OnInit {
 
   navigateToProduct(index) 
   {
-    let id=this.data.product[index].id
-    let catId= this.data.product[index].category_id
-    this.router.navigate(['product',{id,catId}])
+    let id=this.products[index].id
+    let catId= this.products[index].category_id
+    this.router.navigate(['product',id,{catId}])
   }
 
   openSort() {
@@ -121,14 +121,14 @@ export class OfferPage implements OnInit {
   {
       if (this.authService.isAuthenticated()) {
         let data = {
-          product_id: this.data.product[index].id,
+          product_id: this.products[index].id,
           client_id: this.client_id,
         };
         this.cartService.addToCart(data).subscribe(
           (data) => this.handleResponse(data, POST_DATA),
           (error) => this.handleError(error)
         );
-        this.data.product[index].cart_count++;
+        this.products[index].cart_count++;
         //  this.getData()
       } else {
         this.presentLogin();
@@ -136,12 +136,12 @@ export class OfferPage implements OnInit {
   }
   removeFromcart(index:number)
   {
-    this.cartService.removeFromCart(this.client_id,this.data.product[index].id,).subscribe(
+    this.cartService.removeFromCart(this.client_id,this.products[index].id,).subscribe(
       (data)=>this.handleResponse(data,DEL_DATA),
       (error)=>this.handleError(error)
     )
     // this.getData()
-    this.data.product[index].cart_count--
+    this.products[index].cart_count--
   }
 
 

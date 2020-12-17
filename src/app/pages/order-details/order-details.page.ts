@@ -45,7 +45,7 @@ export class OrderDetailsPage implements OnInit {
   {
     let id=this.data.order_products[index].product_id
     let catId= this.data.order_products[index].category_id
-    this.router.navigate(['product',{id,catId}])
+    this.router.navigate(['product',id,{catId}])
   }
 
   cancelOrder()
