@@ -10,6 +10,10 @@ ion-toolbar {
       font-size: 1.2rem;
     }
   }
+
+  ion-slide:hover{
+    cursor: pointer;
+  }
 //   ion-content {
 //     --offset-top: 0px;
 //     position: absolute;
@@ -156,7 +160,13 @@ ion-toolbar {
 }
 
 
-  
+.roundCard:hover{
+  cursor: pointer;
+}
+
+.brandCard:hover{
+  cursor: pointer;
+}
   
  
   // .roundCard:after{

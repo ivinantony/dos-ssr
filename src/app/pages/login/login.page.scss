@@ -1,7 +1,7 @@
 .input {
     border: 1px solid rgba(var(--ca6, 219, 219, 219), 1);
-    border-radius: 3px;
-    font-size: 14px;
+    // border-radius: 3px;
+    // font-size: 14px;
     margin: 10px;
   }
   ion-toolbar,
@@ -15,4 +15,27 @@
 .err_msg{
   padding: 15px;
   color: #ea6153;
+}
+
+.container{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.drpdwn{
+  select{
+    height: 46px;
+    border: 1px solid rgba(var(--ca6, 219, 219, 219), 1);
+    font-size: 16px;
+  }
+  .opt{
+    font-size: 16px;
+    border: none;
+  }
+}
+
+.select-css option {
+  font-weight:normal;
+  font-size: 10px;
 }

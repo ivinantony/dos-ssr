@@ -18,6 +18,7 @@
   [scrollEvents]="true"
   [appFadeHeader]="toolbar"
 >
+<div *ngIf="data">
 <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
   <ion-refresher-content pullingIcon="refresh" pullingText="Pull to refresh" refreshingSpinner="crescent"
     refreshingText="Refreshing..."></ion-refresher-content>
@@ -51,6 +52,7 @@
             </ion-item>
           </ion-list>
         </ion-content>
+
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -60,11 +62,11 @@
   [ngStyle]="{'background-image': 'url( '+ item.path +' )'}" -->
   <section id="banr">
     <ion-slides class="banner" [options]="bannerSlideOpts1">
-      <ion-slide *ngFor="let item of data?.banner[0]?.desktop_images; let i=index" class="dsk" >
+      <ion-slide *ngFor="let item of data?.banner[0]?.desktop_images; let i=index" class="dsk" (click)="onRoute(item.application_url)">
       <img src="{{item.path}}" alt="" >
       </ion-slide> 
 
-      <ion-slide *ngFor="let item of data?.banner[0]?.mobile_images; let i=index" class="mob" >
+      <ion-slide *ngFor="let item of data?.banner[0]?.mobile_images; let i=index" class="mob" (click)="onRoute(item.application_url)" >
       <img src="{{item.path}}" alt="">
       </ion-slide>     
     </ion-slides>
@@ -202,13 +204,14 @@
     <ion-grid >
       <ion-row>
         <ion-col
+        class="brandCard"
           size="6"
           size-sm="6"
           size-md="4"
           size-lg="4"
           size-xl="2"
           *ngFor="let item of brands; let i=index">
-          <ion-card class="ion-no-margin" (click)="navigateToBrandProducts(i)">
+          <ion-card class="ion-no-margin " (click)="navigateToBrandProducts(i)">
             <ion-card-content class="ion-text-center">
               <img
                 style="
@@ -495,6 +498,33 @@
 
   </ion-row>
 
+</div>
+                  <!--       skeleton        -->
 
+  <div *ngIf="!data">
+    <div class="ion-padding custom-skeleton">
+      <ion-skeleton-text animated style="width: 100%;height: 35px;border-radius: 7px;"></ion-skeleton-text>
+    </div>
+
+    <ion-skeleton-text animated style="width: 100%;height: 400px;"></ion-skeleton-text>
+
+    <ion-grid fixed>
+      <ion-row style="padding-left: 25px;"> 
+        <ion-col size="6" size-sm="6" size-md="6" size-lg="2" size-xl="2"><ion-skeleton-text animated style="width: 9rem;height: 9rem;border-radius: 9rem"></ion-skeleton-text></ion-col>
+        <ion-col size="6" size-sm="6" size-md="6" size-lg="2" size-xl="2"><ion-skeleton-text animated style="width: 9rem;height: 9rem;border-radius: 9rem"></ion-skeleton-text></ion-col>
+        <ion-col size="6" size-sm="6" size-md="6" size-lg="2" size-xl="2"><ion-skeleton-text animated style="width: 9rem;height: 9rem;border-radius: 9rem"></ion-skeleton-text></ion-col>
+        <ion-col size="6" size-sm="6" size-md="6" size-lg="2" size-xl="2"><ion-skeleton-text animated style="width: 9rem;height: 9rem;border-radius: 9rem"></ion-skeleton-text></ion-col>
+        <ion-col size="6" size-sm="6" size-md="6" size-lg="2" size-xl="2"><ion-skeleton-text animated style="width: 9rem;height: 9rem;border-radius: 9rem"></ion-skeleton-text></ion-col>
+        <ion-col size="6" size-sm="6" size-md="6" size-lg="2" size-xl="2"><ion-skeleton-text animated style="width: 9rem;height: 9rem;border-radius: 9rem"></ion-skeleton-text></ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <div class="ion-padding" > 
+
+    </div>
+
+  
+    
+  </div>
   
 </ion-content>

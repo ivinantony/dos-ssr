@@ -44,10 +44,25 @@
               </div>
             </ng-container>
     
-          
-          <ion-item color="light" class="ion-text-center input" lines="none">
+            <div class="container">
+              <div class="drpdwn">
+                <select name="cars" id="cars">
+                  <option value="volvo" class="opt">+971</option>
+                  <option value="saab">+973</option>
+                  <option value="opel">+978</option>
+                  <option value="audi">+978</option>
+                </select>
+              </div>
+              <ion-item color="light" class="ion-text-center input" lines="none">
+                <ion-input required placeholder="Phone number" formControlName="phone"></ion-input>
+              </ion-item>
+            </div>
+     
+    
+            
+          <!-- <ion-item color="light" class="ion-text-center input" lines="none">
             <ion-input required placeholder="Phone number" formControlName="phone"></ion-input>
-          </ion-item>
+          </ion-item> -->
           <ng-container  *ngFor="let validation of validation_messages.phone">
             <div class="err_msg" *ngIf="loginGroup.get('phone').hasError(validation.type) &&
             loginGroup.get('phone').dirty &&

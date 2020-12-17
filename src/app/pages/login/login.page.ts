@@ -32,7 +32,7 @@ export class LoginPage implements OnInit {
     this.loginGroup = this.formBuilder.group({
       name: ['', Validators.compose([Validators.required, Validators.minLength(4)])],
    
-      phone: ['', Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern("[0-9]*"),])],
+      phone: ['', Validators.compose([Validators.required, Validators.minLength(9), Validators.maxLength(9), Validators.pattern("[0-9]*"),])],
       
       email: ['', Validators.compose([Validators.maxLength(70), Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$'), Validators.required])]
      
@@ -58,11 +58,11 @@ export class LoginPage implements OnInit {
       { type: "required", message: "Phone number is required." },
       {
         type: "minlength",
-        message: "Phone number must be 10 digits long.",
+        message: "Phone number must be 9 digits long.",
       },
       {
         type: "maxlength",
-        message: "Phone number cannot be more than 10 digits.",
+        message: "Phone number cannot be more than 9 digits.",
       },
       {
         type: "pattern",
@@ -102,7 +102,7 @@ export class LoginPage implements OnInit {
     }
     else
     {
-      this.presentToastDanger("Some fields are inavlid.")
+      this.presentToastDanger("Some fields are invalid.")
     }
 
   }

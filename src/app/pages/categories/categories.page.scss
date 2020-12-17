@@ -11,7 +11,7 @@
 
 ion-content{
   // --background: url(../../../assets/imgs/whiteback.jpg);
-  --background: #e047d414;;
+  // --background: #e047d414;;
     --background-repeat: no-repeat;
     --background-size: cover; 
 }
@@ -37,7 +37,7 @@ ion-content{
   .round{
     height: 9rem;
     width: 9rem;
-    border-radius: 9rem;
+    border-radius: 7px;
     background-size: cover;
     background-repeat: no-repeat;
     margin-left: auto;
