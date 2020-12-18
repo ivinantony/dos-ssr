@@ -144,7 +144,17 @@ const routes: Routes = [
   {
     path: 'recommended',
     loadChildren: () => import('./pages/recommended/recommended.module').then( m => m.RecommendedPageModule)
+  },
+  {
+    path: 'checkout-pay',
+    loadChildren: () => import('./pages/checkout-pay/checkout-pay.module').then( m => m.CheckoutPayPageModule)
+  },
+ 
+  {
+    path: 'order-placed',
+    loadChildren: () => import('./pages/order-placed/order-placed.module').then( m => m.OrderPlacedPageModule)
   }
+
 
 
 

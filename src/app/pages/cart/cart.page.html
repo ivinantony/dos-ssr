@@ -85,7 +85,7 @@
             </ion-buttons>
           </ion-item>
 
-          <ion-item>
+          <ion-item *ngIf="item.in_stock == 1">
             <ion-label *ngIf="item.offer_price != null"><p>{{ item.offer_price | currency:'AED  ' }} * {{item.count}}</p></ion-label>
             <ion-label *ngIf="item.offer_price == null"><p>{{ item.price | currency:'AED  ' }} * {{item.count}}</p></ion-label>
 
@@ -94,6 +94,11 @@
             <ion-button expand="block" fill="clear" shape="round">
               {{ item.total_price | currency:'AED  ' }}
             </ion-button>
+          </ion-item>
+
+          <ion-item *ngIf="item.in_stock == 0" class="outofstock">
+            <ion-icon name="ban" color="danger"></ion-icon>
+            <h3>This item is currently out of stock.</h3>
           </ion-item>
           <hr />
         </ion-list>

@@ -1,6 +1,6 @@
 import { Component, NgZone, OnInit, ɵConsole } from '@angular/core';
 import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { LoadingController, ToastController } from '@ionic/angular';
 import { PaymentService } from 'src/app/services/payment/payment.service';
 const POST_DATA=200;
 @Component({
@@ -14,7 +14,7 @@ export class PaypalPage implements OnInit {
   currencyIcon: string = '$';
   order_id:any
   details:any
-  constructor(private pay:PaymentService,private router:Router,private toastController:ToastController,private zone:NgZone) 
+  constructor(private pay:PaymentService,private router:Router,private toastController:ToastController,private zone:NgZone,private loadingController:LoadingController) 
   { 
     this.paymentAmount = localStorage.getItem('total_amount')
     
@@ -33,6 +33,7 @@ paypal()
 
       // Set up the transaction
       createOrder: function (data, actions) {
+        _this.presentLoading()
         return actions.order.create({
           purchase_units: [{
             amount: {
@@ -57,12 +58,11 @@ paypal()
             
               _this.pay.capturePayment(data).subscribe(
                 (data)=>console.log(data),
-                (error)=>console.log(error)
-                
+                (error)=>console.log(error)    
               )
-              _this.presentToast('Payment Successful')
+              _this.loadingController.dismiss()
               _this.zone.run(() => {
-               _this.router.navigate(['home'])
+               _this.router.navigate(['order-placed'])
               })
             }
             // alert('Transaction completed by ' + details.payer.name.given_name + '!');
@@ -86,5 +86,15 @@ paypal()
       duration: 2000
     });
     toast.present();
+  }
+
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      spinner: 'crescent',
+      cssClass:'custom-spinner',
+      message: 'Please wait...',
+      showBackdrop: true
+    });
+    await loading.present();
   }
 }

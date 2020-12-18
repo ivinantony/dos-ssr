@@ -64,6 +64,7 @@ export class CartPage implements OnInit {
   current_selection:any
   data:any
   valid_address:boolean=false
+  isOut:boolean=false
   constructor(
     public modalController: ModalController,
     private routerOutlet: IonRouterOutlet,
@@ -156,11 +157,18 @@ export class CartPage implements OnInit {
   }
 
   continue() {
+    this.checkOutofStock()
+
+    if(this.isOut)
+    {
+      this.presentToastDanger("Some items in your cart is currently out of stock.")
+    }
     
-    if(!this.valid_address)
+    else if(!this.valid_address)
     {
       this.presentToastDanger("Please select aservicable delivery Location.")
     }
+   
     // else if(!this.payment_id){
     //   this.presentToastDanger("Please select a Payment Method.")
     // }
@@ -184,7 +192,22 @@ export class CartPage implements OnInit {
     // )
     }
   }
-
+  checkOutofStock()
+  {
+    for(let i=0;i<this.cart.length;i++)
+    {
+      if(this.cart[i].in_stock == 0)
+      {
+        this.isOut = true
+        console.log(i,"value of index")
+        break
+      }
+      else{
+        this.isOut = false
+      }
+      
+    }
+  }
  
 
 

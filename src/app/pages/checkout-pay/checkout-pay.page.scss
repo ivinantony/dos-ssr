@@ -1,0 +1,179 @@
+#payment-form {
+	padding-top: 20px;
+	max-width: 31.5rem;
+	margin: 0 auto;
+	padding-left: 7px;
+	padding-right: 7px;
+	padding-bottom: 70px;
+}
+
+iframe {
+	width: 100%;
+}
+
+.one-liner {
+	display: flex;
+	flex-direction: column;
+}
+
+#pay-button {
+	border: none;
+	border-radius: 3px;
+	color: #fff;
+	font-weight: 500;
+	height: 40px;
+	width: 100%;
+	background-color: #52B6FE;
+	box-shadow: 0 1px 3px 0 rgba(19, 57, 94, 0.4);
+}
+
+#pay-button:active {
+	background-color: linear-gradient(90deg, rgba(82,182,254,1) 34%, rgba(97,84,254,1) 73%);
+	box-shadow: 0 1px 3px 0 rgba(19, 57, 94, 0.4);
+}
+
+#pay-button:hover {
+	background-color: #52B6FE;
+	box-shadow: 0 2px 5px 0 rgba(19, 57, 94, 0.4);
+}
+
+#pay-button:disabled {
+	background-color: #697887;
+	box-shadow: none;
+}
+
+#pay-button:not(:disabled) {
+	cursor: pointer;
+}
+
+.card-frame {
+	border: solid 1px #52B6FE;
+	border-radius: 3px;
+	width: 100%;
+	margin-bottom: 8px;
+	height: 40px;
+	box-shadow: 0 1px 3px 0 rgba(19, 57, 94, 0.2);
+}
+
+.card-frame.frame--rendered {
+	opacity: 1; /* Prevents iFrame rendering issue */
+
+	/* Reminder: consider removal of 'rendered' */
+	/* event passing to Merchant page */
+}
+
+.card-frame.frame--rendered.frame--focus {
+	border: solid 1px #13395e;
+	box-shadow: 0 2px 5px 0 rgba(19, 57, 94, 0.15);
+}
+
+.card-frame.frame--rendered.frame--invalid {
+	border: solid 1px #d96830;
+	box-shadow: 0 2px 5px 0 rgba(217, 104, 48, 0.15);
+}
+
+.error-message {
+	color: #c9501c;
+	font-size: .9rem;
+	margin: 8px 0 0 1px;
+	font-weight: 300;
+}
+
+.success-payment-message {
+	color: #13395e;
+	line-height: 1.4;
+}
+.token {
+	color: #b35e14;
+	font-size: .9rem;
+	font-family: monospace;
+}
+
+.card{
+	padding-top: 20px;
+	// padding: 10px;
+	padding-left: 7px;
+	padding-right: 7px;
+    min-height: 240px;
+	border-radius: 25px;
+	img{
+		width: 75%;
+	}
+    
+}
+
+@media screen and (min-width: 31rem) {
+	.one-liner {
+		flex-direction: row;
+	}
+
+	.card-frame {
+		width: 318px;
+		margin-bottom: 0;
+	}
+
+	#pay-button {
+		width: 175px;
+		margin-left: 8px;
+	}
+}
+
+.welcome-card img {
+	max-height: 35vh;
+	overflow: hidden;
+}
+
+
+@media only screen and (min-width: 321px)
+    {
+
+	}
+@media only screen and (min-width: 576px)
+    {
+		.card{
+			img{
+				width:65%;
+			}
+		}
+	}
+@media only screen and (min-width: 768px)
+    {
+		.card{
+			img{
+				width:50%;
+			}
+		}
+	}
+@media only screen and (min-width: 992px)
+ { 
+	 
+	.wrapper
+	{
+	width: 70%;
+	margin-left:auto;
+	margin-right:auto;
+   	}
+	
+		.card{
+			img{
+				width:45%;
+			}
+		}
+	
+}
+@media only screen and (min-width: 1329px)
+    {
+      .wrapper{
+        width: 70%;
+        margin-left:auto;
+        margin-right:auto;
+	  }
+	  
+	  .card{
+		img{
+			width:40%;
+		}
+	}
+     
+    
+    }

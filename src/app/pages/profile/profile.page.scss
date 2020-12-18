@@ -31,6 +31,9 @@
       font-weight: 700;
     }
 
+    ion-item:hover{
+      cursor: pointer;
+    }
     
   }
 
@@ -64,6 +67,8 @@
    ion-icon{
      color: #479bfe;   }
   }
+
+
 
   @media only screen and (max-width: 321px)
   {}

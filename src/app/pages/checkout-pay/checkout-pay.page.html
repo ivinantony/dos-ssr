@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="checkout" text="" color="dark"></ion-back-button>
+    </ion-buttons>
+    <ion-title>PAYMENT</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid fixed>
+    <div class="wrapper">
+    <ion-card class="card">
+      <div class="ion-text-left ion-padding">
+        <ion-card-subtitle>Complete your payment.</ion-card-subtitle>
+      </div>
+      
+      <div class="ion-text-center">
+        <img src="../../../assets/imgs/visaa.png" alt="">
+      </div>
+      
+      
+           <div id="payment-form" method="POST" action="https://merchant.com/charge-card">
+             <div class="one-liner">
+               <div class="card-frame"></div>
+               <button ion-button (click)="pay()" id="pay-button" disabled>
+                 PAY
+               </button>
+         
+             </div>
+             <p class="error-message"></p>
+             <p class="success-payment-message"></p>
+           </div>
+     
+    </ion-card>
+  </div>
+   
+  
+    </ion-grid>
+</ion-content>

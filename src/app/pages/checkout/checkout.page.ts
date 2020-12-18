@@ -170,10 +170,18 @@ this.loadingController.dismiss()
           (data) => this.handleResponse(data, GET_PAY),
           (error) => this.handleError(error)
         );
-      } else {
-        this.presentToastSuccess("Order placed Successfully");
+      } 
+      
+      else if(this.payment_id == 2) {
+        // this.presentToastSuccess("Order placed Successfully");
 
-        this.router.navigate(["home"]);
+        this.router.navigate(["order-placed"]);
+      }
+
+      else if(this.payment_id == 6)
+      {
+        localStorage.setItem("total_amount", this.data.payable_amount);
+        this.router.navigate(["checkout-pay"]);
       }
     } 
     else 
@@ -233,6 +241,7 @@ this.loadingController.dismiss()
           payment_option_id: this.payment_id,
           product_total: this.data.total_amount,
           payable_amount: this.data.payable_amount,
+          delivery_charge: this.data.delivery_charge
         };
 
         this.orderService.captureOrder(data).subscribe(

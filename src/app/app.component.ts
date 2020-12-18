@@ -128,7 +128,7 @@ export class AppComponent implements OnInit {
   viewSearchProduct(index: number) {
     let id = this.searchItems[index].id
     let catId =this.searchItems[index].category_id
-    this.router.navigate(['product', {id,catId}])
+    this.router.navigate(['product',id, {catId}])
     this.searchItems = [];
   }
   onCancel() {

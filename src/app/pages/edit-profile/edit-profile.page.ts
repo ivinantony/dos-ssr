@@ -180,7 +180,7 @@ export class EditProfilePage implements OnInit {
 
   validatePhone(phone:any)
   {
-    if (/^\d{10}$/.test(phone)) 
+    if (/^\d{9}$/.test(phone)) 
     {
       return true;
     }

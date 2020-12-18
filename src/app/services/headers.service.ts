@@ -18,5 +18,16 @@ export class HeadersService {
     // headers.append("token", tokenService.get());
     return headers;
   }
+
+  getCheckOutHeaders() {
+    // const tokenService = new TokenService();
+
+    var headers = new HttpHeaders()
+      .set("Authorization", "sk_test_71d6a2c5-4422-46b8-bbee-ed86fc235a55")
+      .set("Content-Type", "application/json");
+
+    // headers.append("token", tokenService.get());
+    return headers;
+  }
 }
 
