@@ -353,8 +353,10 @@ manufactures = MANUFACTURES
   }
 
   onRoute(link) {
+    console.log(link)
     if (link != null || link != undefined) {
-      let data = link.split("/").pop();
+      let data = link.split(".com").pop();
+      
       console.log(data)
       this.router.navigateByUrl(data);
     }
