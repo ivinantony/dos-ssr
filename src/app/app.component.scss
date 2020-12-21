@@ -195,12 +195,21 @@ ion-menu-toggle{
     cursor: pointer;
   }
 }
+.links{
+  padding-right:2.3vw;
+}
 
 
 @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) and (-webkit-min-device-pixel-ratio: 1) {
   .ion-toolbar {
     --min-height: 80px !important;
   }
+}
+@media only screen and (max-width: 1200px){
+  .hdrlinks{
+    display: none;
+  }
+
 }
 
 /* ----------- Retina Screens ----------- */

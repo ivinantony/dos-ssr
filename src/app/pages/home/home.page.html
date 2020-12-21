@@ -167,7 +167,7 @@
             (click)="viewProduct(i)"
             [ngStyle]="{'background-image': 'url( '+ s3url + item.images[0]?.path +' )'}">
           </ion-card> -->
-          <ion-card (click)="viewProduct(i)">
+          <ion-card (click)="viewOfferProduct(i)">
             <img src="{{s3url+item.images[0]?.path}}"alt="">
           <ion-card-content>
             <p>{{item.name}}</p>

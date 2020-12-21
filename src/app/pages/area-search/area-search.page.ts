@@ -26,7 +26,7 @@ export class AreaSearchPage implements OnInit {
     let config = {
       types: ["geocode"],
       input: event.detail.value,
-      componentRestrictions: { country: "IN" },
+      componentRestrictions: { country: "AE" },
     };
     var service = new google.maps.places.AutocompleteService();
     service.getPlacePredictions(config, (predictions, status) => {

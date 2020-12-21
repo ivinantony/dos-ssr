@@ -303,6 +303,11 @@ manufactures = MANUFACTURES
     let catId =this.products[index].category_id
     this.router.navigate(['product',id, {catId}])
   }
+  viewOfferProduct(index: number) {
+    let id = this.data.offer_products[index].id
+    let catId =this.data.offer_products[index].category_id
+    this.router.navigate(['product',id, {catId}])
+  }
   viewSearchProduct(index: number) {
     // this.router.navigate(['product', this.searchItems[index].id])
     let id = this.searchItems[index].id

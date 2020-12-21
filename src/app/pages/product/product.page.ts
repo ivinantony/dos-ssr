@@ -8,6 +8,7 @@ import { ProductDetailsService } from 'src/app/services/productDetails/product-d
 import { UtilsService } from 'src/app/services/utils.service';
 import { CATEGORIES } from '../home/home.page';
 import { ImagemodalPage } from '../imagemodal/imagemodal.page';
+
 const GET_DATA=200;
 const POST_DATA=210;
 const GET_CART=220;
@@ -241,6 +242,46 @@ export class ProductPage implements OnInit {
       showBackdrop: true
     });
     await loading.present();
+  }
+
+  whatsapp()
+  {
+   window.open("https://api.whatsapp.com/send?phone=919497550128&amp;text=I%20have%20an%20enquiry%20about%20the%20product%20('"+this.productDetails.name+"')",this.productDetails.name)
+  }
+
+  mail()
+  {
+    window.open('https://mail.google.com/mail/?view=cm&fs=1&to=dealonstoreuae@gmail.com');
+    // window.open('mailto:dealonstoreuae@gmail.com?subject=subject&body=body');
+    // window.location.href = "mailto:dealonstoreuae@gmail.com?subject=Subject&body=message%20goes%20here";
+
+  }
+
+  async zoom(path:string) {
+    const modal = await this.modalController.create({
+      component: ImagemodalPage,
+      swipeToClose: true,
+      presentingElement: await this.modalController.getTop(),
+      cssClass: 'my-custom-class',
+      componentProps: { imgSrc: path }
+    });
+    
+   
+    // modal.onDidDismiss().then(data => {
+    //   if (data.data) {
+    //     let resp = data.data;
+    //     this.inItMap(resp.lat, resp.lng)
+    //   }
+    //   console.log('data', data.data)
+    //   this.latitude = data.data.lat
+    //   this.longitude = data.data.lng
+    //   this.addressForm.patchValue({ latitude:data.data.lat  });
+    //   this.addressForm.patchValue({ longitude:data.data.lng  });
+
+    //   console.log("lat lon from modalsearch",this.latitude,this.longitude)
+    //   this.getDistance()
+    // })
+    return await modal.present();
   }
 
 }

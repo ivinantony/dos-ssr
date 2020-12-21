@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -7,10 +7,27 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./imagemodal.page.scss'],
 })
 export class ImagemodalPage implements OnInit {
+  @Input() imgSrc: string;
+  clientid:any
+  productOpts = {
+    slidesPerView: 1,
+    centeredSlides: true,
+    zoom:{
+      maxRatio:2
+    }
+  }
+  
   constructor(private modalController: ModalController) { }
 
   ngOnInit() { }
-  dismisModal() { this.modalController.dismiss() }
+  dismisModal() 
+  { 
+    this.modalController.dismiss()
+  }
 
+  close()
+  {
+    this.modalController.dismiss()
+  }
 
 }

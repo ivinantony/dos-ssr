@@ -1,10 +1,29 @@
-<ion-header>
-  <ion-toolbar color="light">
-    <ion-button (click)="dismisModal()" fill="clear" size="small">
-      <ion-icon slot="start" color="light" name="close"></ion-icon>
-    </ion-button>
-    <ion-title>Header</ion-title>
-  </ion-toolbar>
-</ion-header>
+
 <ion-content>
+  <div class="ion-text-right ion-padding"><ion-icon name="close-outline" class="ikon" (click)="close()"></ion-icon></div>
+ <ion-grid fixed>
+   <ion-row>
+     <ion-col size="12">
+      <ion-slides pager [options]="productOpts" class="prod-slide">
+        <ion-slide>
+        <img src="{{imgSrc}}" alt="">
+        <!-- [ngStyle]="{'background-image': 'url(' + item.path + ')'}"
+          (click)="zoom(item.path )" -->
+        </ion-slide>
+      </ion-slides>
+     </ion-col>
+   </ion-row>
+ </ion-grid>
+    <!-- <ion-slides  [options]="slideOpts" zoom>
+      <ion-slide>
+        <div class="swiper-zoom-container">
+          <img src="{{imgSrc}}" alt="">
+
+        </div>
+      </ion-slide>
+    </ion-slides>
+  </div> -->
+   
+   
+ 
 </ion-content>

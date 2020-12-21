@@ -19,6 +19,9 @@ ion-toolbar{
     background-size: contain;
     height: 15rem;
   }
+  ion-slide:hover{
+    cursor: zoom-in;
+  }
 }
 hr {
   background: var(--ion-color-dark);
@@ -105,6 +108,7 @@ hr {
       font-weight: bold;
     }
     h5{
+      font-size: .9rem;
       font-weight: 400;
     }
   }
@@ -118,12 +122,13 @@ hr {
  padding-bottom: 10px;
 background: #ffffff;
 border-radius: 7px;
-max-height: 480px;
+max-height: 310px;
 
 ion-item{
   background: #ffffff;
 }
 h1{
+  font-size: 1.2rem;
   background: #ffffff;
 }
 h6{
@@ -181,6 +186,16 @@ h6{
     font-size: 22px;
     font-weight: 700;
   }
+}
+
+
+.ikon{
+  font-size: 1.5rem;
+  margin-bottom: -5px;
+}
+
+.ikon:hover{
+  cursor: pointer;
 }
 
 

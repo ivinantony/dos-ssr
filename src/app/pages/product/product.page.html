@@ -19,18 +19,19 @@
     <ion-row class="main_row_top">
       <!-- colum 1 start -->
       <ion-col size="12" size-sm="12" size-md="12" size-lg="4" size-xl="4" class="
-      col1">
+      col1 ion-text-center">
         <ion-slides pager [options]="productOpts" class="prod-slide">
           <ion-slide
             *ngFor="let item of productDetails?.images; let i=index"
             
-            
           >
           <img src="{{item.path}}" alt="">
-          <!-- <img-zoomer [src]="{{ item.path }}"></img-zoomer> -->
+          <!-- [ngStyle]="{'background-image': 'url(' + item.path + ')'}"
+            (click)="zoom(item.path )" -->
           </ion-slide>
+          
         </ion-slides>
-        <!-- [ngStyle]="{'background-image': 'url(' + item.path + ')'}" -->
+        <h6 class="">tap to zoom</h6>
       </ion-col>
       <!-- colum 1 end -->
 
@@ -50,18 +51,39 @@
             </ion-label>
           </ion-item>
           <section class="ion-padding-horizontal details">
-            <ion-text color="dark">
-              <h3 class="ion-margin-top">Part Number</h3>
-              <h5 class="ion-no-margin">{{productDetails?.part_number}}</h5>
-            </ion-text>
-            <ion-text color="dark">
-              <h3 class="ion-margin-top">Manufacturer</h3>
-              <h5 class="ion-no-margin">{{productDetails?.brand_name}}</h5>
-            </ion-text>
-            <ion-text color="dark">
-              <h3 class="ion-margin-top">Weight</h3>
-              <h5 class="ion-no-margin">{{productDetails?.weight}} kg</h5>
-            </ion-text>
+
+          <ion-text color="dark">
+         <ion-item class="ion-no-padding" lines="none">
+          <h3 class="ion-margin-top">Part Number : </h3>
+          &nbsp;
+          <h5 >{{productDetails?.part_number}}</h5>
+         </ion-item>
+        </ion-text>
+
+        <ion-text color="dark">
+         <ion-item class="ion-no-padding" lines="none" *ngIf="productDetails?.substitute_part_number">
+          <h3 class="ion-margin-top">Substitute Part Number : </h3>
+          &nbsp;
+          <h5 >{{productDetails?.substitute_part_number}}</h5>
+         </ion-item>
+        </ion-text>
+
+         <ion-text color="dark">
+         <ion-item class="ion-no-padding" lines="none">
+          <h3 class="ion-margin-top">Manufacturer : </h3>
+          &nbsp;
+          <h5 >{{productDetails?.brand_name}}</h5>
+         </ion-item>
+        </ion-text>
+            
+        <ion-text color="dark">
+          <ion-item class="ion-no-padding" lines="none">
+            <h3 class="ion-margin-top">Weight : </h3>
+            &nbsp;
+            <h5>{{productDetails?.weight}}</h5>
+           </ion-item>
+        </ion-text>
+
             <ion-text color="dark">
               <h3 class="ion-margin-top">Description</h3>
               <p>{{productDetails?.description}}</p>
@@ -99,7 +121,11 @@
 
         <section class="ion-padding-horizontal details">
           <ion-text color="dark">
-            <p><b>Free Shipping</b> on orders above AED 100</p>
+            <p><b> Get more details. Contact us on</b> </p> 
+            <ion-icon name="logo-whatsapp" class="ikon" (click)="whatsapp()"></ion-icon> 
+            or 
+            
+            <ion-icon name="mail-outline" class="ikon" (click)="mail()"></ion-icon>
           </ion-text>
         </section>
 

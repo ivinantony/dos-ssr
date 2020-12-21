@@ -13,14 +13,13 @@
           <ion-text color="dark"> <b>ON STORE</b> </ion-text> -->
         </ion-button>
       </ion-buttons>
-      <ion-buttons slot="start" class="nav-btns ion-margin-horizontal">
+      <ion-buttons slot="start" class="nav-btns ion-margin-horizontal hdrlinks">
         
-        <ion-button (click)="router.navigate(['/home'])"> Home </ion-button>
+        <ion-button class="links" (click)="router.navigate(['/home'])"> Home </ion-button>
         <!-- <ion-button (click)="menuController.toggle()"> Categories </ion-button> -->
-        <ion-button (click)="router.navigate(['/offer'])"> Offers </ion-button>
-        <ion-button (click)="router.navigate(['/categories'])">
-          Categories
-        </ion-button>
+        <ion-button class="links" (click)="router.navigate(['/offer'])"> Offers </ion-button>
+        <ion-button class="links" (click)="router.navigate(['/categories'])"> Categories </ion-button>
+        <ion-button class="links" (click)="router.navigate(['/manufacturers'])"> Manufacturers </ion-button>
       </ion-buttons>
       <ion-buttons slot="end">
 
@@ -71,7 +70,7 @@
 
       <ion-grid fixed>
         <ion-row>
-          <ion-col size="7" push="3">
+          <ion-col size="12" >
             <ion-searchbar
               style="
                 padding: 0 !important;

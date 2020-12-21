@@ -55,7 +55,7 @@ export class EditAddressPage implements OnInit {
     
   ) {
     this.getEditAddress()
-    this.getData()
+    // this.getData()
     
 
     
@@ -141,19 +141,7 @@ export class EditAddressPage implements OnInit {
     ],
   };
 
-  async presentLoading() {
-    const loading = await this.loadingController.create({
-      spinner: 'bubbles',
-      cssClass: 'custom-spinner',
-      message: 'Please wait...',
-      showBackdrop: true
-    });
-    await loading.present();
-  }
-
-  async dismiss() {
-    await this.loadingController.dismiss()
-  }
+ 
 
   async loadMap() {
     let client_id = localStorage.getItem('client_id')
@@ -444,45 +432,50 @@ export class EditAddressPage implements OnInit {
   
   }
 
-  getData()
-  {
+  // getData()
+  // {
     
-    let member_id = Number(localStorage.getItem('member_id'))
-    this.addressService.getDeliveryLocations().subscribe(
-      (data)=>this.handleResponse(data,GET_DELIVERY_LOC),
-      (error)=>this.handleError(error)
-    )
+  //   let member_id = Number(localStorage.getItem('member_id'))
+  //   this.addressService.getDeliveryLocations().subscribe(
+  //     (data)=>this.handleResponse(data,GET_DELIVERY_LOC),
+  //     (error)=>this.handleError(error)
+  //   )
    
-  }
+  // }
 
   handleResponse(data,type)
   {
     if(type == GET_EDIT_ADDRESS)
     {
+      this.loadingController.dismiss()
       console.log("Edit data",data)
       this.editAddress = data.address
       this.latitude = data.address.latitude
       this.longitude = data.address.longitude
+      this.delivery_locations = data.delivery_locations
       console.log(this.latitude,this.longitude,"lat long in edit address")
       this.update()
+      this.inItMap(this.latitude,this.longitude)
+      this.getDistance()
       
     
       
     }
-    else if(type == GET_DELIVERY_LOC)
-    {
-      console.log(data,"Delivery loc")
-      this.delivery_locations = data.delivery_locations
-      console.log("heyyy")
-      this.inItMap(this.latitude,this.longitude)
-      this.getDistance()
-    }
+    // else if(type == GET_DELIVERY_LOC)
+    // {
+    //   console.log(data,"Delivery loc")
+    //   this.delivery_locations = data.delivery_locations
+    //   console.log("heyyy")
+    //   this.inItMap(this.latitude,this.longitude)
+    //   this.getDistance()
+    // }
     
     
     
   }
   handleError(error)
   {
+    this.loadingController.dismiss()
     console.log(error)
   }
 
@@ -508,15 +501,24 @@ export class EditAddressPage implements OnInit {
   }
 
 
-  getEditAddress()
-  {
+  // getEditAddress()
+  // {
     
-    let address_id = Number(localStorage.getItem('address_id'))
+  //   let address_id = Number(localStorage.getItem('address_id'))
+  //   this.addressService.getEditAddress(address_id).subscribe(
+  //     (data)=>this.handleResponse(data,GET_EDIT_ADDRESS),
+  //     (error)=>this.handleError(error)
+  //   )
+    
+  // }
+
+  getEditAddress() {
+    this.presentLoading().then(()=>{
+      let address_id = Number(localStorage.getItem('address_id'))
     this.addressService.getEditAddress(address_id).subscribe(
       (data)=>this.handleResponse(data,GET_EDIT_ADDRESS),
       (error)=>this.handleError(error)
-    )
-    
+    )})
   }
 
   update()
@@ -538,5 +540,17 @@ export class EditAddressPage implements OnInit {
     this.addressForm.patchValue({id:this.editAddress?.id});
            
   }
+
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      spinner: 'crescent',
+      cssClass:'custom-spinner',
+      message: 'Please wait...',
+      showBackdrop: true
+    });
+    await loading.present();
+  }
+
+
 }
 
