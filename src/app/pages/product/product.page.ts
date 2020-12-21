@@ -246,7 +246,7 @@ export class ProductPage implements OnInit {
 
   whatsapp()
   {
-   window.open("https://api.whatsapp.com/send?phone=919497550128&amp;text=I%20have%20an%20enquiry%20about%20the%20product%20('"+this.productDetails.name+"')",this.productDetails.name)
+   window.open("https://api.whatsapp.com/send?phone=447440700295&amp;text=I%20have%20an%20enquiry%20about%20the%20product%20('"+this.productDetails.name+"')",this.productDetails.name)
   }
 
   mail()
