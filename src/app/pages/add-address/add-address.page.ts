@@ -25,7 +25,7 @@ export class AddAddressPage implements OnInit {
 
   latitude: number;
   longitude: number;
-
+  is_valid:boolean=false
   public addressForm: FormGroup;
 
 
@@ -55,7 +55,7 @@ export class AddAddressPage implements OnInit {
     this.getData()
     this.addressForm = this.formBuilder.group({
       client_id: [''],
-      name:['',Validators.required],
+      name:['',Validators.compose([Validators.required,Validators.minLength(3)])],
       address: ['', Validators.required,],
       latitude: [''],
       longitude: [''],
@@ -89,6 +89,13 @@ export class AddAddressPage implements OnInit {
   validation_messages = {
     full_address: [
       { type: "required", message: "House details are required." },
+    ],
+    name: [
+      { type: "required", message: "Name is required." },
+      {
+        type: "minlength",
+        message: "Name must be at least 3 letters long.",
+      },
     ],
     alternate_phone: [
       {
@@ -146,6 +153,7 @@ export class AddAddressPage implements OnInit {
       await this.geolocation.getCurrentPosition().then((resp) => {
         this.addressForm.controls['latitude'].setValue(resp.coords.latitude);
         this.addressForm.controls['longitude'].setValue(resp.coords.longitude);
+        this.getDistance()
         this.inItMap(resp.coords.latitude, resp.coords.longitude)
 
 
@@ -237,7 +245,7 @@ export class AddAddressPage implements OnInit {
       this.getDistance()
     })
   }
-  getAddressFromCoords(latitude, longitude) {
+  getAddressFromCoords(latitude, longitude) {  
 
     if (this.platform.is('cordova')) {
       console.log('cordova  available')
@@ -321,6 +329,7 @@ export class AddAddressPage implements OnInit {
       console.log("GET DISTANCE MATRIX");
       if (status !== "OK") {
         var msg = "Error with distance matrix";
+        this.locationAvailability = false;
         this.showToast(msg);
       } else {
         var response_data = new Array();
@@ -352,6 +361,7 @@ export class AddAddressPage implements OnInit {
           this.addressForm.patchValue({ latitude: null });
           this.addressForm.patchValue({ longitude: null });
           this.showToast(msg);
+         
         }
       }
     });
@@ -361,6 +371,7 @@ export class AddAddressPage implements OnInit {
 
   saveAddress() {
     console.log('this.addressForm.value', this.addressForm.value)
+    console.log('this.addressForm.value', this.addressForm.value.name)
     // this.addressService.postAddress(this.addressForm.value).subscribe(data => this.handleResponse(data), error => this.handleError(error))
     // this.presentLoading().finally(() => {
     //   this.presentToast()
@@ -424,8 +435,19 @@ export class AddAddressPage implements OnInit {
 
   onSubmit()
   {
-    
-      if (this.addressForm.valid && this.locationAvailability == true) {
+    this.saveAddress()
+   
+    if (this.locationAvailability == false) 
+      {
+        this.showToast(
+          "Selected location is not servicable. Please select a suitable location"
+        );
+      } 
+      // else if(!this.addressForm.value.name)
+      // {
+      //   this.showToast("Please enter a valid name.");
+      // }
+      else if (this.addressForm.valid && this.locationAvailability == true) {
         console.log(this.addressForm.value)
         this.addressService.addAddress(this.addressForm.value).subscribe(
           (data) => this.handleResponse(data, POST_ADDRESS),
@@ -434,14 +456,9 @@ export class AddAddressPage implements OnInit {
         // this.navController.popTo('checkout');
         this.modalController.dismiss()
       } 
-      else if (this.locationAvailability == false) 
-      {
-        this.showToast(
-          "Selected location is not servicable. Please select a suitable location"
-        );
-      } 
+       
       else {
-        this.showToast("Some fields are invalid.");
+        this.showToast("Please check your information. Some fields are empty.");
       }
 
   

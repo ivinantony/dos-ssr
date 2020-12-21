@@ -21,6 +21,8 @@ import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { Component, ViewChild } from '@angular/core';
 import { IonicStorageModule } from '@ionic/storage';
+// import { IonicImageZoomer } from 'ionic-image-zoomer';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,6 +34,7 @@ import { IonicStorageModule } from '@ionic/storage';
       swipeBackEnabled: true,
     }),
     IonicStorageModule.forRoot(),
+   
     AppRoutingModule,
     FontAwesomeModule,
     HttpClientModule,

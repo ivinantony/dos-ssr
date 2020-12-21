@@ -54,6 +54,16 @@
                   formControlName="name"
                 ></ion-input>
               </ion-item>
+              <ng-container  *ngFor="let validation of validation_messages.name">
+                <div class="err_msg" *ngIf="
+                addressForm.get('name').hasError(validation.type) &&
+                addressForm.get('name').dirty &&
+                addressForm.get('name').touched">
+                  <ion-icon name="information-circle-outline"></ion-icon>
+                  {{ validation.message}}
+                </div>
+              </ng-container>
+              
               <ion-item class="area" lines="none">
                 <ion-input
                   required

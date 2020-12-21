@@ -57,11 +57,14 @@ export class EditAddressPage implements OnInit {
     this.getEditAddress()
     this.getData()
     
+
+    
+    
     
     
     this.addressForm = this.formBuilder.group({
       client_id: [''],
-      name:['',Validators.required],
+      name:['',Validators.compose([Validators.required,Validators.minLength(3)])],
       address: ['', Validators.required,],
       latitude: [''],
       longitude: [''],
@@ -74,15 +77,16 @@ export class EditAddressPage implements OnInit {
       address_id:[Number(localStorage.getItem('address_id'))],
 
     });
-    this.platform.ready().then(() => {
-      this.presentLoading().then(() => {
-        console.log('presented')
-        this.loadMap().finally(() => {
-          this.dismiss()
-        })
-      })
+    // this.platform.ready().then(() => {
+      
+    //   this.presentLoading().then(() => {
+    //     console.log('presented')
+    //     this.loadMap().finally(() => {
+    //       this.dismiss()
+    //     })
+    //   })
 
-    })
+    // })
   }
   ngOnInit() {
     // this.authservice.getMemberId().then(val => {
@@ -95,6 +99,13 @@ export class EditAddressPage implements OnInit {
   validation_messages = {
     full_address: [
       { type: "required", message: "House details are required." },
+    ],
+    name: [
+      { type: "required", message: "Name is required." },
+      {
+        type: "minlength",
+        message: "Name must be at least 3 letters long.",
+      },
     ],
     alternate_phone: [
       {
@@ -152,6 +163,7 @@ export class EditAddressPage implements OnInit {
       await this.geolocation.getCurrentPosition().then((resp) => {
         this.addressForm.controls['latitude'].setValue(resp.coords.latitude);
         this.addressForm.controls['longitude'].setValue(resp.coords.longitude);
+        this.getDistance()
         this.inItMap(resp.coords.latitude, resp.coords.longitude)
 
 
@@ -322,6 +334,8 @@ export class EditAddressPage implements OnInit {
       if (status !== "OK") {
         var msg = "Error with distance matrix";
         this.showToast(msg);
+        this.locationAvailability = false;
+        
       } else {
         var response_data = new Array();
         var distances = new Array();
@@ -406,8 +420,14 @@ export class EditAddressPage implements OnInit {
 
   onSubmit()
   {
-    
-      if (this.addressForm.valid && this.locationAvailability == true) {
+    console.log(this.addressForm.value)
+    if (this.locationAvailability == false) 
+    {
+      this.showToast(
+        "Selected location is not servicable. Please select a suitable location"
+      );
+    } 
+      else if (this.addressForm.valid && this.locationAvailability == true) {
         console.log(this.addressForm.value)
         this.addressService.addEditAddress(this.addressForm.value).subscribe(
           (data) => this.handleResponse(data, POST_ADDRESS),
@@ -416,14 +436,9 @@ export class EditAddressPage implements OnInit {
         // this.navController.popTo('checkout');
         this.modalController.dismiss()
       } 
-      else if (this.locationAvailability == false) 
-      {
-        this.showToast(
-          "Selected location is not servicable. Please select a suitable location"
-        );
-      } 
+       
       else {
-        this.showToast("Some fields are invalid.");
+        this.showToast("Please check your information. Some fields are empty.");
       }
 
   
@@ -446,10 +461,24 @@ export class EditAddressPage implements OnInit {
     {
       console.log("Edit data",data)
       this.editAddress = data.address
+      this.latitude = data.address.latitude
+      this.longitude = data.address.longitude
+      console.log(this.latitude,this.longitude,"lat long in edit address")
       this.update()
+      
+    
+      
     }
-    console.log(data,"Delivery loc")
-    this.delivery_locations = data.delivery_locations
+    else if(type == GET_DELIVERY_LOC)
+    {
+      console.log(data,"Delivery loc")
+      this.delivery_locations = data.delivery_locations
+      console.log("heyyy")
+      this.inItMap(this.latitude,this.longitude)
+      this.getDistance()
+    }
+    
+    
     
   }
   handleError(error)
@@ -495,6 +524,7 @@ export class EditAddressPage implements OnInit {
     // console.log("edit address address",this.editAddress?.landmark)
     // document.getElementById("address").innerText = this.editAddress?.full_address;
     this.addressForm.patchValue({name:this.editAddress?.name});
+    this.addressForm.patchValue({address:this.editAddress?.address});
    
     this.addressForm.patchValue({alternate_phone:this.editAddress?.alternate_phone}); 
     this.addressForm.patchValue({phone:this.editAddress?.phone}); 

@@ -23,10 +23,14 @@
         <ion-slides pager [options]="productOpts" class="prod-slide">
           <ion-slide
             *ngFor="let item of productDetails?.images; let i=index"
-            [ngStyle]="{'background-image': 'url(' + item.path + ')'}"
+            
+            
           >
+          <img src="{{item.path}}" alt="">
+          <!-- <img-zoomer [src]="{{ item.path }}"></img-zoomer> -->
           </ion-slide>
         </ion-slides>
+        <!-- [ngStyle]="{'background-image': 'url(' + item.path + ')'}" -->
       </ion-col>
       <!-- colum 1 end -->
 

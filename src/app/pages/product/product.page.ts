@@ -27,6 +27,9 @@ export class ProductPage implements OnInit {
   productOpts = {
     slidesPerView: 1,
     centeredSlides: true,
+    zoom:{
+      maxRatio:2
+    }
   }
   product: any
   categories = CATEGORIES
