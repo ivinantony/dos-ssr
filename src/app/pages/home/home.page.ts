@@ -133,13 +133,14 @@ export class HomePage implements OnInit {
     slidesPerView: 1,
     initialSlide: 0,
     spaceBetween: 20,
-    loop: true,
+    
     centeredSlides: true,
     autoplay: {
       delay: 3000,
-      disableOnInteraction: false
+      disableOnInteraction: false,
+      loop: true,
     },
-    speed: 400
+    speed: 1000
 
   };
   bannerSlideOpts4 = {
@@ -468,6 +469,17 @@ manufactures = MANUFACTURES
     });
     await loading.present();
   }
-
+facebook()
+{
+  window.open("https://www.facebook.com/deal-on-store-103110191641253")
+}
+twitter()
+{
+  window.open("https://twitter.com/dealonstore")
+}
+insta()
+{
+  window.open("https://www.instagram.com/deal_on_store/")
+}
   
 }

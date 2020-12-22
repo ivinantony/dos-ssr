@@ -1,8 +1,11 @@
 <ion-content class="ion-padding">
+  <div *ngIf="!is_granted" class="msg">
+    <P>Permission for getting your location is denied. Inorder to reset the permission, access <img src="../../../assets/imgs/locdenied.PNG" alt=""> this icon on top right of your browser window and click allow access. Refresh to reflect changes.</P>
+</div>
   <div>
-    <div id="main">
-      <div>
-        <div #map id="map"></div>
+    <div id="main" >
+      <div >
+        <div #map id="map" ></div>
       </div>
       <div>
         <ion-card class="fixed">

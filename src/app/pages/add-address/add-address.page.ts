@@ -38,6 +38,7 @@ export class AddAddressPage implements OnInit {
   locationAvailability:boolean
   delivery_locations:any
   selectedAddress:any
+ is_granted:boolean=false
 
   constructor(
     private geolocation: Geolocation,
@@ -62,8 +63,8 @@ export class AddAddressPage implements OnInit {
       full_address:['', Validators.required],
       place_id: [''],
       landmark: ['', Validators.required],
-      alternate_phone: ['',Validators.compose([Validators.maxLength(10), Validators.minLength(10),Validators.pattern("[0-9]*")]),],
-      phone: ['',Validators.compose([Validators.required,Validators.maxLength(10), Validators.minLength(10),Validators.pattern("[0-9]*")]),],
+      alternate_phone: ['',Validators.compose([Validators.maxLength(9), Validators.minLength(9),Validators.pattern("[0-9]*")]),],
+      phone: ['',Validators.compose([Validators.required,Validators.maxLength(9), Validators.minLength(9),Validators.pattern("[0-9]*")]),],
       delivery_location_id:['']
 
     });
@@ -73,6 +74,9 @@ export class AddAddressPage implements OnInit {
         console.log('presented')
         this.loadMap().finally(() => {
           this.dismiss()
+          console.log("handle permisasions next")
+          this.handlePermission()
+          
         })
       })
 
@@ -84,6 +88,7 @@ export class AddAddressPage implements OnInit {
     //   this.addressForm.controls['member_id'].setValue(val);
 
     // })
+
   }
 
   validation_messages = {
@@ -100,11 +105,11 @@ export class AddAddressPage implements OnInit {
     alternate_phone: [
       {
         type: "minlength",
-        message: "Mobile number must be at least 10 digit.",
+        message: "Mobile number must be at least 9 digit.",
       },
       {
         type: "maxlength",
-        message: "Mobile number cannot be more than 10 digit.",
+        message: "Mobile number cannot be more than 9 digit.",
       },
       {
         type: "pattern",
@@ -115,11 +120,11 @@ export class AddAddressPage implements OnInit {
       { type: "required", message: "Phone number is required." },
       {
         type: "minlength",
-        message: "Mobile number must be at least 10 digit.",
+        message: "Mobile number must be at least 9 digit.",
       },
       {
         type: "maxlength",
-        message: "Mobile number cannot be more than 10 digit.",
+        message: "Mobile number cannot be more than 9 digit.",
       },
       {
         type: "pattern",
@@ -155,8 +160,6 @@ export class AddAddressPage implements OnInit {
         this.addressForm.controls['longitude'].setValue(resp.coords.longitude);
         this.getDistance()
         this.inItMap(resp.coords.latitude, resp.coords.longitude)
-
-
       }).catch((error) => {
         console.log('Error getting location', error);
       });
@@ -184,9 +187,10 @@ export class AddAddressPage implements OnInit {
           (error) => {
             switch (error.code) {
               case error.PERMISSION_DENIED:
-                var msg = "User denied the request for Geolocation.";
-                this.showToastDanger(msg)
+                var msg = "User denied the request for Geolocation. In order to access your location reset the permission in settings.";
+                this.showToastDangerDenied(msg)
                 console.log(msg)
+                
                 break;
               case error.POSITION_UNAVAILABLE:
                 var msg = "Location information is unavailable.";
@@ -515,10 +519,47 @@ export class AddAddressPage implements OnInit {
     });
     toast.present();
   }
+  async showToastDangerDenied(message) {
+    let toast = await this.toastController.create({
+      message: message,
+      duration: 3000,
+      position: "top",
+      color: "danger",
+    });
+    toast.present();
+  }
 
 
+
+  handlePermission() {
+    navigator.permissions.query({name:'geolocation'}).then((result)=> {
+      if (result.state == 'granted') {
+        this.report(result.state);
+        console.log("access granted")
+        this.is_granted = true
+       
+      } else if (result.state == 'prompt') {
+        this.report(result.state);
+        console.log("access not known")
+        this.is_granted = true
+        // navigator.geolocation.getCurrentPosition();
+      } else if (result.state == 'denied') {
+        this.report(result.state);
+        console.log("access denied")
+        this.is_granted = false
+      }
+      result.onchange = () => {
+        this.report(result.state);
+        this.handlePermission()
+      }
+    });
+  }
+  
+  report(state) {
+    console.log('Permission ' + state);
+  }
  
-
+ 
 }
 
 

@@ -122,12 +122,15 @@
         <section class="ion-padding-horizontal details">
           <ion-text color="dark">
             <p><b> Get more details. Contact us on</b> </p> 
-            <ion-icon name="logo-whatsapp" class="ikon" (click)="whatsapp()"></ion-icon> 
-            or 
+            <img src="../../../assets/icon/whatsapp.svg" alt="" (click)="whatsapp()" class="ikon" >
             
-            <ion-icon name="mail-outline" class="ikon" (click)="mail()"></ion-icon>
+            or 
+            <img src="../../../assets/icon/gmail.svg" alt="" (click)="mail()" class="ikon">
+            
           </ion-text>
         </section>
+        <!-- <ion-icon name="mail-outline" class="ikon" (click)="mail()"></ion-icon>
+        <ion-icon name="logo-whatsapp" class="ikon" (click)="whatsapp()"></ion-icon>  -->
 
         <section class="ion-padding-horizontal stock">
            <ion-chip color="success" *ngIf="data?.product.in_stock == 1">
