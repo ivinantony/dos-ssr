@@ -133,6 +133,7 @@ export class CheckoutPayPage implements OnInit {
 	}
 	handleError(error)
 	{
+		this.loadingController.dismiss()
 		console.log(error)
 		this.presentToast('Payment Failed')
 	}
@@ -153,7 +154,8 @@ export class CheckoutPayPage implements OnInit {
           spinner: 'crescent',
           cssClass:'custom-spinner',
           message: 'Please wait...',
-          showBackdrop: true
+		  showBackdrop: true,
+		  duration: 5000
         });
         await loading.present();
       }
