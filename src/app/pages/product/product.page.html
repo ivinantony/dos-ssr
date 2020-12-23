@@ -25,7 +25,7 @@
             *ngFor="let item of productDetails?.images; let i=index"
             
           >
-          <img src="{{item.path}}" alt="">
+          <img src="{{item?.path}}" alt="">
           <!-- [ngStyle]="{'background-image': 'url(' + item.path + ')'}"
             (click)="zoom(item.path )" -->
           </ion-slide>
@@ -53,7 +53,7 @@
           <section class="ion-padding-horizontal details">
 
           <ion-text color="dark">
-         <ion-item class="ion-no-padding" lines="none">
+         <ion-item class="ion-no-padding" lines="none" *ngIf="productDetails?.part_number">
           <h3 class="ion-margin-top">Part Number : </h3>
           &nbsp;
           <h5 >{{productDetails?.part_number}}</h5>
