@@ -24,7 +24,9 @@ ion-content{
   .text{
     h1{
         font-family: Roboto,"sans-serif"!important;
-      font-size: 15px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 1.3px;
       color: #444;
       text-align: center;
       padding-bottom: 15px;
@@ -36,12 +38,13 @@ ion-content{
 
   .round{
     height: 9rem;
-    width: 9rem;
-    border-radius: 7px;
+    width: 14rem;
+    border-radius: 10px;
     background-size: cover;
     background-repeat: no-repeat;
     margin-left: auto;
     margin-right: auto;
+    background-position: center;
     box-shadow:
     0 2.8px 2.2px rgba(0, 0, 0, 0.034),
     0 6.7px 5.3px rgba(0, 0, 0, 0.048),
@@ -75,5 +78,15 @@ ion-content{
     .dsk{
       display: block;
     }
+    }
+
+    @media only screen and (max-width: 475px)
+    {
+
+      .round{
+        height: 10rem;
+        width: 17rem;
+      }
+
     }
   

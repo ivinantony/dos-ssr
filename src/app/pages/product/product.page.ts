@@ -59,11 +59,16 @@ export class ProductPage implements OnInit {
 
     
     this.client_id = localStorage.getItem('client_id')
-    this.getData()
+    
   }
 
   ngOnInit() {
 
+  }
+
+  ionViewWillEnter()
+  {
+    this.getData()
   }
 
   // getData()
