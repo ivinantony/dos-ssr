@@ -447,10 +447,19 @@ export class AddAddressPage implements OnInit {
           "Selected location is not servicable. Please select a suitable location"
         );
       } 
-      // else if(!this.addressForm.value.name)
-      // {
-      //   this.showToast("Please enter a valid name.");
-      // }
+    
+      else if(!this.addressForm.value.name)
+    {
+      this.showToast("Please enter a valid user name");
+    }
+    else if(!this.addressForm.value.full_address)
+    {
+      this.showToast("Please enter a valid House no./Flat no./Floor/Building");
+    }
+    else if(!this.addressForm.value.landmark)
+    {
+      this.showToast("Please enter a landmark");
+    }
       else if (this.addressForm.valid && this.locationAvailability == true) {
         console.log(this.addressForm.value)
         this.addressService.addAddress(this.addressForm.value).subscribe(

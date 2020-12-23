@@ -71,7 +71,7 @@ export class EditAddressPage implements OnInit {
       full_address:['', Validators.required],
       place_id: [''],
       landmark: ['', Validators.required],
-      alternate_phone: ['',Validators.compose([Validators.maxLength(10), Validators.minLength(10),Validators.pattern("[0-9]*")]),],
+      alternate_phone: ['',Validators.compose([Validators.maxLength(9), Validators.minLength(9),Validators.pattern("[0-9]*")]),],
       phone: ['',Validators.compose([Validators.required,Validators.maxLength(10), Validators.minLength(10),Validators.pattern("[0-9]*")]),],
       delivery_location_id:[''],
       address_id:[Number(localStorage.getItem('address_id'))],
@@ -110,11 +110,11 @@ export class EditAddressPage implements OnInit {
     alternate_phone: [
       {
         type: "minlength",
-        message: "Mobile number must be at least 10 digit.",
+        message: "Mobile number must be at least 9 digit.",
       },
       {
         type: "maxlength",
-        message: "Mobile number cannot be more than 10 digit.",
+        message: "Mobile number cannot be more than 9 digit.",
       },
       {
         type: "pattern",
@@ -409,13 +409,27 @@ export class EditAddressPage implements OnInit {
   onSubmit()
   {
     console.log(this.addressForm.value)
+    console.log(this.locationAvailability,"availability")
+
     if (this.locationAvailability == false) 
     {
       this.showToast(
         "Selected location is not servicable. Please select a suitable location"
       );
     } 
-      else if (this.addressForm.valid && this.locationAvailability == true) {
+    else if(!this.addressForm.value.name)
+    {
+      this.showToast("Please enter a valid user name");
+    }
+    else if(!this.addressForm.value.address)
+    {
+      this.showToast("Please enter a valid House no./Flat no./Floor/Building");
+    }
+    else if(!this.addressForm.value.landmark)
+    {
+      this.showToast("Please enter a landmark");
+    }
+      else if (this.locationAvailability == true) {
         console.log(this.addressForm.value)
         this.addressService.addEditAddress(this.addressForm.value).subscribe(
           (data) => this.handleResponse(data, POST_ADDRESS),

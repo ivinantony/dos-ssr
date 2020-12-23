@@ -111,22 +111,22 @@ export class CheckoutPayPage implements OnInit {
 			  }
 	
 			  this.paymentService.capturePayment(info).subscribe(
-				(data)=>console.log(data,CAPTURE_PAYMENT),
-				(error)=>console.log(error)
+				(data)=>this.handleResponse(data,CAPTURE_PAYMENT),
+				(error)=>this.handleError(error)
 			  )
 			  this.loadingController.dismiss()
 			// this.presentToast('Payment Successful')
 
-			this.router.navigate(['order-placed'])
+			
 			 
 			  
 		}
 		else if(type == CAPTURE_PAYMENT)
 
 		{ 
-			
+			this.loadingController.dismiss()
 			console.log(data,"capture_payment")
-			
+			this.router.navigate(['order-placed'])
 		}
 		
 		
@@ -134,6 +134,7 @@ export class CheckoutPayPage implements OnInit {
 	handleError(error)
 	{
 		console.log(error)
+		this.presentToast('Payment Failed')
 	}
 
 	async presentToast(msg) {
@@ -141,7 +142,7 @@ export class CheckoutPayPage implements OnInit {
 		  message: msg,
 		  cssClass: 'custom-toast',
 		  position: 'middle',
-		  color:'success',
+		  color:'danger',
 		  duration: 2000
 		});
 		toast.present();
