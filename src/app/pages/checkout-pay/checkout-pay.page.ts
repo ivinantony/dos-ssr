@@ -20,7 +20,7 @@ export class CheckoutPayPage implements OnInit {
 	private errors = {};
 
 	constructor(private platform: Platform,private payment:CardPaymentService,private paymentService:PaymentService,
-		private router:Router,private toastController:ToastController,private loadingController:LoadingController) {
+		public router:Router,private toastController:ToastController,private loadingController:LoadingController) {
 
 		this.initializePaymentPage();
 

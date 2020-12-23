@@ -68,6 +68,9 @@ img{
             .ripples{
                 background:#f5f5f5;
             }
+            .ripples:hover{
+                cursor: pointer;
+            }
             --background:#f5f5f5;
             ion-item{
                 --background:#f5f5f5;

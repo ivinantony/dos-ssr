@@ -457,11 +457,11 @@
         <ion-icon name="logo-paypal" class="payIcon"></ion-icon>
         </ion-col>
         <ion-col size="6" class="policies">
-          <p class="policies">Return & Refund Policy</p>
-          <p>Privacy Policy</p>
-          <p>Terms and Conditions</p>
-          <p>Shipping Policy</p>
-          <p>Customer Support</p>
+          <p (click)="router.navigate(['returnandrefund'])">Return & Refund Policy</p>
+          <p (click)="router.navigate(['privacypolicy'])">Privacy Policy</p>
+          <p (click)="router.navigate(['termsandconditions'])">Terms and Conditions</p>
+          <!-- <p>Shipping Policy</p>
+          <p>Customer Support</p> -->
         </ion-col>
         </ion-row>
     </ion-col>

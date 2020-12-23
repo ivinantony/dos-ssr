@@ -57,7 +57,8 @@ export class OrderDetailsPage implements OnInit {
   async presentModal() {
     const modal = await this.modalController.create({
       component: CancelorderPage,
-      cssClass: 'my-custom-class'
+      cssClass: 'my-custom-class',
+      componentProps: { order_id: this.data.order.id }
     });
     return await modal.present();
   }

@@ -14,7 +14,7 @@ export class PaypalPage implements OnInit {
   currencyIcon: string = '$';
   order_id:any
   details:any
-  constructor(private pay:PaymentService,private router:Router,private toastController:ToastController,private zone:NgZone,private loadingController:LoadingController) 
+  constructor(private pay:PaymentService,public router:Router,private toastController:ToastController,private zone:NgZone,private loadingController:LoadingController) 
   { 
     this.paymentAmount = localStorage.getItem('total_amount')
     

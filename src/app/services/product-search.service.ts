@@ -18,7 +18,9 @@ export class ProductSearchService {
     console.log(this.items,"items filter search")
     if (searchTerm) {
       return this.items.filter(item => {
+        // console.log(item.name.toLowerCase().indexOf(searchTerm.toLowerCase()),"search resultsssss")
         return item.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
+       
       });
     }
 

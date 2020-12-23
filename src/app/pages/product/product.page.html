@@ -77,10 +77,10 @@
         </ion-text>
             
         <ion-text color="dark">
-          <ion-item class="ion-no-padding" lines="none">
+          <ion-item class="ion-no-padding" lines="none" *ngIf="productDetails?.weight">
             <h3 class="ion-margin-top">Weight : </h3>
             &nbsp;
-            <h5>{{productDetails?.weight}}</h5>
+            <h5>{{productDetails?.weight}} kg</h5>
            </ion-item>
         </ion-text>
 

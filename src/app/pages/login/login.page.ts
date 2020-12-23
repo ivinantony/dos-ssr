@@ -138,7 +138,7 @@ export class LoginPage implements OnInit {
   {
    this.data = data
     console.log(data)
-    this.presentAlert()
+    // this.presentAlert()
   }
 
   handleError(error)

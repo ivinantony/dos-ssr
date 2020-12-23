@@ -153,7 +153,19 @@ const routes: Routes = [
   {
     path: 'order-placed',
     loadChildren: () => import('./pages/order-placed/order-placed.module').then( m => m.OrderPlacedPageModule)
+  },  {
+    path: 'termsandconditions',
+    loadChildren: () => import('./pages/termsandconditions/termsandconditions.module').then( m => m.TermsandconditionsPageModule)
+  },
+  {
+    path: 'privacypolicy',
+    loadChildren: () => import('./pages/privacypolicy/privacypolicy.module').then( m => m.PrivacypolicyPageModule)
+  },
+  {
+    path: 'returnandrefund',
+    loadChildren: () => import('./pages/returnandrefund/returnandrefund.module').then( m => m.ReturnandrefundPageModule)
   }
+
 
 
 

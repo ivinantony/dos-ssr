@@ -66,7 +66,7 @@
 </div>
 
 </ion-content>
-<ion-footer>
+<ion-footer *ngIf="data?.order_status?.id!=3">
   
   <ion-toolbar color="danger">
     <ion-button
