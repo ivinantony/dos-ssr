@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
 import { PromoService } from 'src/app/services/promo/promo.service';
 const GET_CODES = 200;
@@ -8,9 +8,11 @@ const GET_CODES = 200;
   styleUrls: ['./coupon.page.scss'],
 })
 export class CouponPage implements OnInit {
-
+  @Input() totalAmount: any;
   promoSelected:any
   data:any
+  applicableCoupons:Array<any>=[]
+  coupons:Array<any>=[]
   constructor(private modalController: ModalController,private promoService:PromoService,private toastController:ToastController) 
   {
     this.getData()
@@ -39,6 +41,19 @@ export class CouponPage implements OnInit {
   {
     console.log(data)
     this.data = data
+
+    this.data.promo_codes.filter(item => {
+      // console.log(item.name.toLowerCase().indexOf(searchTerm.toLowerCase()),"search resultsssss")
+      if(item.minimum_amount<=this.totalAmount)
+      {
+        this.applicableCoupons.push(item)
+      }
+      else{
+        this.coupons.push(item)
+      }
+     console.log("after push only applicable",this.applicableCoupons)
+     console.log("non applicable",this.coupons)
+    });
   }
 
   }

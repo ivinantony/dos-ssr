@@ -206,6 +206,7 @@ this.loadingController.dismiss()
       swipeToClose: true,
       presentingElement: this.routerOutlet.nativeEl,
       cssClass: "my-custom-class",
+      componentProps: { totalAmount: this.data.total_amount }
     });
     modal.onDidDismiss().then((data) => {
       const promo_Details = data["data"];

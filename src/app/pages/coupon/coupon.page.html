@@ -13,13 +13,15 @@
       APPLY COUPON
     </ion-button>
   </ion-item> -->
-  <ion-list>
+  <ion-list *ngIf="data.promo_codes">
     <ion-list-header>
-      <ion-label>Available offers</ion-label>
+      <ion-label>Applicable Coupons</ion-label>
     </ion-list-header>
+    <div *ngIf="applicableCoupons.length>0">
     <ion-list
+    
       class="ion-margin-vertical"
-      *ngFor="let item of data?.promo_codes; let i=index"
+      *ngFor="let item of applicableCoupons; let i=index"
     >
       <ion-item lines="none">
         <ion-label>
@@ -30,7 +32,7 @@
             </p>
           </ion-text>
           <ion-text color="medium">
-            <p>Valid on orders above ₹{{item.minimum_amount}}.</p>
+            <p>Valid on orders above AED {{item.minimum_amount}}.</p>
             <p>Expires on {{item.expiry_date}}.</p>
           </ion-text>
         </ion-label>
@@ -54,5 +56,63 @@
         </ion-button>
       </ion-item>
     </ion-list>
+  </div>
+  <div *ngIf="applicableCoupons.length == 0" class="ion-text-center">
+    <p>No applicable coupons for this order.</p>
+
+  </div>
+  </ion-list>
+
+
+
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Available Coupons</ion-label>
+    </ion-list-header>
+    <div *ngIf="coupons.length>0">
+    <ion-list
+    
+      class="ion-margin-vertical"
+      *ngFor="let item of coupons; let i=index"
+    >
+      <ion-item lines="none">
+        <ion-label>
+          <h2>{{item.name}}</h2>
+          <ion-text color="dark">
+            <p>
+              {{item.description}}
+            </p>
+          </ion-text>
+          <ion-text color="medium">
+            <p>Valid on orders above AED {{item.minimum_amount}}.</p>
+            <p>Expires on {{item.expiry_date}}.</p>
+          </ion-text>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="none">
+        <div class="relative">
+          <div class="content-container">
+            <p class="text">{{item.name}}</p>
+            <div class="dots-H"></div>
+          </div>
+          <div class="left"></div>
+          <div class="right"></div>
+        </div>
+        <!-- <ion-button
+          slot="end"
+          expand="block"
+          fill="outline"
+          (click)="apply(i)"
+        >
+          APPLY
+        </ion-button> -->
+      </ion-item>
+    </ion-list>
+  </div>
+  <div *ngIf="!data.promo_codes" class="ion-text-center">
+    <p>No coupons available.</p>
+
+  </div>
+  
   </ion-list>
 </ion-content>

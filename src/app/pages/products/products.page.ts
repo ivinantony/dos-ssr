@@ -57,11 +57,16 @@ export class ProductsPage implements OnInit {
     // this.products = PRODUCTS.filter(data => data.cat_id == catId)
     // console.log(this.products)
     this.client_id = Number(localStorage.getItem('client_id'))
-    this.getData()
+    // this.getData()
 
   }
 
   ngOnInit() {
+  }
+  ionViewWillEnter()
+  {this.page_count=1
+    this.products= []
+    this.getData()
   }
 
   // getData()

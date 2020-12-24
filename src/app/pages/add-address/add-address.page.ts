@@ -460,6 +460,10 @@ export class AddAddressPage implements OnInit {
     {
       this.showToast("Please enter a landmark");
     }
+    else if(!this.addressForm.value.phone)
+    {
+      this.showToast("Please enter a valid phone number");
+    }
       else if (this.addressForm.valid && this.locationAvailability == true) {
         console.log(this.addressForm.value)
         this.addressService.addAddress(this.addressForm.value).subscribe(
@@ -471,7 +475,7 @@ export class AddAddressPage implements OnInit {
       } 
        
       else {
-        this.showToast("Please check your information. Some fields are empty.");
+        this.showToast("Please check your information.");
       }
 
   

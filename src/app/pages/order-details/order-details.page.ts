@@ -60,7 +60,10 @@ export class OrderDetailsPage implements OnInit {
       cssClass: 'my-custom-class',
       componentProps: { order_id: this.data.order.id }
     });
-    return await modal.present();
+  
+    await modal.present();
+    await modal.onDidDismiss().then(()=>{this.router.navigate(['orders'])})
+    
   }
 
   doRefresh(event) {

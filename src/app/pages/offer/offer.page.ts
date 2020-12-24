@@ -29,7 +29,7 @@ export class OfferPage implements OnInit {
     this.client_id = localStorage.getItem('client_id')
     this.page_count = 1;
     this.s3url=utils.getS3url()
-    this.getData()
+    // this.getData()
   }
 
   // ionViewWillEnter()
@@ -38,6 +38,13 @@ export class OfferPage implements OnInit {
   // }
 
   ngOnInit() {
+  }
+
+  ionViewWillEnter()
+  {
+    this.page_count=1
+        this.products= []
+    this.getData()
   }
 
   // getData()

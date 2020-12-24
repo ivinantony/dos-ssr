@@ -84,13 +84,17 @@ export class CartPage implements OnInit {
     @Inject(DOCUMENT) private _document: Document
   ) {
     this.client_id=localStorage.getItem("client_id")
-    this.getData();
-    this.getAddress();
+    // this.getData();
+    // this.getAddress();
     this.s3url = utils.getS3url();
     
   }
 
   ngOnInit() {}
+  ionViewWillEnter()
+  {
+    this.getData()
+  }
 
   onChangeAddress($event) {
     this.current_selection= $event.detail.value;
@@ -260,6 +264,7 @@ export class CartPage implements OnInit {
       this.data = data
       this.cart = data.cart;
       this.amountDetails = data;
+      this.addresses = data.address;
       // this.amountDetails.payable_amount =
         // this.amountDetails.payable_amount + this.amountDetails.delivery_charge;
       this.cartLength = this.cart.length;
@@ -272,10 +277,10 @@ export class CartPage implements OnInit {
     {
       console.log(data)
     }
-    else if (type == GET_ADDRESS) {
-      this.addresses = data.addresses;
-      console.log(this.addresses, "addresses");
-    } 
+    // else if (type == GET_ADDRESS) {
+    //   this.addresses = data.addresses;
+    //   console.log(this.addresses, "addresses");
+    // } 
     else if (type == ORDER_RESPONSE) {
       console.log(data, "pay response");
       localStorage.setItem("order_id", data.payable_order_id);

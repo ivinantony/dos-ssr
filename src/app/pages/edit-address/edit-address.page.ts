@@ -72,7 +72,7 @@ export class EditAddressPage implements OnInit {
       place_id: [''],
       landmark: ['', Validators.required],
       alternate_phone: ['',Validators.compose([Validators.maxLength(9), Validators.minLength(9),Validators.pattern("[0-9]*")]),],
-      phone: ['',Validators.compose([Validators.required,Validators.maxLength(10), Validators.minLength(10),Validators.pattern("[0-9]*")]),],
+      phone: ['',Validators.compose([Validators.required,Validators.maxLength(9), Validators.minLength(9),Validators.pattern("[0-9]*")]),],
       delivery_location_id:[''],
       address_id:[Number(localStorage.getItem('address_id'))],
 
@@ -125,14 +125,14 @@ export class EditAddressPage implements OnInit {
       { type: "required", message: "A landmark is required." },
     ],
     phone: [
-      { type: "required", message: "A landmark is required." },
+      { type: "required", message: "Phone number is required." },
       {
         type: "minlength",
-        message: "Mobile number must be at least 10 digit.",
+        message: "Mobile number must be at least 9 digit.",
       },
       {
         type: "maxlength",
-        message: "Mobile number cannot be more than 10 digit.",
+        message: "Mobile number cannot be more than 9 digit.",
       },
       {
         type: "pattern",
@@ -429,7 +429,11 @@ export class EditAddressPage implements OnInit {
     {
       this.showToast("Please enter a landmark");
     }
-      else if (this.locationAvailability == true) {
+    else if(!this.addressForm.value.phone)
+    {
+      this.showToast("Please enter a valid phone number");
+    }
+      else if (this.addressForm.valid && this.locationAvailability == true) {
         console.log(this.addressForm.value)
         this.addressService.addEditAddress(this.addressForm.value).subscribe(
           (data) => this.handleResponse(data, POST_ADDRESS),
@@ -440,7 +444,7 @@ export class EditAddressPage implements OnInit {
       } 
        
       else {
-        this.showToast("Please check your information. Some fields are empty.");
+        this.showToast("Please check your information.");
       }
 
   

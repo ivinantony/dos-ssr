@@ -102,7 +102,7 @@ export class BrandProductsPage implements OnInit {
     this.s3url = utils.getS3url();
     this.checkWidth();
     console.log("first")
-    this.getData();
+    // this.getData();
     
   }
   checkWidth() {
@@ -124,6 +124,14 @@ export class BrandProductsPage implements OnInit {
   
 
   ngOnInit() { }
+
+  ionViewWillEnter()
+  {
+    this.page_count=1
+    this.products= []
+    this.getData()
+    
+  }
 
   getData(infiniteScroll?) {
     this.presentLoading().then(()=>{
@@ -277,7 +285,7 @@ export class BrandProductsPage implements OnInit {
 
   doRefresh(event) {
     this.page_count=1
-        this.products= []
+    this.products= []
     this.getData();
     setTimeout(() => {
       event.target.complete();

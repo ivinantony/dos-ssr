@@ -33,7 +33,7 @@ paypal()
 
       // Set up the transaction
       createOrder: function (data, actions) {
-        _this.presentLoading()
+        
         return actions.order.create({
           purchase_units: [{
             amount: {
@@ -45,8 +45,10 @@ paypal()
 
       // Finalize the transaction
       onApprove: function (data, actions) {
+        _this.presentLoading()
         return actions.order.capture()
           .then(function (details) {
+            
             console.log(details)
             // Show a success message to the buyer
             if(details.status == "COMPLETED")
@@ -55,7 +57,7 @@ paypal()
                 payable_order_id:localStorage.getItem("order_id"),
                 client_id:localStorage.getItem("client_id")
               }
-            
+              
               _this.pay.capturePayment(data).subscribe(
                 (data)=>console.log(data),
                 (error)=>console.log(error)    
@@ -70,6 +72,9 @@ paypal()
           })
           .catch(err => {
             console.log(err);
+            console.log("payment failed")
+            _this.presentToast("Payment Failed")
+            _this.router.navigate(['cart'])
           })
       }
     }).render('#paypal-button-container');
@@ -82,7 +87,7 @@ paypal()
       message: msg,
       cssClass: 'custom-toast',
       position: 'middle',
-      color:'success',
+      color:'danger',
       duration: 2000
     });
     toast.present();
