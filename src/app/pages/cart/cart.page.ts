@@ -170,7 +170,7 @@ export class CartPage implements OnInit {
     
     else if(!this.valid_address)
     {
-      this.presentToastDanger("Please select aservicable delivery Location.")
+      this.presentToastDanger("Please select a serviceable delivery Location.")
     }
    
     // else if(!this.payment_id){
