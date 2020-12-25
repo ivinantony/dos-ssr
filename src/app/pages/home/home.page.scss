@@ -451,8 +451,19 @@ color: #fff;
   {
     p:hover{
       cursor: pointer;
-    }
-   
+    }  
+}
+
+.main{
+  img:hover{
+    cursor: pointer;
+  }
+}
+
+.col{
+  img:hover{
+    cursor: pointer;
+  }
 }
  @media only screen and (max-width: 768px){
   .btnslide{

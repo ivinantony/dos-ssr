@@ -143,12 +143,12 @@
 
   <!-- Banner -2 start -->
   <section id="banr">
-    <ion-slides class="banner" [options]="bannerSlideOpts1">
-      <ion-slide *ngFor="let item of data?.banner[1]?.desktop_images; let i=index" class="dsk" >
+    <ion-slides class="banner" [options]="bannerSlideOpts2">
+      <ion-slide *ngFor="let item of data?.banner[1]?.desktop_images; let i=index" class="dsk" (click)="onRoute(item.application_url)" >
       <img src="{{item.path}}" alt="" >
       </ion-slide> 
 
-      <ion-slide *ngFor="let item of data?.banner[1]?.mobile_images; let i=index" class="mob" >
+      <ion-slide *ngFor="let item of data?.banner[1]?.mobile_images; let i=index" class="mob" (click)="onRoute(item.application_url)" >
       <img src="{{item.path}}" alt="">
       </ion-slide>     
     </ion-slides>
@@ -256,25 +256,25 @@
   <ion-row class="main_row">
     <ion-col size="12" size-md="6"  class="firstCol">
       <div class="main">
-        <img class="imge" [src]="data?.banner[2]?.desktop_images[0]?.path" alt="">
+        <img class="imge" [src]="data?.banner[2]?.desktop_images[0]?.path" alt="" (click)="onRoute(data?.banner[2]?.desktop_images[0]?.application_url)" >
       </div>
           
     </ion-col>
     <ion-col size="12" size-md="6" class="col">
       <ion-row>
         <ion-col size="6" class="col">
-          <img [src]="data?.banner[2]?.desktop_images[1]?.path" alt="">
+          <img [src]="data?.banner[2]?.desktop_images[1]?.path" alt="" (click)="onRoute(data?.banner[2]?.desktop_images[1]?.application_url)">
         </ion-col>
         <ion-col size="6" class="col">
-          <img [src]="data?.banner[2]?.desktop_images[2]?.path" alt="">
+          <img [src]="data?.banner[2]?.desktop_images[2]?.path" alt="" (click)="onRoute(data?.banner[2]?.desktop_images[2]?.application_url)">
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col size="6" class="col">
-          <img [src]="data?.banner[2]?.desktop_images[3]?.path" alt="">
+          <img [src]="data?.banner[2]?.desktop_images[3]?.path" alt="" (click)="onRoute(data?.banner[2]?.desktop_images[3]?.application_url)">
         </ion-col>
         <ion-col size="6" class="col">
-          <img [src]="data?.banner[2]?.desktop_images[4]?.path" alt="">
+          <img [src]="data?.banner[2]?.desktop_images[4]?.path" alt="" (click)="onRoute(data?.banner[2]?.desktop_images[4]?.application_url)">
         </ion-col>
       </ion-row>
 
@@ -353,11 +353,11 @@
 <!-- Banner -4 start -->
 <section id="banr">
   <ion-slides class="banner" [options]="bannerSlideOpts1">
-    <ion-slide *ngFor="let item of data?.banner[3]?.desktop_images; let i=index" class="dsk" >
+    <ion-slide *ngFor="let item of data?.banner[3]?.desktop_images; let i=index" class="dsk" (click)="onRoute(item.application_url)">
     <img src="{{item.path}}" alt="" >
     </ion-slide> 
 
-    <ion-slide *ngFor="let item of data?.banner[3]?.mobile_images; let i=index" class="mob" >
+    <ion-slide *ngFor="let item of data?.banner[3]?.mobile_images; let i=index" class="mob" (click)="onRoute(item.application_url)">
     <img src="{{item.path}}" alt="">
     </ion-slide>     
   </ion-slides>

@@ -160,10 +160,11 @@ export class HomePage implements OnInit {
     slidesPerView: 1,
     initialSlide: 1,
     spaceBetween: 20,
-    loop: true,
+    
     centeredSlides: true,
     autoplay: {
       delay: 2000,
+      loop: true,
       disableOnInteraction: false
     },
     speed: 400
