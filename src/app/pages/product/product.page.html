@@ -144,16 +144,19 @@
         <section class="ion-padding-horizontal details" *ngIf="data?.product.in_stock == 1">
           <div  class="ion-text-center">
             <ion-button (click)="addToCart()" expand="full-width" fill="outline" shape="round" color="dark" class="btn" *ngIf="data?.product.cart_count == 0">
-              <ion-icon name="add-outline" class="icon"></ion-icon> ADD TO CART
+              <ion-icon name="cart-outline" class="icon"></ion-icon> ADD TO CART
             </ion-button>
-            <div  *ngIf="data?.product.cart_count != 0" class="addbuttonWrapper">
+            <ion-button (click)="goToCart()" expand="full-width" fill="outline" shape="round" color="dark" class="btn" *ngIf="data?.product.cart_count > 0">
+              <ion-icon name="cart-outline" class="icon"></ion-icon> GO TO CART
+            </ion-button>
+            <!-- <div  *ngIf="data?.product.cart_count != 0" class="addbuttonWrapper">
               <h3>In Cart:</h3>
               <div class="addbutton">
                 <ion-icon name="remove-outline" class="icon" (click)="removeFromcart()"></ion-icon>
                  {{data?.product.cart_count}}
                  <ion-icon name="add-outline"  class="icon" (click)="addToCart()"></ion-icon>
               </div>
-            </div>
+            </div> -->
           
           </div>
         </section>

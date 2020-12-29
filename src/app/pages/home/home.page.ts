@@ -202,7 +202,7 @@ export class HomePage implements OnInit {
 
   productSlides = window.matchMedia("(max-width: 320px)").matches ? {
     slidesPerView: 1.5,
-    loop:true,
+    
     spaceBetween:2,
     autoplay:true,
     speed:900,
@@ -212,7 +212,7 @@ export class HomePage implements OnInit {
     spaceBetween:5,
     autoplay:true,
     speed:900,
-    loop:true
+    
 
       //spaceBetween: 2
   } : window.matchMedia(" (max-width: 768px)").matches ? {
@@ -220,19 +220,19 @@ export class HomePage implements OnInit {
     spaceBetween: 8,
     autoplay:true,
     speed:900,
-    loop:true
+    
   } : window.matchMedia(" (max-width: 992px)").matches ? {
     slidesPerView: 4,
       spaceBetween: 10,
       autoplay:true,
       speed: 900,
-      loop:true
+      
   } : {
         slidesPerView: 5.9,
         spaceBetween: 10,
         autoplay:true,
         speed:900,
-        loop:true
+        
        
       }
 

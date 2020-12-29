@@ -162,12 +162,12 @@
     </ion-item>
     <div class="sliderWrapper">
       <ion-slides [options]="productSlides" class="top-search" #mySlider>
-        <ion-slide *ngFor="let item of data?.offer_products; let i=index">
+        <ion-slide *ngFor="let item of data?.offer_products; let i=index" (click)="viewOfferProduct(i)">
           <!-- <ion-card
             (click)="viewProduct(i)"
             [ngStyle]="{'background-image': 'url( '+ s3url + item.images[0]?.path +' )'}">
           </ion-card> -->
-          <ion-card (click)="viewOfferProduct(i)">
+          <ion-card >
             <img src="{{s3url+item.images[0]?.path}}"alt="">
           <ion-card-content>
             <p>{{item.name}}</p>

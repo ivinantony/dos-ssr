@@ -75,29 +75,9 @@
                 </ion-item>
               </ion-list>
             </div>
-              <!-- <ion-card
-                class="product-img ion-no-margin"
-                [ngStyle]="{'background-image': 'url('+ item?.images[0].url +' )'}"
-              >
-              </ion-card> -->
-              <!-- <ion-list>
-                <ion-item lines="none">
-                  <ion-label>
-                    <p>Alternator 24v</p>
-                    <p class="price">{{ 225 | currency:'AED' }}</p>
-                    <p class="offer-price">{{ 225 | currency:'AED' }}</p>
-                  </ion-label>
-                </ion-item>
-              </ion-list> -->
-              <!-- <ion-button (click)="test()" expand="full-width" fill="outline" shape="round" color="dark" class="btn" *ngIf="item.cart_count == 0">
-                <ion-icon name="add-outline" class="icon"></ion-icon> ADD TO CART
-              </ion-button> -->
-              <!-- <ion-chip>
-                <ion-icon name="remove-outline"></ion-icon>
-                <ion-label>Icon Chip</ion-label>
-                <ion-icon name="add-outline"></ion-icon>
-              </ion-chip> -->
-              <div *ngIf="item.in_stock == 1">
+             
+
+              <!-- <div *ngIf="item.in_stock == 1">
                 <ion-button (click)="addToCart(i)" expand="full-width" fill="outline" shape="round" color="dark" class="btn" *ngIf="item.cart_count == 0">
                   <ion-icon name="add-outline" class="icon"></ion-icon> ADD
                 </ion-button>
@@ -110,7 +90,11 @@
 
               <ion-button (click)="addToCart(i)" expand="full-width" fill="solid" shape="round" color="danger" class="btn" *ngIf="item.in_stock == 0">
                 Out of Stock
-              </ion-button>
+              </ion-button> -->
+
+              <div  class="ion-text-center stock"  *ngIf="item.in_stock == 0">
+                <h3>OUT OF STOCK</h3>
+              </div>
               
             </ion-col> 
             

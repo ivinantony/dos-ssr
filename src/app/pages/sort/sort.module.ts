@@ -8,12 +8,14 @@ import { SortPageRoutingModule } from './sort-routing.module';
 
 import { SortPage } from './sort.page';
 
+
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SortPageRoutingModule
+    SortPageRoutingModule,
   ],
   declarations: [SortPage]
 })

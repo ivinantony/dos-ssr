@@ -119,7 +119,7 @@
            
 
 
-            <div *ngIf="item.in_stock == 1">
+            <!-- <div *ngIf="item.in_stock == 1">
               <ion-button (click)="addToCart(i)" expand="full-width" fill="outline" shape="round" color="dark" class="btn" *ngIf="item.cart_count == 0">
                 <ion-icon name="add-outline" class="icon"></ion-icon> ADD
               </ion-button>
@@ -128,10 +128,13 @@
                {{item.cart_count}}
                <ion-icon name="add-outline"  class="icon" (click)="addToCart(i)"></ion-icon>
             </div>
+            </div> -->
+            <!-- <ion-button (click)="addToCart(i)" expand="full-width" fill="solid" shape="round" color="danger" class="btn" *ngIf="item.in_stock == 0">
+              Out Of Stock
+            </ion-button> -->
+            <div  class="ion-text-center stock"  *ngIf="item.in_stock == 0">
+              <h3>OUT OF STOCK</h3>
             </div>
-            <ion-button (click)="addToCart(i)" expand="full-width" fill="solid" shape="round" color="danger" class="btn" *ngIf="item.in_stock == 0">
-              Out of Stock
-            </ion-button>
             </ion-col> 
             
             

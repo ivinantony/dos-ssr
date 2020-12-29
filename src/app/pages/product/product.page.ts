@@ -28,10 +28,18 @@ export class ProductPage implements OnInit {
   productOpts = {
     slidesPerView: 1,
     centeredSlides: true,
+    autoplay: true,
+    speed: 1000,
     zoom:{
       maxRatio:2
-    }
+    },
+    
+    
   }
+
+
+
+  
   product: any
   categories = CATEGORIES
   productId:any
@@ -200,10 +208,13 @@ export class ProductPage implements OnInit {
   else{
   this.presentLogin()
   }
-   
-   
-    
   }
+
+  goToCart()
+  {
+    this.router.navigate(['cart'])
+  }
+
   removeFromcart()
   {
     this.cartService.removeFromCart(this.client_id,this.productDetails.id,).subscribe(
@@ -288,5 +299,7 @@ export class ProductPage implements OnInit {
     // })
     return await modal.present();
   }
+
+  
 
 }
