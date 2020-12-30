@@ -164,6 +164,14 @@ const routes: Routes = [
   {
     path: 'returnandrefund',
     loadChildren: () => import('./pages/returnandrefund/returnandrefund.module').then( m => m.ReturnandrefundPageModule)
+  },
+  {
+    path: 'wallet',
+    loadChildren: () => import('./pages/wallet/wallet.module').then( m => m.WalletPageModule)
+  },
+  {
+    path: 'recharge',
+    loadChildren: () => import('./pages/recharge/recharge.module').then( m => m.RechargePageModule)
   }
 
 

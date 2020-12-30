@@ -12,11 +12,13 @@ import {
   PayPalPayment,
   PayPalConfiguration,
 } from "@ionic-native/paypal/ngx";
+import { WalletService } from "src/app/services/wallet/wallet.service";
 
 
 const GET_AMOUNTDETAILS = 200;
 const ORDER_RESPONSE = 210;
 const GET_PAY = 220;
+const WALLET_RESPONSE = 230;
 
 
 @Component({
@@ -43,6 +45,7 @@ export class CheckoutPage implements OnInit {
     private paytabService: PaytabsService,
     private toastController:ToastController,
     private loadingController:LoadingController,
+    private walletService:WalletService
     
   ) {
     this.client_id = Number(localStorage.getItem("client_id"));
@@ -66,7 +69,7 @@ getData() {
   this.presentLoading().then(()=>{
     this.checkoutService.getAmountDetails(this.client_id,this.address_id).subscribe(
       (data) => this.handleResponse(data, GET_AMOUNTDETAILS),
-      (error) => this.handleError(error)
+      (error) => this.handleError(error,GET_AMOUNTDETAILS)
     )
   }
   )
@@ -168,7 +171,7 @@ this.loadingController.dismiss()
 
         this.paytabService.getPaymentUi(data).subscribe(
           (data) => this.handleResponse(data, GET_PAY),
-          (error) => this.handleError(error)
+          (error) => this.handleError(error,GET_PAY)
         );
       } 
       
@@ -183,15 +186,27 @@ this.loadingController.dismiss()
         localStorage.setItem("total_amount", this.data.payable_amount);
         this.router.navigate(["checkout-pay"]);
       }
+      
     } 
+    else if(type == WALLET_RESPONSE)
+    {
+    console.log(data)
+    }
     else 
     {
       console.log(data);
     }
   }
-  handleError(error) {
+  handleError(error,type) {
     this.loadingController.dismiss()
     console.log(error);
+    if(type == WALLET_RESPONSE)
+    {
+      if(error.status == 400)
+      {
+        this.presentToastDanger("Sorry Wallet doesnt have enough amount. ")
+      }
+    }
   }
 
   checkOut() {
@@ -234,21 +249,42 @@ this.loadingController.dismiss()
       console.log(paymentDetails);
       if (paymentDetails) {
         this.payment_id = paymentDetails.modeOfPayment_Id;
-        console.log(this.payment_id);
-        let data = {
-          client_id: localStorage.getItem("client_id"),
-          promo_code_id: this.promo_id,
-          address_id: this.address_id,
-          payment_option_id: this.payment_id,
-          product_total: this.data.total_amount,
-          payable_amount: this.data.payable_amount,
-          delivery_charge: this.data.delivery_charge
-        };
+        if(this.payment_id == 7)
+        {
+          console.log("wallet")
+          let data = {
+            client_id: localStorage.getItem("client_id"),
+            promo_code_id: this.promo_id,
+            address_id: this.address_id,
+            payment_option_id: this.payment_id,
+            product_total: this.data.total_amount,
+            payable_amount: this.data.payable_amount,
+            delivery_charge: this.data.delivery_charge
+          };
 
-        this.orderService.captureOrder(data).subscribe(
-          (data) => this.handleResponse(data, ORDER_RESPONSE),
-          (error) => this.handleError(error)
-        );
+          this.walletService.captureWallet(data).subscribe(
+            (data) => this.handleResponse(data, WALLET_RESPONSE),
+            (error) => this.handleError(error,WALLET_RESPONSE)
+          );
+        }
+        else{
+          console.log(this.payment_id);
+          let data = {
+            client_id: localStorage.getItem("client_id"),
+            promo_code_id: this.promo_id,
+            address_id: this.address_id,
+            payment_option_id: this.payment_id,
+            product_total: this.data.total_amount,
+            payable_amount: this.data.payable_amount,
+            delivery_charge: this.data.delivery_charge
+          };
+  
+          this.orderService.captureOrder(data).subscribe(
+            (data) => this.handleResponse(data, ORDER_RESPONSE),
+            (error) => this.handleError(error,ORDER_RESPONSE)
+          );
+        }
+        
       }
     });
     return await modal.present();
@@ -260,6 +296,16 @@ this.loadingController.dismiss()
       cssClass: "custom-toast",
       position: "middle",
       color: "success",
+      duration: 2000,
+    });
+    toast.present();
+  }
+  async presentToastDanger(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast",
+      position: "middle",
+      color: "danger",
       duration: 2000,
     });
     toast.present();

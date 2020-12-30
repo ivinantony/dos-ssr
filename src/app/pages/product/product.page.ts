@@ -48,6 +48,7 @@ export class ProductPage implements OnInit {
   s3url:string
   qty:number=1
   data:any
+  lens:any
   client_id:any
   constructor(private platform: Platform, private modalController: ModalController, public authencationservice: AuthenticationService, 
     public checkloginGuard: AuthGuard, private toastController: ToastController, public router: Router, 
@@ -71,12 +72,14 @@ export class ProductPage implements OnInit {
   }
 
   ngOnInit() {
-
+    
   }
 
   ionViewWillEnter()
   {
     this.getData()
+    
+    
   }
 
   // getData()
@@ -112,8 +115,10 @@ export class ProductPage implements OnInit {
       {
         this.productDetails.images[i].path = this.s3url+this.productDetails.images[i].path
       }
+      
     }
     console.log(data)
+    
   }
   handleError(error)
   {
@@ -208,6 +213,7 @@ export class ProductPage implements OnInit {
   else{
   this.presentLogin()
   }
+  
   }
 
   goToCart()
@@ -300,6 +306,93 @@ export class ProductPage implements OnInit {
     return await modal.present();
   }
 
+  magnify(imgID, zoom) {
+    
+    var img, glass, w, h, bw;
+    img = document.getElementById(imgID);
+    console.log(img,"image iddddd")
+    /* Create magnifier glass: */
+    glass = document.createElement("DIV");
+    this.lens = glass
+    /* Insert magnifier glass: */
+    img.parentElement.insertBefore(glass, img);
   
+    /* Set background properties for the magnifier glass: */
+   
+    glass.style.width="200px";
+    glass.style.height="200px";
+    glass.style.position="absolute";
+    glass.style.cursor="zoom-in";
+    glass.style.border="1px dotted #000";
+    glass.style.backgroundImage = "url('" + img.src + "')";
+    glass.style.backgroundRepeat = "no-repeat";
+    glass.style.backgroundSize = (img.width * zoom) + "px " + (img.height * zoom) + "px";
+    bw = 3;
+    w = glass.offsetWidth / 2;
+    h = glass.offsetHeight / 2;
+  
+    /* Execute a function when someone moves the magnifier glass over the image: */
+    glass.addEventListener("mousemove", moveMagnifier);
+    img.addEventListener("mousemove", moveMagnifier);
+  
+    /*and also for touch screens:*/
+    glass.addEventListener("touchmove", moveMagnifier);
+    img.addEventListener("touchmove", moveMagnifier);
 
+   
+    img.addEventListener("mouseout", destroy);
+    img.addEventListener("touchout", destroy);
+
+
+    function moveMagnifier(e) {
+      var pos, x, y;
+      /* Prevent any other actions that may occur when moving over the image */
+      e.preventDefault();
+      /* Get the cursor's x and y positions: */
+      pos = getCursorPos(e);
+      x = pos.x;
+      y = pos.y;
+      /* Prevent the magnifier glass from being positioned outside the image: */
+      if (x > img.width - (w / zoom)) {x = img.width - (w / zoom);}
+      if (x < w / zoom) {x = w / zoom;}
+      if (y > img.height - (h / zoom)) {y = img.height - (h / zoom);}
+      if (y < h / zoom) {y = h / zoom;}
+      /* Set the position of the magnifier glass: */
+      glass.style.left = (x - w) + "px";
+      glass.style.top = (y - h) + "px";
+      /* Display what the magnifier glass "sees": */
+      glass.style.backgroundPosition = "-" + ((x * zoom) - w + bw) + "px -" + ((y * zoom) - h + bw) + "px";
+    }
+  
+    function getCursorPos(e) {
+      var a, x = 0, y = 0;
+      e = e || window.event;
+      /* Get the x and y positions of the image: */
+      a = img.getBoundingClientRect();
+      /* Calculate the cursor's x and y coordinates, relative to the image: */
+      x = e.pageX - a.left;
+      y = e.pageY - a.top;
+      /* Consider any page scrolling: */
+      x = x - window.pageXOffset;
+      y = y - window.pageYOffset;
+      return {x : x, y : y};
+    }
+
+    function destroy(e)
+    {
+    glass.remove()
+    }
+  }
+
+  fireEvent(e)
+  {
+    console.log(e.type);
+    this.magnify("myimage", 2);
+
+  }
+
+  mouseExit(e)
+  {
+
+  }
 }

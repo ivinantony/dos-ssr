@@ -1,0 +1,111 @@
+ion-header {
+    --background: #fcfeff;
+  
+    ion-toolbar {
+      margin-top: 10px;
+      margin-bottom: 20px;
+      --background: #fcfeff;
+      background: #fcfeff;
+      --padding-bottom: 20px;
+      .btnToolbar {
+        background: #5b09d0;
+        border-radius: 10px;
+        box-shadow: 2px 2px 7px;
+        margin-right: 10px;
+      }
+    }
+  }
+  ion-title {
+      padding-left: 43px;
+      margin-top: -8px;
+    .subHdr {
+      h1 {
+        font-size: 22px;
+        padding-bottom: 10px;
+        text-align: left;
+      }
+      h2 {
+        font-size: 15px;
+        opacity: 50%;
+      }
+    }
+  }
+.card1
+{
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    min-height: 240px;
+    border-radius: 25px;
+
+    .balance{
+        
+            font-weight: 900;
+            font-size: 1.2rem;
+            color: #434343;
+       
+    }
+
+    .flag{
+        display: flex;
+        align-items: center;
+        justify-content: left;
+        h3{
+            font-size: 1rem;
+            padding-left: 10px;
+            letter-spacing: 1.1px;
+        }
+        img{
+            width: 23px;
+            height: 22px;
+        }
+    }
+    .text
+    {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        h1{
+            font-size: 75px;
+            // font-weight: 700;
+            color: #434343;
+            margin-top: 5px;
+        }
+        
+    }
+
+    .btn{
+        padding-bottom: 50px;
+        padding-top: 15px;
+    }
+
+    
+}
+
+
+.transactions{
+    font-weight: 900;
+    font-size: 1.2rem;
+    color: #434343;
+}
+
+.transactCard{
+    min-height: 50px;
+}
+
+
+.content{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .amountPaid{
+        color: red;
+    }
+    .amountRecieved{
+        color: green;
+    }
+
+}

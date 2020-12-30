@@ -1,0 +1,90 @@
+
+
+<ion-header mode="ios">
+  
+  <ion-toolbar>
+    <ion-buttons slot="start" >
+      <ion-back-button text="" defaultHref="profile" color="dark"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-no-padding">
+      <div class="ion-text-center subHdr">
+        <h1>WALLET</h1>
+        
+      </div>
+    
+    </ion-title>
+  </ion-toolbar>
+  
+</ion-header>
+
+
+<ion-content>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="12" >
+        <ion-card class="card1">
+          <h3 class="balance">Your Balance</h3>
+          <div  class="ion-padding flag">
+            <img src="../../../assets/imgs/united-arab-emirates.png" alt="">
+            <h3>
+              AED
+            </h3>
+          </div>
+
+          <div class="ion-text-center text">
+            
+            <h1>
+             {{ data?.client_details?.wallet_balance }} 
+            </h1>
+              
+          </div>
+          <div class="ion-text-center btn">
+              <ion-button (click)="router.navigate(['recharge'])" fill="outline" shape="round" color="dark">
+                <ion-icon slot="start" name="add"></ion-icon>
+                ADD MONEY
+              </ion-button>
+          </div>
+        </ion-card>
+        
+      </ion-col>
+      
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="12">
+        <div class="ion-text-center">
+          <h3 class="transactions">Recent Transactions:</h3>
+        </div>
+        <ion-list>
+          <ion-item *ngFor="let item of data?.transaction_details">
+            <div class="content">
+              <div>
+                <h3>{{item.option}}</h3>
+                <h6>24-dec-10</h6>
+              </div>
+              <div class="" [ngClass]="{'amountRecieved': item.option === 'credited', 'amountPaid': item.option === 'debited' }">
+                <h3> {{item.amount}}</h3>
+              </div>
+            </div>  
+          </ion-item>
+          <!-- <ion-item>
+            <div class="content">
+              <div>
+                <h3>Recharge</h3>
+                <h6>24-dec-10</h6>
+              </div>
+              <div class="amountRecieved">
+                <h3>+1020 AED</h3>
+              </div>
+            </div>  
+          </ion-item> -->
+         
+        </ion-list>
+      </ion-col>
+      
+    </ion-row>
+  </ion-grid>
+  
+</ion-content>
