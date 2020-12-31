@@ -80,7 +80,7 @@ export class AppComponent implements OnInit {
       pairwise()
     ).subscribe((e: any) => {
       console.log(e,"array")
-      if (e[0].urlAfterRedirects.startsWith('/login') || e[0].urlAfterRedirects.startsWith('/otp')) 
+      if (e[0].urlAfterRedirects.startsWith('/login') || e[0].urlAfterRedirects.startsWith('/otp') || e[0].urlAfterRedirects.startsWith('/recharge') || e[0].urlAfterRedirects.startsWith('/checkout-pay')) 
       {
 
       } else {

@@ -332,7 +332,8 @@ this.loadingController.dismiss()
           text: 'Okay',
           handler: () => {
             console.log('Confirm Okay');
-            this.router.navigate(['wallet'])
+            let balance = this.data.payable_amount - this.data.wallet_balance
+            this.router.navigate(['recharge',{balance}])
           }
         }
       ]

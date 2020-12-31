@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { ViewEncapsulation } from '@angular/core';
 import { LoadingController, Platform, ToastController } from '@ionic/angular';
 import { CardPaymentService } from '../../services/cardPayment/card-payment.service';
@@ -6,6 +6,7 @@ import { CkoFrames } from '../../../utils/CkoFrames';
 import { PaymentService } from 'src/app/services/payment/payment.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WalletService } from 'src/app/services/wallet/wallet.service';
+import { Storage } from '@ionic/Storage';
 const CARDPAYMENT=200;
 const CAPTURE_PAYMENT= 210;
 const CAPTURE_RECHARGE= 220;
@@ -22,8 +23,18 @@ export class CheckoutPayPage implements OnInit {
 	private Frames = undefined;
 	private errors = {};
 
-	constructor(private platform: Platform,private payment:CardPaymentService,private paymentService:PaymentService,
-		public router:Router,private toastController:ToastController,private loadingController:LoadingController,private activatedRoute:ActivatedRoute,private walletService:WalletService) {
+	constructor(private platform: Platform,
+		private payment:CardPaymentService,
+		private paymentService:PaymentService,
+		public router:Router,
+		private toastController:ToastController,
+		private loadingController:LoadingController,
+		private activatedRoute:ActivatedRoute,
+		private walletService:WalletService,
+		private storage:Storage,
+		private ngZone:NgZone
+		) 
+		{
 
 		this.type = activatedRoute.snapshot.params.type;
 
@@ -156,7 +167,13 @@ export class CheckoutPayPage implements OnInit {
 		{ 
 			this.loadingController.dismiss()
 			console.log(data,"CAPTURE_RECHARGE")
-			this.router.navigate(['wallet'])
+			// this.router.navigate(['wallet'])
+			this.storage.get('prev_url').then((val) => {
+				console.log(val,"prev url")
+				this.ngZone.run(()=>{
+				this.router.navigate([val] || ['/wallet'], { replaceUrl: true })
+			  });
+			})
 		}
 		
 		

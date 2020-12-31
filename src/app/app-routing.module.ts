@@ -134,7 +134,7 @@ const routes: Routes = [
   },
   
   {
-    path: 'checkout',
+    path: 'checkout/:address_id',
     loadChildren: () => import('./pages/checkout/checkout.module').then( m => m.CheckoutPageModule)
   },
   {
@@ -153,7 +153,8 @@ const routes: Routes = [
   {
     path: 'order-placed',
     loadChildren: () => import('./pages/order-placed/order-placed.module').then( m => m.OrderPlacedPageModule)
-  },  {
+  },
+  {
     path: 'termsandconditions',
     loadChildren: () => import('./pages/termsandconditions/termsandconditions.module').then( m => m.TermsandconditionsPageModule)
   },

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-recharge',
@@ -8,8 +8,19 @@ import { Router } from '@angular/router';
 })
 export class RechargePage implements OnInit {
   inputAmount:number
- 
-  constructor(private router:Router) { }
+  balance:number=0
+  temp:number
+  constructor(private router:Router,private activatedRoute:ActivatedRoute) 
+  { 
+    this.inputAmount = activatedRoute.snapshot.params.balance
+    // console.log(this.balance)
+    // if(this.temp)
+    // {
+    //   console.log("hello")
+    //   this.inputAmount = this.balance
+
+    // }
+  }
 
   ngOnInit() {
   }

@@ -178,7 +178,7 @@ export class CartPage implements OnInit {
     // }
     else{
       let address_id = this.address_id
-      this.router.navigate(['checkout',{address_id}])
+      this.router.navigate(['checkout',address_id])
       console.log(this.selectedAddress)
     //   let data={
     //   client_id:localStorage.getItem("client_id"),
