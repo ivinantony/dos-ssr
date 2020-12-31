@@ -112,6 +112,7 @@ ion-toolbar {
       background-color: #a01f62;
       // background: url('../../../assets/imgs/background2.jpg');
       background-size: cover;
+      background-position: center;
       height: 7rem;
       width: 10rem;
       // border-radius: 9rem;
@@ -157,16 +158,14 @@ ion-toolbar {
   background-size: cover;
   background-repeat: no-repeat;
 
-}
+ }
 
 
-.roundCard:hover{
+ .roundCard:hover{
   cursor: pointer;
-}
+ }
 
-.brandCard:hover{
-  cursor: pointer;
-}
+
   
 
  
@@ -464,6 +463,10 @@ color: #fff;
   img:hover{
     cursor: pointer;
   }
+}
+
+.brandCard:hover{
+  cursor: pointer;
 }
  @media only screen and (max-width: 768px){
   .btnslide{

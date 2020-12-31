@@ -387,6 +387,8 @@ export class CartPage implements OnInit {
   }
 
   add(index: number, id: number) {
+    let name = this.cart[index].name
+    let qty = this.cart[index].count + 1
     let data = {
       product_id: id,
       client_id: localStorage.getItem("client_id"),
@@ -397,9 +399,12 @@ export class CartPage implements OnInit {
     );
     //  this.cart[index].count = this.cart[index].count+1
     this.getData();
+    this.presentToastSuccess("You've changed "+ name +" quantity to "+qty)
   }
 
   subtract(index: number, id: number) {
+    let name = this.cart[index].name
+    let qty = this.cart[index].count - 1
     let client_id = localStorage.getItem("client_id");
     this.cartService.removeFromCart(client_id, id).subscribe(
       (data) => this.handleResponse(data, DEL_DATA),
@@ -407,6 +412,13 @@ export class CartPage implements OnInit {
     );
     // this.cart[index].count = this.cart[index].count-1
     this.getData();
+    if(qty>0)
+    {
+      this.presentToastSuccess("You've changed "+ name +" quantity to "+qty)
+    }
+    else{
+      this.presentToastDanger("You've removed "+ name +" from cart.")
+    }
   }
 
   onQuantityChange() {
@@ -421,6 +433,7 @@ export class CartPage implements OnInit {
   }
 
   remove(index: number, id: number) {
+    let name = this.cart[index].name
     let client_id = localStorage.getItem("client_id");
     this.cartService.deleteFromCart(client_id, id).subscribe(
       (data) => this.handleResponse(data, REMOVE),
@@ -428,6 +441,7 @@ export class CartPage implements OnInit {
     );
     this.cart.splice(index, 1);
     this.getData();
+    this.presentToastDanger("You've removed "+ name +" from cart.")
   }
 
   continueShopping() {
@@ -439,11 +453,13 @@ export class CartPage implements OnInit {
       message: msg,
       cssClass: "custom-toast",
       position: "middle",
-      color: "success",
+      color: "tertiary",
       duration: 2000,
     });
     toast.present();
   }
+
+ 
 
   handle(url:any)
   {

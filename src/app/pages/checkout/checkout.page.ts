@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { IonRouterOutlet, LoadingController, ModalController, Platform, ToastController } from "@ionic/angular";
+import { AlertController, IonRouterOutlet, LoadingController, ModalController, Platform, ToastController } from "@ionic/angular";
 import { CheckoutService } from "src/app/services/checkout/checkout.service";
 import { OrderService } from "src/app/services/order/order.service";
 import { CouponPage } from "../coupon/coupon.page";
@@ -45,7 +45,8 @@ export class CheckoutPage implements OnInit {
     private paytabService: PaytabsService,
     private toastController:ToastController,
     private loadingController:LoadingController,
-    private walletService:WalletService
+    private walletService:WalletService,
+    private alertController:AlertController
     
   ) {
     this.client_id = Number(localStorage.getItem("client_id"));
@@ -191,6 +192,7 @@ this.loadingController.dismiss()
     else if(type == WALLET_RESPONSE)
     {
     console.log(data)
+    this.router.navigate(["order-placed"]);
     }
     else 
     {
@@ -204,7 +206,8 @@ this.loadingController.dismiss()
     {
       if(error.status == 400)
       {
-        this.presentToastDanger("Sorry Wallet doesnt have enough amount. ")
+        // this.presentToastDanger("Sorry Wallet doesnt have enough amount. ")
+        this.presentAlertConfirmWallet()
       }
     }
   }
@@ -245,6 +248,7 @@ this.loadingController.dismiss()
       backdropDismiss: true,
     });
     modal.onDidDismiss().then((data) => {
+      
       const paymentDetails = data["data"];
       console.log(paymentDetails);
       if (paymentDetails) {
@@ -310,6 +314,58 @@ this.loadingController.dismiss()
     });
     toast.present();
   }
+
+  async presentAlertConfirmWallet() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Insufficient Wallet Balance',
+      message: 'Recharge your Wallet',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Okay',
+          handler: () => {
+            console.log('Confirm Okay');
+            this.router.navigate(['wallet'])
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+  // async presentAlertConfirmPayment() {
+  //   const alert = await this.alertController.create({
+  //     cssClass: 'my-custom-class',
+  //     header: 'Confirm',
+  //     message: 'Pay <strong> 463 AED</strong> from wallet and rest through other payment options',
+  //     buttons: [
+  //       {
+  //         text: 'Cancel',
+  //         role: 'cancel',
+  //         cssClass: 'secondary',
+  //         handler: () => {
+  //           console.log('Confirm Cancel: blah');
+  //         }
+  //       }, {
+  //         text: 'Okay',
+  //         handler: () => {
+  //           console.log('Confirm Okay');
+  //           this.data.payable_amount = this.data.payable_amount-200
+  //           this.openPaymentModes();
+  //         }
+  //       }
+  //     ]
+  //   });
+
+  //   await alert.present();
+  // }
 
 
     

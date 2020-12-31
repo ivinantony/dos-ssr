@@ -209,6 +209,7 @@ export class ProductPage implements OnInit {
          )
          this.productDetails.cart_count++
         //  this.getData()
+        this.presentToastSuccess("Product added to cart.")
     }
   else{
   this.presentLogin()
@@ -394,5 +395,18 @@ export class ProductPage implements OnInit {
   mouseExit(e)
   {
 
+  }
+
+
+  
+  async presentToastSuccess(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast",
+      position: "middle",
+      color: "success",
+      duration: 1500,
+    });
+    toast.present();
   }
 }
