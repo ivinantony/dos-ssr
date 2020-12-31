@@ -409,4 +409,6 @@ export class ProductPage implements OnInit {
     });
     toast.present();
   }
+
+ 
 }

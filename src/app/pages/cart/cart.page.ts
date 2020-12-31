@@ -579,6 +579,13 @@ export class CartPage implements OnInit {
     });
     toast.present();
   }
+
+
+  navigateToProduct(index: number) {
+    let id=this.cart[index].id
+    // let catId= this.data.category_products[index].category_id
+    this.router.navigate(['product',id])
+  }
 }
 
 

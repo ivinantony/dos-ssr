@@ -66,13 +66,16 @@
         </ion-list-header>
         <ion-list *ngFor="let item of cart; let i=index">
 
-          <ion-item lines="none" class="products">
-            <ion-thumbnail>
-              <img src="{{item.images[0].path}}">
-            </ion-thumbnail>
-            <ion-label>
-              <h5>{{item.name}}</h5>
-            </ion-label>
+          <ion-item lines="none" class="products" >
+            <ion-item lines="none" (click)="navigateToProduct(i)" class="ion-no-padding">
+              <ion-thumbnail>
+                <img src="{{item.images[0].path}}">
+              </ion-thumbnail>
+              <ion-label>
+                <h5>{{item.name}}</h5>
+              </ion-label>
+            </ion-item>
+            
             <ion-icon name="trash-outline" (click)="remove(i,item.id)"></ion-icon>
             <ion-buttons class="cart-btns" slot="end">
               <ion-button (click)="subtract(i,item.id)">
