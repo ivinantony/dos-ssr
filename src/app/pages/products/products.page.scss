@@ -1,19 +1,19 @@
-.icon{
+.icon {
   font-size: 1.2rem;
 }
 .banner {
-    ion-slide {
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: cover;
-      height: 15rem;
-    }
+  ion-slide {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 15rem;
   }
+}
 
-  hr{
-    background: black;
-  }
- 
+hr {
+  background: black;
+}
+
 .product-img {
   background-position: center;
   background-repeat: no-repeat;
@@ -39,68 +39,78 @@
   color: var(--ion-color-danger);
   font-size: 2vh;
   text-decoration: line-through;
-
 }
 
-.text{
+.text {
   // margin-bottom: 60px;
-  h1{
+  h1 {
     font-size: 16px;
     color: #777;
     text-align: center;
     padding-bottom: 5px;
   }
-  h2{
+  h2 {
     font-size: 1.1rem;
     text-align: center;
     color: #444;
     font-weight: bold;
   }
-  p{
+  p {
     text-align: center;
   }
 }
 
-.row{
+.row {
   display: flex;
-  
 }
-.prod{
-  border: .1px solid rgb(232, 232, 232);
+.prod {
+  border: 0.1px solid rgb(232, 232, 232);
   margin-bottom: 5px;
-  img{
+  min-height: 310px;
+  img {
     width: 140px;
-    height: 140px
+    height: 140px;
   }
-  
-  
 }
 
-.sortSideMenu{
-  h2{
+.prod:hover {
+  cursor: pointer;
+}
+
+.sortSideMenu {
+  h2 {
     font-size: 16px;
     color: #444;
   }
 }
+.tocart{
+  position: absolute;
+  bottom: 10px;
+  z-index: 1;
+  width: 148px;
+  left: 50%;
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  margin: 0px;
 
+}
 
-.btn{
+.btn {
   z-index: 1;
   width: 75%;
   position: absolute;
   bottom: 10px;
   left: 50%;
-  
+
   -ms-transform: translateX(-50%);
   transform: translateX(-50%);
   margin: 0px;
-  .icon{
+  .icon {
     padding-right: 5px;
   }
-  
 }
 
-.addbutton{
+.addbutton {
   border: 1px solid #444;
   position: absolute;
   bottom: 10px;
@@ -108,33 +118,30 @@
   width: 75%;
   -ms-transform: translateX(-50%);
   transform: translateX(-50%);
-  height:44.8px;
+  height: 44.8px;
   border-radius: 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 15px;
-  .icon{
+  .icon {
     font-size: 22px;
     font-weight: 700;
   }
 }
 
-
-
-.stock{
-  background:rgba(242, 38, 19, 0.7);
+.stock {
+  background: rgba(242, 38, 19, 0.7);
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 95%;
 
-
-  h3{
+  h3 {
     color: #ffff;
     font-weight: 700;
     letter-spacing: 1.5px;
-    font-size: .9rem;
+    font-size: 0.9rem;
   }
 }

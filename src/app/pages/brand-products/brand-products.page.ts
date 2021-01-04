@@ -5,12 +5,15 @@ import {
   AlertController,
   LoadingController,
   Platform,
+  PopoverController
 } from "@ionic/angular";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { BrandProductService } from "src/app/services/brandProducts/brand-product.service";
 import { CartService } from "src/app/services/cart/cart.service";
 import { UtilsService } from "src/app/services/utils.service";
 import { BANNERS } from "../home/home.page";
+import { FilterComponent } from '../filter/filter.component';
+
 const GET_DATA = 200;
 const POST_DATA = 210;
 const DEL_DATA = 220;
@@ -94,7 +97,8 @@ export class BrandProductsPage implements OnInit {
     private cartService: CartService,
     private authService: AuthenticationService,
     private alertController: AlertController,
-    private loadingController:LoadingController
+    private loadingController:LoadingController,
+    private popOverCtrl:PopoverController
   ) {
     this.client_id = localStorage.getItem("client_id");
 
@@ -192,9 +196,7 @@ export class BrandProductsPage implements OnInit {
     this.router.navigate(["product",id, { catId }]);
   }
 
-  openSort() {
-    this.presentActionSheet();
-  }
+
 
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
@@ -290,5 +292,17 @@ export class BrandProductsPage implements OnInit {
     setTimeout(() => {
       event.target.complete();
     }, 1000);
+  }
+
+  async openSort(ev:any) {
+    const popover = await this.popOverCtrl.create({  
+      component: FilterComponent, 
+      event:ev,   
+      animated: true, 
+      showBackdrop: true ,
+      cssClass:'popover' 
+  });  
+  popover.onDidDismiss().then((data)=>{console.log(data)})
+   await popover.present(); 
   }
 }

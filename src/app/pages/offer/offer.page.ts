@@ -1,11 +1,13 @@
 import { Route } from '@angular/compiler/src/core';
 import { Component, OnInit } from '@angular/core';
 import { Data, Router } from '@angular/router';
-import { ActionSheetController, AlertController, LoadingController } from '@ionic/angular';
+import { ActionSheetController, AlertController, LoadingController, PopoverController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { OfferService } from 'src/app/services/offer/offer.service';
 import { UtilsService } from 'src/app/services/utils.service';
+import { FilterComponent } from '../filter/filter.component';
+
 const GET_DATA=200;
 const POST_DATA=210;
 const DEL_DATA=220;
@@ -24,7 +26,10 @@ export class OfferPage implements OnInit {
   client_id:any
   constructor(private offerService:OfferService,private utils:UtilsService,public router:Router,
     private actionSheetController:ActionSheetController,private cartService:CartService,
-    private alertController:AlertController,private authService:AuthenticationService,private loadingController:LoadingController) 
+    private alertController:AlertController,
+    private authService:AuthenticationService,
+    private loadingController:LoadingController,
+    private popOverCtrl:PopoverController) 
   { 
     this.client_id = localStorage.getItem('client_id')
     this.page_count = 1;
@@ -101,9 +106,7 @@ export class OfferPage implements OnInit {
     this.router.navigate(['product',id,{catId}])
   }
 
-  openSort() {
-    this.presentActionSheet();
-  }
+
 
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
@@ -149,6 +152,18 @@ export class OfferPage implements OnInit {
     )
     // this.getData()
     this.products[index].cart_count--
+  }
+
+  async openSort(ev:any) {
+    const popover = await this.popOverCtrl.create({  
+      component: FilterComponent, 
+      event:ev,   
+      animated: true, 
+      showBackdrop: true ,
+      cssClass:'popover' 
+  });  
+  popover.onDidDismiss().then((data)=>{console.log(data)})
+   await popover.present(); 
   }
 
 

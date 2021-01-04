@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ActionSheetController, AlertController, LoadingController, ModalController, Platform } from '@ionic/angular';
+import { ActionSheetController, AlertController, LoadingController, ModalController, Platform, PopoverController, ToastController } from '@ionic/angular';
 import { utils } from 'protractor';
 import { SubcatProductsService } from 'src/app/services/subcatProducts/subcat-products.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { FiltersPage } from '../filters/filters.page';
+import { FilterComponent } from '../filter/filter.component';
 import { SortPage } from '../sort/sort.page';
 import { BANNERS } from '../home/home.page';
 import { CartService } from 'src/app/services/cart/cart.service';
@@ -45,10 +46,19 @@ export class ProductsPage implements OnInit {
     { val: 'Sausage', isChecked: false },
     { val: 'Mushroom', isChecked: false }
   ];
-  constructor(private activatedRoute: ActivatedRoute, private platform: Platform, public router: Router, private modalController: ModalController,
-    private CatProductService:SubcatProductsService,private utils:UtilsService,private loadingController:LoadingController,
-    private actionSheetController:ActionSheetController,private cartService:CartService,private authService:AuthenticationService,
-    private alertController:AlertController) {
+  constructor(private activatedRoute: ActivatedRoute, 
+    private platform: Platform, 
+    public router: Router, 
+    private modalController: ModalController,
+    private CatProductService:SubcatProductsService,
+    private utils:UtilsService,
+    private loadingController:LoadingController,
+    private actionSheetController:ActionSheetController,
+    private cartService:CartService,
+    private authService:AuthenticationService,
+    private alertController:AlertController,
+    private popOverCtrl:PopoverController,
+    private toastController:ToastController) {
     this.page_count = 1
     this.checkWidth()
     this.s3url = utils.getS3url()
@@ -83,7 +93,7 @@ export class ProductsPage implements OnInit {
   getData(infiniteScroll?) {
     this.presentLoading().then(()=>{
 
-      this.CatProductService.getSubCatProducts(this.catId,this.client_id,this.page_count,null).subscribe(
+      this.CatProductService.getSubCatProducts(this.catId,this.client_id,this.page_count,'ASC').subscribe(
         (data)=>this.handleResponse(data,GET_DATA,infiniteScroll),
         (error)=>this.handleError(error)
       )
@@ -141,8 +151,16 @@ export class ProductsPage implements OnInit {
     await modal.present();
   }
 
-  openSort() {
-    this.presentActionSheet()
+  async openSort(ev:any) {
+    const popover = await this.popOverCtrl.create({  
+      component: FilterComponent, 
+      event:ev,   
+      animated: true, 
+      showBackdrop: true ,
+      cssClass:'popover' 
+  });  
+  popover.onDidDismiss().then((data)=>{console.log(data)})
+   await popover.present(); 
   }
 
 
@@ -241,6 +259,8 @@ export class ProductsPage implements OnInit {
          )
          this.products[index].cart_count++
         //  this.getData()
+
+        this.presentToastSuccess("Product added to cart.");
     }
 
     else{
@@ -267,6 +287,17 @@ export class ProductsPage implements OnInit {
       showBackdrop: true
     });
     await loading.present();
+  }
+
+  async presentToastSuccess(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast",
+      position: "middle",
+      color: "success",
+      duration: 1500,
+    });
+    toast.present();
   }
 
   doRefresh(event) {

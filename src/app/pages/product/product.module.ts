@@ -7,13 +7,18 @@ import { IonicModule } from '@ionic/angular';
 import { ProductPageRoutingModule } from './product-routing.module';
 
 import { ProductPage } from './product.page';
+import { NgxImageZoomModule } from 'ngx-image-zoom';
+
+import { QuillModule } from 'ngx-quill'
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ProductPageRoutingModule
+    ProductPageRoutingModule,
+    NgxImageZoomModule,
+    QuillModule.forRoot(),
   ],
   declarations: [ProductPage]
 })

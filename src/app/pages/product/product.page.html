@@ -15,190 +15,240 @@
 </ion-header>
 
 <ion-content>
-  
-  <ion-grid fixed class="grid_top">
-    <ion-row class="main_row_top">
-      <!-- colum 1 start -->
-      <ion-col size="12" size-sm="12" size-md="12" size-lg="4" size-xl="4" class="
-      col1 ion-text-center">
-        <ion-slides pager [options]="productOpts" class="prod-slide">
-          <ion-slide
-            *ngFor="let item of productDetails?.images; let i=index"
-            
-          >
-          <div class="img-magnifier-container">
-            <img id="myimage" src="{{item?.path}}" alt="" (mouseover)="fireEvent($event)" (mouseout)="mouseExit($event)" >
+  <div class="wrapper">
+    <div class="main">
+      <div class="productImageSec leftSec">
+        <div class="card">
+          <ion-slides [options]="slidesOptions" pager="true" #slides>
+            <ion-slide *ngFor="let item of productDetails?.images">
+              <!-- <img src="{{item.path}}" alt="" /> -->
 
-          </div>
-          <!-- [ngStyle]="{'background-image': 'url(' + item.path + ')'}"
-            (click)="zoom(item.path )" -->
-          </ion-slide>
-          
-        </ion-slides>
-        <h6 class="">tap to zoom</h6>
-      </ion-col>
-      <!-- colum 1 end -->
+              <lib-ngx-image-zoom
+                thumbImage="{{item.path}}"
+                [magnification]="2"
+                class="imge"
+              ></lib-ngx-image-zoom>
+            </ion-slide>
+          </ion-slides>
+          <ion-slides [options]="slidesOptionsThumbnail" >
+            <ion-slide (click)="slideTo(i)"  *ngFor="let item of productDetails?.images; let i=index">
+              <div class="thumbnailWrapper">
+                <ion-thumbnail>
+                  <img src="{{item.path}}" />
+                </ion-thumbnail>
+              </div>
+            </ion-slide>
+          </ion-slides>
+        </div>
+      </div>
 
-      <!-- colum 2 start -->
-      <ion-col
-        size="12"
-        size-sm="12"
-        size-md="12"
-        size-lg="4"
-        size-xl="4"
-        class="col2"
-      >
-        <ion-list>
-          <ion-item lines="none">
-            <ion-label>
-              <h1>{{productDetails?.name}}</h1>
-            </ion-label>
-          </ion-item>
-          <section class="ion-padding-horizontal details">
+      <div class="rightSec">
+        <div class="textblock">
+          <h1>{{productDetails?.name}}</h1>
+        </div>
 
-          <ion-text color="dark">
-         <ion-item class="ion-no-padding" lines="none" *ngIf="productDetails?.part_number">
-          <h3 class="ion-margin-top">Part Number : </h3>
-          &nbsp;
-          <h5 >{{productDetails?.part_number}}</h5>
-         </ion-item>
-        </ion-text>
-
-        <ion-text color="dark">
-         <ion-item class="ion-no-padding" lines="none" *ngIf="productDetails?.substitute_part_number">
-          <h3 class="ion-margin-top">Substitute Part Number : </h3>
-          &nbsp;
-          <h5 >{{productDetails?.substitute_part_number}}</h5>
-         </ion-item>
-        </ion-text>
-
-         <ion-text color="dark">
-         <ion-item class="ion-no-padding" lines="none">
-          <h3 class="ion-margin-top">Manufacturer : </h3>
-          &nbsp;
-          <h5 >{{productDetails?.brand_name}}</h5>
-         </ion-item>
-        </ion-text>
-            
-        <ion-text color="dark">
-          <ion-item class="ion-no-padding" lines="none" *ngIf="productDetails?.weight">
-            <h3 class="ion-margin-top">Weight : </h3>
-            &nbsp;
-            <h5>{{productDetails?.weight}} kg</h5>
-           </ion-item>
-        </ion-text>
-
-            <ion-text color="dark">
-              <h3 class="ion-margin-top">Description</h3>
-              <p>{{productDetails?.description}}</p>
-              <!-- <p> Front brake callipers for BMW M3.(Blue) </p> -->
-            </ion-text>
-          </section>
-        </ion-list>
-      </ion-col>
-
-      <!-- colum 2 end -->
-
-      <!-- colum 3 start -->
-
-      <ion-col
-        size="12"
-        size-sm="12"
-        size-md="12"
-        size-lg="4"
-        size-xl="4"
-        class="col3"
-      >
         <section class="ion-padding-horizontal">
           <ion-row>
-            <ion-col size="6">
-              <ion-label  style="background: #f2f2f2">
+            <ion-col size="6" class="price">
+              <ion-label style="background: #f2f2f2">
                 <!-- <h1>{{ productDetails?.offer_price | currency:'AED' }}</h1> -->
                 <h1>{{ productDetails?.offer_price | currency:'AED ' }}</h1>
-                <h1 *ngIf="productDetails?.offer_price == null">{{ productDetails?.price | currency:'AED ' }}</h1>
-                <h6 *ngIf="productDetails?.offer_price != null" color="danger" class="offerPrice">{{ productDetails?.price | currency:'AED ' }}</h6>
+                <h1 *ngIf="productDetails?.offer_price == null">
+                  {{ productDetails?.price | currency:'AED ' }}
+                </h1>
+                <h6
+                  *ngIf="productDetails?.offer_price != null"
+                  color="danger"
+                  class="offerPrice"
+                >
+                  {{ productDetails?.price | currency:'AED ' }}
+                </h6>
               </ion-label>
             </ion-col>
-            
           </ion-row>
         </section>
 
-        <section class="ion-padding-horizontal details">
-          <ion-text color="dark">
-            <p><b> Get more details. Contact us on</b> </p> 
-            <img src="../../../assets/icon/whatsapp.svg" alt="" (click)="whatsapp()" class="ikon" >
-            
-            or 
-            <img src="../../../assets/icon/gmail.svg" alt="" (click)="mail()" class="ikon">
-            
-          </ion-text>
-        </section>
-        <!-- <ion-icon name="mail-outline" class="ikon" (click)="mail()"></ion-icon>
-        <ion-icon name="logo-whatsapp" class="ikon" (click)="whatsapp()"></ion-icon>  -->
-
-        <section class="ion-padding-horizontal stock">
-           <ion-chip color="success" *ngIf="data?.product.in_stock == 1">
-          <ion-label>In Stock</ion-label>
-        </ion-chip>
-        <ion-chip color="danger" *ngIf="data?.product.in_stock == 0">
-          <ion-label>Out Of Stock</ion-label>
-        </ion-chip>
-        </section>
-
-        <section class="ion-padding-horizontal details" *ngIf="data?.product.in_stock == 1">
-          <div  class="ion-text-center">
-            <ion-button (click)="addToCart()" expand="full-width" fill="outline" shape="round" color="dark" class="btn" *ngIf="data?.product.cart_count == 0">
-              <ion-icon name="cart-outline" class="icon"></ion-icon> ADD TO CART
-            </ion-button>
-            <ion-button (click)="goToCart()" expand="full-width" fill="outline" shape="round" color="dark" class="btn" *ngIf="data?.product.cart_count > 0">
-              <ion-icon name="cart-outline" class="icon"></ion-icon> GO TO CART
-            </ion-button>
-            <!-- <div  *ngIf="data?.product.cart_count != 0" class="addbuttonWrapper">
-              <h3>In Cart:</h3>
+        <div>
+          <ion-row>
+            <ion-col size="5" class="ion-padding">
               <div class="addbutton">
-                <ion-icon name="remove-outline" class="icon" (click)="removeFromcart()"></ion-icon>
-                 {{data?.product.cart_count}}
-                 <ion-icon name="add-outline"  class="icon" (click)="addToCart()"></ion-icon>
+                <ion-icon
+                  name="remove-outline"
+                  class="icon"
+                  (click)="qtyDecrease()"
+                ></ion-icon>
+                {{qty}}
+                <ion-icon
+                  name="add-outline"
+                  class="icon"
+                  (click)="qtyIncrease()"
+                ></ion-icon>
               </div>
-            </div> -->
-          
-          </div>
-        </section>
-        
-      
-      </ion-col>
+            </ion-col>
+            <ion-col size="6" class="addtocart">
+              <ion-button (click)="addToCart()" color="dark" expand="full" [disabled]="data?.product.in_stock == 0">
+                <ion-icon slot="start" name="cart"></ion-icon>
+                ADD TO CART
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </div>
 
-      <!-- colum 3 end -->
-    </ion-row>
-  </ion-grid>
+        <div class="productDesc">
+          <ion-row>
+            <ion-col size="12" class="ion-padding description">
+              <ion-text color="dark">
+                <ion-item
+                  class="ion-no-padding"
+                  lines="none"
+                  *ngIf="data?.product.in_stock == 1"
+                >
+                  <h3 class="ion-margin-top">Availability :</h3>
+                  &nbsp;
+                  <h5 class="inStock">Instock</h5>
+                </ion-item>
+              </ion-text>
 
-  <!-- <hr class="ion-margin-horizontal" /> -->
+              <ion-text color="dark">
+                <ion-item
+                  class="ion-no-padding"
+                  lines="none"
+                  *ngIf="data?.product.in_stock == 0"
+                >
+                  <h3 class="ion-margin-top"> Availability :</h3>
+                  &nbsp;
+                  <h5 class="outofStock">Out Of Stock</h5>
+                </ion-item>
+              </ion-text>
 
-  <ion-grid fixed>
-    <ion-row>
-      <ion-col size="12">
-        <section id="recommended">
-          <ion-item lines="none">
-            <ion-label class="title">Recommended for You</ion-label>
-            <!-- <ion-button expand="block" fill="clear" shape="round" slot="end">
-              View all
-            </ion-button> -->
-          </ion-item>
-          <ion-slides [options]="recommendedSlides" class="recommended">
-            <ion-slide *ngFor="let item of data?.category_products; let i=index"  (click)="navigateToProduct(i)">
-              <ion-card>
-                <img src="{{s3url+item.images[0]?.path}}" alt="" />
-                <ion-card-content>
-                  <p>{{item.name}}</p>
-                </ion-card-content>
-              </ion-card>
-            </ion-slide>
-          </ion-slides>
-        </section>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+              <ion-text color="dark">
+                <ion-item
+                  class="ion-no-padding"
+                  lines="none"
+                  *ngIf="productDetails?.part_number"
+                >
+                  <h3 class="ion-margin-top">Part Number :</h3>
+                  &nbsp;
+                  <h5>{{productDetails?.part_number}}</h5>
+                </ion-item>
+              </ion-text>
+
+              <ion-text color="dark">
+                <ion-item
+                  class="ion-no-padding"
+                  lines="none"
+                  *ngIf="productDetails?.substitute_part_number"
+                >
+                  <h3 class="ion-margin-top">Substitute Part Number :</h3>
+                  &nbsp;
+                  <h5>{{productDetails?.substitute_part_number}}</h5>
+                </ion-item>
+              </ion-text>
+
+              <ion-text color="dark">
+                <ion-item class="ion-no-padding" lines="none">
+                  <h3 class="ion-margin-top">Manufacturer :</h3>
+                  &nbsp;
+                  <h5>{{productDetails?.brand_name}}</h5>
+                </ion-item>
+              </ion-text>
+
+              <ion-text color="dark">
+                <ion-item
+                  class="ion-no-padding"
+                  lines="none"
+                  *ngIf="productDetails?.weight"
+                >
+                  <h3 class="ion-margin-top">Weight :</h3>
+                  &nbsp;
+                  <h5>{{productDetails?.weight}} kg</h5>
+                </ion-item>
+              </ion-text>
+            </ion-col>
+          </ion-row>
+        </div>
+
+        <div class="sizeSection">
+          <ion-row>
+            <ion-col size="12" class="ion-padding contact">
+              <div>
+                <ion-text color="dark">
+                  <p><b> Get more details. Contact us on</b></p>
+                  <img
+                    src="../../../assets/icon/whatsapp.svg"
+                    alt=""
+                    (click)="whatsapp()"
+                    class="ikon"
+                  />
+
+                  or
+                  <img
+                    src="../../../assets/icon/gmail.svg"
+                    alt=""
+                    (click)="mail()"
+                    class="ikon"
+                  />
+                </ion-text>
+              </div>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+    </div>
+
+    <div class="ion-padding" *ngIf="productDetails?.description">
+
+      <ion-item class="ion-no-padding details" lines="none">
+        <h3 class="ion-margin-top">Product Details:</h3>
+      </ion-item>
+      <quill-view
+      [content]="productDetails?.description"
+      format="text"
+      theme="snow"
+      ></quill-view>
+    </div>
+
+  </div>
+
+
+
+  <hr class="ion-margin-horizontal" />
+
+<ion-grid fixed>
+  <ion-row>
+    <ion-col size="12">
+      <section id="recommended">
+        <ion-item lines="none" class="ion-text-center">
+          <ion-label class="title">Recommended for You</ion-label>
+          <!-- <ion-button expand="block" fill="clear" shape="round" slot="end">
+            View all
+          </ion-button> -->
+        </ion-item>
+        <ion-slides [options]="recommendedSlides" class="recommended">
+          <ion-slide *ngFor="let item of data?.category_products; let i=index"  (click)="navigateToProduct(i)">
+            <ion-card>
+              <img src="{{s3url+item.images[0]?.path}}" alt="" />
+              <ion-card-content>
+                <p>{{item.name}}</p>
+              </ion-card-content>
+            </ion-card>
+          </ion-slide>
+        </ion-slides>
+      </section>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+
 </ion-content>
-
-
-
+<!-- <ion-col size="12" class="btnWrapper">
+    <ion-button
+      class="btn"
+      (click)="addToCart(productDetails?.id)"
+      expand="full"
+      fill="solid"
+      shape="round"
+      color="tertiary"
+    >
+      ADD TO CART
+    </ion-button>
+  </ion-col> -->

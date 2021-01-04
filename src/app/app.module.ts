@@ -21,11 +21,12 @@ import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { Component, ViewChild } from '@angular/core';
 import { IonicStorageModule } from '@ionic/storage';
+import { FilterComponent} from './pages/filter/filter.component';  
 // import { IonicImageZoomer } from 'ionic-image-zoomer';
 
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent,FilterComponent],
   entryComponents: [],
   imports: [
     BrowserModule,
@@ -39,6 +40,7 @@ import { IonicStorageModule } from '@ionic/storage';
     FontAwesomeModule,
     HttpClientModule,
     ReactiveFormsModule,
+    
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
