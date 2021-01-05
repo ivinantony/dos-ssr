@@ -30,7 +30,7 @@
               ></lib-ngx-image-zoom>
             </ion-slide>
           </ion-slides>
-          <ion-slides [options]="slidesOptionsThumbnail" >
+          <ion-slides [options]="slidesOptionsThumbnail"  class="thumbnail">
             <ion-slide (click)="slideTo(i)"  *ngFor="let item of productDetails?.images; let i=index">
               <div class="thumbnailWrapper">
                 <ion-thumbnail>

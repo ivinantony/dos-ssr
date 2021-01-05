@@ -76,7 +76,10 @@
               </ion-label>
             </ion-item>
             
+            <ion-buttons slot="end">
             <ion-icon name="trash-outline" (click)="remove(i,item.id)"></ion-icon>
+              
+            </ion-buttons>
             <ion-buttons class="cart-btns" slot="end">
               <ion-button (click)="subtract(i,item.id)">
                 <ion-icon slot="start" color="danger" name="remove"></ion-icon>

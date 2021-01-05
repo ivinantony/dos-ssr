@@ -33,6 +33,11 @@ export class ProductPage implements OnInit {
     initialSlide: 0,
     spaceBetween: 5,
     centeredSlides: true,
+    autoplay: {
+      delay: 2500,
+      disableOnInteraction: false,
+      loop: true,
+    },
   };
 
 
@@ -41,6 +46,12 @@ export class ProductPage implements OnInit {
     initialSlide: 0,
     spaceBetween: 0,
     centeredSlides: true,
+  }
+
+  slidesOptions={
+    slidesPerView: 1,
+    initialSlide: 0,
+   
   }
 
   product: any;
@@ -187,6 +198,11 @@ export class ProductPage implements OnInit {
         spaceBetween: 10,
         initialSlide: 1,
         centeredSlides: true,
+        autoplay: {
+          delay: 2700,
+          disableOnInteraction: false,
+          loop: true,
+        },
       };
     }
   }
@@ -210,7 +226,9 @@ export class ProductPage implements OnInit {
       );
       this.productDetails.cart_count++;
       //  this.getData()
-      this.presentToastSuccess("Product added to cart.");
+      let name = this.productDetails.name
+
+      this.presentToastSuccess(data.qty + " '" + name +" ' added to cart.");
     } else {
       this.presentLogin();
     }
@@ -294,9 +312,9 @@ export class ProductPage implements OnInit {
   async presentToastSuccess(msg) {
     const toast = await this.toastController.create({
       message: msg,
-      cssClass: "custom-toast",
-      position: "middle",
-      color: "success",
+      cssClass: "custom-toast-success",
+      position: "bottom",
+      
       duration: 1500,
     });
     toast.present();

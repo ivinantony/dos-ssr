@@ -284,6 +284,14 @@ ion-slides{
  .outofStock{
    color: red;
  }
+
+ .recommended:hover{
+   cursor: pointer;
+ }
+
+ .thumbnail{
+   cursor: pointer;
+ }
 @media only screen and (max-width: 320px){
 
 }

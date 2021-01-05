@@ -19,6 +19,9 @@ const DEL_DATA = 220;
   styleUrls: ['./products.page.scss'],
 })
 export class ProductsPage implements OnInit {
+
+
+  
   products: Array<any> = []
   banners: Array<any> = BANNERS;
   page_limit: number;
@@ -41,11 +44,9 @@ export class ProductsPage implements OnInit {
   category_name: any;
   s3url:string;
   data:any
-  public form = [
-    { val: 'Pepperoni', isChecked: true },
-    { val: 'Sausage', isChecked: false },
-    { val: 'Mushroom', isChecked: false }
-  ];
+  isSort:boolean=false
+  sortType:any=null
+
   constructor(private activatedRoute: ActivatedRoute, 
     private platform: Platform, 
     public router: Router, 
@@ -93,7 +94,7 @@ export class ProductsPage implements OnInit {
   getData(infiniteScroll?) {
     this.presentLoading().then(()=>{
 
-      this.CatProductService.getSubCatProducts(this.catId,this.client_id,this.page_count,'ASC').subscribe(
+      this.CatProductService.getSubCatProducts(this.catId,this.client_id,this.page_count,this.sortType).subscribe(
         (data)=>this.handleResponse(data,GET_DATA,infiniteScroll),
         (error)=>this.handleError(error)
       )
@@ -159,7 +160,30 @@ export class ProductsPage implements OnInit {
       showBackdrop: true ,
       cssClass:'popover' 
   });  
-  popover.onDidDismiss().then((data)=>{console.log(data)})
+  popover.onDidDismiss().then((data)=>{
+   if(data.data)
+   {
+     console.log("hello")
+     
+     if(data.data == 2)
+     {
+       console.log("low to high")
+       this.sortType = 'ASC'
+       this.page_count=1
+       this.products= []
+       this.getData()
+     }
+     else if(data.data == 1){
+      console.log("high to low")
+
+      this.sortType = 'DESC'
+      this.page_count=1
+      this.products= []
+      this.getData()
+     }
+   }
+  
+  })
    await popover.present(); 
   }
 
@@ -205,20 +229,18 @@ export class ProductsPage implements OnInit {
       buttons: [{
         text: 'Price - high to low',
         handler: () => {
-          
-          this.CatProductService.getSubCatProducts(this.catId,this.client_id,this.page_count,'desc').subscribe(
-            (data)=>this.handleResponse(data,GET_DATA),
-            (error)=>this.handleError(error)
-          )
+          this.page_count=1
+          this.products= []
+          this.sortType='DESC'
+          this.getData()
         }
       }, {
         text: 'Price - low to high',
         handler: () => {
-          let client_id = Number(localStorage.getItem('client_id'))
-          this.CatProductService.getSubCatProducts(this.catId,client_id,this.page_count,'asc').subscribe(
-            (data)=>this.handleResponse(data,GET_DATA),
-            (error)=>this.handleError(error)
-          )
+          this.page_count=1
+          this.products= []
+          this.sortType='ASC'
+          this.getData()
         }
       }]
     });
@@ -260,7 +282,9 @@ export class ProductsPage implements OnInit {
          this.products[index].cart_count++
         //  this.getData()
 
-        this.presentToastSuccess("Product added to cart.");
+        let name = this.products[index].name
+
+        this.presentToastSuccess("One ' " + name +" ' added to cart.");
     }
 
     else{
@@ -292,9 +316,9 @@ export class ProductsPage implements OnInit {
   async presentToastSuccess(msg) {
     const toast = await this.toastController.create({
       message: msg,
-      cssClass: "custom-toast",
-      position: "middle",
-      color: "success",
+      cssClass: "custom-toast-success",
+      position: "bottom",
+      
       duration: 1500,
     });
     toast.present();
@@ -305,6 +329,11 @@ export class ProductsPage implements OnInit {
     setTimeout(() => {
       event.target.complete();
     }, 1000);
+  }
+
+  opensortMobile()
+  {
+    this.presentActionSheet()
   }
 
 }

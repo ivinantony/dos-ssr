@@ -128,6 +128,8 @@ export class HomePage implements OnInit {
   swipePrevRec(){
     this.slides1.slidePrev();
   }
+
+
   
   bannerSlideOpts1 = {
     slidesPerView: 1,

@@ -1,7 +1,7 @@
 import { Route } from '@angular/compiler/src/core';
 import { Component, OnInit } from '@angular/core';
 import { Data, Router } from '@angular/router';
-import { ActionSheetController, AlertController, LoadingController, PopoverController } from '@ionic/angular';
+import { ActionSheetController, AlertController, LoadingController, PopoverController, ToastController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { OfferService } from 'src/app/services/offer/offer.service';
@@ -24,12 +24,14 @@ export class OfferPage implements OnInit {
   page_count: number = 1;
   current_page: number;
   client_id:any
+  sortType:any=null
   constructor(private offerService:OfferService,private utils:UtilsService,public router:Router,
     private actionSheetController:ActionSheetController,private cartService:CartService,
     private alertController:AlertController,
     private authService:AuthenticationService,
     private loadingController:LoadingController,
-    private popOverCtrl:PopoverController) 
+    private popOverCtrl:PopoverController,
+    private toastController:ToastController) 
   { 
     this.client_id = localStorage.getItem('client_id')
     this.page_count = 1;
@@ -63,7 +65,7 @@ export class OfferPage implements OnInit {
 
   getData(infiniteScroll?) {
     this.presentLoading().then(()=>{
-      this.offerService.getOfferProducts(this.client_id,this.page_count).subscribe(
+      this.offerService.getOfferProducts(this.client_id,this.page_count,this.sortType).subscribe(
         (data)=>this.handleResponse(data,GET_DATA,infiniteScroll),
         (error)=>this.handleError(error)
       )
@@ -83,7 +85,7 @@ export class OfferPage implements OnInit {
         this.products.push(element);
       });
       console.log(this.products, "API called");
-
+      
     }
    
     console.log(data)
@@ -110,40 +112,57 @@ export class OfferPage implements OnInit {
 
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
-      header: "SORT BY",
-      mode: "md",
-      cssClass: "my-custom-class",
-      buttons: [
-        {
-          text: "Price - high to low",
-          handler: () => {},
-        },
-        {
-          text: "Price - low to high",
-          handler: () => {},
-        },
-      ],
+      header: 'SORT BY',
+      mode:'md',
+      cssClass: 'my-custom-class',
+      buttons: [{
+        text: 'Price - high to low',
+        handler: () => {
+          this.page_count=1
+          this.products= []
+          this.sortType='DESC'
+          this.getData()
+        }
+      }, {
+        text: 'Price - low to high',
+        handler: () => {
+          this.page_count=1
+          this.products= []
+          this.sortType='ASC'
+          this.getData()
+        }
+      }]
     });
     await actionSheet.present();
   }
 
   addToCart(index:number)
   {
-      if (this.authService.isAuthenticated()) {
-        let data = {
-          product_id: this.products[index].id,
-          client_id: this.client_id,
-        };
-        this.cartService.addToCart(data).subscribe(
-          (data) => this.handleResponse(data, POST_DATA),
-          (error) => this.handleError(error)
-        );
-        this.products[index].cart_count++;
+    if(this.authService.isAuthenticated())
+    {
+      console.log("hai")
+      let data={
+        product_id :this.products[index].id,
+        client_id :this.client_id
+         }
+         this.cartService.addToCart(data).subscribe(
+           (data)=>this.handleResponse(data,POST_DATA),
+           (error)=>this.handleError(error)
+         )
+         this.products[index].cart_count++
         //  this.getData()
-      } else {
-        this.presentLogin();
-      }
+
+        let name = this.products[index].name
+
+        this.presentToastSuccess("One ' " + name +" ' added to cart.");
+    }
+
+    else{
+      this.presentLogin()
+    }
+    
   }
+
   removeFromcart(index:number)
   {
     this.cartService.removeFromCart(this.client_id,this.products[index].id,).subscribe(
@@ -162,7 +181,29 @@ export class OfferPage implements OnInit {
       showBackdrop: true ,
       cssClass:'popover' 
   });  
-  popover.onDidDismiss().then((data)=>{console.log(data)})
+  popover.onDidDismiss().then((data)=>{
+    if(data.data)
+    {
+      console.log("hello")
+      
+      if(data.data == 2)
+      {
+        console.log("low to high")
+        this.sortType = 'ASC'
+        this.page_count=1
+        this.products= []
+        this.getData()
+      }
+      else if(data.data == 1){
+       console.log("high to low")
+ 
+       this.sortType = 'DESC'
+       this.page_count=1
+       this.products= []
+       this.getData()
+      }
+    }
+  })
    await popover.present(); 
   }
 
@@ -216,4 +257,19 @@ export class OfferPage implements OnInit {
       event.target.complete();
     }, 1000);
   }
+
+  openSortMobile(){
+    this.presentActionSheet()
+  }
+
+  async presentToastSuccess(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast-success",
+      position: "bottom",
+      duration: 1500,
+    });
+    toast.present();
+  }
+
 }

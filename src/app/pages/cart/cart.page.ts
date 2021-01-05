@@ -228,7 +228,7 @@ export class CartPage implements OnInit {
   async presentToastDanger(msg) {
     const toast = await this.toastController.create({
       message: msg,
-      cssClass: "custom-toast",
+      cssClass: "custom-toast-danger",
       color: "danger",
       position: "middle",
       duration: 2000,
@@ -399,7 +399,7 @@ export class CartPage implements OnInit {
     );
     //  this.cart[index].count = this.cart[index].count+1
     this.getData();
-    this.presentToastSuccess("You've changed "+ name +" quantity to "+qty)
+    this.presentToastSuccessQtyChange("You've changed "+ name +" quantity to "+qty)
   }
 
   subtract(index: number, id: number) {
@@ -414,7 +414,7 @@ export class CartPage implements OnInit {
     this.getData();
     if(qty>0)
     {
-      this.presentToastSuccess("You've changed "+ name +" quantity to "+qty)
+      this.presentToastSuccessQtyChange("You've changed "+ name +" quantity to "+qty)
     }
     else{
       this.presentToastDanger("You've removed "+ name +" from cart.")
@@ -454,6 +454,17 @@ export class CartPage implements OnInit {
       cssClass: "custom-toast",
       position: "middle",
       color: "tertiary",
+      duration: 2000,
+    });
+    toast.present();
+  }
+
+  async presentToastSuccessQtyChange(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast-success",
+      position: "bottom",
+      
       duration: 2000,
     });
     toast.present();

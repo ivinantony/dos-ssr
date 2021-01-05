@@ -135,6 +135,10 @@
             <div  class="ion-text-center stock"  *ngIf="item.in_stock == 0">
               <h3>OUT OF STOCK</h3>
             </div>
+            <ion-button (click)="addToCart(i)" color="danger" expand="full" [disabled]="item?.in_stock == 0" class="tocart">
+              
+              ADD TO CART
+            </ion-button>
             </ion-col> 
             
             
@@ -156,10 +160,10 @@
 <ion-footer class="ion-hide-md-up">
   <ion-toolbar>
     <ion-buttons class="ion-justify-content-around">
-      <!-- <ion-button expand="block" fill="clear" shape="round" (click)="openSort()">
+      <ion-button expand="block" fill="clear" shape="round" (click)="opensortMobile()">
         <ion-icon slot="start" name="funnel-outline"></ion-icon>
         SORT
-      </ion-button> -->
+      </ion-button>
       <!-- <ion-button
         (click)="openFilter()"
         expand="block"

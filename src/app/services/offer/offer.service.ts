@@ -15,11 +15,11 @@ export class OfferService {
   {
     this.url = utils.getApiPath()
    }
-   public getOfferProducts(client_id:any,page_count:any)
+   public getOfferProducts(client_id:any,page_count:any,sort:any)
    {
      const headers = this.headerservice.getHttpHeaders()
      return this.httpclient.get(
-      this.url + "offer-product?client_id="+client_id+"&page="+page_count,{ headers }
+      this.url + "offer-product?client_id="+client_id+"&page="+page_count+"&sort="+sort,{ headers }
      ).pipe(map(res=>{
        return res}));
    }

@@ -5,7 +5,8 @@ import {
   AlertController,
   LoadingController,
   Platform,
-  PopoverController
+  PopoverController,
+  ToastController
 } from "@ionic/angular";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { BrandProductService } from "src/app/services/brandProducts/brand-product.service";
@@ -87,6 +88,7 @@ export class BrandProductsPage implements OnInit {
   current_page: number;
   client_id: any;
   data: any;
+  sortType:any=null
   constructor(
     private brandProductService: BrandProductService,
     private platform: Platform,
@@ -98,7 +100,8 @@ export class BrandProductsPage implements OnInit {
     private authService: AuthenticationService,
     private alertController: AlertController,
     private loadingController:LoadingController,
-    private popOverCtrl:PopoverController
+    private popOverCtrl:PopoverController,
+    private toastController:ToastController
   ) {
     this.client_id = localStorage.getItem("client_id");
 
@@ -139,7 +142,7 @@ export class BrandProductsPage implements OnInit {
 
   getData(infiniteScroll?) {
     this.presentLoading().then(()=>{
-      this.brandProductService.getBrandProducts(this.brand_id, this.page_count, this.client_id)
+      this.brandProductService.getBrandProducts(this.brand_id, this.page_count, this.client_id,this.sortType)
       .subscribe(
         (data) => this.handleResponse(data, GET_DATA, infiniteScroll),
         (error) => this.handleError(error)
@@ -200,33 +203,26 @@ export class BrandProductsPage implements OnInit {
 
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
-      header: "SORT BY",
-      mode: "md",
-      cssClass: "my-custom-class",
-      buttons: [
-        {
-          text: "Price - high to low",
-          handler: () => {
-            this.brandProductService
-              .getBrandProducts(this.brand_id, this.page_count, this.client_id)
-              .subscribe(
-                (data) => this.handleResponse(data, GET_DATA),
-                (error) => this.handleError(error)
-              );
-          },
-        },
-        {
-          text: "Price - low to high",
-          handler: () => {
-            this.brandProductService
-              .getBrandProducts(this.brand_id, this.page_count, this.client_id)
-              .subscribe(
-                (data) => this.handleResponse(data, GET_DATA),
-                (error) => this.handleError(error)
-              );
-          },
-        },
-      ],
+      header: 'SORT BY',
+      mode:'md',
+      cssClass: 'my-custom-class',
+      buttons: [{
+        text: 'Price - high to low',
+        handler: () => {
+          this.page_count=1
+          this.products= []
+          this.sortType='DESC'
+          this.getData()
+        }
+      }, {
+        text: 'Price - low to high',
+        handler: () => {
+          this.page_count=1
+          this.products= []
+          this.sortType='ASC'
+          this.getData()
+        }
+      }]
     });
     await actionSheet.present();
   }
@@ -261,6 +257,9 @@ export class BrandProductsPage implements OnInit {
       );
       this.products[index].cart_count++;
       //  this.getData()
+      let name = this.products[index].name
+
+        this.presentToastSuccess("One ' " + name +" ' added to cart.");
     } else {
       this.presentLogin();
     }
@@ -301,8 +300,46 @@ export class BrandProductsPage implements OnInit {
       animated: true, 
       showBackdrop: true ,
       cssClass:'popover' 
-  });  
-  popover.onDidDismiss().then((data)=>{console.log(data)})
+    });  
+   popover.onDidDismiss().then((data)=>{
+    if(data.data)
+    {
+      console.log("hello")
+      
+      if(data.data == 2)
+      {
+        console.log("low to high")
+        this.sortType = 'ASC'
+        this.page_count=1
+        this.products= []
+        this.getData()
+      }
+      else if(data.data == 1){
+       console.log("high to low")
+ 
+       this.sortType = 'DESC'
+       this.page_count=1
+       this.products= []
+       this.getData()
+      }
+    }
+    })
    await popover.present(); 
+  }
+
+  opensortMobile()
+  {
+    this.presentActionSheet()
+  }
+
+  async presentToastSuccess(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast-success",
+      position: "bottom",
+      
+      duration: 1500,
+    });
+    toast.present();
   }
 }
