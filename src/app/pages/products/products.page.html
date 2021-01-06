@@ -8,8 +8,15 @@
       <ion-icon name="funnel-outline"></ion-icon>
       SORT
     </ion-button>
-    <ion-buttons slot="end"  class="ion-hide-md-up">
-      <ion-icon name="cart-outline"class="ion-padding icon" (click)="router.navigate(['/cart'])"></ion-icon>
+    <ion-buttons slot="end" class="ion-hide-md-up" id="cart-btn">
+      <ion-icon
+        name="cart-outline"
+        class="ion-padding"
+        (click)="router.navigate(['/cart'])"
+      ></ion-icon>
+      <ion-badge id="cart-badge" color="danger" *ngIf="cart_count > 0">
+        {{cart_count}}
+      </ion-badge>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -37,21 +44,6 @@
             >
               <div class="select" (click)="navigateToProduct(i)">
               <div style=" position: relative; overflow: hidden" class="ion-text-center">
-                <!-- <picture>
-                  <source
-                    media="(min-width:650px)"
-                    [srcset]="item?.images[0].path"
-                  />
-                  <source
-                    media="(min-width:465px)"
-                    [srcset]="item?.images[0].path"
-                  />
-                  <img
-                    [src]="item?.images[0].path"
-                    alt="Flowers"
-                    style="width: auto"
-                  />
-                </picture> -->
                 <img [src]="s3url + item?.images[0]?.path" alt="">
               </div>
               <ion-list>
@@ -66,33 +58,13 @@
                       <ion-text color="danger">
                         <p class="offer-price" *ngIf="item.offer_price != null">{{ item.price | currency:'AED' }}</p>
                       </ion-text>
-                    </ion-label>
-                    <!-- <p class="price">{{ 225 | currency:'AED' }}</p>
-                    <p class="offer-price">{{ 225 | currency:'AED' }}</p> -->
-                    
+                    </ion-label> 
                   </ion-label>
                   
                 </ion-item>
                 
               </ion-list>
             </div>
-             
-
-              <!-- <div *ngIf="item.in_stock == 1">
-                <ion-button (click)="addToCart(i)" expand="full-width" fill="outline" shape="round" color="dark" class="btn" *ngIf="item.cart_count == 0">
-                  <ion-icon name="add-outline" class="icon"></ion-icon> ADD
-                </ion-button>
-              <div class="addbutton" *ngIf="item.cart_count != 0">
-                <ion-icon name="remove-outline" class="icon" (click)="removeFromcart(i)"></ion-icon>
-                 {{item.cart_count}}
-                 <ion-icon name="add-outline"  class="icon" (click)="addToCart(i)"></ion-icon>
-              </div>
-              </div>
-
-              <ion-button (click)="addToCart(i)" expand="full-width" fill="solid" shape="round" color="danger" class="btn" *ngIf="item.in_stock == 0">
-                Out of Stock
-              </ion-button> -->
-
               <div  class="ion-text-center stock"  *ngIf="item.in_stock == 0">
                 <h3>OUT OF STOCK</h3>
               </div>

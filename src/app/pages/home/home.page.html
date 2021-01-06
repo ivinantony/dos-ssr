@@ -6,8 +6,17 @@
   <ion-title><ion-text color="magenta"><b>DEAL</b> </ion-text>
     <ion-text color="dark"><b>ON STORE</b> </ion-text></ion-title>
       
-    <ion-buttons slot="end">
+    <!-- <ion-buttons slot="end">
       <ion-icon name="cart-outline"class="ion-padding" (click)="router.navigate(['/cart'])" color="magenta"></ion-icon>
+    </ion-buttons> -->
+    <ion-buttons slot="end" class="ion-hide-md-up" id="cart-btn">
+      <ion-icon
+        name="cart-outline"
+        class="ion-padding"
+        (click)="router.navigate(['/cart'])"
+        color="magenta"
+      ></ion-icon>
+      <ion-badge id="cart-badge" color="danger" *ngIf="cart_count > 0">{{cart_count}}</ion-badge>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>

@@ -277,6 +277,11 @@ export class CartPage implements OnInit {
     {
       console.log(data)
     }
+    else if (type == REMOVE)
+    {
+      localStorage.setItem('cart_count',data.cart_count)
+      console.log("removed",data)
+    }
     // else if (type == GET_ADDRESS) {
     //   this.addresses = data.addresses;
     //   console.log(this.addresses, "addresses");

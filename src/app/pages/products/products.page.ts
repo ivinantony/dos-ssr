@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ActionSheetController, AlertController, LoadingController, ModalController, Platform, PopoverController, ToastController } from '@ionic/angular';
+import { ActionSheetController, AlertController, LoadingController,IonInfiniteScroll, ModalController, Platform, PopoverController, ToastController } from '@ionic/angular';
 import { utils } from 'protractor';
 import { SubcatProductsService } from 'src/app/services/subcatProducts/subcat-products.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { FiltersPage } from '../filters/filters.page';
 import { FilterComponent } from '../filter/filter.component';
 import { SortPage } from '../sort/sort.page';
-import { BANNERS } from '../home/home.page';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { IonContent } from '@ionic/angular';
 const GET_DATA = 200;
 const POST_DATA = 210;
 const DEL_DATA = 220;
@@ -19,11 +19,12 @@ const DEL_DATA = 220;
   styleUrls: ['./products.page.scss'],
 })
 export class ProductsPage implements OnInit {
-
+  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+  @ViewChild(IonContent, { static: false }) content: IonContent;
 
   
   products: Array<any> = []
-  banners: Array<any> = BANNERS;
+
   page_limit: number;
   page_count: number = 1;
   client_id:any
@@ -46,6 +47,7 @@ export class ProductsPage implements OnInit {
   data:any
   isSort:boolean=false
   sortType:any=null
+  cart_count:any
 
   constructor(private activatedRoute: ActivatedRoute, 
     private platform: Platform, 
@@ -68,16 +70,18 @@ export class ProductsPage implements OnInit {
     // this.products = PRODUCTS.filter(data => data.cat_id == catId)
     // console.log(this.products)
     this.client_id = Number(localStorage.getItem('client_id'))
-    // this.getData()
+    
+    this.page_count=1
+    this.products= []
+    this.getData()
 
   }
 
   ngOnInit() {
   }
   ionViewWillEnter()
-  {this.page_count=1
-    this.products= []
-    this.getData()
+  {
+    this.cart_count = localStorage.getItem('cart_count')
   }
 
   // getData()
@@ -105,6 +109,7 @@ export class ProductsPage implements OnInit {
 
   handleResponse(data,type,infiniteScroll?)
   {
+    this.infiniteScroll.disabled = false;
     this.loadingController.dismiss()
     if(type == GET_DATA)
     {
@@ -112,14 +117,14 @@ export class ProductsPage implements OnInit {
     this.data=data
     this.data.products.forEach(element => {this.products.push(element)});
     this.page_limit = data.page_count;
-    //   console.log(data)
-    // this.products = data.products
-    // this.page_limit = data.page_count;
-    // console.log(this.products)
-    // for(let i=0;i<this.products.length;i++)
-    // {
-    //   this.products[i].images[0].path = this.s3url+this.products[i].images[0].path
-    // }
+    this.cart_count = data.cart_count
+    localStorage.setItem("cart_count",data.cart_count)
+    }
+    else if(type == POST_DATA)
+    {
+      console.log("add to cart",data)
+      this.cart_count = data.cart_count
+      localStorage.setItem("cart_count",data.cart_count)
     }
     if (infiniteScroll) {
       infiniteScroll.target.complete();
@@ -163,6 +168,7 @@ export class ProductsPage implements OnInit {
   popover.onDidDismiss().then((data)=>{
    if(data.data)
    {
+    this.infiniteScroll.disabled = true;
      console.log("hello")
      
      if(data.data == 2)
@@ -229,6 +235,7 @@ export class ProductsPage implements OnInit {
       buttons: [{
         text: 'Price - high to low',
         handler: () => {
+          this.infiniteScroll.disabled = true;
           this.page_count=1
           this.products= []
           this.sortType='DESC'
@@ -237,6 +244,7 @@ export class ProductsPage implements OnInit {
       }, {
         text: 'Price - low to high',
         handler: () => {
+          this.infiniteScroll.disabled = true;
           this.page_count=1
           this.products= []
           this.sortType='ASC'
@@ -279,12 +287,14 @@ export class ProductsPage implements OnInit {
            (data)=>this.handleResponse(data,POST_DATA),
            (error)=>this.handleError(error)
          )
-         this.products[index].cart_count++
+        //  this.products[index].cart_count++
         //  this.getData()
 
         let name = this.products[index].name
 
         this.presentToastSuccess("One ' " + name +" ' added to cart.");
+        // this.cart_count++
+        localStorage.setItem('cart_count',this.cart_count)
     }
 
     else{

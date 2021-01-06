@@ -10,103 +10,8 @@ import { ProductSearchService } from 'src/app/services/product-search.service';
 import { HomeService } from 'src/app/services/home/home.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { IonSlides} from '@ionic/angular';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
-
-export const CATEGORIES = [
-  { id: 1, name: 'Alternator & Parts' },
-  { id: 2, name: 'Bearings' },
-  { id: 3, name: 'Break System' },
-  { id: 4, name: 'Clutch Parts' },
-  { id: 5, name: 'Container Parts' },
-  { id: 6, name: 'Engine Parts' },
-  { id: 8, name: 'Gear Parts' },
-  { id: 7, name: 'Mixer Tank Accessories' },
-  { id: 9, name: 'Startter Systme' },
-  { id: 10, name: 'Steering System' },
-]
-
-export const BANNERS: Array<any> = [
-  { id: 1, title: 'Hydrogen', imgUrl: 'assets/banners/b1.jpeg' },
-  { id: 2, title: 'Hydrogen', imgUrl: 'assets/banners/b2.jpg' },
-  { id: 3, title: 'Hydrogen', imgUrl: 'assets/banners/b3.jpg' },
-  { id: 4, title: 'Hydrogen', imgUrl: 'assets/banners/b4.jpg' },
-];
-
-export const BANNERS_LARGE: Array<any> = [
-  { id: 1, title: 'Hydrogen', imgUrl: 'assets/banners/b1_large.jpg'},
-  { id: 2, title: 'Hydrogen', imgUrl: 'assets/banners/b2_large.jpg' },
-  { id: 3, title: 'Hydrogen', imgUrl: 'assets/banners/b3.jpg' },
-  { id: 4, title: 'Hydrogen', imgUrl: 'assets/banners/b4.jpg' },
-];
-
-export const BANNERS_COMBINED: Array<any> = [
-  {
-    id:1,
-    title:'Hydrogen',
-    desktopImg:'assets/banners/b1_large.jpg',
-    mobileImg:'assets/banners/b1.jpeg',
-  },
-  {
-    id:2,
-    title:'Hydrogen',
-    desktopImg:'assets/banners/b2_large.jpg',
-    mobileImg:'assets/banners/b2.jpg',
-  },
-  {
-    id:3,
-    title:'Hydrogen',
-    desktopImg:'assets/banners/b3_large.jpg',
-    mobileImg:'assets/banners/b3.jpg',
-  },
-  {
-    id:4,
-    title:'Hydrogen',
-    desktopImg:'assets/banners/b2_large.jpg',
-    mobileImg:'assets/banners/b4.jpg',
-  },
-]
-
-
-
-export const MANUFACTURES: Array<any> = [
-  { id: 1, name: 'VOLVO', imgUrl: 'assets/logos/volvo.png' },
-  { id: 2, name: 'MAN', imgUrl: 'assets/logos/man.png' },
-  { id: 3, name: 'SCANIA', imgUrl: 'assets/logos/scania.png' },
-  { id: 4, name: 'DAF', imgUrl: 'assets/logos/daf.png' },
-  { id: 5, name: 'IVECO', imgUrl: 'assets/logos/iveco.png' },
-  { id: 6, name: 'RENAULT', imgUrl: 'assets/logos/renault.jpg' },
-  { id: 7, name: 'SANY', imgUrl: 'assets/logos/man.png' },
-  { id: 8, name: 'UD TRUCKS', imgUrl: 'assets/logos/man.png' },
-  { id: 9, name: 'HINO', imgUrl: 'assets/logos/man.png' },
-  { id: 10, name: 'CUMMINS', imgUrl: 'assets/logos/man.png' },
-  { id: 11, name: 'DEUTZ', imgUrl: 'assets/logos/man.png' },
-  { id: 12, name: 'HOWO', imgUrl: 'assets/logos/man.png' },
-  { id: 13, name: 'KING LONG', imgUrl: 'assets/logos/man.png' },
-  { id: 14, name: 'HIGER', imgUrl: 'assets/logos/man.png' },
-  { id: 15, name: 'FOTON', imgUrl: 'assets/logos/man.png' },
-  { id: 16, name: 'DONG FENG', imgUrl: 'assets/logos/man.png' },
-  { id: 17, name: 'YUTONG', imgUrl: 'assets/logos/man.png' },
-  { id: 18, name: 'ZF', imgUrl: 'assets/logos/man.png' },
-  { id: 19, name: 'EURORICAMBI', imgUrl: 'assets/logos/man.png' },
-  { id: 20, name: 'SCHWING STETTER', imgUrl: 'assets/logos/man.png' },
-  { id: 21, name: 'PM', imgUrl: 'assets/logos/man.png' },
-  { id: 22, name: 'LIEBHERR', imgUrl: 'assets/logos/man.png' },
-  { id: 23, name: 'HYUNDAI', imgUrl: 'assets/logos/man.png' },
-  { id: 24, name: 'BMW', imgUrl: 'assets/logos/man.png' },
-  { id: 25, name: 'WABCO', imgUrl: 'assets/logos/man.png' },
-  { id: 26, name: 'MERCEDES BENZ', imgUrl: 'assets/logos/man.png' },
-  { id: 27, name: 'ROBERTS', imgUrl: 'assets/logos/man.png' },
-  { id: 28, name: 'MAXPART', imgUrl: 'assets/logos/man.png' },
-  { id: 29, name: 'BOSCH', imgUrl: 'assets/logos/man.png' },
-  { id: 30, name: 'SKF', imgUrl: 'assets/logos/man.png' },
-  { id: 31, name: 'FAG', imgUrl: 'assets/logos/man.png' },
-  { id: 32, name: 'INA', imgUrl: 'assets/logos/man.png' },
-  { id: 33, name: 'TIMKEN', imgUrl: 'assets/logos/man.png' },
-  { id: 34, name: 'NSK', imgUrl: 'assets/logos/man.png' },
-  { id: 35, name: 'KOYO', imgUrl: 'assets/logos/man.png' },
-  { id: 36, name: 'NTN', imgUrl: 'assets/logos/man.png' },
-  { id: 37, name: 'PORSCHE', imgUrl: 'assets/logos/man.png' }
-]
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
@@ -190,17 +95,6 @@ export class HomePage implements OnInit {
     slidesPerView: 2.7,
     spaceBetween: 5,
   }
-  // topSlides = {
-  //   slidesPerView: 2.2,
-  //   spaceBetween: 5,
-  // }
-  // recommendedSlides = {
-  //   slidesPerView: 1.5,
-  //   initialSlide: 1,
-  //   spaceBetween: 5,
-  //   centeredSlides: true,
-  // }
-
 
   productSlides = window.matchMedia("(max-width: 320px)").matches ? {
     slidesPerView: 1.5,
@@ -234,8 +128,7 @@ export class HomePage implements OnInit {
         spaceBetween: 10,
         autoplay:true,
         speed:900,
-        
-       
+
       }
 
 
@@ -245,22 +138,26 @@ export class HomePage implements OnInit {
   // topSearches = PRODUCTS;
   // categories = CATEGORIES
   // products = PRODUCTS
-   banners :any
+  banners :any
   s3url:string
   brands:any
   categories:any
   products:any
   data:any
-  banners_combined = BANNERS_COMBINED;
+  client_id:any
+  cart_count:any
   public searchTerm: FormControl;
   public searchItems: any;
   searching: any = false;
-manufactures = MANUFACTURES
+
   myDate: String = new Date().toISOString();
   banner_image: any;
   constructor(public router: Router, private platform: Platform,
     private searchService: ProductSearchService,private homeService:HomeService,
-    private badge: Badge,private utils:UtilsService,private loadingController:LoadingController) {
+    private badge: Badge,private utils:UtilsService,
+    private loadingController:LoadingController,
+    private authService:AuthenticationService) {
+
       
       this.s3url = utils.getS3url()
     this.badge.set(10);
@@ -270,11 +167,13 @@ manufactures = MANUFACTURES
     this.checkWidth()
     // this.presentLoading()
     this.getData()
+    this.cart_count = localStorage.getItem('cart_count')
   }
 
   ionViewWillEnter() {
     console.log("view")
     this.searchTerm.reset()
+    this.cart_count= localStorage.getItem('cart_count')
   }
 
   ngOnInit() {
@@ -372,8 +271,15 @@ manufactures = MANUFACTURES
   }
 
   getData() {
+    if (this.authService.isAuthenticated()) {
+      this.client_id = localStorage.getItem('client_id')  
+    }
+    else{
+      this.client_id = null 
+    } 
+    console.log("client_id",this.client_id)
     this.presentLoading().then(()=>{
-      this.homeService.getHomeDetails().subscribe(
+      this.homeService.getHomeDetails(this.client_id).subscribe(
         (data) => this.handleResponse(data),
         (error) => this.handleError(error)
       )})
@@ -383,6 +289,7 @@ manufactures = MANUFACTURES
   {
    this.loadingController.dismiss()
     console.log(data)
+    localStorage.setItem('cart_count',data.cart_count)
 
     this.data = data
     

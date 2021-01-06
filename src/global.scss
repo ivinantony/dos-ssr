@@ -25,53 +25,50 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 * {
-    font-family: 'Nunito', sans-serif !important;
-    outline: 0 !important;
-  }
-  .paymentOptions{
-    
-  
-      height: 100%;
-      
-      position: absolute;
-  
-    
-    
-  }
+  font-family: "Nunito", sans-serif !important;
+  outline: 0 !important;
+}
+.paymentOptions {
+  height: 100%;
+  position: absolute;
+}
 
-  .popover{
-    --min-width: 300px;
-  }
+.popover {
+  --min-width: 300px;
+}
 
-  .custom-toast-success{
-    --background:#212121;
-      color: white;
-    --border-radius:5px;
-    --min-height:75px;
-    font-size: 17px;
-   
- 
-  }
+.custom-toast-success {
+  --background: #212121;
+  color: white;
+  --border-radius: 5px;
+  --min-height: 75px;
+  font-size: 17px;
+}
 
-  .custom-toast-danger{
-    --border-radius:5px;
-    --min-height:75px;
-    font-size: 17px;
-  }
- 
+.custom-toast-danger {
+  --border-radius: 5px;
+  --min-height: 75px;
+  font-size: 17px;
+}
 
-  @media screen and (max-width: 768px) {
-    .paymentOptions{
-    
-      .modal-wrapper{
-        height: 70%;
-        top: 30%;
-        // position: absolute;
-      }
-      
-      
+.cartmodal {
+  --min-width: 70vw;
+}
+
+@media screen and (max-width: 768px) {
+  .paymentOptions {
+    .modal-wrapper {
+      height: 70%;
+      top: 30%;
+      // position: absolute;
     }
   }
+}
+
+// @media (min-width:768px)
+// {
+
+// }
 // @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) and (-webkit-min-device-pixel-ratio: 1) {
 //   ion-toolbar {
 //     display: none;
@@ -82,4 +79,3 @@
 //     display: none;
 //   }
 // }
-

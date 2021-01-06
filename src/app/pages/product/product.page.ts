@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import {
   AlertController,
   IonFab,
+  IonRouterOutlet,
   IonSlides,
   LoadingController,
   ModalController,
@@ -14,8 +15,10 @@ import { AuthenticationService } from "src/app/services/authentication.service";
 import { CartService } from "src/app/services/cart/cart.service";
 import { ProductDetailsService } from "src/app/services/productDetails/product-details.service";
 import { UtilsService } from "src/app/services/utils.service";
-import { CATEGORIES } from "../home/home.page";
 import { ImagemodalPage } from "../imagemodal/imagemodal.page";
+import { CartPage } from "../cart/cart.page";
+import { CartmodalPage } from "../cartmodal/cartmodal.page";
+
 
 const GET_DATA = 200;
 const POST_DATA = 210;
@@ -55,7 +58,6 @@ export class ProductPage implements OnInit {
   }
 
   product: any;
-  categories = CATEGORIES;
   productId: any;
   catId: any;
   productDetails: any;
@@ -66,6 +68,7 @@ export class ProductPage implements OnInit {
   client_id: any;
   myThumbnail: any;
   myFullresImage: any;
+  appUrl:any
   constructor(
     private platform: Platform,
     private modalController: ModalController,
@@ -79,7 +82,8 @@ export class ProductPage implements OnInit {
     private cartService: CartService,
     private authService: AuthenticationService,
     private alertController: AlertController,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private routerOutlet: IonRouterOutlet
   ) {
     this.productId = parseInt(this.activatedRoute.snapshot.paramMap.get("id"));
     this.catId = parseInt(this.activatedRoute.snapshot.paramMap.get("catId"));
@@ -95,7 +99,10 @@ export class ProductPage implements OnInit {
     this.client_id = localStorage.getItem("client_id");
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+
+    this.appUrl = window.location.hostname + this.router.url
+  }
 
   ionViewWillEnter() {
     this.getData();
@@ -182,8 +189,11 @@ export class ProductPage implements OnInit {
 
   async presentModal() {
     const modal = await this.modalController.create({
-      component: ImagemodalPage,
+      component: CartmodalPage,
+      cssClass:'cartmodal',
       componentProps: { value: 123 },
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl
     });
 
     await modal.present();
@@ -191,6 +201,8 @@ export class ProductPage implements OnInit {
     const data = await modal.onDidDismiss();
     console.log(data);
   }
+
+
   checkWidth() {
     if (this.platform.width() > 768) {
       this.recommendedSlides = {
@@ -227,8 +239,31 @@ export class ProductPage implements OnInit {
       this.productDetails.cart_count++;
       //  this.getData()
       let name = this.productDetails.name
+      this.presentToastSuccess(data.qty + " ' " + name +" ' added to cart.");
+      this.getData()
+    } else {
+      this.presentLogin();
+    }
+  }
 
-      this.presentToastSuccess(data.qty + " '" + name +" ' added to cart.");
+  buyNow()
+  {
+    if (this.authService.isAuthenticated()) {
+      let data = {
+        product_id: this.productDetails.id,
+        client_id: this.client_id,
+        qty:this.qty
+      };
+      this.cartService.addToCartQty(data).subscribe(
+        (data) => this.handleResponse(data, POST_DATA),
+        (error) => this.handleError(error)
+      );
+      this.productDetails.cart_count++;
+      //  this.getData()
+      let name = this.productDetails.name
+      this.presentModal()
+      this.getData()
+      // this.presentToastSuccess(data.qty + " '" + name +" ' added to cart.");
     } else {
       this.presentLogin();
     }
@@ -302,9 +337,13 @@ export class ProductPage implements OnInit {
 
   qtyIncrease() {
     this.qty = this.qty + 1;
+    
   }
   qtyDecrease() {
-    this.qty = this.qty - 1;
+    if(this.qty>1)
+      {
+    this.qty = this.qty - 1;  
+      }
   }
 
 

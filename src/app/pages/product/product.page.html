@@ -4,12 +4,17 @@
       <ion-back-button defaultHref="/home" text=""></ion-back-button>
     </ion-buttons>
     <ion-title>PRODUCT</ion-title>
-    <ion-buttons slot="end" class="ion-hide-md-up">
+    <ion-buttons slot="end" class="ion-hide-md-up" id="cart-btn">
       <ion-icon
         name="cart-outline"
         class="ion-padding"
         (click)="router.navigate(['/cart'])"
       ></ion-icon>
+      <ion-badge id="cart-badge" color="danger">{{data?.cart_count}}</ion-badge>
+      <!-- <button id="cart-btn" ion-button icon-only (click)="router.navigate(['/cart'])" fill="clear">
+        <ion-icon name="cart-outline" ></ion-icon>
+        <ion-badge id="cart-badge">{{data?.cart_count}}</ion-badge>
+      </button> -->
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -87,8 +92,12 @@
             </ion-col>
             <ion-col size="6" class="addtocart">
               <ion-button (click)="addToCart()" color="dark" expand="full" [disabled]="data?.product.in_stock == 0">
-                <ion-icon slot="start" name="cart"></ion-icon>
                 ADD TO CART
+              </ion-button>
+            </ion-col>
+            <ion-col size="4"  class="ion-padding addtocart">
+              <ion-button (click)="buyNow()" color="dark" expand="full" [disabled]="data?.product.in_stock == 0">
+                BUY NOW
               </ion-button>
             </ion-col>
           </ion-row>
@@ -207,6 +216,75 @@
       theme="snow"
       ></quill-view>
     </div>
+    <!-- <div class="ion-padding-horizontal">
+      <h6>Share Product :</h6>
+      <ul>
+      <li>
+      <ion-button
+      color="dark"
+      href="https://www.facebook.com/sharer/sharer.php?u={{this.appUrl}}"
+      target="_blank"
+      fill="clear"
+      size="small"
+      >
+      <ion-icon
+      slot="icon-only"
+      class="facebook"
+      name="logo-facebook"
+      ></ion-icon>
+      Facebook
+      </ion-button>
+      </li>
+      <li>
+      <ion-button
+      color="dark"
+      href="http://twitter.com/share?url={{this.appUrl}}"
+      target="_blank"
+      fill="clear"
+      size="small"
+      >
+      <ion-icon
+      slot="icon-only"
+      class="twitter"
+      name="logo-twitter"
+      ></ion-icon>
+      Twitter
+      </ion-button>
+      </li>
+      <li>
+      <ion-button
+      color="dark"
+      href="https://plus.google.com/share?url={{this.appUrl}}"
+      target="_blank"
+      fill="clear"
+      size="small"
+      >
+      <ion-icon
+      slot="icon-only"
+      class="google"
+      name="logo-google"
+      ></ion-icon>
+      Google
+      </ion-button>
+      </li>
+      <li>
+      <ion-button
+      color="dark"
+      target="_blank"
+      href="whatsapp://send?text=Hi%20please%20checkout%20this%20product,{{this.appUrl}}"
+      fill="clear"
+      size="small"
+      >
+      <ion-icon
+      slot="icon-only"
+      class="whatsapp"
+      name="logo-whatsapp"
+      ></ion-icon>
+      Whatsapp
+      </ion-button>
+      </li>
+      </ul>
+      </div> -->
 
   </div>
 

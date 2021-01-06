@@ -4,7 +4,6 @@ import { LoadingController, MenuController, Platform, ToastController } from '@i
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { HttpClient } from '@angular/common/http';
-import { CATEGORIES } from './pages/home/home.page';
 import { NavigationEnd, Router, RoutesRecognized } from '@angular/router';
 import { AuthenticationService } from './services/authentication.service';
 import { SwUpdate } from '@angular/service-worker';
@@ -24,7 +23,7 @@ import { Storage } from '@ionic/storage';
 })
 export class AppComponent implements OnInit {
   public selectedIndex = 0;
-  categories = CATEGORIES
+
   searching: boolean = false
   public searchTerm: FormControl;
   searchItems: Array<any>;
@@ -139,7 +138,6 @@ export class AppComponent implements OnInit {
 
   navigateToProducts(index: number) {
     this.selectedIndex = index;
-    this.router.navigate(['products', this.categories[index].id, { name: this.categories[index].name }])
   }
   logout() {
     this.presentLoading().then(() => {

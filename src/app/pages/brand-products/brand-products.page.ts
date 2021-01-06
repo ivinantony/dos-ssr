@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import {
   ActionSheetController,
@@ -6,13 +6,15 @@ import {
   LoadingController,
   Platform,
   PopoverController,
-  ToastController
+  ToastController,
+  IonInfiniteScroll,
 } from "@ionic/angular";
+import { IonContent } from '@ionic/angular';
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { BrandProductService } from "src/app/services/brandProducts/brand-product.service";
 import { CartService } from "src/app/services/cart/cart.service";
 import { UtilsService } from "src/app/services/utils.service";
-import { BANNERS } from "../home/home.page";
+
 import { FilterComponent } from '../filter/filter.component';
 
 const GET_DATA = 200;
@@ -24,8 +26,9 @@ const DEL_DATA = 220;
   styleUrls: ["./brand-products.page.scss"],
 })
 export class BrandProductsPage implements OnInit {
+  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+  @ViewChild(IonContent, { static: false }) content: IonContent;
   products: Array<any> = [];
-  banners: Array<any> = BANNERS;
   sortOptions: Array<any> = [
     {
       option: "Price - High to low",
@@ -88,6 +91,7 @@ export class BrandProductsPage implements OnInit {
   current_page: number;
   client_id: any;
   data: any;
+  cart_count:any
   sortType:any=null
   constructor(
     private brandProductService: BrandProductService,
@@ -109,7 +113,9 @@ export class BrandProductsPage implements OnInit {
     this.s3url = utils.getS3url();
     this.checkWidth();
     console.log("first")
-    // this.getData();
+    this.page_count=1
+    this.products= []
+    this.getData()
     
   }
   checkWidth() {
@@ -134,10 +140,7 @@ export class BrandProductsPage implements OnInit {
 
   ionViewWillEnter()
   {
-    this.page_count=1
-    this.products= []
-    this.getData()
-    
+    this.cart_count = localStorage.getItem('cart_count')
   }
 
   getData(infiniteScroll?) {
@@ -153,6 +156,7 @@ export class BrandProductsPage implements OnInit {
   }
 
   handleResponse(data, type, infiniteScroll?) {
+    this.infiniteScroll.disabled = false;
     this.loadingController.dismiss()
     console.log(infiniteScroll)
     if (type == GET_DATA) {
@@ -160,12 +164,18 @@ export class BrandProductsPage implements OnInit {
       console.log(data);
       this.page_limit = data.page_count;
       this.data = data;
+      this.cart_count = data.cart_count
+      localStorage.setItem("cart_count",data.cart_count)
       this.data.product.forEach((element) => {
         this.products.push(element);
       });
       console.log(this.products, "API called");
-
-
+    }
+    else if(type == POST_DATA)
+    {
+      console.log("add to cart",data)
+      this.cart_count = data.cart_count
+      localStorage.setItem("cart_count",data.cart_count)
     }
     console.log(data);
 
@@ -209,6 +219,7 @@ export class BrandProductsPage implements OnInit {
       buttons: [{
         text: 'Price - high to low',
         handler: () => {
+          this.infiniteScroll.disabled = true;
           this.page_count=1
           this.products= []
           this.sortType='DESC'
@@ -217,6 +228,7 @@ export class BrandProductsPage implements OnInit {
       }, {
         text: 'Price - low to high',
         handler: () => {
+          this.infiniteScroll.disabled = true;
           this.page_count=1
           this.products= []
           this.sortType='ASC'
@@ -260,20 +272,12 @@ export class BrandProductsPage implements OnInit {
       let name = this.products[index].name
 
         this.presentToastSuccess("One ' " + name +" ' added to cart.");
+        localStorage.setItem('cart_count',this.cart_count)
     } else {
       this.presentLogin();
     }
   }
-  removeFromcart(index: number) {
-    this.cartService
-      .removeFromCart(this.client_id, this.products[index].id)
-      .subscribe(
-        (data) => this.handleResponse(data, DEL_DATA),
-        (error) => this.handleError(error)
-      );
-    // this.getData()
-    this.products[index].cart_count--;
-  }
+ 
   async presentLoading() {
     const loading = await this.loadingController.create({
       spinner: 'crescent',
@@ -303,6 +307,8 @@ export class BrandProductsPage implements OnInit {
     });  
    popover.onDidDismiss().then((data)=>{
     if(data.data)
+    this.infiniteScroll.disabled = true;
+
     {
       console.log("hello")
       

@@ -1,6 +1,20 @@
 .icon{
   font-size: 1.2rem;
 }
+
+#cart-btn {
+  position: relative;
+  ion-icon{
+    font-size: 22px;
+  }
+}
+
+#cart-badge {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
 .banner {
     ion-slide {
       background-position: center;

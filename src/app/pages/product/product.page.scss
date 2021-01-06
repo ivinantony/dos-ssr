@@ -9,6 +9,19 @@
   margin-right: auto;
 }
 
+#cart-btn {
+  position: relative;
+  ion-icon{
+    font-size: 22px;
+  }
+}
+
+#cart-badge {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
 ion-thumbnail{
   --size:79px;
   border: .5px solid #4343;
@@ -292,6 +305,28 @@ ion-slides{
  .thumbnail{
    cursor: pointer;
  }
+
+ li {
+  display: inline-block;
+  margin: 0 0.3em;
+  }
+  .facebook {
+  margin: 0 0.3em;
+  color: #3d5897;
+  }
+  .twitter {
+  margin: 0 0.3em;
+  color: #1da2f1;
+  }
+  .google {
+  margin: 0 0.3em;
+  color: #ea4435;
+  }
+  .whatsapp {
+  margin: 0 0.3em;
+  color: #25cc62;
+  }
+  
 @media only screen and (max-width: 320px){
 
 }

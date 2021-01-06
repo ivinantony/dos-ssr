@@ -173,7 +173,11 @@ const routes: Routes = [
   {
     path: 'recharge',
     loadChildren: () => import('./pages/recharge/recharge.module').then( m => m.RechargePageModule)
+  },  {
+    path: 'cartmodal',
+    loadChildren: () => import('./pages/cartmodal/cartmodal.module').then( m => m.CartmodalPageModule)
   }
+
 
 
 
