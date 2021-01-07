@@ -197,4 +197,25 @@ export class AppComponent implements OnInit {
   handleError(error){
     console.log(error)
   }
+
+
+
+  goToOffer()
+  {this.menuController.close()
+    this.router.navigate(['offer'])
+  }
+  goToHome()
+  {this.menuController.close()
+    this.router.navigate(['home'])
+  }
+  goToCategories()
+  {this.menuController.close()
+    this.router.navigate(['categories'])
+  }
+  goToManufacturers()
+  {this.menuController.close()
+    this.router.navigate(['manufacturers'])
+  }
+
+
 }

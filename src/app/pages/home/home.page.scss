@@ -329,12 +329,17 @@ ion-toolbar {
     height: 100%;
     padding-top: 10px;
     padding-bottom: 20px;
+    box-shadow: none; 
     h1{
       margin-top: 20px;
       margin-bottom: 20px;
     font-size: 22px;
     }
   }
+  ion-col{
+    border-right: 1px solid #e5e5e5;
+  }
+
 }
 
 .footer

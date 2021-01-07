@@ -3,14 +3,14 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home" text=""></ion-back-button>
     </ion-buttons>
-    <ion-title>PRODUCT</ion-title>
+    <ion-title></ion-title>
     <ion-buttons slot="end" class="ion-hide-md-up" id="cart-btn">
       <ion-icon
         name="cart-outline"
         class="ion-padding"
         (click)="router.navigate(['/cart'])"
       ></ion-icon>
-      <ion-badge id="cart-badge" color="danger">{{data?.cart_count}}</ion-badge>
+      <ion-badge id="cart-badge" color="danger" *ngIf="data?.cart_count>0">{{data?.cart_count}}</ion-badge>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -304,7 +304,7 @@
     <ion-col size="12">
       <section id="recommended">
         <ion-item lines="none" class="ion-text-center">
-          <ion-label class="title">Recommended for You</ion-label>
+          <ion-label class="title">Recommended For You</ion-label>
           <!-- <ion-button expand="block" fill="clear" shape="round" slot="end">
             View all
           </ion-button> -->
