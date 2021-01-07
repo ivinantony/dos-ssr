@@ -31,8 +31,8 @@ export class ModeofpaymentPage implements OnInit {
 
   getData()
   {
- 
-    this.paymentservice.getPaymentOptions().subscribe(
+    let client_id = localStorage.getItem('client_id')
+    this.paymentservice.getPaymentOptions(client_id).subscribe(
       (data) => this.handleResponseData(data, GET_DATA),
       (error) => this.handleError(error)
     );

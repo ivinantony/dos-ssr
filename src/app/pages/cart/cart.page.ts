@@ -26,6 +26,7 @@ import { Renderer2, Inject } from "@angular/core";
 import { DOCUMENT } from "@angular/common";
 import { hasLifecycleHook } from '@angular/compiler/src/lifecycle_reflector';
 import { Console } from 'console';
+import { CartcountService } from "src/app/cartcount.service";
 declare var google;
 
 declare var RazorpayCheckout: any;
@@ -81,6 +82,7 @@ export class CartPage implements OnInit {
     private renderer2: Renderer2,
     private zone:NgZone,
     private loadingController:LoadingController,
+    private cartCountService:CartcountService,
     @Inject(DOCUMENT) private _document: Document
   ) {
     this.client_id=localStorage.getItem("client_id")
@@ -280,6 +282,7 @@ export class CartPage implements OnInit {
     else if (type == REMOVE)
     {
       localStorage.setItem('cart_count',data.cart_count)
+      this.cartCountService.setCartCount(data.cart_count)
       console.log("removed",data)
     }
     // else if (type == GET_ADDRESS) {
@@ -422,6 +425,11 @@ export class CartPage implements OnInit {
       this.presentToastSuccessQtyChange("You've changed "+ name +" quantity to "+qty)
     }
     else{
+      let cartCount  =  Number(localStorage.getItem('cart_count'))
+      let count  = cartCount- 1
+      let data  = count.toString()
+      localStorage.setItem('cart_count',data)
+      this.cartCountService.setCartCount(data)
       this.presentToastDanger("You've removed "+ name +" from cart.")
     }
   }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CartcountService } from 'src/app/cartcount.service';
 
 @Component({
   selector: 'app-order-placed',
@@ -8,7 +9,13 @@ import { Router } from '@angular/router';
 })
 export class OrderPlacedPage implements OnInit {
 
-  constructor(public router:Router) { }
+  constructor(public router:Router,
+    private cartCountService:CartcountService
+    ) 
+  { 
+    localStorage.removeItem('cart_count')
+    cartCountService.setCartCount(0)
+  }
 
   ngOnInit() {
   }

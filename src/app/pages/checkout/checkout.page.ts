@@ -209,6 +209,11 @@ this.loadingController.dismiss()
         // this.presentToastDanger("Sorry Wallet doesnt have enough amount. ")
         this.presentAlertConfirmWallet()
       }
+      if(error.status == 500)
+      {
+       
+        this.qtyNotSufficient(error.error.message)
+      }
     }
   }
 
@@ -262,7 +267,7 @@ this.loadingController.dismiss()
             address_id: this.address_id,
             payment_option_id: this.payment_id,
             product_total: this.data.total_amount,
-            payable_amount: this.data.payable_amount,
+            payable_amount:Math.round(this.data.payable_amount),
             delivery_charge: this.data.delivery_charge
           };
 
@@ -329,11 +334,28 @@ this.loadingController.dismiss()
             console.log('Confirm Cancel: blah');
           }
         }, {
-          text: 'Okay',
+          text: 'Okey',
           handler: () => {
-            console.log('Confirm Okay');
+            console.log('Confirm Okey');
             let balance = this.data.payable_amount - this.data.wallet_balance
             this.router.navigate(['recharge',{balance}])
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+  async qtyNotSufficient(msg) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Error',
+      message: msg,
+      buttons: [
+         {
+          text: 'Okey',
+          handler: () => {
+            this.router.navigate(['cart'])
           }
         }
       ]

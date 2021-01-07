@@ -15,11 +15,11 @@ export class PaymentService {
   {
     this.url = utils.getApiPath()
    }
-   public getPaymentOptions()
+   public getPaymentOptions(client_id:any)
    {
      const headers = this.headerservice.getHttpHeaders()
      return this.httpclient.get(
-      this.url + "payment-option",{ headers }).pipe(map(res=>{return res}));
+      this.url + "payment-option?client_id="+client_id,{ headers }).pipe(map(res=>{return res}));
    }
    public capturePayment(data:any)
    {

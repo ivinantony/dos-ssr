@@ -123,9 +123,9 @@
         </ion-col>
       </ion-row>
     <div class="ion-text-center morebtn">
-      <ion-button (click)="viewAll()" shape="round" fill="outline" color="dark">
-        <ion-icon slot="start" name="add" ></ion-icon>
-        VIEW ALL CATEGORIES
+      <ion-button (click)="viewAll()" shape="round" fill="solid" color="dark">
+        <ion-icon name="chevron-down-outline"></ion-icon>
+        ALL CATEGORIES
       </ion-button>
     </div>
       
@@ -198,8 +198,8 @@
     </div>
 
     <div class="ion-text-center morebtn">
-      <ion-button (click)="router.navigate(['/offer'])" shape="round" fill="outline" color="dark">
-        <ion-icon slot="start" name="add" ></ion-icon>
+      <ion-button (click)="router.navigate(['/offer'])" shape="round" fill="solid" color="dark">
+        <ion-icon slot="start" name="chevron-down-outline"></ion-icon>
         VIEW ALL DEALS
       </ion-button>
     </div>
@@ -240,8 +240,8 @@
         </ion-col>
       </ion-row>
       <div class="ion-text-center morebtn">
-        <ion-button (click)="router.navigate(['/manufacturers'])" shape="round" fill="outline" color="dark">
-          <ion-icon slot="start" name="add" ></ion-icon>
+        <ion-button (click)="router.navigate(['/manufacturers'])" shape="round" fill="solid" color="dark">
+          <ion-icon slot="start" name="chevron-down-outline" ></ion-icon>
           VIEW ALL MANUFACTURERS
         </ion-button>
       </div>
@@ -249,17 +249,6 @@
     </ion-grid>
   </section>
 
- <!-- Banner -3 start -->
- <!-- <section id="banr">
-  <ion-slides class="banner" [options]="bannerSlideOpts3">
-    <ion-slide *ngFor="let item of banners_combined; let i=index">
-    <picture>
-      <source media="(min-width: 1024px)" srcset="{{item.desktopImg}}" >
-      <img src="{{item.mobileImg}}" />
-    </picture>
-    </ion-slide>     
-  </ion-slides>
-</section> -->
 
 <section class="banr">
   <ion-row class="main_row">
@@ -293,35 +282,6 @@
 
 
 
-<!-- Banner -3 end -->
-
-  <!-- <section id="recommended">
-    <ion-item lines="none">
-      <ion-label class="title">Recommended for You</ion-label>
-      <ion-button expand="block" fill="clear" shape="round" slot="end">
-        View all
-      </ion-button>
-    </ion-item>
-    <div class="sliderWrapper">
-    <ion-slides [options]="productSlides" class="recommended">
-      <ion-slide *ngFor="let item of products; let i=index">
-        <ion-card (click)="viewProduct(i)">
-          <img src="{{s3url+item.images[0]?.path}}"alt="">
-        <ion-card-content>
-          <p>{{item.name}}</p>
-        </ion-card-content>
-        </ion-card>
-            </ion-card>
-      </ion-slide>
-    </ion-slides>
-    <ion-button (click)="swipeNext()" expand="block" fill="clear" shape="round" class="btnslide ion-no-padding">
-      <ion-icon name="chevron-forward-outline"></ion-icon>
-    </ion-button>
-    <ion-button (click)="swipePrev()" expand="block" fill="clear" shape="round" class="btnslideleft ion-no-padding">
-      <ion-icon name="chevron-back-outline"></ion-icon>
-    </ion-button>
-  </div>
-  </section> -->
 
   <div id="top">
     <ion-item lines="none" class="ion-text-center">
@@ -344,10 +304,7 @@
           </ion-card-content>
           </ion-card>
         </ion-slide>
-        
-        <!-- <ion-button (click)="swipeNext()">Next</ion-button>
-        <ion-button (click)="swipeNext()">Next</ion-button> -->
-        
+       
   
       </ion-slides>
       <ion-button (click)="swipeNextRec()" expand="block" fill="clear" shape="round" class="btnslide ion-no-padding">
@@ -488,26 +445,10 @@
 
   </ion-col>
 
-  
-
-  <!-- <ion-col size="12" size-md="4" >
-    
-      <h5>Keep In Touch</h5>
-   
-    <ion-col size="12" class="socialIcons">
-        <img src="../../../assets/icon/icons8-facebook.svg" alt="">
-        <img src="../../../assets/icon/icons8-instagram.svg" alt="">
-        <img src="../../../assets/icon/icons8-twitter.svg" alt="">
-        <img src="../../../assets/icon/icons8-play-button.svg" alt="">
-    </ion-col>
-  </ion-col> -->
-
- 
-
   </ion-row>
 
 </div>
-                  <!--       skeleton        -->
+                                                                        <!--       skeleton        -->
 
   <div *ngIf="!data">
     <div class="ion-padding custom-skeleton">
@@ -517,13 +458,15 @@
     <ion-skeleton-text animated style="width: 100%;height: 400px;"></ion-skeleton-text>
 
     <ion-grid fixed>
-      <ion-row style="padding-left: 25px;"> 
-        <ion-col size="6" size-sm="6" size-md="6" size-lg="2" size-xl="2"><ion-skeleton-text animated style="width: 10rem;height: 7rem"></ion-skeleton-text></ion-col>
-        <ion-col size="6" size-sm="6" size-md="6" size-lg="2" size-xl="2"><ion-skeleton-text animated style="width: 10rem;height: 7rem"></ion-skeleton-text></ion-col>
-        <ion-col size="6" size-sm="6" size-md="6" size-lg="2" size-xl="2"><ion-skeleton-text animated style="width: 10rem;height: 7rem"></ion-skeleton-text></ion-col>
-        <ion-col size="6" size-sm="6" size-md="6" size-lg="2" size-xl="2"><ion-skeleton-text animated style="width: 10rem;height: 7rem"></ion-skeleton-text></ion-col>
-        <ion-col size="6" size-sm="6" size-md="6" size-lg="2" size-xl="2"><ion-skeleton-text animated style="width: 10rem;height: 7rem"></ion-skeleton-text></ion-col>
-        <ion-col size="6" size-sm="6" size-md="6" size-lg="2" size-xl="2"><ion-skeleton-text animated style="width: 10rem;height: 7rem"></ion-skeleton-text></ion-col>
+      <ion-row > 
+        <ion-col size="6" size-sm="6" size-md="6" size-lg="4" size-xl="2" >
+          <ion-skeleton-text animated style="width: 10rem;height: 7rem" class="skelton"></ion-skeleton-text>
+        </ion-col>
+        <ion-col size="6" size-sm="6" size-md="6" size-lg="2" size-xl="2"><ion-skeleton-text animated style="width: 10rem;height: 7rem" class="skelton"></ion-skeleton-text></ion-col>
+        <ion-col size="6" size-sm="6" size-md="6" size-lg="2" size-xl="2"><ion-skeleton-text animated style="width: 10rem;height: 7rem" class="skelton"></ion-skeleton-text></ion-col>
+        <ion-col size="6" size-sm="6" size-md="6" size-lg="2" size-xl="2"><ion-skeleton-text animated style="width: 10rem;height: 7rem" class="skelton"></ion-skeleton-text></ion-col>
+        <ion-col size="6" size-sm="6" size-md="6" size-lg="2" size-xl="2"><ion-skeleton-text animated style="width: 10rem;height: 7rem" class="skelton"></ion-skeleton-text></ion-col>
+        <ion-col size="6" size-sm="6" size-md="6" size-lg="2" size-xl="2"><ion-skeleton-text animated style="width: 10rem;height: 7rem" class="skelton"></ion-skeleton-text></ion-col>
       </ion-row>
     </ion-grid>
 

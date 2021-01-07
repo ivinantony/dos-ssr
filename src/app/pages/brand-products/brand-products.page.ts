@@ -10,6 +10,7 @@ import {
   IonInfiniteScroll,
 } from "@ionic/angular";
 import { IonContent } from '@ionic/angular';
+import { CartcountService } from "src/app/cartcount.service";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { BrandProductService } from "src/app/services/brandProducts/brand-product.service";
 import { CartService } from "src/app/services/cart/cart.service";
@@ -105,7 +106,8 @@ export class BrandProductsPage implements OnInit {
     private alertController: AlertController,
     private loadingController:LoadingController,
     private popOverCtrl:PopoverController,
-    private toastController:ToastController
+    private toastController:ToastController,
+    private cartCountService:CartcountService
   ) {
     this.client_id = localStorage.getItem("client_id");
 
@@ -176,6 +178,7 @@ export class BrandProductsPage implements OnInit {
       console.log("add to cart",data)
       this.cart_count = data.cart_count
       localStorage.setItem("cart_count",data.cart_count)
+      this.cartCountService.setCartCount(data.cart_count)
     }
     console.log(data);
 

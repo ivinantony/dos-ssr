@@ -10,6 +10,7 @@ import { SortPage } from '../sort/sort.page';
 import { CartService } from 'src/app/services/cart/cart.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { IonContent } from '@ionic/angular';
+import { CartcountService } from 'src/app/cartcount.service';
 const GET_DATA = 200;
 const POST_DATA = 210;
 const DEL_DATA = 220;
@@ -61,7 +62,8 @@ export class ProductsPage implements OnInit {
     private authService:AuthenticationService,
     private alertController:AlertController,
     private popOverCtrl:PopoverController,
-    private toastController:ToastController) {
+    private toastController:ToastController,
+    private cartCountService:CartcountService) {
     this.page_count = 1
     this.checkWidth()
     this.s3url = utils.getS3url()
@@ -125,6 +127,7 @@ export class ProductsPage implements OnInit {
       console.log("add to cart",data)
       this.cart_count = data.cart_count
       localStorage.setItem("cart_count",data.cart_count)
+      this.cartCountService.setCartCount(data.cart_count)
     }
     if (infiniteScroll) {
       infiniteScroll.target.complete();

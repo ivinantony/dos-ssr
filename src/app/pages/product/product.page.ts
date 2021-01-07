@@ -18,6 +18,7 @@ import { UtilsService } from "src/app/services/utils.service";
 import { ImagemodalPage } from "../imagemodal/imagemodal.page";
 import { CartPage } from "../cart/cart.page";
 import { CartmodalPage } from "../cartmodal/cartmodal.page";
+import { CartcountService } from "src/app/cartcount.service";
 
 
 const GET_DATA = 200;
@@ -83,7 +84,8 @@ export class ProductPage implements OnInit {
     private authService: AuthenticationService,
     private alertController: AlertController,
     private loadingController: LoadingController,
-    private routerOutlet: IonRouterOutlet
+    private routerOutlet: IonRouterOutlet,
+    private cartCountService:CartcountService
   ) {
     this.productId = parseInt(this.activatedRoute.snapshot.paramMap.get("id"));
     this.catId = parseInt(this.activatedRoute.snapshot.paramMap.get("catId"));
@@ -132,7 +134,7 @@ export class ProductPage implements OnInit {
     if (type == GET_DATA) {
       this.data = data;
       console.log(data);
-
+      this.cartCountService.setCartCount(data.cart_count)
       this.productDetails = data.product;
       for (let i = 0; i < this.productDetails.images.length; i++) {
         this.productDetails.images[i].path =
@@ -144,7 +146,7 @@ export class ProductPage implements OnInit {
 
       this.loadingController.dismiss();
     }
-    console.log(data);
+   
   }
   handleError(error) {
     this.loadingController.dismiss;
@@ -198,8 +200,13 @@ export class ProductPage implements OnInit {
 
     await modal.present();
 
-    const data = await modal.onDidDismiss();
-    console.log(data);
+    await modal.onDidDismiss().then((data) => {
+      if(data.data = 1)
+      {
+      this.getData();
+      }
+    }); 
+    
   }
 
 
@@ -262,7 +269,7 @@ export class ProductPage implements OnInit {
       //  this.getData()
       let name = this.productDetails.name
       this.presentModal()
-      this.getData()
+      
       // this.presentToastSuccess(data.qty + " '" + name +" ' added to cart.");
     } else {
       this.presentLogin();

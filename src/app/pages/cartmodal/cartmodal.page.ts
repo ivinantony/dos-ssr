@@ -15,6 +15,7 @@ import { AddAddressPage } from "../add-address/add-address.page";
 import { PaytabsService } from "src/app/services/paytabs.service";
 import { Renderer2, Inject } from "@angular/core";
 import { DOCUMENT } from "@angular/common";
+import { CartcountService } from "src/app/cartcount.service";
 declare var google;
 
 
@@ -66,6 +67,7 @@ export class CartmodalPage implements OnInit {
     private paytabService: PaytabsService,
     private renderer2: Renderer2,
     private zone: NgZone,
+    private cartCountService:CartcountService,
     private loadingController: LoadingController,
     @Inject(DOCUMENT) private _document: Document
   ) {
@@ -111,8 +113,9 @@ export class CartmodalPage implements OnInit {
     else 
     {
       let address_id = this.address_id;
-      this.modalController.dismiss()
+      
       this.router.navigate(["checkout", address_id]);
+      this.modalController.dismiss(2)
       console.log(this.selectedAddress);
     }
   }
@@ -157,7 +160,14 @@ export class CartmodalPage implements OnInit {
       }
     } else if (type == GET_PAY) {
       console.log(data);
-    } else {
+    } 
+    else if (type == REMOVE)
+    {
+      localStorage.setItem('cart_count',data.cart_count)
+      this.cartCountService.setCartCount(data.cart_count)
+      console.log("removed",data)
+    }
+    else {
       console.log(data);
     }
   }
@@ -213,6 +223,11 @@ export class CartmodalPage implements OnInit {
         "You've changed " + name + " quantity to " + qty
       );
     } else {
+      let cartCount  =  Number(localStorage.getItem('cart_count'))
+      let count  = cartCount- 1
+      let data  = count.toString()
+      localStorage.setItem('cart_count',data)
+      this.cartCountService.setCartCount(data)
       this.presentToastDanger("You've removed " + name + " from cart.");
     }
   }
@@ -230,7 +245,11 @@ export class CartmodalPage implements OnInit {
   }
 
   close() {
-    this.modalController.dismiss();
+    this.modalController.dismiss(1);
+  }
+
+  continueShopping() {
+    this.router.navigate(["home"]);
   }
 
   async presentToastSuccess(msg) {

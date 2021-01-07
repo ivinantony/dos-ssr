@@ -3,11 +3,7 @@
   height: 100% !important;
 }
 
-.thumbnailWrapper{
-  // border: 1px solid black;
-  margin-left: auto;
-  margin-right: auto;
-}
+
 
 #cart-btn {
   position: relative;
@@ -22,9 +18,18 @@
   right: 0px;
 }
 
+.thumbnailWrapper{
+  display: flex;
+  width: 75%;
+  margin-right: auto;
+  margin-left: auto;
+  justify-content: center;
+}
+
 ion-thumbnail{
   --size:79px;
   border: .5px solid #4343;
+  margin-right: 20px;
 }
 
 .textblock{

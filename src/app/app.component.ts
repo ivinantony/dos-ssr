@@ -12,6 +12,7 @@ import { debounceTime, filter, pairwise } from 'rxjs/operators';
 import { ProductSearchService } from './services/product-search.service';
 import { ProfileService } from './services/profile/profile.service';
 import { Storage } from '@ionic/storage';
+import { CartcountService } from './cartcount.service';
 // import { NavigationEnd, Router, RoutesRecognized } from '@angular/router';
 
 
@@ -29,6 +30,8 @@ export class AppComponent implements OnInit {
   searchItems: Array<any>;
   client_id:any = null
   user_name:any
+  cart_count:any
+  cart_count_initial:any
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -43,8 +46,16 @@ export class AppComponent implements OnInit {
     private searchService: ProductSearchService,
     private profileService:ProfileService,
     private storage: Storage,
+    private cartCountService:CartcountService
   ) {
     this.client_id = localStorage.getItem('client_id')
+    this.cart_count_initial = localStorage.getItem('cart_count')
+    cartCountService.setCartCount(this.cart_count_initial)
+    cartCountService.getCartCount().subscribe(res => {
+      this.cart_count=res}
+      )
+    console.log(this.cart_count)
+    
 
     console.log(this.client_id)
     this.searchTerm = new FormControl();

@@ -13,6 +13,7 @@ import {
   
 } from "@ionic/angular";
 import { IonContent } from '@ionic/angular';
+import { CartcountService } from "src/app/cartcount.service";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { CartService } from "src/app/services/cart/cart.service";
 import { OfferService } from "src/app/services/offer/offer.service";
@@ -39,6 +40,8 @@ export class OfferPage implements OnInit {
   client_id: any;
   sortType: any = null;
   scroll:boolean=true
+  cart_count:any
+
   constructor(
     private offerService: OfferService,
     private utils: UtilsService,
@@ -49,7 +52,9 @@ export class OfferPage implements OnInit {
     private authService: AuthenticationService,
     private loadingController: LoadingController,
     private popOverCtrl: PopoverController,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private cartCountService:CartcountService
+
   ) {
     this.client_id = localStorage.getItem("client_id");
     this.s3url = utils.getS3url();
@@ -60,8 +65,9 @@ export class OfferPage implements OnInit {
 
   ngOnInit() {}
 
-  ionViewWillEnter() {
-  
+  ionViewWillEnter()
+  {
+    this.cart_count = localStorage.getItem('cart_count')
   }
 
   getData(infiniteScroll?) {
@@ -69,7 +75,7 @@ export class OfferPage implements OnInit {
       this.offerService
         .getOfferProducts(this.client_id, this.page_count, this.sortType)
         .subscribe(
-          (data) => this.handleResponse(data, infiniteScroll),
+          (data) => this.handleResponse(data, GET_DATA, infiniteScroll),
           (error) => this.handleError(error)
           
         );
@@ -77,16 +83,29 @@ export class OfferPage implements OnInit {
     });
   }
 
-  handleResponse(data, infiniteScroll?) 
+  handleResponse(data, type, infiniteScroll?) 
   {
     this.infiniteScroll.disabled = false;
-    console.log(this.scroll)
     this.loadingController.dismiss();
+    if (type == GET_DATA) 
+    {
     this.page_limit = data.page_count;
+    this.cart_count = data.cart_count
+    localStorage.setItem("cart_count",data.cart_count)
     data.product.forEach((element) => {
       this.products.push(element);
     });
     console.log(this.products, "API called");
+    }
+
+
+    else if(type == POST_DATA)
+    {
+      console.log("add to cart",data)
+      this.cart_count = data.cart_count
+      localStorage.setItem("cart_count",data.cart_count)
+      this.cartCountService.setCartCount(data.cart_count)
+    }
     
     if (infiniteScroll) 
       {
