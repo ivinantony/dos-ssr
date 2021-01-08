@@ -17,15 +17,7 @@ export class WalletService {
   {
     this.url = utils.getApiPath()
    }
-   public getWalletdetails()
-   {
-     const headers = this.headerservice.getHttpHeaders()
-     return this.httpclient.get(
-      this.url + "name of api ?parameter_name=",
-      { headers }
-     ).pipe(map(res=>{
-       return res}));
-   }
+ 
    public addToWallet(data)
    {
      const headers = this.headerservice.getHttpHeaders()

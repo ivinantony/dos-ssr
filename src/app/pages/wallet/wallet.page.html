@@ -64,22 +64,17 @@
                 <h3>{{item.option}}</h3>
                 <h6>24-dec-10</h6>
               </div>
-              <div class="" [ngClass]="{'amountRecieved': item.option === 'credited', 'amountPaid': item.option === 'debited' }">
-                <h3> {{item.amount}}</h3>
+              <div [ngClass]="{'amountRecieved': item.option === 'credited', 'amountPaid': item.option === 'debited' }">
+                
+                <h3> 
+                  <ion-icon name="add-outline" *ngIf="item.option === 'credited'"></ion-icon>
+                  <ion-icon name="remove-outline" *ngIf="item.option === 'debited'"></ion-icon>
+                   {{item.amount}}
+                </h3>
               </div>
             </div>  
           </ion-item>
-          <!-- <ion-item>
-            <div class="content">
-              <div>
-                <h3>Recharge</h3>
-                <h6>24-dec-10</h6>
-              </div>
-              <div class="amountRecieved">
-                <h3>+1020 AED</h3>
-              </div>
-            </div>  
-          </ion-item> -->
+        
          
         </ion-list>
       </ion-col>
