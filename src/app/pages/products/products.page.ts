@@ -338,6 +338,8 @@ export class ProductsPage implements OnInit {
   }
 
   doRefresh(event) {
+    this.page_count=1
+    this.products= []
     this.getData();
     setTimeout(() => {
       event.target.complete();

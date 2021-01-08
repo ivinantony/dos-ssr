@@ -2,17 +2,25 @@
   <ion-toolbar>
     <ion-title>BRANDS</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="home" text="" color="dark"></ion-back-button>
+      <ion-back-button
+        defaultHref="home"
+        text=""
+        color="dark"
+      ></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content pullingIcon="refresh" pullingText="Pull to refresh" refreshingSpinner="crescent"
-      refreshingText="Refreshing..."></ion-refresher-content>
+    <ion-refresher-content
+      pullingIcon="refresh"
+      pullingText="Pull to refresh"
+      refreshingSpinner="crescent"
+      refreshingText="Refreshing..."
+    ></ion-refresher-content>
   </ion-refresher>
-  
+
   <ion-grid fixed>
     <ion-row class="row">
       <ion-col
@@ -21,8 +29,12 @@
         size-md="6"
         size-lg="3"
         size-xl="3"
-        *ngFor="let item of brands; let i=index">
-        <ion-card class="ion-no-margin card" (click)="navigateToBrandProducts(i)">
+        *ngFor="let item of brands; let i=index"
+      >
+        <ion-card
+          class="ion-no-margin card"
+          (click)="navigateToBrandProducts(i)"
+        >
           <ion-card-content class="ion-text-center">
             <img
               style="
@@ -41,8 +53,6 @@
         </ion-card>
       </ion-col>
     </ion-row>
-
-      
   </ion-grid>
   <ion-infinite-scroll
     threshold="100px"

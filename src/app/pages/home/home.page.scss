@@ -57,13 +57,7 @@ ion-toolbar {
     right: 2px;
     background: var(--ion-color-danger);
   }
-  // .banr{
-  //  ion-slide{
-  //   background-repeat: no-repeat;
-  //   background-size: cover;
-  //   height: 50vh;
-  //  }
-  // }
+
 
   .banr{
     .firstCol{
@@ -171,6 +165,7 @@ ion-toolbar {
   background-position: center;
   border-radius: 10px;
   border: 0.2px solid #C0C0C0;
+  transition: transform .2s;
   
 
  }
@@ -178,7 +173,7 @@ ion-toolbar {
 
  .roundCard:hover{
   cursor: pointer;
-  transform: scale(1.2);
+  transform: scale(1.1);
  }
 
 
@@ -488,6 +483,9 @@ color: #fff;
 
 .brandCard:hover{
   cursor: pointer;
+  img{
+    transform: scale(1.1);
+  }
 }
 
 .skelton{
@@ -510,6 +508,8 @@ color: #fff;
   .dsk{
     display: block;
   }
+
+  
   }
 
     

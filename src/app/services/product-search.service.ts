@@ -50,4 +50,7 @@ export class ProductSearchService {
   //   console.log(this.filterItems(searchTerm))
   //   this.searchValues.next(this.filterItems(searchTerm))
   // }
+
+
+  
 }

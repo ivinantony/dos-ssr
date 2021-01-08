@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartcountService } from 'src/app/cartcount.service';
+import { defineCustomElements } from '@teamhive/lottie-player/loader';
 
 @Component({
   selector: 'app-order-placed',
@@ -15,6 +16,7 @@ export class OrderPlacedPage implements OnInit {
   { 
     localStorage.removeItem('cart_count')
     cartCountService.setCartCount(0)
+    defineCustomElements(window);
   }
 
   ngOnInit() {

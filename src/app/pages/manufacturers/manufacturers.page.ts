@@ -78,7 +78,7 @@ brands:Array<any>=[]
 
   async presentLoading() {
     const loading = await this.loadingController.create({
-      spinner: 'bubbles',
+      spinner: 'crescent',
       cssClass:'custom-spinner',
       message: 'Please wait...',
       showBackdrop: true
