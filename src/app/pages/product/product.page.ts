@@ -15,7 +15,6 @@ import { AuthenticationService } from "src/app/services/authentication.service";
 import { CartService } from "src/app/services/cart/cart.service";
 import { ProductDetailsService } from "src/app/services/productDetails/product-details.service";
 import { UtilsService } from "src/app/services/utils.service";
-import { ImagemodalPage } from "../imagemodal/imagemodal.page";
 import { CartPage } from "../cart/cart.page";
 import { CartmodalPage } from "../cartmodal/cartmodal.page";
 import { CartcountService } from "src/app/cartcount.service";
@@ -94,7 +93,7 @@ export class ProductPage implements OnInit {
     this.s3url = utils.getS3url();
     this.checkWidth();
     this.platform.resize.subscribe(async () => {
-      console.log("Resize event detected", this.platform.width());
+      // console.log("Resize event detected", this.platform.width());
       this.checkWidth();
     });
 
@@ -133,7 +132,7 @@ export class ProductPage implements OnInit {
   handleResponse(data, type) {
     if (type == GET_DATA) {
       this.data = data;
-      console.log(data);
+      // console.log(data);
       this.cartCountService.setCartCount(data.cart_count)
       this.productDetails = data.product;
       for (let i = 0; i < this.productDetails.images.length; i++) {
@@ -150,7 +149,7 @@ export class ProductPage implements OnInit {
   }
   handleError(error) {
     this.loadingController.dismiss;
-    console.log(error);
+    // console.log(error);
   }
 
   onSubmit() {

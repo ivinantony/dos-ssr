@@ -21,11 +21,7 @@ const routes: Routes = [
     canActivate:[AuthGuard],
     loadChildren: () => import('./pages/cart/cart.module').then( m => m.CartPageModule)
   },
-  {
-    path: 'address',
-    canActivate:[AuthGuard],
-    loadChildren: () => import('./pages/address/address.module').then( m => m.AddressPageModule)
-  },
+
   {
     path: 'add-address',
     canActivate:[AuthGuard],
@@ -47,10 +43,6 @@ const routes: Routes = [
     path: 'profile',
     canActivate:[AuthGuard],
     loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
-  },
-  {
-    path: 'imagemodal',
-    loadChildren: () => import('./pages/imagemodal/imagemodal.module').then( m => m.ImagemodalPageModule)
   },
   {
     path: 'area-search',
@@ -173,7 +165,8 @@ const routes: Routes = [
   {
     path: 'recharge',
     loadChildren: () => import('./pages/recharge/recharge.module').then( m => m.RechargePageModule)
-  },  {
+  },
+  {
     path: 'cartmodal',
     loadChildren: () => import('./pages/cartmodal/cartmodal.module').then( m => m.CartmodalPageModule)
   }

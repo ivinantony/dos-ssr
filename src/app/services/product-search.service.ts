@@ -15,7 +15,7 @@ export class ProductSearchService {
   }
 
   filterItems(searchTerm) {
-    console.log(this.items,"items filter search")
+    // console.log(this.items,"items filter search")
     if (searchTerm) {
       return this.items.filter(item => {
         // console.log(item.name.toLowerCase().indexOf(searchTerm.toLowerCase()),"search resultsssss")
@@ -38,12 +38,12 @@ export class ProductSearchService {
 
   handleResponse(data)
   {
-    console.log(data)
+    // console.log(data)
     this.items = data.products
   }
   handleError(error)
   {
-    console.log(error)
+    // console.log(error)
   }
 
   // getSearchItemsData(searchTerm) {

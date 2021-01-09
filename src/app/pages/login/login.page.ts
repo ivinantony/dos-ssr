@@ -93,7 +93,7 @@ export class LoginPage implements OnInit {
         name: data.name,
         phone: data.phone
       }
-      console.log(this.loginGroup.value)
+      // console.log(this.loginGroup.value)
       this.loginService.registerUser(userDetails).subscribe(
         (data)=>this.handleResponse(data),
         (error)=>this.handleError(error))
@@ -137,13 +137,13 @@ export class LoginPage implements OnInit {
   handleResponse(data)
   {
    this.data = data
-    console.log(data)
+    // console.log(data)
     // this.presentAlert()
   }
 
   handleError(error)
   {
-    console.log(error)
+    // console.log(error)
   }
   // async presentModal() {
   //   const modal = await this.modalController.create({

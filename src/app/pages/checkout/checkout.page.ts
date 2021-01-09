@@ -80,128 +80,26 @@ getData() {
 this.loadingController.dismiss()
     if (type == GET_AMOUNTDETAILS) 
     {
-      console.log(data);
+      // console.log(data);
       this.data = data;
     } 
     else if (type == GET_PAY)
     {
-      console.log(data)
+      // console.log(data)
     }
-    else if (type == ORDER_RESPONSE) 
-    {
-      console.log(data, "pay response");
-      localStorage.setItem("order_id", data.payable_order_id);
-      if (this.payment_id == 4) {
-        if (this.platform.is("cordova")) {
-          console.log("cordova detected");
-          this.payPal
-            .init({
-              PayPalEnvironmentProduction: "YOUR_PRODUCTION_CLIENT_ID",
-              PayPalEnvironmentSandbox:
-                "AdQ56AEl3TVRxp-oPoMtdptdh-KIbMNCj5TBfv5gJxhQ7JVJJJTWb5T8digw3jpjyLhsJ_WpkXRGZs1G",
-            })
-            .then(
-              () => {
-                // Environments: PayPalEnvironmentNoNetwork, PayPalEnvironmentSandbox, PayPalEnvironmentProduction
-                this.payPal
-                  .prepareToRender(
-                    "PayPalEnvironmentSandbox",
-                    new PayPalConfiguration({
-                      // Only needed if you get an "Internal Service Error" after PayPal login!
-                      //payPalShippingAddressOption: 2 // PayPalShippingAddressOptionPayPal
-                    })
-                  )
-                  .then(
-                    () => {
-                      console.log("heyyyyy");
-                      let payment = new PayPalPayment(
-                        this.data.payable_amount,
-                        "AED",
-                        "Description",
-                        "sale"
-                      );
-                      this.payPal.renderSinglePaymentUI(payment).then(
-                        (paymentDetails) => {
-                          console.log(paymentDetails);
-                          // Successfully paid
-
-                          // Example sandbox response
-                          //
-                          // {
-                          //   "client": {
-                          //     "environment": "sandbox",
-                          //     "product_name": "PayPal iOS SDK",
-                          //     "paypal_sdk_version": "2.16.0",
-                          //     "platform": "iOS"
-                          //   },
-                          //   "response_type": "payment",
-                          //   "response": {
-                          //     "id": "PAY-1AB23456CD789012EF34GHIJ",
-                          //     "state": "approved",
-                          //     "create_time": "2016-10-03T13:33:33Z",
-                          //     "intent": "sale"
-                          //   }
-                          // }
-                        },
-                        (error) => {
-                          console.log(error, "hai");
-
-                          // Error or render dialog closed without being successful
-                        }
-                      );
-                    },
-                    (error) => {
-                      console.log(error, "hello");
-                      // Error in configuration
-                    }
-                  );
-              },
-              (error) => {
-                console.log(error, "how");
-                // Error in initialization, maybe PayPal isn't supported or something else
-              }
-            );
-        }
-        localStorage.setItem("total_amount", this.data.payable_amount);
-        console.log("cordova not supported");
-        this.router.navigate(["paypal"]);
-      } 
-      else if (this.payment_id == 5) 
-      {
-        let data = {};
-
-        this.paytabService.getPaymentUi(data).subscribe(
-          (data) => this.handleResponse(data, GET_PAY),
-          (error) => this.handleError(error,GET_PAY)
-        );
-      } 
-      
-      else if(this.payment_id == 2) {
-        // this.presentToastSuccess("Order placed Successfully");
-
-        this.router.navigate(["order-placed"]);
-      }
-
-      else if(this.payment_id == 6)
-      {
-        localStorage.setItem("total_amount", this.data.payable_amount);
-        this.router.navigate(["checkout-pay"]);
-      }
-      
-    } 
     else if(type == WALLET_RESPONSE)
     {
-    console.log(data)
+    // console.log(data)
     this.router.navigate(["order-placed"]);
     }
     else 
     {
-      console.log(data);
+      // console.log(data);
     }
   }
   handleError(error,type) {
     this.loadingController.dismiss()
-    console.log(error);
+    // console.log(error);
     if(type == WALLET_RESPONSE)
     {
       if(error.status == 400)
@@ -234,7 +132,7 @@ this.loadingController.dismiss()
     modal.onDidDismiss().then((data) => {
       const promo_Details = data["data"];
       if (promo_Details) {
-        console.log(promo_Details);
+        // console.log(promo_Details);
         this.data.payable_amount -= promo_Details.discount_amount;
         this.data.saved_amount = promo_Details.discount_amount;
         this.discount_amount = promo_Details.discount_amount;
@@ -255,12 +153,12 @@ this.loadingController.dismiss()
     modal.onDidDismiss().then((data) => {
       
       const paymentDetails = data["data"];
-      console.log(paymentDetails);
+      // console.log(paymentDetails);
       if (paymentDetails) {
         this.payment_id = paymentDetails.modeOfPayment_Id;
         if(this.payment_id == 7)
         {
-          console.log("wallet")
+          // console.log("wallet")
           let data = {
             client_id: localStorage.getItem("client_id"),
             promo_code_id: this.promo_id,
@@ -277,7 +175,7 @@ this.loadingController.dismiss()
           );
         }
         else{
-          console.log(this.payment_id);
+          // console.log(this.payment_id);
           let data = {
             client_id: localStorage.getItem("client_id"),
             promo_code_id: this.promo_id,
@@ -331,12 +229,12 @@ this.loadingController.dismiss()
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
-            console.log('Confirm Cancel: blah');
+            // console.log('Confirm Cancel: blah');
           }
         }, {
           text: 'Okey',
           handler: () => {
-            console.log('Confirm Okey');
+            // console.log('Confirm Okey');
             let balance = this.data.payable_amount - this.data.wallet_balance
             this.router.navigate(['recharge',{balance}])
           }

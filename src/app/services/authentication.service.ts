@@ -14,7 +14,7 @@ export class AuthenticationService {
 
   getToken() {
     var token = localStorage.getItem(TOKEN_KEY);
-    console.log('token')
+    // console.log('token')
     if (token) {
       return token
     }
@@ -22,20 +22,20 @@ export class AuthenticationService {
 
   async login(token) {
     await localStorage.setItem(TOKEN_KEY, token)
-    console.log(token,"this is token")
-    console.log('token saved')
+    // console.log(token,"this is token")
+    // console.log('token saved')
   }
 
   async logout() {
     await localStorage.removeItem(TOKEN_KEY)
     await localStorage.removeItem('client_id')
-    console.log('token cleared')
+    // console.log('token cleared')
   }
 
   
   isAuthenticated() {
     const token = this.getToken();
-    console.log('token', token)
+    // console.log('token', token)
     if (token != null) {
       return true;
     } else {

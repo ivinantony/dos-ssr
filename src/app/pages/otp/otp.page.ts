@@ -22,7 +22,7 @@ export class OtpPage implements OnInit {
   {
     this.phone = this.activatedRoute.snapshot.params.phone
     this.email = this.activatedRoute.snapshot.params.email
-    console.log(this.phone)
+    // console.log(this.phone)
   }
 
   ngOnInit() {
@@ -50,11 +50,11 @@ export class OtpPage implements OnInit {
 
   handleResponseData(data,type)
   {
-    console.log("haiiiiiiiiiii",data)
+    // console.log("haiiiiiiiiiii",data)
     this.authService.login(data.data)
     localStorage.setItem('client_id',data.client_id)
     this.storage.get('prev_url').then((val) => {
-      console.log(val,"prev url")
+      // console.log(val,"prev url")
       this.ngZone.run(()=>{
       this.router.navigate([val] || ['/'], { replaceUrl: true })
     });
@@ -82,7 +82,7 @@ export class OtpPage implements OnInit {
   handleError(error)
   {
     this.presentAlert("plaease check your OTP.")
-    console.log(error)
+    // console.log(error)
   }
 
   async presentAlert(msg:string) {

@@ -13,7 +13,6 @@ import { CheckoutService } from "src/app/services/checkout/checkout.service";
 import { OrderService } from "src/app/services/order/order.service";
 import { UtilsService } from "src/app/services/utils.service";
 import { AddAddressPage } from "../add-address/add-address.page";
-import { AddressPage } from "../address/address.page";
 import { CouponPage } from "../coupon/coupon.page";
 import { ModeofpaymentPage } from "../modeofpayment/modeofpayment.page";
 import {
@@ -98,7 +97,7 @@ export class CartPage implements OnInit {
 
   onChangeAddress($event) {
     this.current_selection = $event.detail.value;
-    console.log(this.current_selection, "current selected address");
+    // console.log(this.current_selection, "current selected address");
     this.getDistance(
       this.data.address[this.current_selection].latitude,
       this.data.address[this.current_selection].longitude
@@ -128,10 +127,10 @@ export class CartPage implements OnInit {
     });
     modal.onDidDismiss().then((data) => {
       const paymentDetails = data["data"];
-      console.log(paymentDetails);
+      // console.log(paymentDetails);
       if (paymentDetails) {
         this.payment_id = paymentDetails.modeOfPayment_Id;
-        console.log(this.payment_id);
+        // console.log(this.payment_id);
       }
     });
     return await modal.present();
@@ -149,14 +148,14 @@ export class CartPage implements OnInit {
     } else {
       let address_id = this.address_id;
       this.router.navigate(["checkout", address_id]);
-      console.log(this.selectedAddress);
+      // console.log(this.selectedAddress);
     }
   }
   checkOutofStock() {
     for (let i = 0; i < this.cart.length; i++) {
       if (this.cart[i].in_stock == 0) {
         this.isOut = true;
-        console.log(i, "value of index");
+        // console.log(i, "value of index");
         break;
       } else {
         this.isOut = false;
@@ -204,30 +203,30 @@ export class CartPage implements OnInit {
   handleResponse(data, type) {
     this.loadingController.dismiss();
     if (type == GET_CART) {
-      console.log(data);
+      // console.log(data);
       this.data = data;
       this.cart = data.cart;
       this.amountDetails = data;
       this.addresses = data.address;
 
       this.cartLength = this.cart.length;
-      console.log(this.cart, "This is cart");
+      // console.log(this.cart, "This is cart");
       for (let i = 0; i < this.cart?.length; i++) {
         this.cart[i].images[0].path = this.s3url + this.cart[i].images[0].path;
       }
     } else if (type == GET_PAY) {
-      console.log(data);
+      // console.log(data);
     } else if (type == REMOVE) {
       localStorage.setItem("cart_count", data.cart_count);
       this.cartCountService.setCartCount(data.cart_count);
-      console.log("removed", data);
+      // console.log("removed", data);
     } else {
-      console.log(data);
+      // console.log(data);
     }
   }
   handleError(error) {
     this.loadingController.dismiss();
-    console.log(error);
+    // console.log(error);
   }
 
   add(index: number, id: number) {
@@ -332,10 +331,10 @@ export class CartPage implements OnInit {
   }
 
   getDistance(latitude, longitude) {
-    console.log("GEt Distance started", latitude, longitude);
+    // console.log("GEt Distance started", latitude, longitude);
     const service = new google.maps.DistanceMatrixService();
     var current_coords = new google.maps.LatLng(latitude, longitude);
-    console.log("current coords getdistance", current_coords);
+    // console.log("current coords getdistance", current_coords);
     var lat: string = latitude.toString();
     var long: string = longitude.toString();
     var destination = lat + "," + long;
@@ -346,17 +345,17 @@ export class CartPage implements OnInit {
     this.data.delivery_location?.forEach((element) => {
       shop_coords.push(element.location);
     });
-    console.log("shop", shop_coords);
-    console.log("current_coords", latitude, longitude);
+    // console.log("shop", shop_coords);
+    // console.log("current_coords", latitude, longitude);
     const matrixOptions = {
       origins: shop_coords, // shop coords
       destinations: [destination], // customer coords
       travelMode: "DRIVING",
       unitSystem: google.maps.UnitSystem.IMPERIAL,
     };
-    console.log("matrix", matrixOptions);
+    // console.log("matrix", matrixOptions);
     service.getDistanceMatrix(matrixOptions, (response, status) => {
-      console.log("GET DISTANCE MATRIX");
+      // console.log("GET DISTANCE MATRIX");
       if (status !== "OK") {
         var msg = "Error with distance matrix";
         this.showToast(msg);
@@ -366,7 +365,7 @@ export class CartPage implements OnInit {
         let shortest_distance;
         let shop_index: number;
         response_data = response.rows;
-        console.log("responsee data", response_data);
+        // console.log("responsee data", response_data);
         response_data.forEach((ele) => {
           distances.push(ele.elements[0].distance.value);
         });
@@ -385,9 +384,9 @@ export class CartPage implements OnInit {
           // this.locationAvailability = true;
           // this.addressForm.patchValue({delivery_location_id:this.delivery_locations[shop_index].id})
           this.selectedAddress = this.current_selection;
-          console.log("selectedAddress", this.selectedAddress);
+          // console.log("selectedAddress", this.selectedAddress);
           this.address_id = this.addresses[this.selectedAddress].id;
-          console.log(this.address_id);
+          // console.log(this.address_id);
           this.valid_address = true;
         } else {
           // this.locationAvailability = false;

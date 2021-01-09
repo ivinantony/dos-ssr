@@ -171,7 +171,7 @@ export class HomePage implements OnInit {
   }
 
   ionViewWillEnter() {
-    console.log("view")
+    // console.log("view")
     this.searchTerm.reset()
     this.cart_count= localStorage.getItem('cart_count')
   }
@@ -256,16 +256,14 @@ export class HomePage implements OnInit {
 
   }
 
-  onSearchChange($event) {
-    console.log($event);
-  }
+
 
   onRoute(link) {
-    console.log(link)
+    // console.log(link)
     if (link != null || link != undefined) {
       let data = link.split(".com").pop();
       
-      console.log(data)
+      // console.log(data)
       this.router.navigateByUrl(data);
     }
   }
@@ -277,7 +275,7 @@ export class HomePage implements OnInit {
     else{
       this.client_id = null 
     } 
-    console.log("client_id",this.client_id)
+    // console.log("client_id",this.client_id)
     this.presentLoading().then(()=>{
       this.homeService.getHomeDetails(this.client_id).subscribe(
         (data) => this.handleResponse(data),
@@ -288,7 +286,7 @@ export class HomePage implements OnInit {
   handleResponse(data)
   {
    this.loadingController.dismiss()
-    console.log(data)
+    // console.log(data)
     localStorage.setItem('cart_count',data.cart_count)
 
     this.data = data
@@ -297,9 +295,9 @@ export class HomePage implements OnInit {
     this.categories = data.categories
     this.products = data.products
     
-    console.log(this.products)
+    // console.log(this.products)
     this.banners = data.banner
-    console.log(this.data,"this is banners")
+    // console.log(this.data,"this is banners")
     for(let i=0;i<this.brands.length;i++)
     {
       this.brands[i].path= this.s3url + this.brands[i].path
@@ -324,7 +322,7 @@ export class HomePage implements OnInit {
     //   }
     // }
     for(let i=0;i<this.data.banner.length;i++){
-      console.log(this.s3url  )
+      // console.log(this.s3url  )
       for(let j=0;j<this.data.banner[i].desktop_images.length;j++)
       {
         this.data.banner[i].desktop_images[j].path = this.s3url + this.data.banner[i].desktop_images[j].path
@@ -334,18 +332,18 @@ export class HomePage implements OnInit {
         this.data.banner[i].mobile_images[j].path = this.s3url + this.data.banner[i].mobile_images[j].path
       }
     }
-    console.log(this.products,"this is products")
+    // console.log(this.products,"this is products")
     
     // this.banner_image= this.banners[2].images;
     
-    console.log( this.banner_image)
+    // console.log( this.banner_image)
     // this.dismiss();
   }
   handleError(error)
   {
    this.loadingController.dismiss()
 
-    console.log(error);
+    // console.log(error);
     // this.dismiss()
    
   }

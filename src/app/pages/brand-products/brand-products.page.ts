@@ -114,7 +114,7 @@ export class BrandProductsPage implements OnInit {
     this.brand_id = activatedRoute.snapshot.params.brand_id;
     this.s3url = utils.getS3url();
     this.checkWidth();
-    console.log("first")
+    // console.log("first")
     this.page_count=1
     this.products= []
     this.getData()
@@ -160,10 +160,10 @@ export class BrandProductsPage implements OnInit {
   handleResponse(data, type, infiniteScroll?) {
     this.infiniteScroll.disabled = false;
     this.loadingController.dismiss()
-    console.log(infiniteScroll)
+    // console.log(infiniteScroll)
     if (type == GET_DATA) {
       
-      console.log(data);
+      // console.log(data);
       this.page_limit = data.page_count;
       this.data = data;
       this.cart_count = data.cart_count
@@ -171,16 +171,16 @@ export class BrandProductsPage implements OnInit {
       this.data.product.forEach((element) => {
         this.products.push(element);
       });
-      console.log(this.products, "API called");
+      // console.log(this.products, "API called");
     }
     else if(type == POST_DATA)
     {
-      console.log("add to cart",data)
+      // console.log("add to cart",data)
       this.cart_count = data.cart_count
       localStorage.setItem("cart_count",data.cart_count)
       this.cartCountService.setCartCount(data.cart_count)
     }
-    console.log(data);
+    // console.log(data);
 
     if (infiniteScroll) {
       infiniteScroll.target.complete();
@@ -188,7 +188,7 @@ export class BrandProductsPage implements OnInit {
   }
   handleError(error) {
     this.loadingController.dismiss()
-    console.log(error);
+    // console.log(error);
   }
 
 
@@ -201,7 +201,7 @@ export class BrandProductsPage implements OnInit {
 
 
       this.page_count+=1;
-      console.log(this.page_count)
+      // console.log(this.page_count)
       this.getData(infiniteScroll);
     }
   }
@@ -313,18 +313,18 @@ export class BrandProductsPage implements OnInit {
     this.infiniteScroll.disabled = true;
 
     {
-      console.log("hello")
+      // console.log("hello")
       
       if(data.data == 2)
       {
-        console.log("low to high")
+        // console.log("low to high")
         this.sortType = 'ASC'
         this.page_count=1
         this.products= []
         this.getData()
       }
       else if(data.data == 1){
-       console.log("high to low")
+      //  console.log("high to low")
  
        this.sortType = 'DESC'
        this.page_count=1

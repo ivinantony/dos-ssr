@@ -54,19 +54,19 @@ export class AppComponent implements OnInit {
     cartCountService.getCartCount().subscribe(res => {
       this.cart_count=res}
       )
-    console.log(this.cart_count)
+    // console.log(this.cart_count)
     
 
-    console.log(this.client_id)
+    // console.log(this.client_id)
     this.searchTerm = new FormControl();
     this.initializeApp();
     
     
     this.searchService.searchValues.subscribe(data => {
-      console.log('data', data)
+      // console.log('data', data)
       if (data) {
         this.searchItems = data
-        console.log(this.searchItems,"searchItems")
+        // console.log(this.searchItems,"searchItems")
       } else {
         this.searchItems = []
       }
@@ -89,7 +89,7 @@ export class AppComponent implements OnInit {
     .pipe(filter((e: any) => e instanceof NavigationEnd),
       pairwise()
     ).subscribe((e: any) => {
-      console.log(e,"array")
+      // console.log(e,"array")
       if (e[0].urlAfterRedirects.startsWith('/login') || e[0].urlAfterRedirects.startsWith('/otp') || e[0].urlAfterRedirects.startsWith('/recharge') || e[0].urlAfterRedirects.startsWith('/checkout-pay')) 
       {
 
@@ -191,11 +191,11 @@ export class AppComponent implements OnInit {
 
   handleResponse(data)
   {
-    console.log(data)
+    // console.log(data)
     this.user_name = data.client_Details.name
   }
   handleError(error){
-    console.log(error)
+    // console.log(error)
   }
 
 

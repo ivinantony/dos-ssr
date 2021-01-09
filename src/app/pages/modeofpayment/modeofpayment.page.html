@@ -37,6 +37,8 @@
           <ion-icon name="{{ item.icon }}" size="large" class="icon"></ion-icon>
           <ion-ripple-effect></ion-ripple-effect>
           <ion-label> {{ item.name }}</ion-label>
+          <p *ngIf="item.id == 7" style="padding-right: 10px;"> {{  paymentOptions?.wallet_balance | currency:'AED  ' }}</p>
+          <!-- <ion-label ></ion-label> -->
           
         </ion-item>
         </div>

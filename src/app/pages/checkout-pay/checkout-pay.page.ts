@@ -120,7 +120,7 @@ export class CheckoutPayPage implements OnInit {
 	{
 		if(type == CARDPAYMENT)
 		{
-			console.log(data)
+			// console.log(data)
 			if(this.type ==  "recharge")
 			{
 				let data={
@@ -159,17 +159,17 @@ export class CheckoutPayPage implements OnInit {
 
 		{ 
 			this.loadingController.dismiss()
-			console.log(data,"capture_payment")
+			// console.log(data,"capture_payment")
 			this.router.navigate(['order-placed'])
 		}
 		else if(type == CAPTURE_RECHARGE)
 
 		{ 
 			this.loadingController.dismiss()
-			console.log(data,"CAPTURE_RECHARGE")
+			// console.log(data,"CAPTURE_RECHARGE")
 			// this.router.navigate(['wallet'])
 			this.storage.get('prev_url').then((val) => {
-				console.log(val,"prev url")
+				// console.log(val,"prev url")
 				this.ngZone.run(()=>{
 				this.router.navigate([val] || ['/wallet'], { replaceUrl: true })
 			  });
@@ -181,7 +181,7 @@ export class CheckoutPayPage implements OnInit {
 	handleError(error)
 	{
 		this.loadingController.dismiss()
-		console.log(error)
+		// console.log(error)
 		this.presentToast('Payment Failed')
 	}
 

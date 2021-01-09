@@ -64,7 +64,7 @@ export class CategoriesPage implements OnInit {
   
   handleResponse(data, infiniteScroll) {
     this.loadingController.dismiss()
-    console.log(data)
+    // console.log(data)
     this.data = data;
     this.data.categories.forEach(element => { this.categories.push(element) });
     this.page_limit = data.page_count;
@@ -74,7 +74,7 @@ export class CategoriesPage implements OnInit {
   }
   handleError(error) {
     this.loadingController.dismiss()
-    console.log(error)
+    // console.log(error)
   }
 
   async presentLoading() {

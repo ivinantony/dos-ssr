@@ -115,7 +115,7 @@ export class ProductsPage implements OnInit {
     this.loadingController.dismiss()
     if(type == GET_DATA)
     {
-    console.log(data)
+    // console.log(data)
     this.data=data
     this.data.products.forEach(element => {this.products.push(element)});
     this.page_limit = data.page_count;
@@ -124,7 +124,7 @@ export class ProductsPage implements OnInit {
     }
     else if(type == POST_DATA)
     {
-      console.log("add to cart",data)
+      // console.log("add to cart",data)
       this.cart_count = data.cart_count
       localStorage.setItem("cart_count",data.cart_count)
       this.cartCountService.setCartCount(data.cart_count)
@@ -132,13 +132,13 @@ export class ProductsPage implements OnInit {
     if (infiniteScroll) {
       infiniteScroll.target.complete();
     }
-   console.log(data) 
+  //  console.log(data) 
     
   }
   handleError(error)
   {
     this.loadingController.dismiss()
-    console.log(error)
+    // console.log(error)
   }
   navigateToProduct(index: number) {
     let id=this.products[index].id
@@ -147,7 +147,7 @@ export class ProductsPage implements OnInit {
   }
 
   onCatChange(event) {
-    console.log(event.detail.value)
+    // console.log(event.detail.value)
   }
   
   async openFilter() {
@@ -172,18 +172,18 @@ export class ProductsPage implements OnInit {
    if(data.data)
    {
     this.infiniteScroll.disabled = true;
-     console.log("hello")
+    //  console.log("hello")
      
      if(data.data == 2)
      {
-       console.log("low to high")
+      //  console.log("low to high")
        this.sortType = 'ASC'
        this.page_count=1
        this.products= []
        this.getData()
      }
      else if(data.data == 1){
-      console.log("high to low")
+      // console.log("high to low")
 
       this.sortType = 'DESC'
       this.page_count=1
@@ -225,7 +225,7 @@ export class ProductsPage implements OnInit {
 
 
       this.page_count+=1;
-      console.log(this.page_count)
+      // console.log(this.page_count)
       this.getData(infiniteScroll);
     }
   }
@@ -281,7 +281,7 @@ export class ProductsPage implements OnInit {
   {
     if(this.authService.isAuthenticated())
     {
-      console.log("hai")
+      // console.log("hai")
       let data={
         product_id :this.products[index].id,
         client_id :this.client_id
