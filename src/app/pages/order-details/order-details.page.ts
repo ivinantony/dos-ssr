@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { LoadingController, ModalController } from '@ionic/angular';
 import { OrderService } from 'src/app/services/order/order.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { CancelorderPage } from '../cancelorder/cancelorder.page';
@@ -14,7 +14,10 @@ export class OrderDetailsPage implements OnInit {
   s3url:string
   id:any
   data:any
-  constructor(private orderService:OrderService,private activatedRoute:ActivatedRoute,private router:Router,private modalController:ModalController,private utilsService:UtilsService) 
+  constructor(private orderService:OrderService,private activatedRoute:ActivatedRoute,
+    private router:Router,
+    private modalController:ModalController,private utilsService:UtilsService,
+    private loadingController:LoadingController) 
   { this.id = activatedRoute.snapshot.params.order_id
     this.s3url = utilsService.getS3url()
     this.getData()
@@ -26,19 +29,24 @@ export class OrderDetailsPage implements OnInit {
 
   getData()
   {
-    this.orderService.getParticularOrderDetails(this.id).subscribe(
-      (data)=>this.handleResponse(data,GET_DATA),
-      (error)=>this.handleError(error)
-    )
+    this.presentLoading().then(()=>{
+      this.orderService.getParticularOrderDetails(this.id).subscribe(
+        (data)=>this.handleResponse(data,GET_DATA),
+        (error)=>this.handleError(error)
+      )
+      }
+      )
   }
 
   handleResponse(data,type)
   {
+    this.loadingController.dismiss()
     this.data = data
     console.log(data)
   }
   handleError(error)
   {
+    this.loadingController.dismiss()
     console.log(error)
   }
   navigateToProduct(index) 
@@ -64,6 +72,16 @@ export class OrderDetailsPage implements OnInit {
     await modal.present();
     await modal.onDidDismiss().then(()=>{this.router.navigate(['orders'])})
     
+  }
+
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      spinner: 'crescent',
+      cssClass:'custom-spinner',
+      message: 'Please wait...',
+      showBackdrop: true
+    });
+    await loading.present();
   }
 
   doRefresh(event) {
