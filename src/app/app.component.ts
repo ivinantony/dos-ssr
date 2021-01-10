@@ -216,6 +216,14 @@ export class AppComponent implements OnInit {
   {this.menuController.close()
     this.router.navigate(['manufacturers'])
   }
+  goToProfile()
+  {this.menuController.close()
+    this.router.navigate(['profile'])
+  }
+  goToCart()
+  {this.menuController.close()
+    this.router.navigate(['cart'])
+  }
 
 
 }
