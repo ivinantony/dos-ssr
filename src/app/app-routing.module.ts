@@ -169,7 +169,11 @@ const routes: Routes = [
   {
     path: 'cartmodal',
     loadChildren: () => import('./pages/cartmodal/cartmodal.module').then( m => m.CartmodalPageModule)
+  },  {
+    path: 'test',
+    loadChildren: () => import('./pages/test/test.module').then( m => m.TestPageModule)
   }
+
 
 
 

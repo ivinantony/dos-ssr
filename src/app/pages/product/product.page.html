@@ -169,7 +169,7 @@
                 </ion-item>
               </ion-text>
 
-              <ion-text color="dark">
+              <!-- <ion-text color="dark">
                 <ion-item
                   class="ion-no-padding"
                   lines="none"
@@ -179,7 +179,7 @@
                   &nbsp;
                   <h5>{{productDetails?.weight}} {{ productDetails?.unit}}</h5>
                 </ion-item>
-              </ion-text>
+              </ion-text> -->
 
               <ion-text color="dark">
                 <ion-item
@@ -187,9 +187,9 @@
                   lines="none"
                   *ngIf="productDetails?.quantity"
                 >
-                  <h3 class="ion-margin-top">Units :</h3>
+                  <h3 class="ion-margin-top">Net Quantity : </h3>
                   &nbsp;
-                  <h5>{{productDetails?.quantity}}</h5>
+                  <h5> {{productDetails?.quantity}}</h5>
                 </ion-item>
               </ion-text>
             </ion-col>

@@ -189,6 +189,7 @@ export class HomePage implements OnInit {
   }
   setFilteredItems(search) {
     this.searchItems = this.searchService.filterItems(search)
+    console.log(this.searchItems)
   }
   onSearchInput() {
     this.searching = true;
