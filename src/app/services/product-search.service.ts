@@ -31,6 +31,7 @@ export class ProductSearchService {
       }).then(({ hits }) => {
         console.log(hits);
         return hits
+        
       });
 
       // else{
