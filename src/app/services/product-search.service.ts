@@ -1,4 +1,5 @@
-import { Injectable } from "@angular/core";
+import { Injectable, ɵConsole } from "@angular/core";
+import { Console } from "console";
 import { BehaviorSubject, Observable } from "rxjs";
 import { HomeService } from "./home/home.service";
 import { ProductService } from "./products/product.service";
@@ -14,36 +15,66 @@ export class ProductSearchService {
   algolia_id: "NU5WU3O0O2";
   search_key: "727d93c14b9d3d3467cc450603ca4f45";
   searchValues = new BehaviorSubject(null);
+  searchResult = new BehaviorSubject([]);
+  result:Array<any>=[];
   constructor(private productService: ProductService) {
     this.getData();
   }
 
-  filterItems(searchTerm) {
-    console.log(searchTerm, "items filter search");
-    this.isFetching = false;
-    
-      console.log("dfgfd",this.algolia_name)
-      const client = algoliasearch('NU5WU3O0O2', '727d93c14b9d3d3467cc450603ca4f45');
-      const index = client.initIndex('products');
-      index.search(searchTerm, {
-        attributesToRetrieve: ['name','objectID'],
-        hitsPerPage: 50,
-      }).then(({ hits }) => {
-        console.log(hits);
-        return hits
-        
-      });
+   filterItems(searchTerm) {
 
-      // else{
-      //  this.searchService
-      //   .searchData(this.todo.title, this.tokenService.getShopId())
-      //   .subscribe(
-      //     (data) => this.handleResponseData(data),
-      //     (error) => this.handleError(error)
-      //   );
-
-      //   }
+    if(searchTerm)
+    {
+      console.log(searchTerm,"search term");
     
+      this.result=[]
+      console.log(searchTerm, "items filter search");
+      this.isFetching = false;
+      
+        console.log("dfgfd",this.algolia_name)
+        const client = algoliasearch('NU5WU3O0O2', '727d93c14b9d3d3467cc450603ca4f45');
+        // const index = client.initIndex('products');
+        const queries = [{
+          indexName: 'categories',
+          query: searchTerm,
+          params: {
+            hitsPerPage: 10,
+            attributesToRetrieve: ['category_name','id','type'],
+          }
+        }, {
+          indexName: 'products',
+          query: searchTerm,
+          params: {
+            hitsPerPage: 10,
+            attributesToRetrieve: ['name','id','type','category_id'],
+          }
+        }, {
+          indexName: 'brands',
+          query: searchTerm,
+          params: {
+            hitsPerPage: 10,
+            attributesToRetrieve: ['brand_name','type','id'],
+          }
+        }];
+  
+        client.multipleQueries(queries).then(({ results }) => {
+          console.log(results);
+          
+          results.filter(item => {
+            
+            this.result = this.result.concat(item.hits); 
+          })
+          this.searchResult.next(this.result)
+          console.log("results",this.result)
+        });
+        console.log(this.result)
+    }
+    else{
+      this.searchResult.next([])
+    }
+    
+   
+      // return this.searchResult.asObservable()
   }
 
   // old search code

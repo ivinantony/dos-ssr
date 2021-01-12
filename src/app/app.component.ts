@@ -62,11 +62,11 @@ export class AppComponent implements OnInit {
     this.initializeApp();
     
     
-    this.searchService.searchValues.subscribe(data => {
+    this.searchService.searchResult.subscribe(data => {
       // console.log('data', data)
       if (data) {
         this.searchItems = data
-        // console.log(this.searchItems,"searchItems")
+        console.log(this.searchItems,"searchItems")
       } else {
         this.searchItems = []
       }
@@ -130,7 +130,7 @@ export class AppComponent implements OnInit {
 
 
   setFilteredItems(search) {
-    this.searchItems = this.searchService.filterItems(search)
+    this.searchService.filterItems(search)
   }
   onSearchInput() {
     this.searching = true;
@@ -138,7 +138,27 @@ export class AppComponent implements OnInit {
   viewSearchProduct(index: number) {
     let id = this.searchItems[index].id
     let catId =this.searchItems[index].category_id
-    this.router.navigate(['product',id, {catId}])
+    let type = this.searchItems[index].type
+    
+    if(type == "product")
+    {
+      this.router.navigate(['product',id, {catId}])
+    }
+    else if(type == "brand")
+    {
+      let brand_id = id
+      let brand_name = this.searchItems[index].brand_name
+      this.router.navigate(['brand-products',brand_id,{brand_name}])
+    }
+    else if(type == "category")
+    {
+      let catId = id
+      let category_name = this.searchItems[index].category_name
+      
+      this.router.navigate(['products', catId, {category_name}])
+
+    }
+    
     this.searchItems = [];
   }
   onCancel() {

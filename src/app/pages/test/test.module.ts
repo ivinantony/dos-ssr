@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { TestPageRoutingModule } from './test-routing.module';
 
 import { TestPage } from './test.page';
+import { AngularFireMessaging } from '@angular/fire/messaging';
 
 @NgModule({
   imports: [

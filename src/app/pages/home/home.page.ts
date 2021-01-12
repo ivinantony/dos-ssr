@@ -147,7 +147,7 @@ export class HomePage implements OnInit {
   client_id:any
   cart_count:any
   public searchTerm: FormControl;
-  public searchItems: any;
+  public searchItems;
   searching: any = false;
 
   myDate: String = new Date().toISOString();
@@ -179,16 +179,19 @@ export class HomePage implements OnInit {
   ngOnInit() {
 
     this.searchTerm.valueChanges
-      .pipe(debounceTime(700))
-      .subscribe(search => {
-        this.searching = false;
-        this.setFilteredItems(search);
-      });
+    .pipe(debounceTime(700))
+    .subscribe(search => {
+      this.searching = false;
+      this.setFilteredItems(search);
+    });
 
 
   }
+  
+
   setFilteredItems(search) {
-    this.searchItems = this.searchService.filterItems(search)
+     var res = this.searchService.filterItems(search)
+     this.searchItems = res
     console.log(this.searchItems)
   }
   onSearchInput() {

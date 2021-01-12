@@ -21,7 +21,9 @@ import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { Component, ViewChild } from '@angular/core';
 import { IonicStorageModule } from '@ionic/storage';
-import { FilterComponent} from './pages/filter/filter.component';  
+import { FilterComponent} from './pages/filter/filter.component';
+import { AngularFireModule } from '@angular/fire';  
+import { AngularFireMessagingModule } from '@angular/fire/messaging';
 // import { IonicImageZoomer } from 'ionic-image-zoomer';
 
 
@@ -30,6 +32,8 @@ import { FilterComponent} from './pages/filter/filter.component';
   entryComponents: [],
   imports: [
     BrowserModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireMessagingModule,
     IonicModule.forRoot({
       mode:'ios',
       swipeBackEnabled: true,
@@ -41,7 +45,7 @@ import { FilterComponent} from './pages/filter/filter.component';
     HttpClientModule,
     ReactiveFormsModule,
     
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('combined-sw.js', { enabled: environment.production })
   ],
   providers: [
     StatusBar,

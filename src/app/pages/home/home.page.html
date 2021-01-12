@@ -64,7 +64,7 @@
                 *ngFor="let item of searchItems ; let i=index"
                 (click)="viewSearchProduct(i)"
               >
-                {{ item.name }}
+                {{ item.name }} {{item.brand_name}}
               </ion-item>
             </ion-list>
           </ion-content>
