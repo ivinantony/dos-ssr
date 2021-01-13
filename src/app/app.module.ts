@@ -33,6 +33,7 @@ import { FCM } from '@ionic-native/fcm/ngx';
   entryComponents: [],
   imports: [
     BrowserModule,
+    AngularFireModule.initializeApp(environment.firebase),
     AngularFireMessagingModule,
     IonicModule.forRoot({
       mode:'ios',

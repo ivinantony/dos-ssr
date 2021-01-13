@@ -157,11 +157,10 @@ export class HomePage implements OnInit {
     private searchService: ProductSearchService,private homeService:HomeService,
     private badge: Badge,private utils:UtilsService,
     private loadingController:LoadingController,
-    private authService:AuthenticationService,
-    private fcm: FCM,public plt: Platform) {
+    private authService:AuthenticationService) {
 
       
-      this.s3url = utils.getS3url()
+    this.s3url = utils.getS3url()
     this.badge.set(10);
     // this.badge.increase(1);
     // this.badge.clear();
@@ -171,25 +170,8 @@ export class HomePage implements OnInit {
     this.getData()
     this.cart_count = localStorage.getItem('cart_count')
 
-    //token code start
-    this.getToken()
-    this.plt.ready()
-    .then(() => {
-      this.fcm.onNotification().subscribe(data => {
-        if (data.wasTapped) {
-          console.log("Received in background");
-        } else {
-          console.log("Received in foreground");
-        };
-      });
-
-      this.fcm.onTokenRefresh().subscribe(token => {
-        // Register your new token in your back-end if you want
-        // backend.registerToken(token);
-        console.log("token firebase",token)
-      });
-    })
-    //token code end
+    //
+  
 
   }
 
@@ -417,20 +399,5 @@ insta()
   window.open("https://www.instagram.com/deal_on_store/")
 }
   
-
-subscribeToTopic() {
-  this.fcm.subscribeToTopic('enappd');
-}
-getToken() {
-  this.fcm.getToken().then(token => {
-
-    console.log("token firebase",token)
-    // Register your new token in your back-end if you want
-    // backend.registerToken(token);
-  });
-}
-unsubscribeFromTopic() {
-  this.fcm.unsubscribeFromTopic('enappd');
-}
 
 }

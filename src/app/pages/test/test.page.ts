@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UpdateService } from 'src/app/services/update/update.service';
 
-// import { AngularFireMessaging } from '@angular/fire/messaging';
+import { AngularFireMessaging } from '@angular/fire/messaging';
 import { FCM } from '@ionic-native/fcm/ngx';
 import { Platform } from '@ionic/angular';
 
@@ -17,7 +17,7 @@ export class TestPage implements OnInit {
   pushes: any = [];
   data:any
   constructor(private update:UpdateService,
-   
+    private afMessaging: AngularFireMessaging,
     private fcm: FCM,
     public plt: Platform) { 
 
@@ -100,4 +100,16 @@ export class TestPage implements OnInit {
     this.fcm.unsubscribeFromTopic('enappd');
   }
 
+
+  requestPushNotificationsPermission() { // requesting permission
+    this.afMessaging.requestToken // getting tokens
+      .subscribe(
+        (token) => { // USER-REQUESTED-TOKEN
+          console.log('Permission granted! Save to the server!', token);
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+  }
 }

@@ -118,13 +118,7 @@
         "ANDROID_SUPPORT_V13_VERSION": "27.+",
         "FCM_VERSION": "17.0.+"
       },
-      "cordova-plugin-fcm-with-dependecy-updated": {
-        "ANDROID_DEFAULT_NOTIFICATION_ICON": "@mipmap/ic_launcher",
-        "ANDROID_FCM_VERSION": "21.0.0",
-        "ANDROID_FIREBASE_BOM_VERSION": "26.0.0",
-        "ANDROID_GOOGLE_SERVICES_VERSION": "4.3.4",
-        "ANDROID_GRADLE_TOOLS_VERSION": "4.1.0"
-      },
+      "cordova-plugin-fcm-with-dependecy-updated": {},
       "cordova-plugin-androidx": {},
       "cordova-plugin-androidx-adapter": {}
     },
