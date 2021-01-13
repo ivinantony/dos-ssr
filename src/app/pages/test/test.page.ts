@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UpdateService } from 'src/app/services/update/update.service';
 
 import { AngularFireMessaging } from '@angular/fire/messaging';
+import { FCM } from '@ionic-native/fcm/ngx';
+import { Platform } from '@ionic/angular';
 
 const algoliasearch = require("algoliasearch");
 const client = algoliasearch("NU5WU3O0O2","9ceabd5fdddf3f2a3cdfa970032d4ff9", { protocol: 'https:' });
@@ -12,11 +14,31 @@ const client = algoliasearch("NU5WU3O0O2","9ceabd5fdddf3f2a3cdfa970032d4ff9", { 
   styleUrls: ['./test.page.scss'],
 })
 export class TestPage implements OnInit {
-
+  pushes: any = [];
   data:any
-  constructor(private update:UpdateService,private afMessaging: AngularFireMessaging) { 
+  constructor(private update:UpdateService,
+    private afMessaging: AngularFireMessaging,
+    private fcm: FCM,
+    public plt: Platform) { 
 
-    this.getData()
+    // this.getData()
+
+    this.plt.ready()
+    .then(() => {
+      this.fcm.onNotification().subscribe(data => {
+        if (data.wasTapped) {
+          console.log("Received in background");
+        } else {
+          console.log("Received in foreground");
+        };
+      });
+
+      this.fcm.onTokenRefresh().subscribe(token => {
+        // Register your new token in your back-end if you want
+        // backend.registerToken(token);
+      });
+    })
+    
   }
 
   ngOnInit() {
@@ -64,72 +86,17 @@ export class TestPage implements OnInit {
   }
 
 
-  requestPushNotificationsPermission() { 
-    let firebase_server_key= "AAAAzW3q9WQ:APA91bFF1MPEVt25UZuiRcnlV3t-CFVXeCfeEOJwBZwy8Ng6DMIbo-tEisdA9n1IbtXHRVn6kf-zWjxpyb7kTDu2WXlscMVxSLtIyDPBiuzAXDl8y5XKCDMljsrGLAJzHMerh9Md-WPW"
-    // requesting permission
-    this.afMessaging.requestToken // getting tokens
-      .subscribe(
-        (token) => { // USER-REQUESTED-TOKEN
-          console.log('Permission granted! Save to the server!', token);
-          // this.subscribeTokenToTopic(token,'id',firebase_server_key)
-          this.test(token,firebase_server_key)
-          
-        },
-        (error) => {
-          console.error(error);
-        }
-      );
+  subscribeToTopic() {
+    this.fcm.subscribeToTopic('enappd');
   }
-  subscribeTokenToTopic(token, topic, firebase_server_key?) {
-    fetch('https://iid.googleapis.com/iid/v1/' + token + '/rel/topics/' + topic, {
-      method: 'POST',
-      headers: new Headers({
-        'Authorization': 'key=' + firebase_server_key
-      })
-    }).then(response => {
-      if (response.status < 200 || response.status >= 400) {
-        throw 'Error subscribing to topic: ' + response.status + ' - ' + response.text();
-      }
-      // console.log('Subscribed to "'+topic+'"');
-    }).catch(error => {
-      console.error(error);
-    })
+  getToken() {
+    this.fcm.getToken().then(token => {
+      // Register your new token in your back-end if you want
+      // backend.registerToken(token);
+    });
   }
-
-  // subscribeTokenToTopic(token, firebase_server_key?) {
-  //   fetch('https://fcm.googleapis.com/fcm/send/' + token, {
-  //     method: 'POST',
-  //     headers: new Headers({
-  //       'Authorization': 'key=' + firebase_server_key
-  //     })
-  //   }).then(response => {
-  //     if (response.status < 200 || response.status >= 400) {
-  //       throw 'Error subscribing to topic: ' + response.status + ' - ' + response.text();
-  //     }
-  //     // console.log('Subscribed to "'+topic+'"');
-  //   }).catch(error => {
-  //     console.error(error);
-  //   })
-  // }
-  test(token,firebase_server_key){
-
-   fetch('https://fcm.googleapis.com/fcm/send/' + token, {
-      method: 'POST',
-      headers: new Headers({
-        'Authorization': 'key=' + firebase_server_key,
-        'Content-Type': 'application/json',
-      })
-    }).then(response => {
-
-            if (response.status < 200 || response.status >= 400) {
-        throw 'Error subscribing to topic: ' + response.status + ' - ' + response.text();
-      }
-      // console.log('Subscribed to "'+topic+'"');
-    }).catch(error => {
-      console.error(error);
-    })
+  unsubscribeFromTopic() {
+    this.fcm.unsubscribeFromTopic('enappd');
   }
-
-
 
 }

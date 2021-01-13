@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "882312410468",
+    "project_id": "test-f5af2",
+    "storage_bucket": "test-f5af2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882312410468:android:a0ea59d8ad5a8e0aef7671",
+        "android_client_info": {
+          "package_name": "com.mermer.dos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "882312410468-j4cc69kajpdahnbv6lm1e7aj78e4sv9m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsqhu-5hY3cLCsIaznvrkPTTn5NH4S5e4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "882312410468-j4cc69kajpdahnbv6lm1e7aj78e4sv9m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
