@@ -11,6 +11,7 @@ import { HomeService } from 'src/app/services/home/home.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { IonSlides} from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { FCM } from '@ionic-native/fcm/ngx';
 
 @Component({
   selector: 'app-home',
@@ -156,7 +157,8 @@ export class HomePage implements OnInit {
     private searchService: ProductSearchService,private homeService:HomeService,
     private badge: Badge,private utils:UtilsService,
     private loadingController:LoadingController,
-    private authService:AuthenticationService) {
+    private authService:AuthenticationService,
+    private fcm: FCM,public plt: Platform) {
 
       
       this.s3url = utils.getS3url()
@@ -168,6 +170,27 @@ export class HomePage implements OnInit {
     // this.presentLoading()
     this.getData()
     this.cart_count = localStorage.getItem('cart_count')
+
+    //token code start
+    this.getToken()
+    this.plt.ready()
+    .then(() => {
+      this.fcm.onNotification().subscribe(data => {
+        if (data.wasTapped) {
+          console.log("Received in background");
+        } else {
+          console.log("Received in foreground");
+        };
+      });
+
+      this.fcm.onTokenRefresh().subscribe(token => {
+        // Register your new token in your back-end if you want
+        // backend.registerToken(token);
+        console.log("token firebase",token)
+      });
+    })
+    //token code end
+
   }
 
   ionViewWillEnter() {
@@ -394,4 +417,20 @@ insta()
   window.open("https://www.instagram.com/deal_on_store/")
 }
   
+
+subscribeToTopic() {
+  this.fcm.subscribeToTopic('enappd');
+}
+getToken() {
+  this.fcm.getToken().then(token => {
+
+    console.log("token firebase",token)
+    // Register your new token in your back-end if you want
+    // backend.registerToken(token);
+  });
+}
+unsubscribeFromTopic() {
+  this.fcm.unsubscribeFromTopic('enappd');
+}
+
 }

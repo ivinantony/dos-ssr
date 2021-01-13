@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UpdateService } from 'src/app/services/update/update.service';
 
-import { AngularFireMessaging } from '@angular/fire/messaging';
+// import { AngularFireMessaging } from '@angular/fire/messaging';
 import { FCM } from '@ionic-native/fcm/ngx';
 import { Platform } from '@ionic/angular';
 
@@ -17,11 +17,11 @@ export class TestPage implements OnInit {
   pushes: any = [];
   data:any
   constructor(private update:UpdateService,
-    private afMessaging: AngularFireMessaging,
+   
     private fcm: FCM,
     public plt: Platform) { 
 
-    // this.getData()
+    this.getData()
 
     this.plt.ready()
     .then(() => {
@@ -93,6 +93,7 @@ export class TestPage implements OnInit {
     this.fcm.getToken().then(token => {
       // Register your new token in your back-end if you want
       // backend.registerToken(token);
+      console.log(token,"token")
     });
   }
   unsubscribeFromTopic() {
