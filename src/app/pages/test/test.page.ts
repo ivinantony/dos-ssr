@@ -36,6 +36,7 @@ export class TestPage implements OnInit {
       this.fcm.onTokenRefresh().subscribe(token => {
         // Register your new token in your back-end if you want
         // backend.registerToken(token);
+        console.log("token cordova",token)
       });
     })
     

@@ -7,13 +7,17 @@ import { IonicModule } from '@ionic/angular';
 import { TermsandconditionsPageRoutingModule } from './termsandconditions-routing.module';
 
 import { TermsandconditionsPage } from './termsandconditions.page';
+import { QuillModule } from 'ngx-quill'
+
+
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    TermsandconditionsPageRoutingModule
+    TermsandconditionsPageRoutingModule,
+    QuillModule.forRoot(),
   ],
   declarations: [TermsandconditionsPage]
 })

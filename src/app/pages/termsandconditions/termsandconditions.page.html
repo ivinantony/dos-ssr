@@ -10,28 +10,12 @@
 <ion-content>
 <ion-grid fixed>
   <ion-row>
-    <ion-col size="12" class="ion-text-left">
-      <h1>Welcome to Deal On Store.</h1>
-    </ion-col>
     <ion-col size="11" class="content ion-text-justify">
-      <p>
-
-        These terms and conditions outline the rules and regulations for the use of Deal On Store's Website, located at https://dealonstore.com</p>
-        
-        
-        
-        <p>By accessing this website we assume you accept these terms and conditions. Do not continue to use dealonstore 
-        if you do not agree to take all of the terms and conditions stated on this page.</p>
-        
-        <p>The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer 
-        Notice and all Agreements: "Client", "You" and "Your" refers to you, the person who log on this website and 
-        compliant to the Company’s terms and conditions. "The Company", "Ourselves", "We", "Our" and "Us", refers to our 
-        Company. "Party", "Parties", or "Us", refers to both the Client and ourselves. All terms refer to the offer, acceptance and 
-        consideration of payment necessary to undertake the process of our assistance to the Client in the most appropriate manner for 
-        the express purpose of meeting the Client’s needs in respect of provision of the Company’s stated services, in accordance with and 
-        subject to, prevailing law of the land. Any use of the above terminology or other words in the singular, plural, 
-        capitalization and/or he/she or they, 
-        are taken as interchangeable and therefore as referring to same. </p>
+      <quill-view
+      [content]="data?.terms"
+      format="text"
+      theme="snow"
+      ></quill-view>
     </ion-col>
   </ion-row>
 </ion-grid>

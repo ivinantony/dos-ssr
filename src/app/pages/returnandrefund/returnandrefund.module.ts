@@ -7,13 +7,17 @@ import { IonicModule } from '@ionic/angular';
 import { ReturnandrefundPageRoutingModule } from './returnandrefund-routing.module';
 
 import { ReturnandrefundPage } from './returnandrefund.page';
+import { QuillModule } from 'ngx-quill'
+
+
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ReturnandrefundPageRoutingModule
+    ReturnandrefundPageRoutingModule,
+    QuillModule.forRoot(),
   ],
   declarations: [ReturnandrefundPage]
 })
