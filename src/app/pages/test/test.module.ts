@@ -8,13 +8,17 @@ import { TestPageRoutingModule } from './test-routing.module';
 
 import { TestPage } from './test.page';
 import { AngularFireMessaging } from '@angular/fire/messaging';
-
+import { FCM } from '@ionic-native/fcm/ngx';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    TestPageRoutingModule
+    TestPageRoutingModule,
+    
+  ],
+  providers:[
+    FCM
   ],
   declarations: [TestPage]
 })

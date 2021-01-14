@@ -11,7 +11,7 @@ import { HomeService } from 'src/app/services/home/home.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { IonSlides} from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { FCM } from '@ionic-native/fcm/ngx';
+
 
 @Component({
   selector: 'app-home',
