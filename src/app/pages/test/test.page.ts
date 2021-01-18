@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { UpdateService } from 'src/app/services/update/update.service';
-
-// import { AngularFireMessaging } from '@angular/fire/messaging';
-import { FCM } from '@ionic-native/fcm/ngx';
 import { Platform } from '@ionic/angular';
-
+import { Router } from '@angular/router';
+import { INotificationPayload } from 'plugins/cordova-plugin-fcm-with-dependecy-updated/typings';
+import { AngularFireMessaging } from '@angular/fire/messaging';
+import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
 const algoliasearch = require("algoliasearch");
 const client = algoliasearch("NU5WU3O0O2","9ceabd5fdddf3f2a3cdfa970032d4ff9", { protocol: 'https:' });
 
@@ -15,31 +15,70 @@ const client = algoliasearch("NU5WU3O0O2","9ceabd5fdddf3f2a3cdfa970032d4ff9", { 
 })
 export class TestPage implements OnInit {
   pushes: any = [];
-  data:any
+  data:any;
+  public hasPermission: boolean;
+  public token: string;
+  public pushPayload: INotificationPayload;
   constructor(private update:UpdateService,
-  //  private afMessaging: AngularFireMessaging,
+  private afMessaging: AngularFireMessaging,
     private fcm: FCM,
-    public plt: Platform) { 
+    public platform: Platform,
+    public router:Router) { 
+      
+    // this.getData()
+    this.setupFCM() 
 
-    this.getData()
+  }
 
-    this.plt.ready()
-    .then(() => {
-      this.fcm.onNotification().subscribe(data => {
-        if (data.wasTapped) {
-          console.log("Received in background");
-        } else {
-          console.log("Received in foreground");
-        };
-      });
 
-      this.fcm.onTokenRefresh().subscribe(token => {
-        // Register your new token in your back-end if you want
-        // backend.registerToken(token);
-        console.log("token cordova",token)
-      });
-    })
-    
+  private async setupFCM() {
+    await this.platform.ready();
+    console.log('FCM setup started');
+
+    if (!this.platform.is('cordova')) {
+       // requesting permission
+        this.afMessaging.requestToken // getting tokens
+          .subscribe(
+            (token) => { // USER-REQUESTED-TOKEN
+              console.log('Permission granted! Save to the server!', token);
+            },
+            (error) => {
+              console.error(error);
+            }
+          );
+      
+    }
+    console.log('In cordova platform');
+
+    console.log('Subscribing to token updates');
+    this.fcm.onTokenRefresh().subscribe((newToken) => {
+      this.token = newToken;
+      // this.loginForm.controls['fcm_token'].setValue(newToken);
+      console.log('onTokenRefresh received event with: ', newToken);
+    });
+
+    console.log('Subscribing to new notifications');
+    this.fcm.onNotification().subscribe((payload) => {
+      this.pushPayload = payload;
+      console.log('onNotification received event with: ', payload);
+      if (payload.wasTapped) {
+        this.router.navigate(['notifications',{data:payload}]);
+        console.log('Received in background');
+      } else {
+        console.log('Received in foreground');
+        this.router.navigate(['notifications',{data:payload}]);
+      }
+    });
+
+    this.hasPermission = await this.fcm.requestPushPermission();
+    console.log('requestPushPermission result: ', this.hasPermission);
+
+    this.token = await this.fcm.getToken();
+    // this.loginForm.controls['fcm_token'].setValue(this.token);
+    console.log('getToken result: ', this.token);
+
+    this.pushPayload = await this.fcm.getInitialPushPayload();
+    console.log('getInitialPushPayload result: ', this.pushPayload);
   }
 
   ngOnInit() {
@@ -113,4 +152,26 @@ export class TestPage implements OnInit {
   //       }
   //     );
   // }
+
+
+
+  
 }
+
+
+// this.plt.ready()
+// .then(() => {
+//   this.fcm.onNotification().subscribe(data => {
+//     if (data.wasTapped) {
+//       console.log("Received in background");
+//     } else {
+//       console.log("Received in foreground");
+//     };
+//   });
+
+//   this.fcm.onTokenRefresh().subscribe(token => {
+//     // Register your new token in your back-end if you want
+//     // backend.registerToken(token);
+//     console.log("token cordova",token)
+//   });
+// })

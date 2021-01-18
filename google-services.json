@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "882312410468",
-    "project_id": "test-f5af2",
-    "storage_bucket": "test-f5af2.appspot.com"
+    "project_number": "209942579610",
+    "project_id": "deal-on-store",
+    "storage_bucket": "deal-on-store.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:882312410468:android:a0ea59d8ad5a8e0aef7671",
+        "mobilesdk_app_id": "1:209942579610:android:fbc57a5c77305d812c5223",
         "android_client_info": {
-          "package_name": "com.mermer.dos"
+          "package_name": "com.mermerapps.dos"
         }
       },
       "oauth_client": [
         {
-          "client_id": "882312410468-j4cc69kajpdahnbv6lm1e7aj78e4sv9m.apps.googleusercontent.com",
+          "client_id": "209942579610-dojvecfj6idamvsfb2k3lo04t7i9lb00.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAsqhu-5hY3cLCsIaznvrkPTTn5NH4S5e4"
+          "current_key": "AIzaSyBuS-JZE83SRimnUnDFuOtc6U-E0JGXlp4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "882312410468-j4cc69kajpdahnbv6lm1e7aj78e4sv9m.apps.googleusercontent.com",
+              "client_id": "209942579610-dojvecfj6idamvsfb2k3lo04t7i9lb00.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

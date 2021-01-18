@@ -8,7 +8,7 @@ import { TestPageRoutingModule } from './test-routing.module';
 
 import { TestPage } from './test.page';
 import { AngularFireMessaging } from '@angular/fire/messaging';
-import { FCM } from '@ionic-native/fcm/ngx';
+import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
 @NgModule({
   imports: [
     CommonModule,

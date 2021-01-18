@@ -4,8 +4,12 @@ import { Router } from '@angular/router';
 import { NavController, LoadingController, ToastController, ModalController, AlertController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { LoginService } from 'src/app/services/login/login.service';
+import { INotificationPayload } from 'plugins/cordova-plugin-fcm-with-dependecy-updated/typings';
+import { AngularFireMessaging } from '@angular/fire/messaging';
+import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
 import { UsernameValidator } from 'src/app/validators/username';
 import { OtpmodalPage } from '../otpmodal/otpmodal.page';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +19,9 @@ import { OtpmodalPage } from '../otpmodal/otpmodal.page';
 export class LoginPage implements OnInit {
   public loginGroup: FormGroup;
   previousUrl: string = null;
+  public hasPermission: boolean;
+  public token: string;
+  public pushPayload: INotificationPayload;
   currentUrl: string = null;
   branch_id:number=6
   phone:any
@@ -27,8 +34,12 @@ export class LoginPage implements OnInit {
     private loginService:LoginService,
     private modalController:ModalController,
     private router:Router,
-    public alertController: AlertController) {
+    public alertController: AlertController,
+    private afMessaging: AngularFireMessaging,
+    private fcm: FCM,
+    public platform: Platform) {
     
+    this.setupFCM() 
     this.loginGroup = this.formBuilder.group({
       name: ['', Validators.compose([Validators.required, Validators.minLength(4)])],
    
@@ -81,6 +92,66 @@ export class LoginPage implements OnInit {
   ngOnInit() {
 
   }
+
+
+  private async setupFCM() {
+    await this.platform.ready();
+    console.log('FCM setup started');
+
+    if (!this.platform.is('cordova')) {
+       // requesting permission
+        this.afMessaging.requestToken // getting tokens
+          .subscribe(
+            (token) => { // USER-REQUESTED-TOKEN
+              console.log('Permission granted! Save to the server!', token);
+              this.token = token
+            },
+            (error) => {
+              console.error(error);
+            }
+          );
+          this.afMessaging.messages.subscribe( async (msg:any)=>{
+            console.log('msg',msg);
+          })
+      
+    }
+    else{
+      console.log('In cordova platform');
+
+      console.log('Subscribing to token updates');
+      this.fcm.onTokenRefresh().subscribe((newToken) => {
+        this.token = newToken;
+        // this.loginForm.controls['fcm_token'].setValue(newToken);
+        console.log('onTokenRefresh received event with: ', newToken);
+      });
+  
+      console.log('Subscribing to new notifications');
+      this.fcm.onNotification().subscribe((payload) => {
+        this.pushPayload = payload;
+        console.log('onNotification received event with: ', payload);
+        if (payload.wasTapped) {
+          this.router.navigate(['notifications',{data:payload}]);
+          console.log('Received in background');
+        } else {
+          console.log('Received in foreground');
+          this.router.navigate(['notifications',{data:payload}]);
+        }
+      });
+  
+      this.hasPermission = await this.fcm.requestPushPermission();
+      console.log('requestPushPermission result: ', this.hasPermission);
+  
+      this.token = await this.fcm.getToken();
+      // this.loginForm.controls['fcm_token'].setValue(this.token);
+      console.log('getToken result: ', this.token);
+  
+      this.pushPayload = await this.fcm.getInitialPushPayload();
+      console.log('getInitialPushPayload result: ', this.pushPayload);
+    }
+
+  }
+
+
   login(data) {
 
     if(this.loginGroup.valid)
@@ -91,7 +162,8 @@ export class LoginPage implements OnInit {
         
         email: data.email,
         name: data.name,
-        phone: data.phone
+        phone: data.phone,
+        fcm_token:this.token
       }
       // console.log(this.loginGroup.value)
       this.loginService.registerUser(userDetails).subscribe(
