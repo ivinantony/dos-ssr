@@ -17,24 +17,22 @@
 <ion-grid fixed>
 
     <div class="wrapper">
-      <ion-card  *ngFor="let item of data; let i=index">
-        <ion-item lines="none">
+      
+
+      <ion-card  *ngFor="let item of data; let i=index" [ngClass]="item.push_notification_read_status == 1 ?'read':'notread'" (click)="viewNotification(i)"> 
+        <ion-item lines="none" >
           <ion-thumbnail slot="start">
             <img src="{{s3url + item.image}}" *ngIf="item.image != null">
-            <img src="../../../assets/imgs/bell.svg">
+            <img src="../../../assets/imgs/chat.svg">
           </ion-thumbnail>
           <ion-label>
             <h3>{{item.title}}</h3>
             <p> {{item.description}}</p>
-            <!-- <p>{{ item.order_date }}</p>
-            <p>Rs. {{ item.payable_amount }}.</p> -->
           </ion-label>
-          
-            <!-- <ion-button (click)="details(i)" expand="block" fill="outline" shape="round" class="btn">
-              DETAILS
-            </ion-button> -->
+     
           </ion-item>
-      </ion-card>
+          <ion-icon name="checkmark-done-outline" *ngIf="item.push_notification_read_status == 1" class="read_icon" color="success"></ion-icon>
+      </ion-card> 
     
     </div>
 
@@ -50,5 +48,12 @@
 
 
 
-
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button color="danger" (click)="clearAll()">
+    <ion-icon name="trash-outline"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
 </ion-content>
+
+
+

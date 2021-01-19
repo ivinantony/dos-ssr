@@ -24,4 +24,25 @@ export class NotificationService {
      ).pipe(map(res=>{
        return res}));
    }
+
+   public getNotificationDetails(id:any,client_id:any)
+   {
+     const headers = this.headerservice.getHttpHeaders()
+     return this.httpclient.get(
+      this.url + "notification-detail?notification_id="+id+"&client_id="+client_id,
+      { headers }
+     ).pipe(map(res=>{
+       return res}));
+   }
+
+   public postNotification(data:any)
+   {
+     const headers = this.headerservice.getHttpHeaders()
+     return this.httpclient.post(
+      this.url + "notification-status",data,
+      { headers }
+     ).pipe(map(res=>{
+       return res}));
+   }
+
 }

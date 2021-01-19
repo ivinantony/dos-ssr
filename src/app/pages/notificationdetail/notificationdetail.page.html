@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon name="close-outline" color="dark"></ion-icon>
+      </ion-button>
+  </ion-buttons>
+    <ion-title>Notification</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<ion-grid fixed>
+  <div class="ion-padding">
+    <h2>{{data?.data[0].title}}</h2>
+    <img src="{{s3url + data?.data[0].image }}" alt="">
+    <p>{{data?.data[0].description}}</p>
+  </div>
+
+</ion-grid>
+</ion-content>
