@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="dark" defaultHref="/profile" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Notifications</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="refresh" pullingText="Pull to refresh" refreshingSpinner="crescent"
+      refreshingText="Refreshing..."></ion-refresher-content>
+  </ion-refresher>
+
+<ion-grid fixed>
+
+    <div class="wrapper">
+      <ion-card  *ngFor="let item of data; let i=index">
+        <ion-item lines="none">
+          <ion-thumbnail slot="start">
+            <img src="{{s3url + item.image}}" *ngIf="item.image != null">
+            <img src="../../../assets/imgs/bell.svg">
+          </ion-thumbnail>
+          <ion-label>
+            <h3>{{item.title}}</h3>
+            <p> {{item.description}}</p>
+            <!-- <p>{{ item.order_date }}</p>
+            <p>Rs. {{ item.payable_amount }}.</p> -->
+          </ion-label>
+          
+            <!-- <ion-button (click)="details(i)" expand="block" fill="outline" shape="round" class="btn">
+              DETAILS
+            </ion-button> -->
+          </ion-item>
+      </ion-card>
+    
+    </div>
+
+</ion-grid>
+<div class="ion-text-center whenEmpty" *ngIf="!data">
+  <!-- <img src="../../../assets/icon/orders.png"> -->
+  <p>All caught up.</p>
+  <!-- <ion-button (click)="continueShopping()" fill="outline" shape="round">
+    <ion-icon slot="start" name="add"></ion-icon>
+    Continue Shopping
+  </ion-button> -->
+</div>
+
+
+
+
+</ion-content>

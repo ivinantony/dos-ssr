@@ -110,7 +110,8 @@ export class LoginPage implements OnInit {
               console.error(error);
             }
           );
-          this.afMessaging.messages.subscribe( async (msg:any)=>{
+         await this.afMessaging.messages.subscribe( async (msg:any)=>{
+           console.log()
             console.log('msg',msg);
           })
       
@@ -217,21 +218,8 @@ export class LoginPage implements OnInit {
   {
     // console.log(error)
   }
-  // async presentModal() {
-  //   const modal = await this.modalController.create({
-  //     component: OtpmodalPage,
-  //     cssClass: '',
-  //     componentProps: {
-  //       phone : type,
-        
-  //     }
-  //   });
-  //   //  modal.onDidDismiss().finally(()=>{
-  //   //   this.getData()
-  //   // })
-  //   return await modal.present();
-   
-  // }
+
+ 
 
   async presentAlert() {
     const alert = await this.alertController.create({

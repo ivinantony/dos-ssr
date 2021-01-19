@@ -64,8 +64,8 @@ export class CouponPage implements OnInit {
   apply(i)
   {
     let data={
-      promo_Id :this.data.promo_codes[i].id ,
-      discount_amount:this.data.promo_codes[i].discount_amount,
+      promo_Id :this.applicableCoupons[i].id ,
+      discount_amount:this.applicableCoupons[i].discount_amount,
       
     }
     this.modalController.dismiss(data)

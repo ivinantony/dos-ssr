@@ -60,7 +60,6 @@ export class TestPage implements OnInit {
     console.log('Subscribing to new notifications');
     this.fcm.onNotification().subscribe((payload) => {
       this.pushPayload = payload;
-      console.log('onNotification received event with: ', payload);
       if (payload.wasTapped) {
         this.router.navigate(['notifications',{data:payload}]);
         console.log('Received in background');

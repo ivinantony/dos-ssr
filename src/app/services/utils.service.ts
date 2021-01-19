@@ -11,8 +11,8 @@ export class UtilsService {
     this.apiPath = "https://dev.sparepartsapi.mermerapps.com/api/mobile-app/";
     // this.apiPath = "https://api.dealonstore.com/api/mobile-app/";
     // this.s3url = "https://s3.ap-south-1.amazonaws.com/fashionstoremermer/";
-    // this.s3url = "https://s3.ap-south-1.amazonaws.com/dev-fashionstoremermer/";
-    this.s3url = "https://s3.me-south-1.amazonaws.com/dealonstore/";
+    this.s3url = "https://s3.ap-south-1.amazonaws.com/dev-fashionstoremermer/";
+    // this.s3url = "https://s3.me-south-1.amazonaws.com/dealonstore/";
 
     
   }
