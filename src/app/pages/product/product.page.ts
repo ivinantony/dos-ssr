@@ -24,6 +24,7 @@ const GET_DATA = 200;
 const POST_DATA = 210;
 const GET_CART = 220;
 const DEL_DATA = 230;
+const BUY_NOW = 240;
 @Component({
   selector: "app-product",
   templateUrl: "./product.page.html",
@@ -145,11 +146,27 @@ export class ProductPage implements OnInit {
 
       this.loadingController.dismiss();
     }
+    else if(type == POST_DATA)
+    {
+      
+      console.log(data)
+    }
+    else if(type == BUY_NOW)
+    {
+      this.presentModal()
+    }
    
   }
   handleError(error) {
+    console.log(error);
     this.loadingController.dismiss;
-    // console.log(error);
+
+    if(error.status == 400)
+    {
+      this.presentAlert(error.error.message)
+    }
+    
+  
   }
 
   onSubmit() {
@@ -242,10 +259,10 @@ export class ProductPage implements OnInit {
         (data) => this.handleResponse(data, POST_DATA),
         (error) => this.handleError(error)
       );
-      this.productDetails.cart_count++;
+      // this.productDetails.cart_count++;
       //  this.getData()
-      let name = this.productDetails.name
-      this.presentToastSuccess(data.qty + " ' " + name +" ' added to cart.");
+      // let name = this.productDetails.name
+      // this.presentToastSuccess(data.qty + " ' " + name +" ' added to cart.");
       this.getData()
     } else {
       this.presentLogin();
@@ -261,13 +278,13 @@ export class ProductPage implements OnInit {
         qty:this.qty
       };
       this.cartService.addToCartQty(data).subscribe(
-        (data) => this.handleResponse(data, POST_DATA),
+        (data) => this.handleResponse(data, BUY_NOW),
         (error) => this.handleError(error)
       );
       this.productDetails.cart_count++;
       //  this.getData()
       let name = this.productDetails.name
-      this.presentModal()
+      // this.presentModal()
       
       // this.presentToastSuccess(data.qty + " '" + name +" ' added to cart.");
     } else {
@@ -367,5 +384,18 @@ export class ProductPage implements OnInit {
 
   slideTo(index: number) {
     this.slides.slideTo(index, 500);
+  }
+
+
+  async presentAlert(msg:string) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Low Stock Alert',
+     
+      message:msg + "\ For ordering large quantities contact us through email or whatsapp.",
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 }

@@ -5,6 +5,7 @@ import { UtilsService } from 'src/app/services/utils.service';
 import { NotificationdetailPage } from "../notificationdetail/notificationdetail.page";
 const GET_DATA = 200;
 const VIEW_NOTIFICATION = 210;
+const DEL_DATA = 220;
 
 @Component({
   selector: 'app-notification',
@@ -45,8 +46,12 @@ export class NotificationPage implements OnInit {
   this.presentModal(id)
   }
 
-  clearAll(){
-    console.log("delete")
+  delete(){
+    let client_id = Number(localStorage.getItem('client_id'))
+    this.notifications.deleteNotification(client_id).subscribe(
+      (data)=>this.handleResponse(data,DEL_DATA),
+      (error)=>this.handleError(error)
+    )
   }
 
   getData()
@@ -69,6 +74,10 @@ export class NotificationPage implements OnInit {
       console.log(data)
       this.data = data.data
       console.log(this.data)
+    }
+    else if(type == DEL_DATA)
+    {
+      this.getData()
     }
     else{
       console.log(data)

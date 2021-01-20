@@ -295,8 +295,9 @@ export class HomePage implements OnInit {
   handleResponse(data)
   {
    this.loadingController.dismiss()
-    // console.log(data)
+    console.log(data)
     localStorage.setItem('cart_count',data.cart_count)
+    localStorage.setItem('notf_count',data.notification_count)
 
     this.data = data
     

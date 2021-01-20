@@ -49,6 +49,7 @@ export class ProductsPage implements OnInit {
   isSort:boolean=false
   sortType:any=null
   cart_count:any
+  name:any
 
   constructor(private activatedRoute: ActivatedRoute, 
     private platform: Platform, 
@@ -128,6 +129,7 @@ export class ProductsPage implements OnInit {
       this.cart_count = data.cart_count
       localStorage.setItem("cart_count",data.cart_count)
       this.cartCountService.setCartCount(data.cart_count)
+      this.presentToastSuccess("One ' " + this.name +" ' added to cart.");
     }
     if (infiniteScroll) {
       infiniteScroll.target.complete();
@@ -139,6 +141,11 @@ export class ProductsPage implements OnInit {
   {
     this.loadingController.dismiss()
     // console.log(error)
+    if(error.status == 400)
+    {
+      this.presentAlert(error.error.message)
+    }
+    
   }
   navigateToProduct(index: number) {
     let id=this.products[index].id
@@ -293,9 +300,9 @@ export class ProductsPage implements OnInit {
         //  this.products[index].cart_count++
         //  this.getData()
 
-        let name = this.products[index].name
+        this.name = this.products[index].name
 
-        this.presentToastSuccess("One ' " + name +" ' added to cart.");
+        
         // this.cart_count++
         localStorage.setItem('cart_count',this.cart_count)
     }
@@ -349,6 +356,18 @@ export class ProductsPage implements OnInit {
   opensortMobile()
   {
     this.presentActionSheet()
+  }
+
+  async presentAlert(msg:string) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Low Stock Alert',
+     
+      message:msg + "\ For ordering large quantities contact us through email or whatsapp.",
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 
 }

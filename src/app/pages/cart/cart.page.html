@@ -102,7 +102,7 @@
             </ion-button>
           </ion-item>
 
-          <ion-item *ngIf="item.in_stock == 0" class="outofstock">
+          <ion-item *ngIf="item.in_stock == 0 || item.stock_quantity <= 0" class="outofstock">
             <ion-icon name="ban" color="danger"></ion-icon>
             <h3>This item is currently out of stock.</h3>
           </ion-item>

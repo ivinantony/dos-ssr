@@ -7,6 +7,7 @@ import { AngularFireMessaging } from '@angular/fire/messaging';
 import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
 const algoliasearch = require("algoliasearch");
 const client = algoliasearch("NU5WU3O0O2","9ceabd5fdddf3f2a3cdfa970032d4ff9", { protocol: 'https:' });
+import * as ElasticAppSearch from "@elastic/app-search-javascript";
 
 @Component({
   selector: 'app-test',
@@ -26,7 +27,17 @@ export class TestPage implements OnInit {
     public router:Router) { 
       
     // this.getData()
-    this.setupFCM() 
+
+    var client = ElasticAppSearch.createClient({
+      searchKey: "search-512otrevnf44vfqgyrvkyezs",
+      endpointBase: "https://b3ad9be270e248bd8c485d3eb6c783d0.ent-search.ap-southeast-1.aws.cloud.es.io",
+      engineName: "dos-search"
+    });
+
+    
+
+    this.run(client)
+    
 
   }
 
@@ -83,6 +94,35 @@ export class TestPage implements OnInit {
   ngOnInit() {
   }
 
+  async run (client) {
+    // Let's start by indexing some data
+    await client.index({
+      index: 'game-of-thrones',
+      // type: '_doc', // uncomment this line if you are using Elasticsearch ≤ 6
+      body: {
+        character: 'Ned Stark',
+        quote: 'Winter is coming.'
+      }
+    })
+   
+    await client.index({
+      index: 'game-of-thrones',
+      // type: '_doc', // uncomment this line if you are using Elasticsearch ≤ 6
+      body: {
+        character: 'Daenerys Targaryen',
+        quote: 'I am the blood of the dragon.'
+      }
+    })
+   
+    await client.index({
+      index: 'game-of-thrones',
+      // type: '_doc', // uncomment this line if you are using Elasticsearch ≤ 6
+      body: {
+        character: 'Tyrion Lannister',
+        quote: 'A mind needs books like a sword needs a whetstone.'
+      }
+    })
+  }
 
   getData()
   {

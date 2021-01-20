@@ -13,6 +13,7 @@ import { ProductSearchService } from './services/product-search.service';
 import { ProfileService } from './services/profile/profile.service';
 import { Storage } from '@ionic/storage';
 import { CartcountService } from './cartcount.service';
+import { NotcountService } from './notcount.service';
 // import { NavigationEnd, Router, RoutesRecognized } from '@angular/router';
 
 
@@ -31,7 +32,9 @@ export class AppComponent implements OnInit {
   client_id:any = null
   user_name:any
   cart_count:any
+  notf_count:any
   cart_count_initial:any
+  notf_count_initial:any
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -46,12 +49,18 @@ export class AppComponent implements OnInit {
     private searchService: ProductSearchService,
     private profileService:ProfileService,
     private storage: Storage,
-    private cartCountService:CartcountService
+    private cartCountService:CartcountService,
+    private notCountService:NotcountService
   ) {
     this.client_id = localStorage.getItem('client_id')
     this.cart_count_initial = localStorage.getItem('cart_count')
     cartCountService.setCartCount(this.cart_count_initial)
     cartCountService.getCartCount().subscribe(res => {
+      this.cart_count=res}
+      )
+    this.notf_count_initial = localStorage.getItem('notf_count')
+    notCountService.setNotCount(this.notf_count_initial)
+    notCountService.getNotCount().subscribe(res => {
       this.cart_count=res}
       )
     // console.log(this.cart_count)
@@ -243,6 +252,11 @@ export class AppComponent implements OnInit {
   goToCart()
   {this.menuController.close()
     this.router.navigate(['cart'])
+  }
+  goToNotification()
+  {
+    this.menuController.close()
+    this.router.navigate(['notification'])
   }
 
 

@@ -153,7 +153,7 @@ export class CartPage implements OnInit {
   }
   checkOutofStock() {
     for (let i = 0; i < this.cart.length; i++) {
-      if (this.cart[i].in_stock == 0) {
+      if (this.cart[i].in_stock == 0 || this.cart[i].stock_quantity <= 0) {
         this.isOut = true;
         // console.log(i, "value of index");
         break;

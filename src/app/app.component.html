@@ -26,6 +26,10 @@
         <ion-button color="dark"  class="ion-padding-horizontal"  (click)="goToProfile()">
           <ion-icon slot="icon-only"  src="../assets/icon/profile.svg" ></ion-icon>
         </ion-button>
+        <ion-button color="dark"  class="ion-padding-horizontal"  (click)="goToNotification()">
+          <ion-icon slot="icon-only"  src="../assets/icon/notifications-outline.svg" ></ion-icon>
+          <ion-badge id="cart-badge" color="danger" *ngIf="cart_count > 0">{{notf_count}}</ion-badge>  
+        </ion-button>
         <ion-button  class="ion-padding-horizontal"  color="dark"  (click)="goToCart()">
           <ion-icon slot="icon-only"  src="../assets/icon/cart.svg" ></ion-icon>
           <ion-badge id="cart-badge" color="danger" *ngIf="cart_count > 0">{{cart_count}}</ion-badge>
@@ -111,7 +115,7 @@
                 *ngFor="let item of searchItems; let i = index"
                 (click)="viewSearchProduct(i)"
               >
-                {{ item.name }} {{item.brand_name}} {{item.category_name}}
+                {{ item.data.city.raw }} {{item.brand_name}} {{item.category_name}}
               </ion-item>
             </ion-list>
           </ion-content>
