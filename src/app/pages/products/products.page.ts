@@ -297,7 +297,7 @@ export class ProductsPage implements OnInit {
            (data)=>this.handleResponse(data,POST_DATA),
            (error)=>this.handleError(error)
          )
-        //  this.products[index].cart_count++
+         this.products[index].cart_count++
         //  this.getData()
 
         this.name = this.products[index].name

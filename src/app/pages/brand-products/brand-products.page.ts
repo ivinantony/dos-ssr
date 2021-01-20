@@ -94,6 +94,7 @@ export class BrandProductsPage implements OnInit {
   data: any;
   cart_count:any
   sortType:any=null
+  name:any
   constructor(
     private brandProductService: BrandProductService,
     private platform: Platform,
@@ -179,6 +180,7 @@ export class BrandProductsPage implements OnInit {
       this.cart_count = data.cart_count
       localStorage.setItem("cart_count",data.cart_count)
       this.cartCountService.setCartCount(data.cart_count)
+      this.presentToastSuccess("One ' " + this.name +" ' added to cart.");
     }
     // console.log(data);
 
@@ -189,6 +191,10 @@ export class BrandProductsPage implements OnInit {
   handleError(error) {
     this.loadingController.dismiss()
     // console.log(error);
+    if(error.status == 400)
+    {
+      this.presentAlert(error.error.message)
+    }
   }
 
 
@@ -272,9 +278,9 @@ export class BrandProductsPage implements OnInit {
       );
       this.products[index].cart_count++;
       //  this.getData()
-      let name = this.products[index].name
+      this.name = this.products[index].name
 
-        this.presentToastSuccess("One ' " + name +" ' added to cart.");
+        // this.presentToastSuccess("One ' " + name +" ' added to cart.");
         localStorage.setItem('cart_count',this.cart_count)
     } else {
       this.presentLogin();
@@ -350,5 +356,16 @@ export class BrandProductsPage implements OnInit {
       duration: 1500,
     });
     toast.present();
+  }
+  async presentAlert(msg:string) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Low Stock Alert',
+     
+      message:msg + "\ For ordering large quantities contact us through email or whatsapp.",
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 }

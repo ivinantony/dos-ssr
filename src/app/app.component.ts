@@ -54,6 +54,7 @@ export class AppComponent implements OnInit {
   ) {
     this.client_id = localStorage.getItem('client_id')
     this.cart_count_initial = localStorage.getItem('cart_count')
+    console.log(this.cart_count_initial)
     cartCountService.setCartCount(this.cart_count_initial)
     cartCountService.getCartCount().subscribe(res => {
       this.cart_count=res}
@@ -61,7 +62,7 @@ export class AppComponent implements OnInit {
     this.notf_count_initial = localStorage.getItem('notf_count')
     notCountService.setNotCount(this.notf_count_initial)
     notCountService.getNotCount().subscribe(res => {
-      this.cart_count=res}
+      this.notf_count=res}
       )
     // console.log(this.cart_count)
     
