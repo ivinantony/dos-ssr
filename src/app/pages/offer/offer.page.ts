@@ -10,9 +10,8 @@ import {
   PopoverController,
   ToastController,
   IonInfiniteScroll,
-  
 } from "@ionic/angular";
-import { IonContent } from '@ionic/angular';
+import { IonContent } from "@ionic/angular";
 import { CartcountService } from "src/app/cartcount.service";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { CartService } from "src/app/services/cart/cart.service";
@@ -39,8 +38,9 @@ export class OfferPage implements OnInit {
   current_page: number;
   client_id: any;
   sortType: any = null;
-  scroll:boolean=true
-  cart_count:any
+  scroll: boolean = true;
+  cart_count: any;
+  name: any;
 
   constructor(
     private offerService: OfferService,
@@ -53,8 +53,7 @@ export class OfferPage implements OnInit {
     private loadingController: LoadingController,
     private popOverCtrl: PopoverController,
     private toastController: ToastController,
-    private cartCountService:CartcountService
-
+    private cartCountService: CartcountService
   ) {
     this.client_id = localStorage.getItem("client_id");
     this.s3url = utils.getS3url();
@@ -65,9 +64,8 @@ export class OfferPage implements OnInit {
 
   ngOnInit() {}
 
-  ionViewWillEnter()
-  {
-    this.cart_count = localStorage.getItem('cart_count')
+  ionViewWillEnter() {
+    this.cart_count = localStorage.getItem("cart_count");
   }
 
   getData(infiniteScroll?) {
@@ -77,85 +75,40 @@ export class OfferPage implements OnInit {
         .subscribe(
           (data) => this.handleResponse(data, GET_DATA, infiniteScroll),
           (error) => this.handleError(error)
-          
         );
-        
     });
   }
 
-  handleResponse(data, type, infiniteScroll?) 
-  {
+  handleResponse(data, type, infiniteScroll?) {
     this.infiniteScroll.disabled = false;
     this.loadingController.dismiss();
-    if (type == GET_DATA) 
-    {
-    this.page_limit = data.page_count;
-    this.cart_count = data.cart_count
-    localStorage.setItem("cart_count",data.cart_count)
-    data.product.forEach((element) => {
-      this.products.push(element);
-    });
-    console.log(this.products, "API called");
+    if (type == GET_DATA) {
+      this.page_limit = data.page_count;
+      this.cart_count = data.cart_count;
+      localStorage.setItem("cart_count", data.cart_count);
+      data.product.forEach((element) => {
+        this.products.push(element);
+      });
+      console.log(this.products, "API called");
+    } else if (type == POST_DATA) {
+      console.log("add to cart", data);
+      this.cart_count = data.cart_count;
+      localStorage.setItem("cart_count", data.cart_count);
+      this.cartCountService.setCartCount(data.cart_count);
+      this.presentToastSuccess("One ' " + this.name + " ' added to cart.");
     }
 
-
-    else if(type == POST_DATA)
-    {
-      console.log("add to cart",data)
-      this.cart_count = data.cart_count
-      localStorage.setItem("cart_count",data.cart_count)
-      this.cartCountService.setCartCount(data.cart_count)
-    }
-    
-    if (infiniteScroll) 
-      {
+    if (infiniteScroll) {
       // console.log("infinite scroll", infiniteScroll);
       infiniteScroll.target.complete();
-      }
+    }
   }
 
-  handleError(error) 
-  {
+  handleError(error) {
     this.loadingController.dismiss();
-    console.log(error);
-  }
-
-
-
-  async presentActionSheet() {
-    const actionSheet = await this.actionSheetController.create({
-      header: "SORT BY",
-      mode: "md",
-      cssClass: "my-custom-class",
-      buttons: [
-        {
-          text: "Price - high to low",
-          handler: () => {
-            this.infiniteScroll.disabled = true;
-            this.page_count = 1;
-            this.products = [];
-            this.sortType = "DESC";
-            this.getData();
-            this.content.scrollToTop(1500);
-           
-          },
-        },
-        {
-          text: "Price - low to high",
-          handler: () => {
-            this.infiniteScroll.disabled = true;
-            this.page_count = 1;
-            this.products = [];
-            this.sortType = "ASC";
-            this.getData();
-            console.log(this.scroll,"sort")
-            this.content.scrollToTop(1500);
-
-          },
-        },
-      ],
-    });
-    await actionSheet.present();
+    if (error.status == 400) {
+      this.presentAlert(error.error.message);
+    }
   }
 
   addToCart(index: number) {
@@ -172,9 +125,7 @@ export class OfferPage implements OnInit {
       this.products[index].cart_count++;
       //  this.getData()
 
-      let name = this.products[index].name;
-
-      this.presentToastSuccess("One ' " + name + " ' added to cart.");
+      this.name = this.products[index].name;
     } else {
       this.presentLogin();
     }
@@ -196,21 +147,19 @@ export class OfferPage implements OnInit {
           this.sortType = "ASC";
           this.page_count = 1;
           this.products = [];
-          console.log("from sort")
+          console.log("from sort");
           this.getData();
-          
-          console.log(this.scroll,"sort")
-          
+
+          console.log(this.scroll, "sort");
         } else if (data.data == 1) {
           console.log("high to low");
           this.sortType = "DESC";
           this.page_count = 1;
           this.products = [];
-          console.log("from sort")
+          console.log("from sort");
           this.getData();
-          
-          console.log(this.scroll,"sort")
 
+          console.log(this.scroll, "sort");
         }
       }
     });
@@ -219,14 +168,11 @@ export class OfferPage implements OnInit {
 
   loadMoreContent(infiniteScroll) {
     console.log("loadMoreContent", this.page_count);
-    if (this.page_count == this.page_limit) 
-    {
+    if (this.page_count == this.page_limit) {
       infiniteScroll.target.disabled = true;
-    } 
-    else 
-    {
+    } else {
       this.page_count++;
-      console.log("from load more content")
+      console.log("from load more content");
       this.getData(infiniteScroll);
     }
   }
@@ -260,6 +206,40 @@ export class OfferPage implements OnInit {
     this.presentActionSheet();
   }
 
+  async presentActionSheet() {
+    const actionSheet = await this.actionSheetController.create({
+      header: "SORT BY",
+      mode: "md",
+      cssClass: "my-custom-class",
+      buttons: [
+        {
+          text: "Price - high to low",
+          handler: () => {
+            this.infiniteScroll.disabled = true;
+            this.page_count = 1;
+            this.products = [];
+            this.sortType = "DESC";
+            this.getData();
+            this.content.scrollToTop(1500);
+          },
+        },
+        {
+          text: "Price - low to high",
+          handler: () => {
+            this.infiniteScroll.disabled = true;
+            this.page_count = 1;
+            this.products = [];
+            this.sortType = "ASC";
+            this.getData();
+            console.log(this.scroll, "sort");
+            this.content.scrollToTop(1500);
+          },
+        },
+      ],
+    });
+    await actionSheet.present();
+  }
+
   async presentToastSuccess(msg) {
     const toast = await this.toastController.create({
       message: msg,
@@ -283,6 +263,20 @@ export class OfferPage implements OnInit {
           },
         },
       ],
+    });
+
+    await alert.present();
+  }
+
+  async presentAlert(msg: string) {
+    const alert = await this.alertController.create({
+      cssClass: "my-custom-class",
+      header: "Low Stock Alert",
+
+      message:
+        msg +
+        " For ordering large quantities contact us through email or whatsapp.",
+      buttons: ["OK"],
     });
 
     await alert.present();

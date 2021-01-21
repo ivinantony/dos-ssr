@@ -118,7 +118,6 @@ export class LoginPage implements OnInit {
     }
     else{
       console.log('In cordova platform');
-
       console.log('Subscribing to token updates');
       this.fcm.onTokenRefresh().subscribe((newToken) => {
         this.token = newToken;
@@ -231,4 +230,5 @@ export class LoginPage implements OnInit {
 
     await alert.present();
   }
+
 }

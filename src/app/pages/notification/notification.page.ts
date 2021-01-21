@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IonRouterOutlet, LoadingController, ModalController } from '@ionic/angular';
+import { NotcountService } from 'src/app/notcount.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { NotificationdetailPage } from "../notificationdetail/notificationdetail.page";
@@ -16,14 +17,19 @@ export class NotificationPage implements OnInit {
 
   data:any
   s3url:any
+  notf_count:any
   constructor(private notifications:NotificationService,
     private utils:UtilsService,
     private loadingController:LoadingController,
     private modalController:ModalController,
-    private routerOutlet: IonRouterOutlet,) 
+    private routerOutlet: IonRouterOutlet,
+    private notcountService:NotcountService) 
   {
     this.s3url = utils.getS3url()
     console.log(this.s3url)
+    notcountService.getNotCount().subscribe(res=>{
+      this.notf_count = res
+    })
     this.getData()
   }
 
@@ -34,6 +40,12 @@ export class NotificationPage implements OnInit {
 
   viewNotification(index:any)
   {
+   if(this.notf_count>0)
+   {
+    this.notf_count -=1
+    this.notcountService.setNotCount(this.notf_count)
+    localStorage.setItem("notf_count",this.notf_count)
+   } 
     let notification_id = this.data[index].notification_id
     let data={
       notification_id : notification_id
