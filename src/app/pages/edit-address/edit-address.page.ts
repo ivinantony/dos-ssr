@@ -332,7 +332,16 @@ export class EditAddressPage implements OnInit {
         response_data = response.rows;
         console.log("responsee data", response_data);
         response_data.forEach((ele) => {
-          distances.push(ele.elements[0].distance.value);
+          if(ele.elements[0].status == "ZERO_RESULTS")
+          {
+            this.locationAvailability = false;
+            var msg = "Sorry, this location is currently not serviceable";
+            this.showToast(msg);
+
+          }
+          else{
+            distances.push(ele.elements[0].distance.value);
+          }
         });
         shortest_distance = Math.min.apply(null, distances);
         shop_index = distances.findIndex(
@@ -444,7 +453,7 @@ export class EditAddressPage implements OnInit {
       } 
        
       else {
-        this.showToast("Please check your information.");
+        this.showToast("Please fill all mandatory fields.");
       }
 
   
