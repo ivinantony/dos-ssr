@@ -55,23 +55,35 @@ hr {
   text-decoration: line-through;
 }
 
-.text {
+.details{
   // margin-bottom: 60px;
-  h1 {
+  h1{
     font-size: 16px;
     color: #777;
     text-align: center;
     padding-bottom: 5px;
   }
-  h2 {
-    font-size: 1.1rem;
+  h2{
+    font-size: .9rem;
     text-align: center;
     color: #444;
     font-weight: bold;
   }
-  p {
+  p{
     text-align: center;
   }
+  h3{
+
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #444;
+    margin-bottom: 0px;
+    
+  }
+}
+.text
+{
+  margin: 0px;
 }
 
 .row {

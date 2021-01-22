@@ -44,13 +44,13 @@ export class NotificationdetailPage implements OnInit {
   handleResponse(data)
   {
     this.loadingController.dismiss()
-    console.log(data)
+    // console.log(data)
     this.data = data
-    console.log(this.data)
+    // console.log(this.data)
   }
   handleError(error)
   {
-    console.log(error)
+    // console.log(error)
   }
 
   async presentLoading() {

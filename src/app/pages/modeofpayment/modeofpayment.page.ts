@@ -43,18 +43,18 @@ export class ModeofpaymentPage implements OnInit {
     {
       
     this.paymentOptions = data
-    console.log(this.paymentOptions)
+    // console.log(this.paymentOptions)
     // this.loadingController.dismiss()
     }
     else if(type == POST_DATA)
     {
-      console.log(data)
+      // console.log(data)
     }
     
   }
   handleError(error)
   {
-    console.log(error)
+    // console.log(error)
   }
 
   async presentLoading() {
@@ -65,7 +65,7 @@ export class ModeofpaymentPage implements OnInit {
     });
     await loading.present();
     const { role, data } = await loading.onDidDismiss();
-    console.log('Loading dismissed!');
+    // console.log('Loading dismissed!');
   }
 
   selectPaymentMethod(i)

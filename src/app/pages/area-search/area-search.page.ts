@@ -22,7 +22,7 @@ export class AreaSearchPage implements OnInit {
     this.modalController.dismiss()
   }
   onSearchChange(event) {
-    console.log('evn',event)
+    // console.log('evn',event)
     let config = {
       types: ["geocode"],
       input: event.detail.value,
@@ -47,11 +47,11 @@ export class AreaSearchPage implements OnInit {
 
     placesService.getDetails({ placeId: place.place_id }, (details) => {
       this.zone.run(() => {
-        console.log(details)
+        // console.log(details)
         this.location_data.name = details.name;
         this.location_data.lat = details.geometry.location.lat();
         this.location_data.lng = details.geometry.location.lng();
-        console.log(this.location_data)
+        // console.log(this.location_data)
         if (this.location_data.lat && this.location_data.lng) {
           this.modalController.dismiss(this.location_data);
         }

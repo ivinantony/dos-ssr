@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HeadersService } from '../headers.service';
 import { UtilsService } from '../utils.service';
-import { map } from 'rxjs/operators';
+import { map, retry, tap, } from 'rxjs/operators';
 
 
 @Injectable({
@@ -27,4 +27,20 @@ export class PaymentService {
      return this.httpclient.post(
       this.url + "capture-payment",data,{ headers }).pipe(map(res=>{return res}));
    }
+
+   hostedPay(data:any) {
+    const headers = this.headerservice.getHttpHeaders()
+    return this.httpclient.post(this.url + 'hosted-pay', data, { headers: headers })
+      .pipe(
+        retry(3),
+        tap( // Log the result or error
+          data => {
+            return data
+          },
+          error => {
+            return error
+          }
+        ),
+      )
+    }
 }

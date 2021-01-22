@@ -1,7 +1,9 @@
 import { Component, NgZone, OnInit, ɵConsole } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoadingController, ToastController } from '@ionic/angular';
+import { LoadingController, Platform, ToastController } from '@ionic/angular';
 import { PaymentService } from 'src/app/services/payment/payment.service';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+
 const POST_DATA=200;
 @Component({
   selector: 'app-paypal',
@@ -14,7 +16,9 @@ export class PaypalPage implements OnInit {
   currencyIcon: string = '$';
   order_id:any
   details:any
-  constructor(private pay:PaymentService,public router:Router,private toastController:ToastController,private zone:NgZone,private loadingController:LoadingController) 
+  constructor(private pay:PaymentService,public router:Router,private toastController:ToastController,
+    private zone:NgZone,private loadingController:LoadingController,
+    private platform:Platform,private iab:InAppBrowser) 
   { 
     this.paymentAmount = localStorage.getItem('total_amount')
     
@@ -23,6 +27,48 @@ export class PaypalPage implements OnInit {
 
   ngOnInit() {
   }
+
+  hostedSubmit() {
+    this.presentLoading().then(() => {
+
+      let data = {
+        name:"hjscdvgjsah"
+      }
+      this.pay.hostedPay(data)
+        .subscribe(
+          data => this.handleResponse(data),
+          error => this.handleError(error))
+
+    })
+  }
+
+
+  handleResponse(data) {
+    this.loadingController.dismiss()
+    // console.log('data n Tab3', data)
+    // ionicstorage.setItem('tran_ref', data.tran_ref).then(()=>{
+    //this.openUrl(data.redirect_url)
+    //})
+    
+    
+    }
+    handleError(error) {
+    // console.log('error in Tab3', error)
+    this.loadingController.dismiss()
+    }
+    openUrl(url) {
+    if (!this.platform.is('cordova')) {
+    window.open(url, '_self')
+    return;
+    }
+    const browser = this.iab.create(url, '_self');
+    
+    browser.on('loadstop').subscribe(event => {
+    browser.insertCSS({ code: "body{color: red;" });
+    });
+    
+    // browser.close();
+    }
 
 paypal()
 {
@@ -49,7 +95,7 @@ paypal()
         return actions.order.capture()
           .then(function (details) {
             
-            console.log(details)
+            // console.log(details)
             // Show a success message to the buyer
             if(details.status == "COMPLETED")
             {

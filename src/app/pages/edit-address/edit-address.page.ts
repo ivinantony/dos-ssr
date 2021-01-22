@@ -156,10 +156,10 @@ export class EditAddressPage implements OnInit {
 
 
       }).catch((error) => {
-        console.log('Error getting location', error);
+        // console.log('Error getting location', error);
       });
     } else {
-      console.log('cordova not supported')
+      // console.log('cordova not supported')
       var accuracyOptions = {
         enableHighAccuracy: true,
         timeout: 27000,
@@ -173,7 +173,7 @@ export class EditAddressPage implements OnInit {
             this.addressForm.controls['longitude'].setValue(resp.coords.longitude);
             this.latitude = resp.coords.latitude;
             this.longitude = resp.coords.longitude
-            console.log(this.latitude,"from load map")
+            // console.log(this.latitude,"from load map")
             this.getDistance()
             this.inItMap(resp.coords.latitude, resp.coords.longitude)
 
@@ -183,15 +183,15 @@ export class EditAddressPage implements OnInit {
             switch (error.code) {
               case error.PERMISSION_DENIED:
                 var msg = "User denied the request for Geolocation.";
-                console.log(msg)
+                // console.log(msg)
                 break;
               case error.POSITION_UNAVAILABLE:
                 var msg = "Location information is unavailable.";
-                console.log(msg)
+                // console.log(msg)
                 break;
               case error.TIMEOUT:
                 var msg = "The request to get user location timed out.";
-                console.log(msg)
+                // console.log(msg)
                 break;
             }
           },
@@ -243,7 +243,7 @@ export class EditAddressPage implements OnInit {
   getAddressFromCoords(latitude, longitude) {
 
     if (this.platform.is('cordova')) {
-      console.log('cordova  available')
+      // console.log('cordova  available')
       let options: NativeGeocoderOptions = {
         useLocale: true,
         maxResults: 5
@@ -265,13 +265,13 @@ export class EditAddressPage implements OnInit {
           address = address.slice(0, -2);
           this.addressForm.controls['address'].setValue(address);
           this.selectedAddress = address
-          console.log(this.selectedAddress,"hello")
+          // console.log(this.selectedAddress,"hello")
           
         })
         .catch((error: any) => {
         });
     } else {
-      console.log('cordova not available')
+      // console.log('cordova not available')
       var latlng = new google.maps.LatLng(latitude, longitude);
       var geocoder = new google.maps.Geocoder();
       this.zone.run(() => {
@@ -280,7 +280,7 @@ export class EditAddressPage implements OnInit {
             alert(status);
           }
           if (status == google.maps.GeocoderStatus.OK) {
-            console.log(results);
+            // console.log(results);
             this.selectedAddress  = results[0].formatted_address;
             this.addressForm.controls['address'].setValue(results[0].formatted_address);
             this.addressForm.controls['place_id'].setValue(results[0].place_id);
@@ -294,10 +294,10 @@ export class EditAddressPage implements OnInit {
 
 
   getDistance() {
-    console.log("GEt Distance started",this.latitude,this.longitude)
+    // console.log("GEt Distance started",this.latitude,this.longitude)
     const service = new google.maps.DistanceMatrixService();
     var current_coords = new google.maps.LatLng(this.latitude, this.longitude);
-    console.log("current coords getdistance", current_coords);
+    // console.log("current coords getdistance", current_coords);
     var lat: string = this.latitude.toString();
     var long: string = this.longitude.toString();
     var destination = lat + "," + long;
@@ -308,17 +308,17 @@ export class EditAddressPage implements OnInit {
     this.delivery_locations?.forEach((element) => {
       shop_coords.push(element.location);
     });
-    console.log("shop", shop_coords);
-    console.log("current_coords", this.latitude, this.longitude);
+    // console.log("shop", shop_coords);
+    // console.log("current_coords", this.latitude, this.longitude);
     const matrixOptions = {
       origins: shop_coords, // shop coords
       destinations: [destination], // customer coords
       travelMode: "DRIVING",
       unitSystem: google.maps.UnitSystem.IMPERIAL,
     };
-    console.log("matrix", matrixOptions);
+    // console.log("matrix", matrixOptions);
     service.getDistanceMatrix(matrixOptions, (response, status) => {
-      console.log("GET DISTANCE MATRIX");
+      // console.log("GET DISTANCE MATRIX");
       if (status !== "OK") {
         var msg = "Error with distance matrix";
         this.showToast(msg);
@@ -330,7 +330,7 @@ export class EditAddressPage implements OnInit {
         let shortest_distance;
         let shop_index: number;
         response_data = response.rows;
-        console.log("responsee data", response_data);
+        // console.log("responsee data", response_data);
         response_data.forEach((ele) => {
           if(ele.elements[0].status == "ZERO_RESULTS")
           {
@@ -398,13 +398,13 @@ export class EditAddressPage implements OnInit {
         let resp = data.data;
         this.inItMap(resp.lat, resp.lng)
       }
-      console.log('data', data.data)
+      // console.log('data', data.data)
       this.latitude = data.data.lat
       this.longitude = data.data.lng
       this.addressForm.patchValue({ latitude:data.data.lat  });
       this.addressForm.patchValue({ longitude:data.data.lng  });
 
-      console.log("lat lon from modalsearch",this.latitude,this.longitude)
+      // console.log("lat lon from modalsearch",this.latitude,this.longitude)
       this.getDistance()
     })
     return await modal.present();
@@ -417,8 +417,8 @@ export class EditAddressPage implements OnInit {
 
   onSubmit()
   {
-    console.log(this.addressForm.value)
-    console.log(this.locationAvailability,"availability")
+    // console.log(this.addressForm.value)
+    // console.log(this.locationAvailability,"availability")
 
     if (this.locationAvailability == false) 
     {
@@ -443,7 +443,7 @@ export class EditAddressPage implements OnInit {
       this.showToast("Please enter a valid phone number");
     }
       else if (this.addressForm.valid && this.locationAvailability == true) {
-        console.log(this.addressForm.value)
+        // console.log(this.addressForm.value)
         this.addressService.addEditAddress(this.addressForm.value).subscribe(
           (data) => this.handleResponse(data, POST_ADDRESS),
           (error) => this.handleError(error)
@@ -475,12 +475,12 @@ export class EditAddressPage implements OnInit {
     if(type == GET_EDIT_ADDRESS)
     {
       this.loadingController.dismiss()
-      console.log("Edit data",data)
+      // console.log("Edit data",data)
       this.editAddress = data.address
       this.latitude = data.address.latitude
       this.longitude = data.address.longitude
       this.delivery_locations = data.delivery_locations
-      console.log(this.latitude,this.longitude,"lat long in edit address")
+      // console.log(this.latitude,this.longitude,"lat long in edit address")
       this.update()
       this.inItMap(this.latitude,this.longitude)
       this.getDistance()
@@ -503,7 +503,7 @@ export class EditAddressPage implements OnInit {
   handleError(error)
   {
     this.loadingController.dismiss()
-    console.log(error)
+    // console.log(error)
   }
 
 

@@ -3,7 +3,7 @@
     <ion-title>PAYMENT</ion-title>
   
       <ion-buttons slot="start">
-        <ion-back-button (click)="router.navigate(['cart'])" text="" color="dark" defaultHref="cart"></ion-back-button>
+        <ion-back-button (click)="router.navigate(['cart'])"  color="dark" defaultHref="cart"></ion-back-button>
       </ion-buttons>
    
   </ion-toolbar>
@@ -23,7 +23,9 @@
       
       <div id="paypal-button-container"></div>
       
-      
+      <ion-button (click)="hostedSubmit()">
+        pay
+      </ion-button>
     </ion-card>
   </div>
 </ion-content>

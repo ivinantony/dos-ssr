@@ -98,13 +98,13 @@ export class ProductSearchService {
           this.result.push(result)
           
         });
-        console.log(resultList)
-        console.log(this.result);
+        // console.log(resultList)
+        // console.log(this.result);
         
         this.searchResult.next(this.result)
       })
       .catch(error => {
-        console.log(`error: ${error}`);
+        // console.log(`error: ${error}`);
       });
     }
     else{
@@ -129,10 +129,10 @@ export class ProductSearchService {
   }
 
   handleResponse(data) {
-    console.log(data)
+    // console.log(data)
     // this.items = data.products;
   }
   handleError(error) {
-    console.log(error)
+    // console.log(error)
   }
 }

@@ -138,6 +138,18 @@
 
           <ion-menu-toggle auto-hide="false">
             <ion-item
+              (click)="router.navigate(['/home'])"
+              routerDirection="root"
+              lines="none"
+              detail="false"
+              class="links"
+            >
+            
+              <ion-icon name="home-outline" class="icon"color="magenta"> </ion-icon>
+              <ion-label>Home</ion-label>
+            </ion-item>
+
+            <ion-item
               (click)="router.navigate(['/categories'])"
               routerDirection="root"
               lines="none"

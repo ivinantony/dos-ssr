@@ -40,14 +40,14 @@ export class OrdersPage implements OnInit {
     if(type == GET_DATA)
     {
       this.data = data
-      console.log(data)
+      // console.log(data)
     }
     
   }
   handleError(error)
   {
     this.loadingController.dismiss()
-    console.log(error)
+    // console.log(error)
   }
 
   continueShopping()

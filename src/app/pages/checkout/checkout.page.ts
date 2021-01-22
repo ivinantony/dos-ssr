@@ -92,76 +92,76 @@ this.loadingController.dismiss()
       console.log(data, "pay response");
       localStorage.setItem("order_id", data.payable_order_id);
       if (this.payment_id == 4) {
-        if (this.platform.is("cordova")) {
-          console.log("cordova detected");
-          this.payPal
-            .init({
-              PayPalEnvironmentProduction: "YOUR_PRODUCTION_CLIENT_ID",
-              PayPalEnvironmentSandbox:
-                "AdQ56AEl3TVRxp-oPoMtdptdh-KIbMNCj5TBfv5gJxhQ7JVJJJTWb5T8digw3jpjyLhsJ_WpkXRGZs1G",
-            })
-            .then(
-              () => {
-                // Environments: PayPalEnvironmentNoNetwork, PayPalEnvironmentSandbox, PayPalEnvironmentProduction
-                this.payPal
-                  .prepareToRender(
-                    "PayPalEnvironmentSandbox",
-                    new PayPalConfiguration({
-                      // Only needed if you get an "Internal Service Error" after PayPal login!
-                      //payPalShippingAddressOption: 2 // PayPalShippingAddressOptionPayPal
-                    })
-                  )
-                  .then(
-                    () => {
-                      console.log("heyyyyy");
-                      let payment = new PayPalPayment(
-                        this.data.payable_amount,
-                        "AED",
-                        "Description",
-                        "sale"
-                      );
-                      this.payPal.renderSinglePaymentUI(payment).then(
-                        (paymentDetails) => {
-                          console.log(paymentDetails);
-                          // Successfully paid
+        // if (this.platform.is("cordova")) {
+        //   console.log("cordova detected");
+        //   this.payPal
+        //     .init({
+        //       PayPalEnvironmentProduction: "YOUR_PRODUCTION_CLIENT_ID",
+        //       PayPalEnvironmentSandbox:
+        //         "AdQ56AEl3TVRxp-oPoMtdptdh-KIbMNCj5TBfv5gJxhQ7JVJJJTWb5T8digw3jpjyLhsJ_WpkXRGZs1G",
+        //     })
+        //     .then(
+        //       () => {
+        //         // Environments: PayPalEnvironmentNoNetwork, PayPalEnvironmentSandbox, PayPalEnvironmentProduction
+        //         this.payPal
+        //           .prepareToRender(
+        //             "PayPalEnvironmentSandbox",
+        //             new PayPalConfiguration({
+        //               // Only needed if you get an "Internal Service Error" after PayPal login!
+        //               //payPalShippingAddressOption: 2 // PayPalShippingAddressOptionPayPal
+        //             })
+        //           )
+        //           .then(
+        //             () => {
+        //               console.log("heyyyyy");
+        //               let payment = new PayPalPayment(
+        //                 this.data.payable_amount,
+        //                 "AED",
+        //                 "Description",
+        //                 "sale"
+        //               );
+        //               this.payPal.renderSinglePaymentUI(payment).then(
+        //                 (paymentDetails) => {
+        //                   console.log(paymentDetails);
+        //                   // Successfully paid
 
-                          // Example sandbox response
-                          //
-                          // {
-                          //   "client": {
-                          //     "environment": "sandbox",
-                          //     "product_name": "PayPal iOS SDK",
-                          //     "paypal_sdk_version": "2.16.0",
-                          //     "platform": "iOS"
-                          //   },
-                          //   "response_type": "payment",
-                          //   "response": {
-                          //     "id": "PAY-1AB23456CD789012EF34GHIJ",
-                          //     "state": "approved",
-                          //     "create_time": "2016-10-03T13:33:33Z",
-                          //     "intent": "sale"
-                          //   }
-                          // }
-                        },
-                        (error) => {
-                          console.log(error, "hai");
+        //                   // Example sandbox response
+        //                   //
+        //                   // {
+        //                   //   "client": {
+        //                   //     "environment": "sandbox",
+        //                   //     "product_name": "PayPal iOS SDK",
+        //                   //     "paypal_sdk_version": "2.16.0",
+        //                   //     "platform": "iOS"
+        //                   //   },
+        //                   //   "response_type": "payment",
+        //                   //   "response": {
+        //                   //     "id": "PAY-1AB23456CD789012EF34GHIJ",
+        //                   //     "state": "approved",
+        //                   //     "create_time": "2016-10-03T13:33:33Z",
+        //                   //     "intent": "sale"
+        //                   //   }
+        //                   // }
+        //                 },
+        //                 (error) => {
+        //                   console.log(error, "hai");
 
-                          // Error or render dialog closed without being successful
-                        }
-                      );
-                    },
-                    (error) => {
-                      console.log(error, "hello");
-                      // Error in configuration
-                    }
-                  );
-              },
-              (error) => {
-                console.log(error, "how");
-                // Error in initialization, maybe PayPal isn't supported or something else
-              }
-            );
-        }
+        //                   // Error or render dialog closed without being successful
+        //                 }
+        //               );
+        //             },
+        //             (error) => {
+        //               console.log(error, "hello");
+        //               // Error in configuration
+        //             }
+        //           );
+        //       },
+        //       (error) => {
+        //         console.log(error, "how");
+        //         // Error in initialization, maybe PayPal isn't supported or something else
+        //       }
+        //     );
+        // }
         localStorage.setItem("total_amount", this.data.payable_amount);
         console.log("cordova not supported");
         this.router.navigate(["paypal"]);
@@ -255,7 +255,7 @@ this.loadingController.dismiss()
     modal.onDidDismiss().then((data) => {
       
       const paymentDetails = data["data"];
-      // console.log(paymentDetails);
+      console.log(paymentDetails);
       if (paymentDetails) {
         this.payment_id = paymentDetails.modeOfPayment_Id;
         if(this.payment_id == 7)

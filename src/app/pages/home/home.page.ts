@@ -197,7 +197,7 @@ export class HomePage implements OnInit {
   setFilteredItems(search) {
      var res = this.searchService.filterItems(search)
      this.searchItems = res
-    console.log(this.searchItems)
+    // console.log(this.searchItems)
   }
   onSearchInput() {
     this.searching = true;
@@ -295,7 +295,7 @@ export class HomePage implements OnInit {
   handleResponse(data)
   {
    this.loadingController.dismiss()
-    console.log(data)
+    // console.log(data)
     localStorage.setItem('cart_count',data.cart_count)
     localStorage.setItem('notf_count',data.notification_count)
 

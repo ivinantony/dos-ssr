@@ -20,8 +20,8 @@ export class ProfileOTPPage implements OnInit {
   { 
     this.phone = this.activatedRoute.snapshot.params.phoneNo
     this.email = this.activatedRoute.snapshot.params.Email
-    console.log(this.phone)
-    console.log(this.email)
+    // console.log(this.phone)
+    // console.log(this.email)
   }
 
   ngOnInit() {
@@ -61,7 +61,7 @@ export class ProfileOTPPage implements OnInit {
 
   handleResponseData(data,type)
   {
-    console.log(data)
+    // console.log(data)
     // this.authService.login(data.data)
     // localStorage.setItem('client_id',data.client_id)
     this.router.navigate(['profile'])
@@ -70,7 +70,7 @@ export class ProfileOTPPage implements OnInit {
   handleError(error)
   {
     this.presentAlert("plaease check your OTP.")
-    console.log(error)
+    // console.log(error)
   }
 
   async presentAlert(msg:string) {

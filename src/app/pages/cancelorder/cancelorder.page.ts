@@ -34,11 +34,11 @@ export class CancelorderPage implements OnInit {
 
   handleResponse(data)
   {
-    console.log(data)
+    // console.log(data)
   }
   handleError(error)
   {
-    console.log(error)
+    // console.log(error)
   }
 }
 

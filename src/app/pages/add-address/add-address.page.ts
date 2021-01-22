@@ -189,7 +189,7 @@ export class AddAddressPage implements OnInit {
           this.inItMap(resp.coords.latitude, resp.coords.longitude);
         })
         .catch((error) => {
-          console.log("Error getting location", error);
+          // console.log("Error getting location", error);
         });
     } else {
       // console.log("cordova not supported");
@@ -210,7 +210,7 @@ export class AddAddressPage implements OnInit {
             );
             this.latitude = resp.coords.latitude;
             this.longitude = resp.coords.longitude;
-            console.log(this.latitude, "from load map");
+            // console.log(this.latitude, "from load map");
             this.getDistance();
             this.inItMap(resp.coords.latitude, resp.coords.longitude);
           },
@@ -335,7 +335,7 @@ export class AddAddressPage implements OnInit {
     // console.log("GEt Distance started", this.latitude, this.longitude);
     const service = new google.maps.DistanceMatrixService();
     var current_coords = new google.maps.LatLng(this.latitude, this.longitude);
-    console.log("current coords getdistance", current_coords);
+    // console.log("current coords getdistance", current_coords);
     var lat: string = this.latitude.toString();
     var long: string = this.longitude.toString();
     var destination = lat + "," + long;
@@ -346,17 +346,17 @@ export class AddAddressPage implements OnInit {
     this.delivery_locations?.forEach((element) => {
       shop_coords.push(element.location);
     });
-    console.log("shop", shop_coords);
-    console.log("current_coords", this.latitude, this.longitude);
+    // console.log("shop", shop_coords);
+    // console.log("current_coords", this.latitude, this.longitude);
     const matrixOptions = {
       origins: shop_coords, // shop coords
       destinations: [destination], // customer coords
       travelMode: "DRIVING",
       unitSystem: google.maps.UnitSystem.IMPERIAL,
     };
-    console.log("matrix", matrixOptions);
+    // console.log("matrix", matrixOptions);
     service.getDistanceMatrix(matrixOptions, (response, status) => {
-      console.log("GET DISTANCE MATRIX");
+      // console.log("GET DISTANCE MATRIX");
       if (status !== "OK") {
         var msg = "Error with distance matrix";
         this.locationAvailability = false;
@@ -367,7 +367,7 @@ export class AddAddressPage implements OnInit {
         let shortest_distance;
         let shop_index: number;
         response_data = response.rows;
-        console.log("responsee data", response_data);
+        // console.log("responsee data", response_data);
         response_data.forEach((ele) => {
           if(ele.elements[0].status == "ZERO_RESULTS")
           {
@@ -488,7 +488,7 @@ export class AddAddressPage implements OnInit {
   }
 
   handleResponse(data, type) {
-    console.log(data, "Delivery loc");
+    // console.log(data, "Delivery loc");
     this.delivery_locations = data.delivery_locations;
   }
   handleError(error) {

@@ -76,7 +76,7 @@ export class AppComponent implements OnInit {
       // console.log('data', data)
       if (data) {
         this.searchItems = data
-        console.log(this.searchItems,"searchItems")
+        // console.log(this.searchItems,"searchItems")
       } else {
         this.searchItems = []
       }

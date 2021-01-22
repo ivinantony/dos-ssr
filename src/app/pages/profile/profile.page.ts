@@ -50,11 +50,11 @@ export class ProfilePage implements OnInit {
   handleResponse(data,type)
   {
     this.user = data.client_Details
-    console.log(this.user)
+    // console.log(this.user)
   }
   handleError(error)
   {
-    console.log(error)
+    // console.log(error)
   }
 
 

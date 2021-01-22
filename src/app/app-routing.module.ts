@@ -170,14 +170,12 @@ const routes: Routes = [
     path: 'cartmodal',
     loadChildren: () => import('./pages/cartmodal/cartmodal.module').then( m => m.CartmodalPageModule)
   },
-  {
-    path: 'test',
-    loadChildren: () => import('./pages/test/test.module').then( m => m.TestPageModule)
-  },
+ 
   {
     path: 'notification',
     loadChildren: () => import('./pages/notification/notification.module').then( m => m.NotificationPageModule)
-  },  {
+  },
+  {
     path: 'notificationdetail',
     loadChildren: () => import('./pages/notificationdetail/notificationdetail.module').then( m => m.NotificationdetailPageModule)
   }

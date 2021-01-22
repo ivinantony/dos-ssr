@@ -92,7 +92,7 @@ export class CartmodalPage implements OnInit {
 
   onChangeAddress($event) {
     this.current_selection = $event.detail.value;
-    console.log(this.current_selection, "current selected address");
+    // console.log(this.current_selection, "current selected address");
     this.getDistance(
       this.data.address[this.current_selection].latitude,
       this.data.address[this.current_selection].longitude
