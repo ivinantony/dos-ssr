@@ -82,7 +82,11 @@
 
         <div>
           <ion-row>
-            <ion-col size="5" class="ion-padding">
+            
+            <!-- <ion-col size="3" class="addtocart">
+              <h3 style="font-size: 15px;">Select Quantity:</h3>
+            </ion-col> -->
+            <ion-col size="5" class="ion-padding" *ngIf="data?.product.cart_count == 0">
               <div class="addbutton">
                 <ion-icon
                   name="remove-outline"
@@ -97,13 +101,20 @@
                 ></ion-icon>
               </div>
             </ion-col>
-            <ion-col size="6" class="addtocart">
-              <ion-button (click)="addToCart()" color="dark" expand="full" [disabled]="data?.product.in_stock == 0">
+            </ion-row>
+            <ion-row>
+            <ion-col size="6" class="addtocart" *ngIf="data?.product.cart_count == 0">
+              <ion-button (click)="addToCart()" color="success" expand="block" [disabled]="data?.product.in_stock == 0">
                 ADD TO CART
               </ion-button>
             </ion-col>
-            <ion-col size="6" size-sm="5" size-md="4" size-lg="4" size-xl="4"  class="ion-padding addtocart">
-              <ion-button (click)="buyNow()" color="dark" expand="full" [disabled]="data?.product.in_stock == 0">
+            <ion-col size="6" class="addtocart" *ngIf="data?.product.cart_count > 0">
+              <ion-button (click)="goToCart()" color="success" expand="block"  [disabled]="data?.product.in_stock == 0">
+                GO TO CART
+              </ion-button>
+            </ion-col>
+            <ion-col size="6" size-sm="5" size-md="4" size-lg="4" size-xl="4"  class=" addtocart">
+              <ion-button (click)="buyNow()" color="danger" expand="block" [disabled]="data?.product.in_stock == 0">
                 BUY NOW
               </ion-button>
             </ion-col>

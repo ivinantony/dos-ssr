@@ -1,8 +1,8 @@
 .card{
-    padding: 10px;
-    min-height: 240px;
-    border-radius: 25px;
-    
+    // padding: 10px;
+    // min-height: 240px;
+    // border-radius: 25px;
+    box-shadow: none;
 }
 .cartImage{
     width: 20%;
@@ -11,11 +11,11 @@
     margin-right: auto;
 }
 
-.btn {
-    height: 56px;
-    letter-spacing: 2px;
-    margin-bottom: 5px;
-  }
+// .btn {
+//     height: 56px;
+//     letter-spacing: 2px;
+//     margin-bottom: 5px;
+//   }
 
 ion-content{
     // --background: url(../../../assets/images/27307.jpg);
@@ -24,6 +24,14 @@ ion-content{
     
     
     }
+
+    .wrapper{
+      
+        height: 100%;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+      }
 
 @media only screen and (max-width: 321px)
     {
@@ -45,6 +53,6 @@ ion-content{
         margin-right:auto;
       }
       .cartImage{
-        width: 8%;
+        width: 20%;
     }
     }

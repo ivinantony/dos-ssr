@@ -43,7 +43,10 @@
               [ngClass]="{outofstock: !item.in_stock}"
             >
               <div class="select" (click)="navigateToProduct(i)">
-              <div style=" position: relative; overflow: hidden" class="ion-text-center">
+              <div style=" position: relative; overflow: hidden" class="img_wrapper ion-text-center">
+                <div  class="ion-text-center stock"  *ngIf="item.in_stock == 0">
+                  <h3>OUT OF STOCK</h3>
+                </div>
                 <img [src]="s3url + item?.images[0]?.path" alt="">
               </div>
               <ion-list>
@@ -65,9 +68,7 @@
                 
               </ion-list>
             </div>
-              <div  class="ion-text-center stock"  *ngIf="item.in_stock == 0">
-                <h3>OUT OF STOCK</h3>
-              </div>
+             
               <ion-button (click)="addToCart(i)" color="danger" expand="full" [disabled]="item?.in_stock == 0" class="tocart">
               
                 ADD TO CART

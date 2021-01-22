@@ -4,6 +4,8 @@ import { AlertController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { VerifyOtpService } from 'src/app/services/otp/verify-otp.service';
 import { Storage } from '@ionic/storage';
+import { CartcountService } from 'src/app/cartcount.service';
+import { NotcountService } from 'src/app/notcount.service';
 const POST_OTP=200;
 @Component({
   selector: 'app-otp',
@@ -18,6 +20,8 @@ export class OtpPage implements OnInit {
   constructor(private otpService:VerifyOtpService,private activatedRoute:ActivatedRoute,
     private alertController:AlertController,private authService:AuthenticationService,
     private storage: Storage,private ngZone:NgZone,
+    private cartCountService:CartcountService,
+    private notCountService:NotcountService,
     private router:Router) 
   {
     this.phone = this.activatedRoute.snapshot.params.phone
@@ -53,6 +57,11 @@ export class OtpPage implements OnInit {
     // console.log("haiiiiiiiiiii",data)
     this.authService.login(data.data)
     localStorage.setItem('client_id',data.client_id)
+    localStorage.setItem('cart_count',data.cart_count)
+    localStorage.setItem('notf_count',data.notification_count)
+    this.cartCountService.setCartCount(data.cart_count)
+    this.notCountService.setNotCount(data.notification_count)
+
     this.storage.get('prev_url').then((val) => {
       // console.log(val,"prev url")
       this.ngZone.run(()=>{
