@@ -1,5 +1,5 @@
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HeadersService } from '../headers.service';
 import { UtilsService } from '../utils.service';
@@ -29,8 +29,10 @@ export class PaymentService {
    }
 
    hostedPay(data:any) {
-    const headers = this.headerservice.getHttpHeaders()
-    return this.httpclient.post(this.url + 'hosted-pay', data, { headers: headers })
+    //  let url = "http://127.0.0.1:8000/api/mobile/"
+    let headers = new HttpHeaders()
+    .set('Accept', 'application/json')
+    return this.httpclient.post(this.url + 'pay', data, { headers: headers })
       .pipe(
         retry(3),
         tap( // Log the result or error
@@ -43,4 +45,12 @@ export class PaymentService {
         ),
       )
     }
+
+
+    public confirmPayment(trans_ref:any,client_id:any)
+   {
+     const headers = this.headerservice.getHttpHeaders()
+     return this.httpclient.get(
+      this.url + "payment-details?trans_ref="+trans_ref+"&client_id="+client_id,{ headers }).pipe(map(res=>{return res}));
+   }
 }

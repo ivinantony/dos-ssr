@@ -26,6 +26,8 @@ import { DOCUMENT } from "@angular/common";
 import { hasLifecycleHook } from "@angular/compiler/src/lifecycle_reflector";
 import { Console } from "console";
 import { CartcountService } from "src/app/cartcount.service";
+import { AddressModalPage } from "../address-modal/address-modal.page";
+
 declare var google;
 
 declare var RazorpayCheckout: any;
@@ -423,5 +425,25 @@ export class CartPage implements OnInit {
   navigateToProduct(index: number) {
     let id = this.cart[index].id;
     this.router.navigate(["product", id]);
+  }
+
+  async presentAddressModal() {
+    const modal = await this.modalController.create({
+      component: AddressModalPage,
+      cssClass:'cartmodal',
+      componentProps: { value: 123 },
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl
+    });
+
+    await modal.present();
+
+    await modal.onDidDismiss().then((data) => {
+      if(data.data = 1)
+      {
+      this.getData();
+      }
+    }); 
+    
   }
 }

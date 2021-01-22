@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { LoadingController, Platform, ToastController } from '@ionic/angular';
 import { PaymentService } from 'src/app/services/payment/payment.service';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { Storage } from '@ionic/storage';
 
 const POST_DATA=200;
 @Component({
@@ -18,7 +19,8 @@ export class PaypalPage implements OnInit {
   details:any
   constructor(private pay:PaymentService,public router:Router,private toastController:ToastController,
     private zone:NgZone,private loadingController:LoadingController,
-    private platform:Platform,private iab:InAppBrowser) 
+    private platform:Platform,private iab:InAppBrowser,
+    private storage: Storage,) 
   { 
     this.paymentAmount = localStorage.getItem('total_amount')
     
@@ -32,7 +34,10 @@ export class PaypalPage implements OnInit {
     this.presentLoading().then(() => {
 
       let data = {
-        name:"hjscdvgjsah"
+        client_id:Number(localStorage.getItem('client_id')),
+        payable_order_id:localStorage.getItem('order_id'),
+        payable_amount:localStorage.getItem('total_amount'),
+        address_id:localStorage.getItem('address_id')
       }
       this.pay.hostedPay(data)
         .subscribe(
@@ -45,10 +50,10 @@ export class PaypalPage implements OnInit {
 
   handleResponse(data) {
     this.loadingController.dismiss()
-    // console.log('data n Tab3', data)
-    // ionicstorage.setItem('tran_ref', data.tran_ref).then(()=>{
-    //this.openUrl(data.redirect_url)
-    //})
+    console.log('data n Tab3', data)
+    this.storage.set("tran_ref",data.tran_ref).then(()=>{
+    this.openUrl(data.redirect_url)
+    })
     
     
     }
