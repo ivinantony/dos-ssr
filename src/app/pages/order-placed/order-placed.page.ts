@@ -20,6 +20,11 @@ ref:any
     ) 
   { 
     this.client_id = localStorage.getItem("client_id")
+    // this.ref = "TST2102300054838"
+    // paymentService.confirmPayment(this.ref,this.client_id).subscribe(
+    //   (data)=>this.handleResponse(data),
+    //   (error)=>this.handleError(error)
+    // )
     this.storage.get('tran_ref').then((val) => {
        this.ref = val
        paymentService.confirmPayment(this.ref,this.client_id).subscribe(

@@ -51,6 +51,6 @@ export class PaymentService {
    {
      const headers = this.headerservice.getHttpHeaders()
      return this.httpclient.get(
-      this.url + "payment-details?trans_ref="+trans_ref+"&client_id="+client_id,{ headers }).pipe(map(res=>{return res}));
+      this.url + "payment-detail?tran_ref="+trans_ref+"&client_id="+client_id,{ headers }).pipe(map(res=>{return res}));
    }
 }

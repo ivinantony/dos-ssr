@@ -54,8 +54,6 @@ export class PaypalPage implements OnInit {
     this.storage.set("tran_ref",data.tran_ref).then(()=>{
     this.openUrl(data.redirect_url)
     })
-    
-    
     }
     handleError(error) {
     // console.log('error in Tab3', error)

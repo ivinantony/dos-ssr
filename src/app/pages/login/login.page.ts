@@ -113,6 +113,7 @@ export class LoginPage implements OnInit {
          await this.afMessaging.messages.subscribe( async (msg:any)=>{
            console.log()
             console.log('msg',msg);
+            this.showToast(msg.notification.title)
           })
       
     }
@@ -134,7 +135,8 @@ export class LoginPage implements OnInit {
           console.log('Received in background');
         } else {
           console.log('Received in foreground');
-          this.router.navigate(['notifications',{data:payload}]);
+          this.showToast(payload.notification.title)
+          this.router.navigate(['notification',{data:payload}]);
         }
       });
   
@@ -229,6 +231,25 @@ export class LoginPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  async showToast(message) {
+    let toast = await this.toastController.create({
+      message: message,
+      duration: 2500,
+      position: "top",
+      color: "danger",
+      buttons: [
+        {
+          side: 'end',
+          text: 'view',
+          handler: () => {
+            this.router.navigate(['notification'])
+          }
+        }
+      ]
+    });
+    toast.present();
   }
 
 }
