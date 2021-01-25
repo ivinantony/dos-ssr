@@ -77,9 +77,10 @@ getData() {
 }
 
   handleResponse(data, type) {
-this.loadingController.dismiss()
+
     if (type == GET_AMOUNTDETAILS) 
     {
+      this.loadingController.dismiss()
       // console.log(data);
       this.data = data;
     } 

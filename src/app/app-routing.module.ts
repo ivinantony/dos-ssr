@@ -178,9 +178,14 @@ const routes: Routes = [
   {
     path: 'notificationdetail',
     loadChildren: () => import('./pages/notificationdetail/notificationdetail.module').then( m => m.NotificationdetailPageModule)
-  },  {
+  },
+  {
     path: 'address-modal',
     loadChildren: () => import('./pages/address-modal/address-modal.module').then( m => m.AddressModalPageModule)
+  },
+  {
+    path: 'recharge-status',
+    loadChildren: () => import('./pages/recharge-status/recharge-status.module').then( m => m.RechargeStatusPageModule)
   }
 
 

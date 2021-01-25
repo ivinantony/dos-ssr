@@ -23,20 +23,24 @@ selectedAddress: any;
 
   getData()
   {
-    let client_id = Number(localStorage.getItem('client_id'))
-    this.addressService.getAddress(client_id).subscribe(
-      (data)=>this.handleResponse(data),
-      (error)=>this.handleError(error)
-    )
+    this.presentLoading().then(()=>{
+      let client_id = Number(localStorage.getItem('client_id'))
+      this.addressService.getAddress(client_id).subscribe(
+        (data)=>this.handleResponse(data),
+        (error)=>this.handleError(error)
+      )
+    })
   }
 
   handleResponse(data)
   {
+    this.loadingController.dismiss()
     console.log(data)
     this.addresses = data.addresses
   }
   handleError(error)
   {
+    this.loadingController.dismiss()
     console.log(error)
   }
 

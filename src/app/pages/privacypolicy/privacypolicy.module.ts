@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { PrivacypolicyPageRoutingModule } from './privacypolicy-routing.module';
 
 import { PrivacypolicyPage } from './privacypolicy.page';
+import { QuillModule } from 'ngx-quill'
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    PrivacypolicyPageRoutingModule
+    PrivacypolicyPageRoutingModule,
+    QuillModule.forRoot(),
   ],
   declarations: [PrivacypolicyPage]
 })

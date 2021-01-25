@@ -57,7 +57,7 @@ export class AddAddressPage implements OnInit {
   locationAvailability: boolean;
   delivery_locations: any;
   selectedAddress: any;
-  is_granted: boolean = false;
+  is_granted: boolean = true;
 
   constructor(
     private geolocation: Geolocation,
@@ -175,9 +175,13 @@ export class AddAddressPage implements OnInit {
   }
 
   async loadMap() {
+    // this.is_granted=true
+    console.log("load map started")
+
     let client_id = localStorage.getItem("client_id");
     this.addressForm.patchValue({ client_id: client_id });
     if (this.platform.is("cordova")) {
+      console.log("cordova location fetch")
       await this.geolocation
         .getCurrentPosition()
         .then((resp) => {
@@ -185,8 +189,9 @@ export class AddAddressPage implements OnInit {
           this.addressForm.controls["longitude"].setValue(
             resp.coords.longitude
           );
-          this.getDistance();
+          // this.getDistance();
           this.inItMap(resp.coords.latitude, resp.coords.longitude);
+
         })
         .catch((error) => {
           // console.log("Error getting location", error);
@@ -241,6 +246,7 @@ export class AddAddressPage implements OnInit {
     }
   }
   inItMap(lat, lng) {
+    console.log("initmap")
     let latLng = new google.maps.LatLng(lat, lng);
     let mapOptions = {
       center: latLng,
@@ -285,7 +291,7 @@ export class AddAddressPage implements OnInit {
   }
   getAddressFromCoords(latitude, longitude) {
     if (this.platform.is("cordova")) {
-      // console.log("cordova  available");
+      console.log("cordova  available");
       let options: NativeGeocoderOptions = {
         useLocale: true,
         maxResults: 5,
@@ -293,19 +299,21 @@ export class AddAddressPage implements OnInit {
       this.nativeGeocoder
         .reverseGeocode(latitude, longitude, options)
         .then((result: NativeGeocoderResult[]) => {
-          // console.log(result, "mobile");
+          console.log(result, "mobile");
 
-          this.addressForm.controls["address"].setValue(null);
+          // this.addressForm.controls["address"].setValue(null);
           let responseAddress = [];
           for (let [key, value] of Object.entries(result[0])) {
             if (value.length > 0) responseAddress.push(value);
           }
           responseAddress.reverse();
-          let address;
+          console.log(responseAddress)
+          let address="";
           for (let value of responseAddress) {
             address += value + ", ";
           }
           address = address.slice(0, -2);
+          console.log("addresss from init",address)
           this.addressForm.controls["address"].setValue(address);
         })
         .catch((error: any) => {});
@@ -537,16 +545,16 @@ export class AddAddressPage implements OnInit {
     navigator.permissions.query({ name: "geolocation" }).then((result) => {
       if (result.state == "granted") {
         this.report(result.state);
-        // console.log("access granted");
+        console.log("access granted");
         this.is_granted = true;
       } else if (result.state == "prompt") {
         this.report(result.state);
-        // console.log("access not known");
+        console.log("access not known");
         this.is_granted = true;
         // navigator.geolocation.getCurrentPosition();
       } else if (result.state == "denied") {
         this.report(result.state);
-        // console.log("access denied");
+        console.log("access denied");
         this.is_granted = false;
       }
       result.onchange = () => {

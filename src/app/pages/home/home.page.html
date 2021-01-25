@@ -18,9 +18,17 @@
         (click)="router.navigate(['/cart'])"
         color="magenta"
       ></ion-icon>
-      <ion-badge id="cart-badge" color="danger" *ngIf="cart_count > 0"
-        >{{cart_count}}</ion-badge
-      >
+      <ion-badge id="cart-badge" color="danger" *ngIf="cart_count > 0">{{cart_count}}</ion-badge>
+    </ion-buttons>
+
+    <ion-buttons slot="end" class="ion-hide-md-up" id="cart-btn">
+      <ion-icon
+        name="notifications-outline"
+        class="ion-padding"
+        (click)="router.navigate(['/notification'])"
+        color="magenta"
+      ></ion-icon>
+      <ion-badge id="cart-badge" color="danger" *ngIf="notf_count > 0">{{notf_count}}</ion-badge>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -48,7 +56,7 @@
             class="ion-hide-md-up"
             [formControl]="searchTerm"
             showCancelButton="focus"
-            (ionChange)="onSearchInput()"
+            (ionChange)="onSearchInputMobile()"
             (ionCancel)="onCancel()"
           ></ion-searchbar>
           <div *ngIf="searching" class="spinner-container">
@@ -56,15 +64,16 @@
           </div>
 
           <ion-content
-            [ngStyle]="{'height': searchItems?.length ? '40vh':'0'}"
+            [ngStyle]="{'height': result?.length ? '40vh':'0'}"
             style="position: absolute; z-index: 2; left: 0; right: 0"
           >
             <ion-list>
               <ion-item
-                *ngFor="let item of searchItems ; let i=index"
+                *ngFor="let item of result ; let i=index"
                 (click)="viewSearchProduct(i)"
               >
-                {{ item.name }} {{item.brand_name}}
+                {{ item.name }} {{item.brand_name}} {{item.category_name}}
+        
               </ion-item>
             </ion-list>
           </ion-content>

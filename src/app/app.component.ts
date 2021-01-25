@@ -147,21 +147,22 @@ export class AppComponent implements OnInit {
     this.searching = true;
   }
   viewSearchProduct(index: number) {
+    console.log("helolo")
     let id = this.searchItems[index].id
     let catId =this.searchItems[index].category_id
     let type = this.searchItems[index].type
     
-    if(type == "product")
+    if(type == "p")
     {
       this.router.navigate(['product',id, {catId}])
     }
-    else if(type == "brand")
+    else if(type == "B")
     {
       let brand_id = id
       let brand_name = this.searchItems[index].brand_name
       this.router.navigate(['brand-products',brand_id,{brand_name}])
     }
-    else if(type == "category")
+    else if(type == "c")
     {
       let catId = id
       let category_name = this.searchItems[index].category_name
@@ -172,6 +173,7 @@ export class AppComponent implements OnInit {
     
     this.searchItems = [];
   }
+
   onCancel() {
     this.searchItems = []
   }

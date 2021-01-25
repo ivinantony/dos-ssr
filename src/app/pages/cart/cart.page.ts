@@ -216,8 +216,9 @@ export class CartPage implements OnInit {
   }
 
   handleResponse(data, type) {
-    this.loadingController.dismiss();
+    
     if (type == GET_CART) {
+      this.loadingController.dismiss();
       console.log(data);
       this.data = data;
       this.cart = data.cart;
@@ -463,6 +464,8 @@ export class CartPage implements OnInit {
     }); 
     
   }
+
+
 }
 
 

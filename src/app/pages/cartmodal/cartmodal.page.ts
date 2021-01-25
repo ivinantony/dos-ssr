@@ -16,6 +16,8 @@ import { PaytabsService } from "src/app/services/paytabs.service";
 import { Renderer2, Inject } from "@angular/core";
 import { DOCUMENT } from "@angular/common";
 import { CartcountService } from "src/app/cartcount.service";
+import { AddressModalPage } from "../address-modal/address-modal.page";
+
 declare var google;
 
 
@@ -35,6 +37,7 @@ const paytabs = require("paytabs_api");
   styleUrls: ["./cartmodal.page.scss"],
 })
 export class CartmodalPage implements OnInit {
+  address_selected:any
   selectedAddress: any;
   selectedPayment: any;
   cart: any[];
@@ -69,6 +72,7 @@ export class CartmodalPage implements OnInit {
     private zone: NgZone,
     private cartCountService:CartcountService,
     private loadingController: LoadingController,
+
     @Inject(DOCUMENT) private _document: Document
   ) {
     this.client_id = localStorage.getItem("client_id");
@@ -385,4 +389,29 @@ export class CartmodalPage implements OnInit {
     let id = this.cart[index].id;
     this.router.navigate(["product", id]);
   }
+
+  async presentAddressModal() {
+    const modal = await this.modalController.create({
+      component: AddressModalPage,
+      cssClass:'cartmodal',
+      componentProps: { value: 123 },
+      swipeToClose: true,
+      presentingElement: await this.modalController.getTop(),
+    });
+
+    await modal.present();
+
+    await modal.onDidDismiss().then((data) => {
+      console.log("data",data)
+      this.address_selected = data.data
+      this.current_selection = data.role
+      console.log(this.address_selected)
+      this.getDistance(
+        this.data.address[this.current_selection].latitude,
+        this.data.address[this.current_selection].longitude
+      );
+    }); 
+    
+  }
+
 }

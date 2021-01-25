@@ -114,37 +114,24 @@ export class BrandProductsPage implements OnInit {
 
     this.brand_id = activatedRoute.snapshot.params.brand_id;
     this.s3url = utils.getS3url();
-    this.checkWidth();
+    // this.checkWidth();
     // console.log("first")
     this.page_count=1
     this.products= []
-    this.getData()
+    // this.getData()
     
   }
-  checkWidth() {
-    // if (this.platform.width() > 768) {
-    //   this.bannerSlideOpts = {
-    //     slidesPerView: 3,
-    //     initialSlide: 0,
-    //     spaceBetween: 10,
-    //     loop: true,
-    //     centeredSlides: true,
-    //     autoplay: {
-    //       delay: 3000,
-    //       disableOnInteraction: false,
-    //     },
-    //     speed: 400,
-    //   };
-    // }
-  }
+
   
+  ionViewWillEnter()
+  {
+    this.getData()
+    this.cart_count = localStorage.getItem('cart_count')
+  }
 
   ngOnInit() { }
 
-  ionViewWillEnter()
-  {
-    this.cart_count = localStorage.getItem('cart_count')
-  }
+ 
 
   getData(infiniteScroll?) {
     this.presentLoading().then(()=>{
@@ -155,15 +142,14 @@ export class BrandProductsPage implements OnInit {
       )
     }
     )
-    
   }
 
   handleResponse(data, type, infiniteScroll?) {
     this.infiniteScroll.disabled = false;
-    this.loadingController.dismiss()
+    
     // console.log(infiniteScroll)
     if (type == GET_DATA) {
-      
+      this.loadingController.dismiss()
       // console.log(data);
       this.page_limit = data.page_count;
       this.data = data;
@@ -286,6 +272,11 @@ export class BrandProductsPage implements OnInit {
       this.presentLogin();
     }
   }
+
+  goToCart()
+  {
+    this.router.navigate(['cart'])
+  }
  
   async presentLoading() {
     const loading = await this.loadingController.create({
@@ -314,6 +305,7 @@ export class BrandProductsPage implements OnInit {
       showBackdrop: true ,
       cssClass:'popover' 
     });  
+
    popover.onDidDismiss().then((data)=>{
     if(data.data)
     this.infiniteScroll.disabled = true;

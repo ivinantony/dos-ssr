@@ -8,17 +8,18 @@
 </ion-header>
 
 <ion-content>
-<ion-grid fixed>
-  <ion-row>
-    <!-- <ion-col size="12" class="ion-text-center">
-      <h1>Who We Are.</h1>
-    </ion-col> -->
-    <ion-col size="11" class="content ion-text-justify">
-      <p>Your privacy is important to us and hence we consider the privacy of the data provided by you being a user of dealonstore.com. 
-        The data collected through the app will not be used for any illegal purposes or be shared with third parties at any cost. 
-        We will not collect unnecessary data from your devices through any hidden means. We will collect only the data you provide manually 
-        like your name and contact number which may be used by us for transactional and promotional purposes in your relationship with Deal On Store. The data collected by the app like cookies and cache will be used only for legitimate purposes inside the codes of the software and will not be touched by us for any purposes other than making the performance of the software better to your devices.   </p>
-    </ion-col>
-  </ion-row>
-</ion-grid>
+  <ion-grid fixed>
+    <ion-row>
+    
+      <ion-col size="11" class="content ion-text-justify">
+     
+          <quill-view
+        [content]="data?.privacy_policy "
+        format="text"
+        theme="snow"
+        ></quill-view>
+        
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

@@ -109,16 +109,20 @@
             [ngStyle]="{ height: searchItems?.length ? '40vh' : '0' }"
             style="position: absolute; z-index: 2; left: 0; right: 0"
           >
+            
             <ion-list>
               <ion-item
                 button
                 *ngFor="let item of searchItems; let i = index"
                 (click)="viewSearchProduct(i)"
               >
-                {{ item.data.city.raw }} {{item.brand_name}} {{item.category_name}}
+                {{ item.name }} {{item.brand_name}} {{item.category_name}}
               </ion-item>
             </ion-list>
           </ion-content>
+
+
+          
 
          
         </ion-col>

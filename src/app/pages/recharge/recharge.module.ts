@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { RechargePageRoutingModule } from './recharge-routing.module';
 
 import { RechargePage } from './recharge.page';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { RechargePage } from './recharge.page';
     IonicModule,
     RechargePageRoutingModule
   ],
-  declarations: [RechargePage]
+  declarations: [RechargePage],
+  providers:[InAppBrowser]
 })
 export class RechargePageModule {}
