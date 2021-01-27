@@ -4,7 +4,6 @@ import { Router } from "@angular/router";
 import { Badge } from "@ionic-native/badge/ngx";
 import { debounceTime } from "rxjs/operators";
 import { LoadingController, Platform } from "@ionic/angular";
-
 import { ProductSearchService } from "src/app/services/product-search.service";
 import { HomeService } from "src/app/services/home/home.service";
 import { UtilsService } from "src/app/services/utils.service";
@@ -130,9 +129,6 @@ export class HomePage implements OnInit {
       };
 
   selectedIndex = 0;
-  // topSearches = PRODUCTS;
-  // categories = CATEGORIES
-  // products = PRODUCTS
   banners: any;
   s3url: string;
   brands: any;
@@ -152,7 +148,6 @@ export class HomePage implements OnInit {
   constructor(
     public router: Router,
     private platform: Platform,
-    // private searchService: ProductSearchService,
     private homeService: HomeService,
     private badge: Badge,
     private utils: UtilsService,
@@ -164,11 +159,8 @@ export class HomePage implements OnInit {
   ) {
     this.s3url = utils.getS3url();
     this.badge.set(10);
-    // this.badge.increase(1);
-    // this.badge.clear();
     this.searchTerm = new FormControl();
     this.checkWidth();
-    // this.presentLoading()
     this.getData();
     this.cart_count = localStorage.getItem("cart_count");
     this.notf_count = localStorage.getItem("notf_count");
@@ -178,12 +170,9 @@ export class HomePage implements OnInit {
     notCountService.getNotCount().subscribe(res => {
         this.notf_count=res}
         )
-
-    //
   }
 
   ionViewWillEnter() {
-    // console.log("view")
     this.searchTerm.reset();
     this.cart_count = localStorage.getItem("cart_count");
     this.notf_count = localStorage.getItem("notf_count");
@@ -206,11 +195,6 @@ export class HomePage implements OnInit {
     });
   }
 
-  // setFilteredItems(search) {
-  //   var res = this.searchService.filterItems(search);
-  //   this.searchItems = res;
-  //   // console.log(this.searchItems)
-  // }
   onSearchInputMobile() {
     this.searching = true;
   }
@@ -251,6 +235,7 @@ export class HomePage implements OnInit {
     this.router.navigate(["product", id, { catId }]);
     
   }
+
   filterItems(searchTerm) {
     return this.products.filter((item) => {
       return item.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
@@ -259,32 +244,11 @@ export class HomePage implements OnInit {
 
   checkWidth() {
     if (this.platform.width() > 768) {
-      // this.bannerSlideOpts = {
-      //   slidesPerView: 3,
-      //   initialSlide: 0,
-      //   spaceBetween: 10,
-      //   loop: true,
-      //   centeredSlides: true,
-      //   autoplay: {
-      //     delay: 3000,
-      //     disableOnInteraction: false
-      //   },
-      //   speed: 400
-      // }
+  
       this.categorySlides = {
         slidesPerView: 5.7,
         spaceBetween: 5,
       };
-      // this.topSlides = {
-      //   slidesPerView: 4.2,
-      //   spaceBetween: 5,
-      // }
-      // this.recommendedSlides = {
-      //   slidesPerView: 3.5,
-      //   spaceBetween: 10,
-      //   initialSlide: 1,
-      //   centeredSlides: true,
-      // }
     }
   }
 
@@ -316,42 +280,20 @@ export class HomePage implements OnInit {
 
   handleResponse(data) {
     this.loadingController.dismiss();
-    // console.log(data)
     localStorage.setItem("cart_count", data.cart_count);
     localStorage.setItem("notf_count", data.notification_count);
-
     this.data = data;
-
     this.brands = data.brands;
     this.categories = data.categories;
     this.products = data.products;
-
-    // console.log(this.products)
     this.banners = data.banner;
-    // console.log(this.data,"this is banners")
     for (let i = 0; i < this.brands.length; i++) {
       this.brands[i].path = this.s3url + this.brands[i].path;
     }
     for (let i = 0; i < this.categories.length; i++) {
       this.categories[i].path = this.s3url + this.categories[i].path;
     }
-    // for(let i=0;i<this.data.products.length;i++)
-    // {
-    //   console.log(i)
-    //   this.data.products[i].images[0].path = this.s3url + this.data.products[i].images[0].path
-    // }
-    // for(let i=0;i<this.banners.length;i++){
-    //   for(let j=0;j<this.banners[i].desktop_images.length;j++)
-    //   {
-    //     this.banners[i].desktop_images[j].path = this.s3url + this.banners[i].desktop_images[j].path
-    //   }
-    //   for(let j=0;j<this.banners[i].mobile_images.length;j++)
-    //   {
-    //     this.banners[i].mobile_images[j].path = this.s3url + this.banners[i].mobile_images[j].path
-    //   }
-    // }
     for (let i = 0; i < this.data.banner.length; i++) {
-      // console.log(this.s3url  )
       for (let j = 0; j < this.data.banner[i].desktop_images.length; j++) {
         this.data.banner[i].desktop_images[j].path =
           this.s3url + this.data.banner[i].desktop_images[j].path;
@@ -361,13 +303,8 @@ export class HomePage implements OnInit {
           this.s3url + this.data.banner[i].mobile_images[j].path;
       }
     }
-    // console.log(this.products,"this is products")
-
-    // this.banner_image= this.banners[2].images;
-
-    // console.log( this.banner_image)
-    // this.dismiss();
   }
+
   handleError(error) {
     this.loadingController.dismiss();
 
@@ -420,8 +357,6 @@ export class HomePage implements OnInit {
       this.result.push(item)
       }) 
     console.log(this.result,"result")
-    // this.searchResult.next(this.result)
-    // this.items = data.products;
   }
   handleErrorSearch(error) {
     console.log(error)

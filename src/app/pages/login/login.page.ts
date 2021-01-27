@@ -5,7 +5,7 @@ import { NavController, LoadingController, ToastController, ModalController, Ale
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { LoginService } from 'src/app/services/login/login.service';
 // import { INotificationPayload } from 'plugins/cordova-plugin-fcm-with-dependecy-updated/typings';
-import { AngularFireMessaging } from '@angular/fire/messaging';
+// import { AngularFireMessaging } from '@angular/fire/messaging';
 // import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
 import { UsernameValidator } from 'src/app/validators/username';
 import { OtpmodalPage } from '../otpmodal/otpmodal.page';
@@ -35,7 +35,7 @@ export class LoginPage implements OnInit {
     private modalController:ModalController,
     private router:Router,
     public alertController: AlertController,
-    private afMessaging: AngularFireMessaging,
+    // private afMessaging: AngularFireMessaging,
     // private fcm: FCM,
     public platform: Platform) {
     

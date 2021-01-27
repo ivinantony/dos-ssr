@@ -39,10 +39,10 @@ declare var google;
   templateUrl: "./add-address.page.html",
   styleUrls: ["./add-address.page.scss"],
 })
+
 export class AddAddressPage implements OnInit {
   @ViewChild("map", { static: false }) mapElement: ElementRef;
   map: any;
-
   latitude: number;
   longitude: number;
   is_valid: boolean = false;
@@ -504,7 +504,6 @@ export class AddAddressPage implements OnInit {
     });
     toast.present();
   }
-
   async showToastSuccess(message) {
     let toast = await this.toastController.create({
       message: message,

@@ -13,7 +13,7 @@
       APPLY COUPON
     </ion-button>
   </ion-item> -->
-  <ion-list *ngIf="data.promo_codes">
+  <ion-list *ngIf="data?.promo_codes">
     <ion-list-header>
       <ion-label>Applicable Coupons</ion-label>
     </ion-list-header>
@@ -109,7 +109,7 @@
       </ion-item>
     </ion-list>
   </div>
-  <div *ngIf="!data.promo_codes" class="ion-text-center">
+  <div *ngIf="!data?.promo_codes" class="ion-text-center">
     <p>No coupons available.</p>
 
   </div>

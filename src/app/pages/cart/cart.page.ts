@@ -1,6 +1,7 @@
 import { Component, NgZone, OnInit, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 import {
+  AlertController,
   IonRouterOutlet,
   LoadingController,
   ModalController,
@@ -30,7 +31,6 @@ import { AddressModalPage } from "../address-modal/address-modal.page";
 import { IonSlides} from '@ionic/angular';
 
 declare var google;
-
 declare var RazorpayCheckout: any;
 declare var Razorpay: any;
 const GET_CART = 200;
@@ -92,6 +92,7 @@ export class CartPage implements OnInit {
     private renderer2: Renderer2,
     private zone: NgZone,
     private loadingController: LoadingController,
+    private alertController:AlertController,
     private cartCountService: CartcountService,
     @Inject(DOCUMENT) private _document: Document
   ) {
@@ -103,21 +104,14 @@ export class CartPage implements OnInit {
     
     
   }
-
-  ngOnInit() {}
   ionViewWillEnter() {
     this.getData();
     console.log(this.selectedAddress)
   }
+  ngOnInit() {}
 
-  // onChangeAddress($event) {
-  //   this.current_selection = $event.detail.value;
-  //   // console.log(this.current_selection, "current selected address");
-  //   this.getDistance(
-  //     this.data.address[this.current_selection].latitude,
-  //     this.data.address[this.current_selection].longitude
-  //   );
-  // }
+
+
 
   async addAddress() {
     const modal = await this.modalController.create({
@@ -166,6 +160,7 @@ export class CartPage implements OnInit {
       // console.log(this.selectedAddress);
     }
   }
+
   checkOutofStock() {
     for (let i = 0; i < this.cart.length; i++) {
       if (this.cart[i].in_stock == 0 || this.cart[i].stock_quantity <= 0) {
@@ -178,25 +173,7 @@ export class CartPage implements OnInit {
     }
   }
 
-  async presentToast(msg) {
-    const toast = await this.toastController.create({
-      message: msg,
-      cssClass: "custom-toast",
-      position: "top",
-      duration: 2000,
-    });
-    toast.present();
-  }
-  async presentToastDanger(msg) {
-    const toast = await this.toastController.create({
-      message: msg,
-      cssClass: "custom-toast-danger",
-      color: "danger",
-      position: "middle",
-      duration: 2000,
-    });
-    toast.present();
-  }
+ 
 
   getData() {
     this.presentLoading().then(() => {
@@ -240,6 +217,7 @@ export class CartPage implements OnInit {
       // console.log(data);
     }
   }
+
   handleError(error) {
     this.loadingController.dismiss();
     // console.log(error);
@@ -288,19 +266,25 @@ export class CartPage implements OnInit {
   }
 
   remove(index: number, id: number) {
-    let name = this.cart[index].name;
-    let client_id = localStorage.getItem("client_id");
-    this.cartService.deleteFromCart(client_id, id).subscribe(
-      (data) => this.handleResponse(data, REMOVE),
-      (error) => this.handleError(error)
-    );
-    this.cart.splice(index, 1);
-    this.getData();
-    this.presentToastDanger("You've removed " + name + " from cart.");
+    this.presentAlertDelete(index,id)
+    // let name = this.cart[index].name;
+    // let client_id = localStorage.getItem("client_id");
+    // this.cartService.deleteFromCart(client_id, id).subscribe(
+    //   (data) => this.handleResponse(data, REMOVE),
+    //   (error) => this.handleError(error)
+    // );
+    // this.cart.splice(index, 1);
+    // this.getData();
+    // this.presentToastDanger("You've removed " + name + " from cart.");
   }
 
   continueShopping() {
     this.router.navigate(["home"]);
+  }
+
+  navigateToProduct(index: number) {
+    let id = this.cart[index].id;
+    this.router.navigate(["product", id]);
   }
 
   async presentToastSuccess(msg) {
@@ -401,7 +385,7 @@ export class CartPage implements OnInit {
           // this.addressForm.patchValue({delivery_location_id:this.delivery_locations[shop_index].id})
           this.selectedAddress = this.current_selection;
           // console.log("selectedAddress", this.selectedAddress);
-          this.address_id = this.addresses[this.selectedAddress].id;
+          this.address_id = this.address_selected.id;
           // console.log(this.address_id);
           this.valid_address = true;
         } else {
@@ -436,9 +420,25 @@ export class CartPage implements OnInit {
     toast.present();
   }
 
-  navigateToProduct(index: number) {
-    let id = this.cart[index].id;
-    this.router.navigate(["product", id]);
+  async presentToast(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast",
+      position: "top",
+      duration: 2000,
+    });
+    toast.present();
+  }
+
+  async presentToastDanger(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast-danger",
+      color: "danger",
+      position: "middle",
+      duration: 2000,
+    });
+    toast.present();
   }
 
   async presentAddressModal() {
@@ -453,16 +453,55 @@ export class CartPage implements OnInit {
     await modal.present();
 
     await modal.onDidDismiss().then((data) => {
+      //  this.getData()
       console.log("data",data)
       this.address_selected = data.data
       this.current_selection = data.role
       console.log(this.address_selected)
       this.getDistance(
-        this.data.address[this.current_selection].latitude,
-        this.data.address[this.current_selection].longitude
+        this.address_selected.latitude,
+        this.address_selected.longitude
       );
     }); 
     
+  }
+
+
+  async presentAlertDelete(index:number,id:number) {
+    let name = this.cart[index].name;
+    let client_id = localStorage.getItem("client_id");
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Delete',
+      message: 'Do you want to remove '+name+' from cart',
+      buttons: [
+        {
+          text: 'cancel',
+          role:'cancel',
+          handler: () => {
+            // console.log('Confirm Okey');
+            // let balance = this.data.payable_amount - this.data.wallet_balance
+            // this.router.navigate(['recharge',{balance}])
+          }
+        },
+        {
+          text: 'Confirm',
+          cssClass: 'secondary',
+          handler: () => {
+            this.cartService.deleteFromCart(client_id, id).subscribe(
+              (data) => this.handleResponse(data, REMOVE),
+              (error) => this.handleError(error)
+            );
+            this.cart.splice(index, 1);
+            
+            this.presentToastDanger("You've removed " + name + " from cart.");
+            this.getData();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
 

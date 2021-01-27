@@ -69,7 +69,10 @@ selectedAddress: any;
 
     console.log(current_selection, "current selected address");
     localStorage.setItem("address_id",this.addresses[current_selection].id);
-    this.modalController.dismiss(address_selected,current_selection)
+    // let info={
+    //   selected_address : address_selected,
+    // }
+    this.modalController.dismiss(address_selected)
     // this.getDistance(
     //   this.data.address[this.current_selection].latitude,
     //   this.data.address[this.current_selection].longitude

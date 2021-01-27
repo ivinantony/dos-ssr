@@ -15,13 +15,14 @@ export class OrdersPage implements OnInit {
     // this.getData()
   }
 
-  ngOnInit() {
-  }
   ionViewWillEnter()
   {
     this.getData()
   }
 
+  ngOnInit() {
+  }
+ 
   getData()
   {
     this.presentLoading().then(()=>{

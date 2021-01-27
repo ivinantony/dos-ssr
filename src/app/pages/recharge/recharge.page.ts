@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { LoadingController, Platform } from "@ionic/angular";
+import { LoadingController, Platform, ToastController } from "@ionic/angular";
 import { PaymentService } from "src/app/services/payment/payment.service";
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { Storage } from '@ionic/storage';
@@ -11,7 +11,7 @@ import { Storage } from '@ionic/storage';
   styleUrls: ["./recharge.page.scss"],
 })
 export class RechargePage implements OnInit {
-  inputAmount: number;
+  inputAmount: number = null;
   balance: number = 0;
   temp: number;
   constructor(
@@ -21,10 +21,16 @@ export class RechargePage implements OnInit {
     private storage: Storage,
     private platform:Platform,
     private iab:InAppBrowser,
-    private pay:PaymentService
+    private pay:PaymentService,
+    private toastController:ToastController
   ) {
+    let amount = activatedRoute.snapshot.params.balance;
+    if(amount)
+    {
     this.inputAmount = activatedRoute.snapshot.params.balance;
-    // console.log(this.balance)
+
+    }
+    console.log(this.inputAmount)
     // if(this.temp)
     // {
     //   console.log("hello")
@@ -36,9 +42,18 @@ export class RechargePage implements OnInit {
   ngOnInit() {}
 
   recharge() {
-    let amount = this.inputAmount.toString();
-    localStorage.setItem("total_amount", amount);
-    this.hostedSubmit()
+    // console.log(inputAmount)
+    if(this.inputAmount == 0)
+    {
+      this.presentToast("Enter a valid Amount")
+    }
+    else{
+      let amount = this.inputAmount.toString();
+      localStorage.setItem("total_amount", amount);
+      this.hostedSubmit()
+    }
+    
+
     // let type = "recharge";
     // this.router.navigate(["checkout-pay", { type }]);
   }
@@ -91,5 +106,16 @@ export class RechargePage implements OnInit {
       showBackdrop: true,
     });
     await loading.present();
+  }
+
+  async presentToast(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast-success",
+      position: "top",
+      color:"danger",
+      duration: 1500,
+    });
+    toast.present();
   }
 }

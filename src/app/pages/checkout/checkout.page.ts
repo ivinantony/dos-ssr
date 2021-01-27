@@ -6,12 +6,6 @@ import { OrderService } from "src/app/services/order/order.service";
 import { CouponPage } from "../coupon/coupon.page";
 import { ModeofpaymentPage } from "../modeofpayment/modeofpayment.page";
 import { PaytabsService } from "src/app/services/paytabs.service";
-
-import {
-  PayPal,
-  PayPalPayment,
-  PayPalConfiguration,
-} from "@ionic-native/paypal/ngx";
 import { WalletService } from "src/app/services/wallet/wallet.service";
 
 
@@ -40,7 +34,6 @@ export class CheckoutPage implements OnInit {
     private modalController: ModalController,
     private routerOutlet: IonRouterOutlet,
     private platform: Platform,
-    private payPal: PayPal,
     private router:Router,
     private paytabService: PaytabsService,
     private toastController:ToastController,
@@ -51,22 +44,17 @@ export class CheckoutPage implements OnInit {
   ) {
     this.client_id = Number(localStorage.getItem("client_id"));
     this.address_id = this.activatedRoute.snapshot.params.address_id;
+    
+  }
+
+  ionViewWillEnter()
+  {
     this.getData();
   }
 
   ngOnInit() {}
-
-  // getData() {
-  //   this.checkoutService
-  //     .getAmountDetails(this.client_id, this.address_id)
-  //     .subscribe(
-  //       (data) => this.handleResponse(data, GET_AMOUNTDETAILS),
-  //       (error) => this.handleError(error)
-  //     );
-  // }
-
-  
-getData() {
+ 
+  getData() {
   this.presentLoading().then(()=>{
     this.checkoutService.getAmountDetails(this.client_id,this.address_id).subscribe(
       (data) => this.handleResponse(data, GET_AMOUNTDETAILS),
@@ -74,7 +62,7 @@ getData() {
     )
   }
   )
-}
+  }
 
   handleResponse(data, type) {
 
@@ -200,6 +188,7 @@ getData() {
       // console.log(data);
     }
   }
+
   handleError(error,type) {
     this.loadingController.dismiss()
     // console.log(error);
@@ -310,6 +299,7 @@ getData() {
     });
     toast.present();
   }
+  
   async presentToastDanger(msg) {
     const toast = await this.toastController.create({
       message: msg,
@@ -347,6 +337,7 @@ getData() {
 
     await alert.present();
   }
+
   async qtyNotSufficient(msg) {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
@@ -364,35 +355,7 @@ getData() {
 
     await alert.present();
   }
-  // async presentAlertConfirmPayment() {
-  //   const alert = await this.alertController.create({
-  //     cssClass: 'my-custom-class',
-  //     header: 'Confirm',
-  //     message: 'Pay <strong> 463 AED</strong> from wallet and rest through other payment options',
-  //     buttons: [
-  //       {
-  //         text: 'Cancel',
-  //         role: 'cancel',
-  //         cssClass: 'secondary',
-  //         handler: () => {
-  //           console.log('Confirm Cancel: blah');
-  //         }
-  //       }, {
-  //         text: 'Okay',
-  //         handler: () => {
-  //           console.log('Confirm Okay');
-  //           this.data.payable_amount = this.data.payable_amount-200
-  //           this.openPaymentModes();
-  //         }
-  //       }
-  //     ]
-  //   });
-
-  //   await alert.present();
-  // }
-
-
-    
+   
 async presentLoading() {
   const loading = await this.loadingController.create({
     spinner: 'crescent',

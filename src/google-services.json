@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "744606326185",
+    "project_id": "dealonstore",
+    "storage_bucket": "dealonstore.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:744606326185:android:eecc520c5c7cea7759f8b8",
+        "android_client_info": {
+          "package_name": "com.mermerapps.dealonstore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "744606326185-ghhffbpndkgo1i44dhu27bnaq9cj1v6v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlRoNdaLOlN4C3TwnNsv7xV22jSwDWCGI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "744606326185-ghhffbpndkgo1i44dhu27bnaq9cj1v6v.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "744606326185-6pptnjlpt4cp9bvo7r8fu9g4g4sas43t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mermerapps.dealonstore"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

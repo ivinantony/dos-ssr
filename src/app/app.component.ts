@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
 import { LoadingController, MenuController, Platform, ToastController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
@@ -16,11 +15,7 @@ import { CartcountService } from './cartcount.service';
 import { NotcountService } from './notcount.service';
 import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
 import { INotificationPayload } from 'plugins/cordova-plugin-fcm-with-dependecy-updated/typings';
-
-
-// import { NavigationEnd, Router, RoutesRecognized } from '@angular/router';
-
-
+import { AngularFireMessaging } from '@angular/fire/messaging';
 
 
 @Component({
@@ -61,6 +56,8 @@ export class AppComponent implements OnInit {
     private cartCountService:CartcountService,
     private notCountService:NotcountService,
     private fcm: FCM,
+    private afMessaging: AngularFireMessaging,
+
   ) {
     this.client_id = localStorage.getItem('client_id')
     this.cart_count_initial = localStorage.getItem('cart_count')
@@ -74,13 +71,8 @@ export class AppComponent implements OnInit {
     notCountService.getNotCount().subscribe(res => {
       this.notf_count=res}
       )
-    // console.log(this.cart_count)
-    
-
-    // console.log(this.client_id)
     this.searchTerm = new FormControl();
     this.initializeApp();
-    
     
     this.searchService.searchResult.subscribe(data => {
       // console.log('data', data)
@@ -96,6 +88,7 @@ export class AppComponent implements OnInit {
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
+      this.statusBar.backgroundColorByHexString('#585858');
       this.splashScreen.hide();
       this.setupFCM();
     });
@@ -148,47 +141,64 @@ export class AppComponent implements OnInit {
     });
   }
 
-  private async setupFCM() {
+   private async setupFCM() {
     await this.platform.ready();
     console.log('FCM setup started');
 
     if (!this.platform.is('cordova')) {
-      return;
+       // requesting permission
+        this.afMessaging.requestToken // getting tokens
+          .subscribe(
+            (token) => { // USER-REQUESTED-TOKEN
+              console.log('Permission granted! Save to the server!', token);
+              this.token = token
+            },
+            (error) => {
+              console.error(error);
+            }
+          );
+         await this.afMessaging.messages.subscribe( async (msg:any)=>{
+           console.log()
+            console.log('msg',msg);
+            // this.showToast(msg.notification.title)
+          })
+      
     }
-    console.log('In cordova platform');
+    else{
+      console.log('In cordova platform');
+      console.log('Subscribing to token updates');
+      this.fcm.onTokenRefresh().subscribe((newToken) => {
+        this.token = newToken;
+        // this.loginForm.controls['fcm_token'].setValue(newToken);
+        console.log('onTokenRefresh received event with: ', newToken);
+      });
+  
+      console.log('Subscribing to new notifications');
+      this.fcm.onNotification().subscribe((payload) => {
+        this.pushPayload = payload;
+        console.log('onNotification received event with: ', payload);
+        if (payload.wasTapped) {
+          this.router.navigate(['notifications',{data:payload}]);
+          console.log('Received in background');
+        } else {
+          console.log('Received in foreground');
+          // this.showToast(payload.notification.title)
+          this.router.navigate(['notification',{data:payload}]);
+        }
+      });
+  
+      this.hasPermission = await this.fcm.requestPushPermission();
+      console.log('requestPushPermission result: ', this.hasPermission);
+  
+      this.token = await this.fcm.getToken();
+      // this.loginForm.controls['fcm_token'].setValue(this.token);
+      console.log('getToken result: ', this.token);
+  
+      this.pushPayload = await this.fcm.getInitialPushPayload();
+      console.log('getInitialPushPayload result: ', this.pushPayload);
+    }
 
-    console.log('Subscribing to token updates');
-    this.fcm.onTokenRefresh().subscribe((newToken) => {
-      this.token = newToken;
-      console.log('onTokenRefresh received event with: ', newToken);
-    });
-
-    console.log('Subscribing to new notifications');
-    this.fcm.onNotification().subscribe((payload) => {
-      this.pushPayload = payload;
-      if (payload.wasTapped) {
-        // this.router.navigateByUrl('notifications');
-        this.router.navigate(['notifications']);
-        console.log('Received in background');
-      } else {
-        console.log('Received in foreground');
-        // this.router.navigate(['notifications']);
-        this.presentToastWithOptions(payload.body)
-        // this.router.navigate(['notifications']);
-      }
-      console.log('onNotification received event with: ', payload);
-    });
-
-    this.hasPermission = await this.fcm.requestPushPermission();
-    console.log('requestPushPermission result: ', this.hasPermission);
-
-    this.token = await this.fcm.getToken();
-    console.log('getToken result: ', this.token);
-
-    this.pushPayload = await this.fcm.getInitialPushPayload();
-    console.log('getInitialPushPayload result: ', this.pushPayload);
   }
-
   setFilteredItems(search) {
     this.searchService.filterItems(search)
   }
@@ -227,8 +237,6 @@ export class AppComponent implements OnInit {
     this.searchItems = []
   }
 
-
-
   navigateToProducts(index: number) {
     this.selectedIndex = index;
   }
@@ -245,6 +253,7 @@ export class AppComponent implements OnInit {
 
 
   }
+  
   async presentLoading() {
     const loading = await this.loadingController.create({
       message: 'Please wait... ',
@@ -263,15 +272,6 @@ export class AppComponent implements OnInit {
     toast.present();
   }
 
-  getData()
-  {
-  
-    this.profileService.getProfileDetails(this.client_id).subscribe(
-      (data)=>this.handleResponse(data),
-      (error)=>this.handleError(error)
-    )
-  }
-
   handleResponse(data)
   {
     // console.log(data)
@@ -280,8 +280,6 @@ export class AppComponent implements OnInit {
   handleError(error){
     // console.log(error)
   }
-
-
 
   goToOffer()
   {this.menuController.close()
@@ -332,6 +330,5 @@ export class AppComponent implements OnInit {
     });
     toast.present();
   }
-
 
 }

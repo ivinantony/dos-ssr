@@ -133,15 +133,6 @@
               class="roundCard"
               [ngStyle]="{'background-image': 'url( '+ item.path +' )'}"
             >
-              <!-- <ion-card [class.selected]="selectedIndex == i" class="roundCard" [ngStyle]="{'background-image': 'url( '+ item.path +' )'}" > -->
-              <!-- <ion-item lines="none">
-              <ion-icon slot="start" color="light" name="car"></ion-icon>
-            </ion-item> -->
-              <!-- <ion-label class="ion-text-center ovr">
-              <ion-text color="light">
-                <h3><b>{{item.category_name}}</b></h3>
-              </ion-text>
-            </ion-label> -->
             </ion-card>
             <ion-label class="ion-text-center cat">
               <ion-text color="dark">
@@ -162,23 +153,6 @@
           </ion-button>
         </div>
       </ion-grid>
-      <!-- <ion-slides [options]="categorySlides" class="category">
-      <ion-slide
-        *ngFor="let item of categories; let i=index"
-        (click)="navigateToProducts(i)"
-      >
-        <ion-card [class.selected]="selectedIndex == i">
-          <ion-item lines="none">
-            <ion-icon slot="start" color="light" name="car"></ion-icon>
-          </ion-item>
-          <ion-label class="ion-text-left">
-            <ion-text color="light">
-              <h3><b>{{item.name}}</b></h3>
-            </ion-text>
-          </ion-label>
-        </ion-card>
-      </ion-slide>
-    </ion-slides> -->
     </section>
 
     <!-- Banner -2 start -->
@@ -366,17 +340,12 @@
     <div id="top">
       <ion-item lines="none" class="ion-text-center">
         <ion-label class="title" color="magenta">Recommended</ion-label>
-        <!-- <ion-button expand="block" fill="clear" shape="round" slot="end">
-        View all
-      </ion-button> -->
+
       </ion-item>
       <div class="sliderWrapper">
         <ion-slides [options]="productSlides" class="top-search" #recommended>
           <ion-slide *ngFor="let item of data?.products; let i=index">
-            <!-- <ion-card
-            (click)="viewProduct(i)"
-            [ngStyle]="{'background-image': 'url( '+ s3url + item.images[0]?.path +' )'}">
-          </ion-card> -->
+      
             <ion-card (click)="viewProduct(i)">
               <img src="{{s3url+item.images[0]?.path}}" alt="" />
               <ion-card-content>
