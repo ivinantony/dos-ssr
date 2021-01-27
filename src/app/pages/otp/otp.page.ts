@@ -105,4 +105,9 @@ export class OtpPage implements OnInit {
 
     await alert.present();
   }
+
+  resendOtp()
+  {
+    console.log("otp")
+  }
 }

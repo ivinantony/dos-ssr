@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>209942579610-gpgsd7376b503qcfckjgfok27grhtbmq.apps.googleusercontent.com</string>
+	<string>744606326185-6pptnjlpt4cp9bvo7r8fu9g4g4sas43t.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.209942579610-gpgsd7376b503qcfckjgfok27grhtbmq</string>
+	<string>com.googleusercontent.apps.744606326185-6pptnjlpt4cp9bvo7r8fu9g4g4sas43t</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDMKzcsjCwgxuRS-RVREL9cbu58vWCEPNk</string>
+	<string>AIzaSyDxYvMbnyqsx18xVPg3hih2JXHR2w0JzTI</string>
 	<key>GCM_SENDER_ID</key>
-	<string>209942579610</string>
+	<string>744606326185</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.mermerapps.dealonstore</string>
 	<key>PROJECT_ID</key>
-	<string>deal-on-store</string>
+	<string>dealonstore</string>
 	<key>STORAGE_BUCKET</key>
-	<string>deal-on-store.appspot.com</string>
+	<string>dealonstore.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,10 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
+<<<<<<< HEAD
 	<string>1:209942579610:ios:b3928bdd286256332c5223</string>
+=======
+	<string>1:744606326185:ios:74637852d9c822c459f8b8</string>
+>>>>>>> 868aadad13ef587319f6441d9ca9621691d8cd31
 </dict>
 </plist>

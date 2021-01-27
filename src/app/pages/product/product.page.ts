@@ -149,7 +149,7 @@ export class ProductPage implements OnInit {
     else if(type == POST_DATA)
     {
       
-      console.log(data)
+      // console.log(data)
     }
     else if(type == BUY_NOW)
     {
@@ -158,7 +158,7 @@ export class ProductPage implements OnInit {
    
   }
   handleError(error) {
-    console.log(error);
+    // console.log(error);
     this.loadingController.dismiss;
 
     if(error.status == 400)

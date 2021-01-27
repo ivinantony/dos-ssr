@@ -30,6 +30,7 @@
     "@ionic-native/badge": "^5.29.0",
     "@ionic-native/core": "^5.0.0",
     "@ionic-native/geolocation": "^5.29.0",
+    "@ionic-native/in-app-browser": "^5.30.0",
     "@ionic-native/native-geocoder": "^5.29.0",
     "@ionic-native/native-storage": "^5.30.0",
     "@ionic-native/paypal": "^5.30.0",
@@ -74,6 +75,7 @@
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-fcm-with-dependecy-updated": "^7.7.0",
     "cordova-plugin-geolocation": "^4.1.0",
+    "cordova-plugin-inappbrowser": "^4.1.0",
     "cordova-plugin-ionic-keyboard": "^2.2.0",
     "cordova-plugin-ionic-webview": "^4.2.1",
     "cordova-plugin-nativegeocoder": "^3.4.1",
@@ -121,9 +123,9 @@
         "ANDROID_DEFAULT_NOTIFICATION_ICON": "@mipmap/ic_launcher",
         "ANDROID_FIREBASE_BOM_VERSION": "26.0.0",
         "ANDROID_GOOGLE_SERVICES_VERSION": "4.3.4",
-        "ANDROID_GRADLE_TOOLS_VERSION": "4.1.0",
-        "IOS_FIREBASE_MESSAGING_VERSION": "~> 7.0.0"
-      }
+        "ANDROID_GRADLE_TOOLS_VERSION": "4.1.0"
+      },
+      "cordova-plugin-inappbrowser": {}
     },
     "platforms": [
       "android",

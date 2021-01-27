@@ -1,7 +1,7 @@
 <ion-header class="ion-no-border">
   <ion-toolbar color="light">
     <ion-buttons slot="start">
-      <ion-back-button color="dark" defaultHref="/home" text=""></ion-back-button>
+      <ion-back-button color="dark" defaultHref="/home"></ion-back-button>
     </ion-buttons>
     <ion-title>CART</ion-title>
   </ion-toolbar>
@@ -9,33 +9,41 @@
 
 <ion-content>
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content pullingIcon="refresh" pullingText="Pull to refresh" refreshingSpinner="crescent"
-      refreshingText="Refreshing..."></ion-refresher-content>
+    <ion-refresher-content
+      pullingIcon="refresh"
+      pullingText="Pull to refresh"
+      refreshingSpinner="crescent"
+      refreshingText="Refreshing..."
+    ></ion-refresher-content>
   </ion-refresher>
-  
+
   <ion-grid fixed [ngClass]="cartLength > 0 ? 'active' : 'inactive'">
     <ion-row>
-      <ion-col size-sm="12" size-md="12" size-lg="6" size-xl="6">
+      <!-- <ion-col size-sm="12" size-md="12" size-lg="6" size-xl="6">
         <ion-card style="box-shadow: none" class="card">
           <ion-list-header>
             <ion-label> Delivery Address </ion-label>
           </ion-list-header>
           <ion-item class="ion-text-center" *ngIf="addresses?.length == 0">
-            <p >No Addresses Added </p>
+            <p>No Addresses Added</p>
           </ion-item>
-          
-          <ion-card-content style="max-height: 30vh" class="ion-no-padding" *ngIf="addresses?.length != 0" class="" >
-            
-              
-          
+
+          <ion-card-content
+            style="max-height: 30vh"
+            class="ion-no-padding"
+            *ngIf="addresses?.length != 0"
+            class=""
+          >
             <ion-content style="height: 30vh" class="ion-padding">
               <ion-radio-group
                 [(ngModel)]="selectedAddress"
                 mode="md"
                 (ionChange)="onChangeAddress($event)"
               >
-                
-                <ion-item *ngFor="let item of addresses; let i=index" lines="none">
+                <ion-item
+                  *ngFor="let item of addresses; let i=index"
+                  lines="none"
+                >
                   <ion-label>
                     <ion-text color="primary">
                       <h3>{{item.name}}</h3>
@@ -51,7 +59,7 @@
           <ion-footer class="ion-no-border">
             <ion-toolbar>
               <ion-buttons slot="end">
-                <ion-button color="danger" (click)="addAddress()" >
+                <ion-button color="danger" (click)="addAddress()">
                   <ion-icon slot="start" color="danger" name="add"></ion-icon>
                   Add Address
                 </ion-button>
@@ -59,26 +67,31 @@
             </ion-toolbar>
           </ion-footer>
         </ion-card>
-      </ion-col>
-      <ion-col size-sm="12" size-md="12" size-lg="6" size-xl="6">
+      </ion-col> -->
+      <ion-col size-sm="12" size-md="12" size-lg="12" size-xl="12">
         <ion-list-header>
           <ion-label> Summary </ion-label>
         </ion-list-header>
         <ion-list *ngFor="let item of cart; let i=index">
-
-          <ion-item lines="none" class="products" >
-            <ion-item lines="none" (click)="navigateToProduct(i)" class="ion-no-padding">
+          <ion-item lines="none" class="products">
+            <ion-item
+              lines="none"
+              (click)="navigateToProduct(i)"
+              class="ion-no-padding"
+            >
               <ion-thumbnail>
-                <img src="{{item.images[0].path}}">
+                <img src="{{item.images[0].path}}" />
               </ion-thumbnail>
               <ion-label>
                 <h5>{{item.name}}</h5>
               </ion-label>
             </ion-item>
-            
+
             <ion-buttons slot="end">
-            <ion-icon name="trash-outline" (click)="remove(i,item.id)"></ion-icon>
-              
+              <ion-icon
+                name="trash-outline"
+                (click)="remove(i,item.id)"
+              ></ion-icon>
             </ion-buttons>
             <ion-buttons class="cart-btns" slot="end">
               <ion-button (click)="subtract(i,item.id)">
@@ -86,76 +99,48 @@
               </ion-button>
               <ion-button color="dark">{{item.count}}</ion-button>
               <ion-button (click)="add(i,item.id)">
-                <ion-icon slot="start" color="danger" name="add" ></ion-icon>
+                <ion-icon slot="start" color="danger" name="add"></ion-icon>
               </ion-button>
             </ion-buttons>
           </ion-item>
 
           <ion-item *ngIf="item.in_stock == 1">
-            <ion-label *ngIf="item.offer_price != null"><p>{{ item.offer_price | currency:'AED  ' }} * {{item.count}}</p></ion-label>
-            <ion-label *ngIf="item.offer_price == null"><p>{{ item.price | currency:'AED  ' }} * {{item.count}}</p></ion-label>
+            <ion-label *ngIf="item.offer_price != null"
+              ><p>
+                {{ item.offer_price | currency:'AED ' }} * {{item.count}}
+              </p></ion-label
+            >
+            <ion-label *ngIf="item.offer_price == null"
+              ><p>
+                {{ item.price | currency:'AED ' }} * {{item.count}}
+              </p></ion-label
+            >
 
-
-           
             <ion-button expand="block" fill="clear" shape="round">
-              {{ item.total_price | currency:'AED  ' }}
+              {{ item.total_price | currency:'AED ' }}
             </ion-button>
           </ion-item>
 
-          <ion-item *ngIf="item.in_stock == 0 || item.stock_quantity <= 0" class="outofstock">
+          <ion-item
+            *ngIf="item.in_stock == 0 || item.stock_quantity <= 0"
+            class="outofstock"
+          >
             <ion-icon name="ban" color="danger"></ion-icon>
             <h3>This item is currently out of stock.</h3>
           </ion-item>
           <hr />
         </ion-list>
-        <!-- <ion-list>
-          <ion-item lines="none" (click)="openPromo()">
-            <ion-icon
-              slot="start"
-              color="danger"
-              src="assets/imgs/discount.svg"
-            ></ion-icon>
-            <ion-label color="danger">Apply Promo Code</ion-label>
-            <ion-icon
-              slot="end"
-              color="danger"
-              name="chevron-forward"
-            ></ion-icon>
-          </ion-item>
-          <ion-item lines="none" (click)="openPaymentModes()" class="payment">
-            <ion-icon
-              slot="start"
-              color="danger"
-              src="assets/imgs/credit-card.svg"
-            ></ion-icon>
-            <ion-label color="danger">Select payment Method</ion-label>
-            <ion-icon
-              slot="end"
-              color="danger"
-              name="chevron-forward"
-            ></ion-icon>
-          </ion-item>
-        </ion-list> -->
+  
         <ion-list>
           <ion-item lines="none" class="total">
-            <ion-button
-              color="dark"
-              slot="start"
-              expand="block"
-              fill="clear"
-            >
+            <ion-button color="dark" slot="start" expand="block" fill="clear">
               Total amount
             </ion-button>
-            <ion-button
-              color="dark"
-              slot="end"
-              expand="block"
-              fill="clear"
-            >
-              {{ amountDetails?.total_amount | currency:'AED  ' }}
+            <ion-button color="dark" slot="end" expand="block" fill="clear">
+              {{ amountDetails?.total_amount | currency:'AED ' }}
             </ion-button>
           </ion-item>
-         
+
           <ion-item class="total" lines="none">
             <ion-button
               size="small"
@@ -173,7 +158,7 @@
               fill="clear"
               size="small"
             >
-            {{ amountDetails?.saved_amount | currency:'AED  ' }}
+              {{ amountDetails?.saved_amount | currency:'AED ' }}
             </ion-button>
           </ion-item>
           <ion-item lines="none" class="total">
@@ -194,35 +179,100 @@
               fill="clear"
               size="small"
             >
-            {{ amountDetails?.payable_amount | currency:'AED  ' }}
+              {{ amountDetails?.payable_amount | currency:'AED ' }}
             </ion-button>
           </ion-item>
         </ion-list>
       </ion-col>
     </ion-row>
+    <ion-list-header>
+      <ion-label>Select Delivery Address </ion-label>
+    </ion-list-header>
+    <ion-item lines="none" *ngIf="address_selected">
+              
+      <ion-label>
+        <ion-text color="primary">
+          <h3>{{address_selected.name}}</h3>
+        </ion-text>
+        <p>{{address_selected.full_address}}</p>
+        <p>{{address_selected.landmark}}</p>
+        <p>{{address_selected.phone}}</p>
+      </ion-label>
+      <ion-radio slot="start" ></ion-radio>
+      <ion-thumbnail class="ion-padding">
+        <img src="../../../assets/icon/location.svg">
+      </ion-thumbnail>
+    </ion-item>
+    <ion-button (click)="presentAddressModal()" fill='clear'>
+      select address
+      <ion-icon name="location-outline"></ion-icon>
+    </ion-button>
+    <!-- <ion-item class="ion-text-center" lines="none" *ngIf="addresses?.length == 0">
+      <p>No Addresses Added</p>
+    </ion-item>
+    <div class="address" *ngIf="addresses?.length > 0">
+      <div class="buttons" >
+        <div (click)="swipePrev()">
+          <ion-icon name="chevron-back-outline"></ion-icon>
+        </div>
+        <div (click)="swipeNext()">
+          <ion-icon name="chevron-forward-outline"></ion-icon>
+        </div>
+      </div>
+
+      <ion-slides #mySlider >
+        <ion-slide
+          *ngFor="let item of addresses; let i=index"
+          class="ion-text-left"
+        >
+            <ion-radio-group
+            [(ngModel)]="selectedAddress"
+            mode="md"
+            (ionChange)="onChangeAddress($event)"
+            style="width: 90%"
+          >
+          <ion-card style="box-shadow: none;"> 
+            
+            <ion-item lines="none">
+              
+              <ion-label>
+                <ion-text color="primary">
+                  <h3>{{item.name}}</h3>
+                </ion-text>
+                <p>{{item.full_address}}</p>
+                <p>{{item.landmark}}</p>
+              </ion-label>
+              <ion-radio slot="start" value="{{i}}"></ion-radio>
+              <ion-thumbnail class="ion-padding">
+                <img src="../../../assets/icon/location.svg">
+              </ion-thumbnail>
+            </ion-item>
+          </ion-card>
+          </ion-radio-group>
+        </ion-slide>
+      </ion-slides>
+    </div> -->
+      
+    
   </ion-grid>
 
-
-<div class="ion-text-center whenEmpty" [ngClass]="cartLength > 0 ? 'inactive' : 'active' " alt="">
-  <img src="../../../assets/icon/empty-cart.png">
-  <p>The cart is empty.</p>
-  <ion-button (click)="continueShopping()" fill="outline" shape="round">
-    <ion-icon slot="start" name="add"></ion-icon>
-    Continue Shopping
-  </ion-button>
-</div>
-
+  <div
+    class="ion-text-center whenEmpty"
+    [ngClass]="cartLength > 0 ? 'inactive' : 'active' "
+    alt=""
+  >
+    <img src="../../../assets/icon/empty-cart.png" />
+    <p>The cart is empty.</p>
+    <ion-button (click)="continueShopping()" fill="outline" shape="round">
+      <ion-icon slot="start" name="add"></ion-icon>
+      Continue Shopping
+    </ion-button>
+  </div>
 </ion-content>
 
 <ion-footer *ngIf="cartLength > 0">
   <ion-toolbar>
-    <ion-button
-      
-      slot="end"
-      shape="round"
-      color="danger"
-      (click)="continue()"
-    >
+    <ion-button slot="end" shape="round" color="danger" (click)="continue()">
       <ion-icon slot="end" name="chevron-forward"></ion-icon>
       CONTINUE
     </ion-button>

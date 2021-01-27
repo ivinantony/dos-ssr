@@ -43,13 +43,13 @@ addresses:any
     {
       
       this.addresses = data.addresses
-      console.log(this.addresses)
+      // console.log(this.addresses)
     }
     
   }
   handleError(error)
   {
-    console.log(error)
+    // console.log(error)
   }
 
   selectOptions(index: number) {

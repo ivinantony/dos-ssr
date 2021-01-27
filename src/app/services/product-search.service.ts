@@ -21,7 +21,7 @@ export class ProductSearchService {
   result:Array<any>=[];
 
   constructor(private productService: ProductService,private searchService:SearchService) {
-    this.getData();
+    // this.getData();
   }
 
    filterItems(searchTerm) {
@@ -30,7 +30,7 @@ export class ProductSearchService {
     {
       // console.log(searchTerm,"search term");
 
-      // this.result=[]
+      this.result=[]
       // console.log(searchTerm, "items filter search");
       // this.isFetching = false;
 
@@ -72,40 +72,40 @@ export class ProductSearchService {
       //   });
       //   console.log(this.result)
 
-      // this.searchService.getSearchResult(searchTerm).subscribe(
-      //   (data)=>this.handleResponse(data),
-      //   (error)=>this.handleError(error)
-      // )
+      this.searchService.getSearchResult(searchTerm).subscribe(
+        (data)=>this.handleResponse(data),
+        (error)=>this.handleError(error)
+      )
 
-      this.result=[]
-      var client = ElasticAppSearch.createClient({
-        searchKey: "search-512otrevnf44vfqgyrvkyezs",
-        endpointBase: "https://b3ad9be270e248bd8c485d3eb6c783d0.ent-search.ap-southeast-1.aws.cloud.es.io",
-        engineName: "dos-search"
-      });
+      // this.result=[]
+      // var client = ElasticAppSearch.createClient({
+      //   searchKey: "search-512otrevnf44vfqgyrvkyezs",
+      //   endpointBase: "https://b3ad9be270e248bd8c485d3eb6c783d0.ent-search.ap-southeast-1.aws.cloud.es.io",
+      //   engineName: "dos-search"
+      // });
 
-      var options = {
-        search_fields: { city: {} },
-        result_fields: { name: { raw:{} }, city: { raw: {} } }
-      };
+      // var options = {
+      //   search_fields: { city: {} },
+      //   result_fields: { name: { raw:{} }, city: { raw: {} } }
+      // };
 
-      client
-      .search(searchTerm, options)
-      .then(resultList => {
-        resultList.results.forEach(result => {
-          // console.log(`name: ${result.getRaw("name")} raw: ${result.getRaw("city")}`);
-          // console.log(result)
-          this.result.push(result)
+      // client
+      // .search(searchTerm, options)
+      // .then(resultList => {
+      //   resultList.results.forEach(result => {
+      //     // console.log(`name: ${result.getRaw("name")} raw: ${result.getRaw("city")}`);
+      //     // console.log(result)
+      //     this.result.push(result)
           
-        });
-        console.log(resultList)
-        console.log(this.result);
+      //   });
+      //   // console.log(resultList)
+      //   // console.log(this.result);
         
-        this.searchResult.next(this.result)
-      })
-      .catch(error => {
-        console.log(`error: ${error}`);
-      });
+      //   this.searchResult.next(this.result)
+      // })
+      // .catch(error => {
+      //   // console.log(`error: ${error}`);
+      // });
     }
     else{
       this.searchResult.next([])
@@ -121,15 +121,20 @@ export class ProductSearchService {
   //   return item.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
   // });
 
-  getData() {
-    this.productService.getProducts().subscribe(
-      (data) => this.handleResponse(data),
-      (error) => this.handleError(error)
-    );
-  }
+  // getData() {
+  //   // this.productService.getProducts().subscribe(
+  //   //   (data) => this.handleResponse(data),
+  //   //   (error) => this.handleError(error)
+  //   // );
+  // }
 
   handleResponse(data) {
     console.log(data)
+    data.data.filter(item => {
+      this.result.push(item)
+      }) 
+    console.log(this.result,"result")
+    this.searchResult.next(this.result)
     // this.items = data.products;
   }
   handleError(error) {

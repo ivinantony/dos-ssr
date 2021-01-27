@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit } from "@angular/core";
+import { Component, NgZone, OnInit, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 import {
   IonRouterOutlet,
@@ -26,6 +26,9 @@ import { DOCUMENT } from "@angular/common";
 import { hasLifecycleHook } from "@angular/compiler/src/lifecycle_reflector";
 import { Console } from "console";
 import { CartcountService } from "src/app/cartcount.service";
+import { AddressModalPage } from "../address-modal/address-modal.page";
+import { IonSlides} from '@ionic/angular';
+
 declare var google;
 
 declare var RazorpayCheckout: any;
@@ -46,6 +49,14 @@ const paytabs = require("paytabs_api");
   styleUrls: ["./cart.page.scss"],
 })
 export class CartPage implements OnInit {
+  @ViewChild('mySlider')  slides: IonSlides;
+  swipeNext(){
+    this.slides.slideNext();
+  }
+  swipePrev(){
+    this.slides.slidePrev();
+  }
+  address_selected:any;
   selectedAddress: any;
   selectedPayment: any;
   cart: any[];
@@ -84,25 +95,29 @@ export class CartPage implements OnInit {
     private cartCountService: CartcountService,
     @Inject(DOCUMENT) private _document: Document
   ) {
+
     this.client_id = localStorage.getItem("client_id");
     // this.getData();
     // this.getAddress();
     this.s3url = utils.getS3url();
+    
+    
   }
 
   ngOnInit() {}
   ionViewWillEnter() {
     this.getData();
+    console.log(this.selectedAddress)
   }
 
-  onChangeAddress($event) {
-    this.current_selection = $event.detail.value;
-    // console.log(this.current_selection, "current selected address");
-    this.getDistance(
-      this.data.address[this.current_selection].latitude,
-      this.data.address[this.current_selection].longitude
-    );
-  }
+  // onChangeAddress($event) {
+  //   this.current_selection = $event.detail.value;
+  //   // console.log(this.current_selection, "current selected address");
+  //   this.getDistance(
+  //     this.data.address[this.current_selection].latitude,
+  //     this.data.address[this.current_selection].longitude
+  //   );
+  // }
 
   async addAddress() {
     const modal = await this.modalController.create({
@@ -201,9 +216,10 @@ export class CartPage implements OnInit {
   }
 
   handleResponse(data, type) {
-    this.loadingController.dismiss();
+    
     if (type == GET_CART) {
-      // console.log(data);
+      this.loadingController.dismiss();
+      console.log(data);
       this.data = data;
       this.cart = data.cart;
       this.amountDetails = data;
@@ -424,4 +440,33 @@ export class CartPage implements OnInit {
     let id = this.cart[index].id;
     this.router.navigate(["product", id]);
   }
+
+  async presentAddressModal() {
+    const modal = await this.modalController.create({
+      component: AddressModalPage,
+      cssClass:'cartmodal',
+      componentProps: { value: 123 },
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl
+    });
+
+    await modal.present();
+
+    await modal.onDidDismiss().then((data) => {
+      console.log("data",data)
+      this.address_selected = data.data
+      this.current_selection = data.role
+      console.log(this.address_selected)
+      this.getDistance(
+        this.data.address[this.current_selection].latitude,
+        this.data.address[this.current_selection].longitude
+      );
+    }); 
+    
+  }
+
+
 }
+
+
+

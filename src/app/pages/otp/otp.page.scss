@@ -9,6 +9,15 @@ ion-button{
         font-size: 1.2rem;
     }
     box-shadow: none;
+    p{
+        color: cornflowerblue;
+        font-size: 1.1rem;
+    }
+    p:hover{
+        cursor: pointer;
+        color: #007FFF;
+
+    }
 }
 
 .otp{

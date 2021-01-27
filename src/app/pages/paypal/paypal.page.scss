@@ -37,35 +37,25 @@ img{
     padding: 10px;
     min-height: 459px;
     border-radius: 25px;
+    box-shadow: none;
    
     
     h2{
         font-weight: 700;
         font-size: 1.5rem;
-        padding: 20px;
+        // padding: 20px;
     }
     .item{
         padding-bottom: 20px;
 
     }
 }
-// .wrapper{
-//     min-width: 380px;
-//     margin: 0;
-//     position: absolute;
-//     top: 50%;
-//     left: 50%;
-//     transform: translate(-50%, -50%);
-//     .imgWrapper{
-//         h2{
-//             padding: 0px;
-//         }
-//         img{
-//             width: 50%;
-//             padding-bottom: 15px;
-//         }
-//     }
-// }
+.wrapper{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 .ripple-parent
  {

@@ -1,0 +1,66 @@
+img{
+    width: 25%;
+    padding-bottom: 25px;
+}
+
+.wrapper {
+    width: 100%;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -40%);
+    h2{
+        padding-bottom: 25px;
+    }
+  }
+
+  .btn {
+    height: 60px;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+    max-width: 220px;
+  }
+
+  .button{
+      margin-left: auto;
+      margin-right: auto;
+  }
+
+  .player{
+      margin-left: auto;
+      margin-right: auto;
+  }
+
+
+@media only screen and (min-width: 321px)
+    {
+
+	}
+@media only screen and (min-width: 576px)
+    {
+			img{
+				width:19%;
+			}
+		
+	}
+@media only screen and (min-width: 768px)
+    {
+        img{
+            width: 17%;
+        }
+		
+	}
+@media only screen and (min-width: 992px)
+ { 
+    img{
+        width: 15%;
+    }
+	
+}
+@media only screen and (min-width: 1329px)
+    {
+      img{
+          width: 10%;
+      }
+    
+    }

@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Select Address</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button color="danger" (click)="addAddress()">
+        <ion-icon slot="start" color="danger" name="add"></ion-icon>
+        Add Address
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-list>
+
+      <ion-radio-group
+      [(ngModel)]="selectedAddress"
+      mode="md"
+      (ionChange)="onChangeAddress($event)"
+    >
+      <ion-item
+        *ngFor="let item of addresses; let i=index"
+        lines="none"
+      >
+        <ion-label>
+          <ion-text color="primary">
+            <h3>{{item.name}}</h3>
+          </ion-text>
+          <p>{{item.full_address}}</p>
+          <p>{{item.landmark}}</p>
+        </ion-label>
+        <ion-radio slot="start" value="{{i}}"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+
+   
+
+  </ion-list>
+
+</ion-content>
+
+

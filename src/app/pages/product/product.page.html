@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="light">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home" text=""></ion-back-button>
+      <ion-back-button defaultHref="/home" ></ion-back-button>
     </ion-buttons>
     <ion-title></ion-title>
     <ion-buttons slot="end" class="ion-hide-md-up" id="cart-btn">
@@ -86,7 +86,7 @@
             <!-- <ion-col size="3" class="addtocart">
               <h3 style="font-size: 15px;">Select Quantity:</h3>
             </ion-col> -->
-            <ion-col size="5" class="ion-padding" *ngIf="data?.product.cart_count == 0">
+            <ion-col size="5" class="ion-padding" *ngIf="data?.product.in_stock > 0">
               <div class="addbutton">
                 <ion-icon
                   name="remove-outline"

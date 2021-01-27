@@ -1,7 +1,7 @@
 <ion-content class="ion-padding">
-  <div *ngIf="!is_granted" class="msg">
+  <!-- <div *ngIf="!is_granted" class="msg">
     <P>Permission for getting your location is denied. Inorder to reset the permission, access <img src="../../../assets/imgs/locdenied.PNG" alt=""> this icon on top right of your browser window and click allow access. Refresh to reflect changes.</P>
-</div>
+</div> -->
   <div>
     <div id="main" >
       <div >
@@ -70,14 +70,13 @@
               <ion-item class="area" lines="none">
                 <ion-input
                   required
-                  placeholder="House no./ Flat no./Floor/ Building*"
+                  placeholder="Full Address*"
                   formControlName="full_address"
                 ></ion-input>
               </ion-item>
               <ion-item class="area" lines="none">
                 <ion-input
-                  required
-                  placeholder="Landmark*"
+                  placeholder="Landmark"
                   formControlName="landmark"
                 ></ion-input>
               </ion-item>

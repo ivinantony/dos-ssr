@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar  >
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home" text="" color="dark"></ion-back-button>
+      <ion-back-button defaultHref="/home"  color="dark"></ion-back-button>
     </ion-buttons>
     <ion-title>{{brand_name}}</ion-title>
     <ion-button  slot="end" fill="clear" shape="round" (click)="openSort($event)" color="dark" class="ion-hide-md-down">
@@ -49,22 +49,25 @@
                   <h3>OUT OF STOCK</h3>
                 </div>
               </div>
-              <ion-list>
+              <ion-list class="ion-text-center details">
+                
+                  <h3>{{item.name}}</h3>
+             
+                
                 <ion-item lines="none">
                   <ion-label class="text">
-                    <h1>{{item.name}}</h1>
-                    <ion-label>
+                    
+                    
                       <ion-text color="dark" class="price">
-                        <h2>{{ item.offer_price | currency:'AED' }}</h2>
-                        <h2 *ngIf="item.offer_price == null">{{ item.price | currency:'AED' }}</h2>
+                        <h2>{{ item.offer_price | currency:'AED ' }}</h2>
+                        <h2 *ngIf="item.offer_price == null">{{ item.price | currency:'AED ' }}</h2>
                       </ion-text>
                       <ion-text color="danger">
-                        <p class="offer-price" *ngIf="item.offer_price != null">{{ item.price | currency:'AED' }}</p>
+                        <p class="offer-price" *ngIf="item.offer_price != null">{{ item.price | currency:'AED ' }}</p>
                       </ion-text>
                     </ion-label>
                     <!-- <p class="price">{{ 225 | currency:'AED' }}</p>
                     <p class="offer-price">{{ 225 | currency:'AED' }}</p> -->
-                  </ion-label>
                 </ion-item>
               </ion-list>
             </div>
@@ -72,6 +75,9 @@
             
             <ion-button (click)="addToCart(i)" color="danger" expand="full" [disabled]="item?.in_stock == 0" class="tocart">   
               ADD TO CART
+            </ion-button>
+            <ion-button (click)="goToCart()" color="danger" expand="full" *ngIf="item?.cart_count > 0" class="tocart">   
+              GO TO CART
             </ion-button>
             </ion-col> 
             
@@ -98,15 +104,6 @@
         <ion-icon slot="start" name="funnel-outline"></ion-icon>
         SORT
       </ion-button>
-      <!-- <ion-button
-        (click)="openFilter()"
-        expand="block"
-        fill="clear"
-        shape="round"
-      >
-        <ion-icon slot="start" name="filter-outline"></ion-icon>
-        FILTER
-      </ion-button> -->
     </ion-buttons>
   </ion-toolbar>
 </ion-footer>

@@ -27,11 +27,11 @@ export class TermsandconditionsPage implements OnInit {
 
   handleResponse(data)
   {
-    console.log(data)
+    // console.log(data)
     this.data=data
   }
   handleError(error)
   {
-    console.log(error)
+    // console.log(error)
   }
 }

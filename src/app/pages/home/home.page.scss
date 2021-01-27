@@ -26,8 +26,13 @@ ion-toolbar {
 
 #cart-badge {
   position: absolute;
-  top: 0px;
-  right: 0px;
+  top: 5px;
+  right: 6px;
+}
+#notf-badge {
+  position: absolute;
+  top: 5px;
+  right: -5px;
 }
   .spinner-container {
     width: 100%;
@@ -379,8 +384,16 @@ ion-toolbar {
       margin-top: 38px;
     }
 
+    .logosPayment{
+      display: flex;
+    }
     .payIcon{
       color:#a09292
+
+    }
+    .payLogo{
+      width: 48px;
+      height: 36px;
     }
 }
 

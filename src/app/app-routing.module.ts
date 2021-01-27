@@ -170,17 +170,34 @@ const routes: Routes = [
     path: 'cartmodal',
     loadChildren: () => import('./pages/cartmodal/cartmodal.module').then( m => m.CartmodalPageModule)
   },
-  {
-    path: 'test',
-    loadChildren: () => import('./pages/test/test.module').then( m => m.TestPageModule)
-  },
+ 
   {
     path: 'notification',
+    canActivate:[AuthGuard],
     loadChildren: () => import('./pages/notification/notification.module').then( m => m.NotificationPageModule)
-  },  {
+  },
+  {
     path: 'notificationdetail',
     loadChildren: () => import('./pages/notificationdetail/notificationdetail.module').then( m => m.NotificationdetailPageModule)
+  },
+  {
+    path: 'address-modal',
+    loadChildren: () => import('./pages/address-modal/address-modal.module').then( m => m.AddressModalPageModule)
+  },
+  {
+    path: 'recharge-status',
+    loadChildren: () => import('./pages/recharge-status/recharge-status.module').then( m => m.RechargeStatusPageModule)
+  },
+  {
+    path: 'contact-us',
+    loadChildren: () => import('./pages/contact-us/contact-us.module').then( m => m.ContactUsPageModule)
+  },
+  {
+    path: 'shippingpolicy',
+    loadChildren: () => import('./pages/shippingpolicy/shippingpolicy.module').then( m => m.ShippingpolicyPageModule)
   }
+
+
 
 
 

@@ -44,24 +44,24 @@ brands:Array<any>=[]
     this.data.brands.forEach((element) => {
       this.brands.push(element);
     });
-    console.log(this.brands, "API called");
+    // console.log(this.brands, "API called");
     if (infiniteScroll) {
       infiniteScroll.target.complete();
     }
-    console.log(data)
+    // console.log(data)
   }
   handleError(error)
   {
     this.loadingController.dismiss()
-    console.log(error)
+    // console.log(error)
   }
 
   navigateToBrandProducts(index:number)
   {
-    console.log( this.data.brands[index],"index")
+    // console.log( this.data.brands[index],"index")
     let brand_id = this.brands[index].id
     let brand_name = this.brands[index].brand_name
-    console.log(brand_id,"brand id")
+    // console.log(brand_id,"brand id")
     this.router.navigate(['brand-products',brand_id, {brand_name}])
     
   }

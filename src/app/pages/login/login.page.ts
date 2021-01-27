@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 import { NavController, LoadingController, ToastController, ModalController, AlertController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { LoginService } from 'src/app/services/login/login.service';
-import { INotificationPayload } from 'plugins/cordova-plugin-fcm-with-dependecy-updated/typings';
+// import { INotificationPayload } from 'plugins/cordova-plugin-fcm-with-dependecy-updated/typings';
 import { AngularFireMessaging } from '@angular/fire/messaging';
-import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
+// import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
 import { UsernameValidator } from 'src/app/validators/username';
 import { OtpmodalPage } from '../otpmodal/otpmodal.page';
 import { Platform } from '@ionic/angular';
@@ -21,7 +21,7 @@ export class LoginPage implements OnInit {
   previousUrl: string = null;
   public hasPermission: boolean;
   public token: string;
-  public pushPayload: INotificationPayload;
+  // public pushPayload: INotificationPayload;
   currentUrl: string = null;
   branch_id:number=6
   phone:any
@@ -36,10 +36,10 @@ export class LoginPage implements OnInit {
     private router:Router,
     public alertController: AlertController,
     private afMessaging: AngularFireMessaging,
-    private fcm: FCM,
+    // private fcm: FCM,
     public platform: Platform) {
     
-    this.setupFCM() 
+    // this.setupFCM() 
     this.loginGroup = this.formBuilder.group({
       name: ['', Validators.compose([Validators.required, Validators.minLength(4)])],
    
@@ -94,62 +94,64 @@ export class LoginPage implements OnInit {
   }
 
 
-  private async setupFCM() {
-    await this.platform.ready();
-    console.log('FCM setup started');
+  // private async setupFCM() {
+  //   await this.platform.ready();
+  //   console.log('FCM setup started');
 
-    if (!this.platform.is('cordova')) {
-       // requesting permission
-        this.afMessaging.requestToken // getting tokens
-          .subscribe(
-            (token) => { // USER-REQUESTED-TOKEN
-              console.log('Permission granted! Save to the server!', token);
-              this.token = token
-            },
-            (error) => {
-              console.error(error);
-            }
-          );
-         await this.afMessaging.messages.subscribe( async (msg:any)=>{
-           console.log()
-            console.log('msg',msg);
-          })
+  //   if (!this.platform.is('cordova')) {
+  //      // requesting permission
+  //       this.afMessaging.requestToken // getting tokens
+  //         .subscribe(
+  //           (token) => { // USER-REQUESTED-TOKEN
+  //             console.log('Permission granted! Save to the server!', token);
+  //             this.token = token
+  //           },
+  //           (error) => {
+  //             console.error(error);
+  //           }
+  //         );
+  //        await this.afMessaging.messages.subscribe( async (msg:any)=>{
+  //          console.log()
+  //           console.log('msg',msg);
+  //           this.showToast(msg.notification.title)
+  //         })
       
-    }
-    else{
-      console.log('In cordova platform');
-      console.log('Subscribing to token updates');
-      this.fcm.onTokenRefresh().subscribe((newToken) => {
-        this.token = newToken;
-        // this.loginForm.controls['fcm_token'].setValue(newToken);
-        console.log('onTokenRefresh received event with: ', newToken);
-      });
+  //   }
+  //   else{
+  //     console.log('In cordova platform');
+  //     console.log('Subscribing to token updates');
+  //     this.fcm.onTokenRefresh().subscribe((newToken) => {
+  //       this.token = newToken;
+  //       // this.loginForm.controls['fcm_token'].setValue(newToken);
+  //       console.log('onTokenRefresh received event with: ', newToken);
+  //     });
   
-      console.log('Subscribing to new notifications');
-      this.fcm.onNotification().subscribe((payload) => {
-        this.pushPayload = payload;
-        console.log('onNotification received event with: ', payload);
-        if (payload.wasTapped) {
-          this.router.navigate(['notifications',{data:payload}]);
-          console.log('Received in background');
-        } else {
-          console.log('Received in foreground');
-          this.router.navigate(['notifications',{data:payload}]);
-        }
-      });
+  //     console.log('Subscribing to new notifications');
+  //     this.fcm.onNotification().subscribe((payload) => {
+  //       this.pushPayload = payload;
+  //       console.log('onNotification received event with: ', payload);
+  //       if (payload.wasTapped) {
+  //         this.router.navigate(['notifications',{data:payload}]);
+  //         console.log('Received in background');
+  //       } else {
+  //         console.log('Received in foreground');
+  //         this.showToast(payload.notification.title)
+  //         this.router.navigate(['notification',{data:payload}]);
+  //       }
+  //     });
   
-      this.hasPermission = await this.fcm.requestPushPermission();
-      console.log('requestPushPermission result: ', this.hasPermission);
+  //     this.hasPermission = await this.fcm.requestPushPermission();
+  //     console.log('requestPushPermission result: ', this.hasPermission);
   
-      this.token = await this.fcm.getToken();
-      // this.loginForm.controls['fcm_token'].setValue(this.token);
-      console.log('getToken result: ', this.token);
+  //     this.token = await this.fcm.getToken();
+  //     // this.loginForm.controls['fcm_token'].setValue(this.token);
+  //     console.log('getToken result: ', this.token);
   
-      this.pushPayload = await this.fcm.getInitialPushPayload();
-      console.log('getInitialPushPayload result: ', this.pushPayload);
-    }
+  //     this.pushPayload = await this.fcm.getInitialPushPayload();
+  //     console.log('getInitialPushPayload result: ', this.pushPayload);
+  //   }
 
-  }
+  // }
 
 
   login(data) {
@@ -178,6 +180,7 @@ export class LoginPage implements OnInit {
     }
 
   }
+  
   async presentLoading() {
     const loading = await this.loadingController.create({
       message: 'Please wait..',
@@ -229,6 +232,25 @@ export class LoginPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  async showToast(message) {
+    let toast = await this.toastController.create({
+      message: message,
+      duration: 2500,
+      position: "top",
+      color: "danger",
+      buttons: [
+        {
+          side: 'end',
+          text: 'view',
+          handler: () => {
+            this.router.navigate(['notification'])
+          }
+        }
+      ]
+    });
+    toast.present();
   }
 
 }

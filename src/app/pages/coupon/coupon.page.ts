@@ -39,7 +39,7 @@ export class CouponPage implements OnInit {
   {
   if(type == GET_CODES)
   {
-    console.log(data)
+    // console.log(data)
     this.data = data
 
     this.data.promo_codes.filter(item => {
@@ -51,15 +51,15 @@ export class CouponPage implements OnInit {
       else{
         this.coupons.push(item)
       }
-     console.log("after push only applicable",this.applicableCoupons)
-     console.log("non applicable",this.coupons)
+    //  console.log("after push only applicable",this.applicableCoupons)
+    //  console.log("non applicable",this.coupons)
     });
   }
 
   }
   handleError(error)
   {
-    console.log(error)
+    // console.log(error)
   }
   apply(i)
   {

@@ -57,14 +57,17 @@ export class OfferPage implements OnInit {
   ) {
     this.client_id = localStorage.getItem("client_id");
     this.s3url = utils.getS3url();
-    this.page_count = 1;
-    this.products = [];
-    this.getData();
+    // this.page_count = 1;
+    // this.products = [];
+    // this.getData();
   }
 
   ngOnInit() {}
 
   ionViewWillEnter() {
+    this.page_count = 1;
+    this.products = [];
+    this.getData();
     this.cart_count = localStorage.getItem("cart_count");
   }
 
@@ -89,9 +92,9 @@ export class OfferPage implements OnInit {
       data.product.forEach((element) => {
         this.products.push(element);
       });
-      console.log(this.products, "API called");
+      // console.log(this.products, "API called");
     } else if (type == POST_DATA) {
-      console.log("add to cart", data);
+      // console.log("add to cart", data);
       this.cart_count = data.cart_count;
       localStorage.setItem("cart_count", data.cart_count);
       this.cartCountService.setCartCount(data.cart_count);
@@ -113,7 +116,7 @@ export class OfferPage implements OnInit {
 
   addToCart(index: number) {
     if (this.authService.isAuthenticated()) {
-      console.log("hai");
+      // console.log("hai");
       let data = {
         product_id: this.products[index].id,
         client_id: this.client_id,
@@ -131,6 +134,11 @@ export class OfferPage implements OnInit {
     }
   }
 
+  goToCart()
+  {
+    this.router.navigate(['cart'])
+  }
+
   async openSort(ev: any) {
     const popover = await this.popOverCtrl.create({
       component: FilterComponent,
@@ -143,23 +151,23 @@ export class OfferPage implements OnInit {
       if (data.data) {
         this.infiniteScroll.disabled = true;
         if (data.data == 2) {
-          console.log("low to high");
+          // console.log("low to high");
           this.sortType = "ASC";
           this.page_count = 1;
           this.products = [];
-          console.log("from sort");
+          // console.log("from sort");
           this.getData();
 
-          console.log(this.scroll, "sort");
+          // console.log(this.scroll, "sort");
         } else if (data.data == 1) {
-          console.log("high to low");
+          // console.log("high to low");
           this.sortType = "DESC";
           this.page_count = 1;
           this.products = [];
-          console.log("from sort");
+          // console.log("from sort");
           this.getData();
 
-          console.log(this.scroll, "sort");
+          // console.log(this.scroll, "sort");
         }
       }
     });
@@ -167,12 +175,12 @@ export class OfferPage implements OnInit {
   }
 
   loadMoreContent(infiniteScroll) {
-    console.log("loadMoreContent", this.page_count);
+    // console.log("loadMoreContent", this.page_count);
     if (this.page_count == this.page_limit) {
       infiniteScroll.target.disabled = true;
     } else {
       this.page_count++;
-      console.log("from load more content");
+      // console.log("from load more content");
       this.getData(infiniteScroll);
     }
   }
@@ -231,7 +239,7 @@ export class OfferPage implements OnInit {
             this.products = [];
             this.sortType = "ASC";
             this.getData();
-            console.log(this.scroll, "sort");
+            // console.log(this.scroll, "sort");
             this.content.scrollToTop(1500);
           },
         },

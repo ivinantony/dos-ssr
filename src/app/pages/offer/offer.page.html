@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="light">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home" text=""></ion-back-button>
+      <ion-back-button defaultHref="/home" ></ion-back-button>
     </ion-buttons>
     <ion-title>OFFERS</ion-title>
     <ion-button
@@ -52,19 +52,23 @@
               <div class="select" (click)="navigateToProduct(i)">
                 <div
                   style="position: relative; overflow: hidden"
-                  class="ion-text-center"
+                  class="img_wrapper ion-text-center"
                 >
                   <img [src]="s3url + item?.images[0]?.path" alt="" />
+                  <div class="ion-text-center stock" *ngIf="item.in_stock == 0">
+                    <h3>OUT OF STOCK</h3>
+                  </div>
                 </div>
-                <ion-list>
+                <ion-list class="ion-text-center details">
+                  <h3>{{item.name}}</h3>
                   <ion-item lines="none">
                     <ion-label class="text">
-                      <h1>{{item.name}}</h1>
-                      <ion-label>
+                     
+               
                         <ion-text color="dark" class="price">
-                          <h2>{{ item.offer_price | currency:'AED' }}</h2>
+                          <h2>{{ item.offer_price | currency:'AED ' }}</h2>
                           <h2 *ngIf="item.offer_price == null">
-                            {{ item.price | currency:'AED' }}
+                            {{ item.price | currency:'AED ' }}
                           </h2>
                         </ion-text>
                         <ion-text color="danger">
@@ -72,17 +76,15 @@
                             class="offer-price"
                             *ngIf="item.offer_price != null"
                           >
-                            {{ item.price | currency:'AED' }}
+                            {{ item.price | currency:'AED ' }}
                           </p>
                         </ion-text>
                       </ion-label>
-                    </ion-label>
+                   
                   </ion-item>
                 </ion-list>
               </div>
-              <div class="ion-text-center stock" *ngIf="item.in_stock == 0">
-                <h3>OUT OF STOCK</h3>
-              </div>
+              
               <ion-button
                 (click)="addToCart(i)"
                 color="danger"
@@ -91,6 +93,9 @@
                 class="tocart"
               >
                 ADD TO CART
+              </ion-button>
+              <ion-button (click)="goToCart()" color="danger" expand="full" *ngIf="item?.cart_count > 0" class="tocart">   
+                GO TO CART
               </ion-button>
             </ion-col>
           </ion-row>
@@ -105,6 +110,7 @@
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>
+
 <ion-footer class="ion-hide-md-up">
   <ion-toolbar>
     <ion-buttons class="ion-justify-content-around">

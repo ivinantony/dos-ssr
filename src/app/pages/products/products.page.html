@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="light">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home" text=""></ion-back-button>
+      <ion-back-button defaultHref="/home" ></ion-back-button>
     </ion-buttons>
     <ion-title>{{category_name}}</ion-title>
     <ion-button  slot="end" fill="clear" shape="round" (click)="openSort($event)" color="dark" class="ion-hide-md-down">
@@ -49,21 +49,21 @@
                 </div>
                 <img [src]="s3url + item?.images[0]?.path" alt="">
               </div>
-              <ion-list>
+              <ion-list class="ion-text-center details">
+               
+                <h3>{{item.name}}</h3>
+         
                 <ion-item lines="none">
                   <ion-label class="text">
-                    <h1>{{item.name}}</h1>
-                    <ion-label>
                       <ion-text color="dark" class="price">
-                        <h2>{{ item.offer_price | currency:'AED' }}</h2>
-                        <h2 *ngIf="item.offer_price == null">{{ item.price | currency:'AED' }}</h2>
+                        <h2>{{ item.offer_price | currency:'AED ' }}</h2>
+                        <h2 *ngIf="item.offer_price == null">{{ item.price | currency:'AED ' }}</h2>
                       </ion-text>
                       <ion-text color="danger">
-                        <p class="offer-price" *ngIf="item.offer_price != null">{{ item.price | currency:'AED' }}</p>
+                        <p class="offer-price" *ngIf="item.offer_price != null">{{ item.price | currency:'AED ' }}</p>
                       </ion-text>
                     </ion-label> 
-                  </ion-label>
-                  
+          
                 </ion-item>
                 
               </ion-list>
@@ -72,6 +72,9 @@
               <ion-button (click)="addToCart(i)" color="danger" expand="full" [disabled]="item?.in_stock == 0" class="tocart">
               
                 ADD TO CART
+              </ion-button>
+              <ion-button (click)="goToCart()" color="danger" expand="full" *ngIf="item?.cart_count > 0" class="tocart">   
+                GO TO CART
               </ion-button>
             </ion-col> 
             

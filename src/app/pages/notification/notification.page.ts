@@ -26,7 +26,7 @@ export class NotificationPage implements OnInit {
     private notcountService:NotcountService) 
   {
     this.s3url = utils.getS3url()
-    console.log(this.s3url)
+    // console.log(this.s3url)
     notcountService.getNotCount().subscribe(res=>{
       this.notf_count = res
     })
@@ -83,23 +83,23 @@ export class NotificationPage implements OnInit {
     if(type == GET_DATA)
     {
       this.loadingController.dismiss()
-      console.log(data)
+      // console.log(data)
       this.data = data.data
-      console.log(this.data)
+      // console.log(this.data)
     }
     else if(type == DEL_DATA)
     {
       this.getData()
     }
     else{
-      console.log(data)
+      // console.log(data)
     }
     
   }
   handleError(error)
   {
     this.loadingController.dismiss()
-    console.log(error)
+    // console.log(error)
   }
 
   doRefresh(event) {

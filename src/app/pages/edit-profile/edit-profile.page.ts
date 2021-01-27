@@ -50,7 +50,7 @@ export class EditProfilePage implements OnInit {
     }
     else
     {
-      console.log(this.name)
+      // console.log(this.name)
       let data={
         client_id:Number(localStorage.getItem('client_id')),
         name:this.name
@@ -123,7 +123,7 @@ export class EditProfilePage implements OnInit {
     this.loadingController.dismiss()
     if(type==GET_DATA)
     {
-      console.log(data)
+      // console.log(data)
       this.profile = data.client_Details
       this.name = this.profile?.name
       this.phone = this.profile?.phone
@@ -134,17 +134,17 @@ export class EditProfilePage implements OnInit {
      
     }
     else if(type == POST_NAME){
-      console.log(data)
+      // console.log(data)
       this.getData()
     }
     else{
-      console.log(data)
+      // console.log(data)
     }
   }
   handleResponseError(error)
   {
     this.loadingController.dismiss()
-    console.log(error)
+    // console.log(error)
   }
 
 
