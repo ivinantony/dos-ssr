@@ -70,7 +70,7 @@ export class EditAddressPage implements OnInit {
       longitude: [''],
       full_address:['', Validators.required],
       place_id: [''],
-      landmark: ['', Validators.required],
+      landmark: [''],
       alternate_phone: ['',Validators.compose([Validators.maxLength(9), Validators.minLength(9),Validators.pattern("[0-9]*")]),],
       phone: ['',Validators.compose([Validators.required,Validators.maxLength(9), Validators.minLength(9),Validators.pattern("[0-9]*")]),],
       delivery_location_id:[''],
@@ -88,13 +88,7 @@ export class EditAddressPage implements OnInit {
 
     // })
   }
-  ngOnInit() {
-    // this.authservice.getMemberId().then(val => {
-    //   console.log('shop id', val)
-    //   this.addressForm.controls['member_id'].setValue(val);
-
-    // })
-  }
+  ngOnInit() {}
 
   validation_messages = {
     full_address: [
@@ -120,9 +114,6 @@ export class EditAddressPage implements OnInit {
         type: "pattern",
         message: "Your Mobile number must contain only numbers.",
       },
-    ],
-    landmark: [
-      { type: "required", message: "A landmark is required." },
     ],
     phone: [
       { type: "required", message: "Phone number is required." },
@@ -202,6 +193,7 @@ export class EditAddressPage implements OnInit {
 
     
   }
+
   inItMap(lat, lng) {
     let latLng = new google.maps.LatLng(lat, lng);
     let mapOptions = {
@@ -240,6 +232,7 @@ export class EditAddressPage implements OnInit {
       this.getDistance()
     })
   }
+
   getAddressFromCoords(latitude, longitude) {
 
     if (this.platform.is('cordova')) {
@@ -368,9 +361,6 @@ export class EditAddressPage implements OnInit {
     });
   }
 
-
-
-
   async presentToast() {
     const toast = await this.toastController.create({
       cssClass: 'custom-toast',
@@ -383,9 +373,11 @@ export class EditAddressPage implements OnInit {
     })
     toast.present();
   }
+
   onSearchChange($event) {
 
   }
+
   async areaSearch() {
     const modal = await this.modalController.create({
       component: AreaSearchPage,
@@ -434,10 +426,6 @@ export class EditAddressPage implements OnInit {
     {
       this.showToast("Please enter a valid House no./Flat no./Floor/Building");
     }
-    else if(!this.addressForm.value.landmark)
-    {
-      this.showToast("Please enter a landmark");
-    }
     else if(!this.addressForm.value.phone)
     {
       this.showToast("Please enter a valid phone number");
@@ -458,17 +446,6 @@ export class EditAddressPage implements OnInit {
 
   
   }
-
-  // getData()
-  // {
-    
-  //   let member_id = Number(localStorage.getItem('member_id'))
-  //   this.addressService.getDeliveryLocations().subscribe(
-  //     (data)=>this.handleResponse(data,GET_DELIVERY_LOC),
-  //     (error)=>this.handleError(error)
-  //   )
-   
-  // }
 
   handleResponse(data,type)
   {
@@ -500,6 +477,7 @@ export class EditAddressPage implements OnInit {
     
     
   }
+
   handleError(error)
   {
     this.loadingController.dismiss()
@@ -527,17 +505,6 @@ export class EditAddressPage implements OnInit {
     toast.present();
   }
 
-
-  // getEditAddress()
-  // {
-    
-  //   let address_id = Number(localStorage.getItem('address_id'))
-  //   this.addressService.getEditAddress(address_id).subscribe(
-  //     (data)=>this.handleResponse(data,GET_EDIT_ADDRESS),
-  //     (error)=>this.handleError(error)
-  //   )
-    
-  // }
 
   getEditAddress() {
     this.presentLoading().then(()=>{

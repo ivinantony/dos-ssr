@@ -75,16 +75,13 @@ export class AddAddressPage implements OnInit {
     this.getData();
     this.addressForm = this.formBuilder.group({
       client_id: [""],
-      name: [
-        "",
-        Validators.compose([Validators.required, Validators.minLength(3)]),
-      ],
+      name: [ "",Validators.compose([Validators.required, Validators.minLength(3)]),],
       address: ["", Validators.required],
       latitude: [""],
       longitude: [""],
       full_address: ["", Validators.required],
       place_id: [""],
-      landmark: ["", Validators.required],
+      landmark: [""],
       alternate_phone: [
         "",
         Validators.compose([
@@ -157,7 +154,6 @@ export class AddAddressPage implements OnInit {
         message: "Your Mobile number must contain only numbers.",
       },
     ],
-    landmark: [{ type: "required", message: "A landmark is required." }],
   };
 
   async presentLoading() {
@@ -176,12 +172,12 @@ export class AddAddressPage implements OnInit {
 
   async loadMap() {
     // this.is_granted=true
-    console.log("load map started")
+    console.log("load map started");
 
     let client_id = localStorage.getItem("client_id");
     this.addressForm.patchValue({ client_id: client_id });
     if (this.platform.is("cordova")) {
-      console.log("cordova location fetch")
+      console.log("cordova location fetch");
       await this.geolocation
         .getCurrentPosition()
         .then((resp) => {
@@ -191,7 +187,6 @@ export class AddAddressPage implements OnInit {
           );
           // this.getDistance();
           this.inItMap(resp.coords.latitude, resp.coords.longitude);
-
         })
         .catch((error) => {
           // console.log("Error getting location", error);
@@ -246,7 +241,7 @@ export class AddAddressPage implements OnInit {
     }
   }
   inItMap(lat, lng) {
-    console.log("initmap")
+    console.log("initmap");
     let latLng = new google.maps.LatLng(lat, lng);
     let mapOptions = {
       center: latLng,
@@ -289,6 +284,7 @@ export class AddAddressPage implements OnInit {
       this.getDistance();
     });
   }
+
   getAddressFromCoords(latitude, longitude) {
     if (this.platform.is("cordova")) {
       console.log("cordova  available");
@@ -307,13 +303,13 @@ export class AddAddressPage implements OnInit {
             if (value.length > 0) responseAddress.push(value);
           }
           responseAddress.reverse();
-          console.log(responseAddress)
-          let address="";
+          console.log(responseAddress);
+          let address = "";
           for (let value of responseAddress) {
             address += value + ", ";
           }
           address = address.slice(0, -2);
-          console.log("addresss from init",address)
+          console.log("addresss from init", address);
           this.addressForm.controls["address"].setValue(address);
         })
         .catch((error: any) => {});
@@ -377,14 +373,11 @@ export class AddAddressPage implements OnInit {
         response_data = response.rows;
         // console.log("responsee data", response_data);
         response_data.forEach((ele) => {
-          if(ele.elements[0].status == "ZERO_RESULTS")
-          {
+          if (ele.elements[0].status == "ZERO_RESULTS") {
             this.locationAvailability = false;
             var msg = "Sorry, this location is currently not serviceable";
             this.showToast(msg);
-
-          }
-          else{
+          } else {
             distances.push(ele.elements[0].distance.value);
           }
         });
@@ -432,6 +425,7 @@ export class AddAddressPage implements OnInit {
     });
     toast.present();
   }
+
   onSearchChange($event) {}
   async areaSearch() {
     const modal = await this.modalController.create({
@@ -472,8 +466,6 @@ export class AddAddressPage implements OnInit {
       this.showToast("Please enter a valid user name");
     } else if (!this.addressForm.value.full_address) {
       this.showToast("Please enter a valid House no./Flat no./Floor/Building");
-    } else if (!this.addressForm.value.landmark) {
-      this.showToast("Please enter a landmark");
     } else if (!this.addressForm.value.phone) {
       this.showToast("Please enter a valid phone number");
     } else if (this.addressForm.valid && this.locationAvailability == true) {

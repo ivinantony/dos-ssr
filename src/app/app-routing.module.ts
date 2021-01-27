@@ -173,6 +173,7 @@ const routes: Routes = [
  
   {
     path: 'notification',
+    canActivate:[AuthGuard],
     loadChildren: () => import('./pages/notification/notification.module').then( m => m.NotificationPageModule)
   },
   {
@@ -186,7 +187,16 @@ const routes: Routes = [
   {
     path: 'recharge-status',
     loadChildren: () => import('./pages/recharge-status/recharge-status.module').then( m => m.RechargeStatusPageModule)
+  },
+  {
+    path: 'contact-us',
+    loadChildren: () => import('./pages/contact-us/contact-us.module').then( m => m.ContactUsPageModule)
+  },
+  {
+    path: 'shippingpolicy',
+    loadChildren: () => import('./pages/shippingpolicy/shippingpolicy.module').then( m => m.ShippingpolicyPageModule)
   }
+
 
 
 

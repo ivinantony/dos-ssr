@@ -74,9 +74,9 @@ export class ProductsPage implements OnInit {
     // console.log(this.products)
     this.client_id = Number(localStorage.getItem('client_id'))
     
-    this.page_count=1
-    this.products= []
-    this.getData()
+    // this.page_count=1
+    // this.products= []
+    // this.getData()
 
   }
 
@@ -84,6 +84,9 @@ export class ProductsPage implements OnInit {
   }
   ionViewWillEnter()
   {
+    this.page_count=1
+    this.products= []
+    this.getData()
     this.cart_count = localStorage.getItem('cart_count')
   }
 
@@ -311,6 +314,11 @@ export class ProductsPage implements OnInit {
       this.presentLogin()
     }
     
+  }
+
+  goToCart()
+  {
+    this.router.navigate(['cart'])
   }
   
   removeFromcart(index:number)

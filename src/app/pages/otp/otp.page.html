@@ -18,6 +18,7 @@
       <ion-item class="ion-text-center" lines="none">
       <ion-input placeholder="-  -  -  -" autocapitalize="off" autocomplete="off" autocorrect="off" minlength="4" maxlength="4"  name="otp" type="tel" [(ngModel)]="inputOtp"  class="otp"></ion-input>
       </ion-item>
+     <p (click)="resendOtp()">Resend OTP</p>
       <ion-button
         (click)="continue()"
         class="ion-margin-vertical"

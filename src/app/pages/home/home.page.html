@@ -11,6 +11,17 @@
     <!-- <ion-buttons slot="end">
       <ion-icon name="cart-outline"class="ion-padding" (click)="router.navigate(['/cart'])" color="magenta"></ion-icon>
     </ion-buttons> -->
+
+    <ion-buttons slot="end" class="ion-hide-md-up" id="cart-btn">
+      <ion-icon
+        name="notifications-outline"
+        class="ion-padding"
+        (click)="router.navigate(['/notification'])"
+        color="magenta"
+        style="padding-right: 3px;"
+      ></ion-icon>
+      <ion-badge id="notf-badge" color="danger" *ngIf="notf_count > 0">{{notf_count}}</ion-badge>
+    </ion-buttons>
     <ion-buttons slot="end" class="ion-hide-md-up" id="cart-btn">
       <ion-icon
         name="cart-outline"
@@ -21,15 +32,7 @@
       <ion-badge id="cart-badge" color="danger" *ngIf="cart_count > 0">{{cart_count}}</ion-badge>
     </ion-buttons>
 
-    <ion-buttons slot="end" class="ion-hide-md-up" id="cart-btn">
-      <ion-icon
-        name="notifications-outline"
-        class="ion-padding"
-        (click)="router.navigate(['/notification'])"
-        color="magenta"
-      ></ion-icon>
-      <ion-badge id="cart-badge" color="danger" *ngIf="notf_count > 0">{{notf_count}}</ion-badge>
-    </ion-buttons>
+    
   </ion-toolbar>
 </ion-header>
 
@@ -151,10 +154,10 @@
           <ion-button
             (click)="viewAll()"
             shape="round"
-            fill="solid"
-            color="dark"
+            fill="outline"
+            color="primary"
           >
-            <ion-icon slot="start" name="chevron-down-outline"></ion-icon>
+            <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
             VIEW ALL
           </ion-button>
         </div>
@@ -249,10 +252,10 @@
         <ion-button
           (click)="router.navigate(['/offer'])"
           shape="round"
-          fill="solid"
-          color="dark"
+          fill="outline"
+          color="primary"
         >
-          <ion-icon slot="start" name="chevron-down-outline"></ion-icon>
+          <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
           VIEW ALL
         </ion-button>
       </div>
@@ -301,10 +304,10 @@
           <ion-button
             (click)="router.navigate(['/manufacturers'])"
             shape="round"
-            fill="solid"
-            color="dark"
+            fill="outline"
+            color="primary"
           >
-            <ion-icon slot="start" name="chevron-down-outline"></ion-icon>
+            <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
             VIEW ALL
           </ion-button>
         </div>
@@ -507,7 +510,12 @@
             <h5>OUR MIDDLE EAST STORE</h5>
             <p>Dubai, UAE</p>
             <h5 class="accept">WE ACCEPT</h5>
-            <ion-icon name="logo-paypal" class="payIcon"></ion-icon>
+            <div class="logosPayment">
+              <img src="../../../assets/icon/mastercard.svg" alt="" class="payLogo">
+              <img src="../../../assets/icon/visa.svg" alt="" class="payLogo">
+            </div>
+            <!-- <ion-icon name="logo-paypal" class="payIcon"></ion-icon> -->
+            
           </ion-col>
 
           <ion-col size="12" size-md="3" class="policies">
@@ -517,6 +525,12 @@
             <p (click)="router.navigate(['privacypolicy'])">Privacy Policy</p>
             <p (click)="router.navigate(['termsandconditions'])">
               Terms and Conditions
+            </p>
+            <p (click)="router.navigate(['shippingpolicy'])">
+              Shipping Policy
+            </p>
+            <p (click)="router.navigate(['contact-us'])">
+              Contact Us
             </p>
             <!-- <p>Shipping Policy</p>
       <p>Customer Support</p> -->

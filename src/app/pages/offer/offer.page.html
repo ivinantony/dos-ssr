@@ -94,6 +94,9 @@
               >
                 ADD TO CART
               </ion-button>
+              <ion-button (click)="goToCart()" color="danger" expand="full" *ngIf="item?.cart_count > 0" class="tocart">   
+                GO TO CART
+              </ion-button>
             </ion-col>
           </ion-row>
         </ion-grid>

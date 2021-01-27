@@ -57,14 +57,17 @@ export class OfferPage implements OnInit {
   ) {
     this.client_id = localStorage.getItem("client_id");
     this.s3url = utils.getS3url();
-    this.page_count = 1;
-    this.products = [];
-    this.getData();
+    // this.page_count = 1;
+    // this.products = [];
+    // this.getData();
   }
 
   ngOnInit() {}
 
   ionViewWillEnter() {
+    this.page_count = 1;
+    this.products = [];
+    this.getData();
     this.cart_count = localStorage.getItem("cart_count");
   }
 
@@ -129,6 +132,11 @@ export class OfferPage implements OnInit {
     } else {
       this.presentLogin();
     }
+  }
+
+  goToCart()
+  {
+    this.router.navigate(['cart'])
   }
 
   async openSort(ev: any) {

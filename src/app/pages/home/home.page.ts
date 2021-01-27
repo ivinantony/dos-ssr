@@ -11,6 +11,8 @@ import { UtilsService } from "src/app/services/utils.service";
 import { IonSlides } from "@ionic/angular";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { SearchService } from "src/app/services/search/search.service";
+import { CartcountService } from "src/app/cartcount.service";
+import { NotcountService } from "src/app/notcount.service";
 
 @Component({
   selector: "app-home",
@@ -156,7 +158,9 @@ export class HomePage implements OnInit {
     private utils: UtilsService,
     private loadingController: LoadingController,
     private authService: AuthenticationService,
-    private searchService:SearchService
+    private searchService:SearchService,
+    private cartCountService:CartcountService,
+    private notCountService:NotcountService,
   ) {
     this.s3url = utils.getS3url();
     this.badge.set(10);
@@ -168,6 +172,12 @@ export class HomePage implements OnInit {
     this.getData();
     this.cart_count = localStorage.getItem("cart_count");
     this.notf_count = localStorage.getItem("notf_count");
+    cartCountService.getCartCount().subscribe(res => {
+      this.cart_count=res}
+      )
+    notCountService.getNotCount().subscribe(res => {
+        this.notf_count=res}
+        )
 
     //
   }

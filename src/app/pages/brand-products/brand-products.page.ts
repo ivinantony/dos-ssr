@@ -116,8 +116,7 @@ export class BrandProductsPage implements OnInit {
     this.s3url = utils.getS3url();
     // this.checkWidth();
     // console.log("first")
-    this.page_count=1
-    this.products= []
+    
     // this.getData()
     
   }
@@ -125,6 +124,8 @@ export class BrandProductsPage implements OnInit {
   
   ionViewWillEnter()
   {
+    this.page_count=1
+    this.products= []
     this.getData()
     this.cart_count = localStorage.getItem('cart_count')
   }
