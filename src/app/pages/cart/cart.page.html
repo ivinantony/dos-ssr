@@ -1,7 +1,7 @@
 <ion-header class="ion-no-border">
-  <ion-toolbar color="light">
+  <ion-toolbar color="secondary">
     <ion-buttons slot="start">
-      <ion-back-button color="dark" defaultHref="/home"></ion-back-button>
+      <ion-back-button color="light" defaultHref="/home"></ion-back-button>
     </ion-buttons>
     <ion-title>CART</ion-title>
   </ion-toolbar>
@@ -203,7 +203,7 @@
       </ion-label>
       <ion-radio slot="start" ></ion-radio>
       <ion-thumbnail class="ion-padding">
-        <img src="../../../assets/icon/location.svg">
+        <img src="../../../assets/imgs/icons/location.svg">
       </ion-thumbnail>
     </ion-item>
     <ion-button (click)="presentAddressModal()" fill='clear'>
@@ -264,7 +264,7 @@
     [ngClass]="cartLength > 0 ? 'inactive' : 'active' "
     alt=""
   >
-    <img src="../../../assets/icon/empty-cart.png" />
+    <img src="../../../assets/imgs/icons/empty-cart.png" />
     <p>The cart is empty.</p>
     <ion-button (click)="continueShopping()" fill="outline" shape="round">
       <ion-icon slot="start" name="add"></ion-icon>

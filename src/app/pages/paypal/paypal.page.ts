@@ -135,8 +135,8 @@ export class PaypalPage implements OnInit {
     const toast = await this.toastController.create({
       message: msg,
       cssClass: 'custom-toast',
-      position: 'middle',
-      color:'danger',
+      position: 'top',
+      color:'dark',
       duration: 2000
     });
     toast.present();

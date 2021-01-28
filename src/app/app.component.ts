@@ -174,7 +174,7 @@ export class AppComponent implements OnInit {
   }
 
   viewSearchProduct(index: number) {
-    console.log("helolo")
+    console.log("type",this.searchItems[index].type)
     let id = this.searchItems[index].id
     let catId = this.searchItems[index].category_id
     let type = this.searchItems[index].type

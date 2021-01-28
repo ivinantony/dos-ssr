@@ -45,11 +45,11 @@ export class NotificationService {
        return res}));
    }
 
-   public deleteNotification(client_id:any)
+   public deleteNotification(client_id:any,notification_id:any)
    {
      const headers = this.headerservice.getHttpHeaders()
      return this.httpclient.delete(
-      this.url + "notification-read?client_id="+ client_id,
+      this.url + "notification?client_id="+ client_id+"&notification_id="+notification_id,
       { headers }
      ).pipe(map(res=>{
        return res}));

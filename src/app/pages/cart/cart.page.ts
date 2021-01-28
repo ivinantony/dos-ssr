@@ -265,18 +265,18 @@ export class CartPage implements OnInit {
     }
   }
 
-  remove(index: number, id: number) {
-    this.presentAlertDelete(index,id)
-    // let name = this.cart[index].name;
-    // let client_id = localStorage.getItem("client_id");
-    // this.cartService.deleteFromCart(client_id, id).subscribe(
-    //   (data) => this.handleResponse(data, REMOVE),
-    //   (error) => this.handleError(error)
-    // );
-    // this.cart.splice(index, 1);
-    // this.getData();
-    // this.presentToastDanger("You've removed " + name + " from cart.");
-  }
+  // remove(index: number, id: number) {
+  //   this.presentAlertDelete(index,id)
+  //   // let name = this.cart[index].name;
+  //   // let client_id = localStorage.getItem("client_id");
+  //   // this.cartService.deleteFromCart(client_id, id).subscribe(
+  //   //   (data) => this.handleResponse(data, REMOVE),
+  //   //   (error) => this.handleError(error)
+  //   // );
+  //   // this.cart.splice(index, 1);
+  //   // this.getData();
+  //   // this.presentToastDanger("You've removed " + name + " from cart.");
+  // }
 
   continueShopping() {
     this.router.navigate(["home"]);
@@ -291,8 +291,8 @@ export class CartPage implements OnInit {
     const toast = await this.toastController.create({
       message: msg,
       cssClass: "custom-toast",
-      position: "middle",
-      color: "tertiary",
+      position: "top",
+      color: "dark",
       duration: 2000,
     });
     toast.present();
@@ -405,7 +405,7 @@ export class CartPage implements OnInit {
       message: message,
       duration: 2500,
       position: "top",
-      color: "danger",
+      color: "dark",
     });
     toast.present();
   }
@@ -415,7 +415,7 @@ export class CartPage implements OnInit {
       message: message,
       duration: 2500,
       position: "top",
-      color: "success",
+      color: "dark",
     });
     toast.present();
   }
@@ -434,8 +434,8 @@ export class CartPage implements OnInit {
     const toast = await this.toastController.create({
       message: msg,
       cssClass: "custom-toast-danger",
-      color: "danger",
-      position: "middle",
+      color: "dark",
+      position: "top",
       duration: 2000,
     });
     toast.present();
@@ -467,7 +467,7 @@ export class CartPage implements OnInit {
   }
 
 
-  async presentAlertDelete(index:number,id:number) {
+  async remove(index:number,id:number) {
     let name = this.cart[index].name;
     let client_id = localStorage.getItem("client_id");
     const alert = await this.alertController.create({

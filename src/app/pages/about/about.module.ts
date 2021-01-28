@@ -7,13 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { AboutPageRoutingModule } from './about-routing.module';
 
 import { AboutPage } from './about.page';
+import { QuillModule } from 'ngx-quill'
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    AboutPageRoutingModule
+    AboutPageRoutingModule,
+    QuillModule.forRoot(),
+
   ],
   declarations: [AboutPage]
 })

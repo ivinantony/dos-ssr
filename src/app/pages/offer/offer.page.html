@@ -1,28 +1,21 @@
 <ion-header>
-  <ion-toolbar color="light">
+  <ion-toolbar color="secondary">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home" ></ion-back-button>
+      <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
     <ion-title>OFFERS</ion-title>
-    <ion-button
-      slot="end"
-      fill="clear"
-      shape="round"
-      (click)="openSort($event)"
-      color="dark"
-      class="ion-hide-md-down"
-    >
-      <ion-icon name="funnel-outline"></ion-icon>
-      SORT
-    </ion-button>
- 
-    <ion-buttons slot="end" class="ion-hide-md-up" id="cart-btn">
-      <ion-icon
-        name="cart-outline"
-        class="ion-padding"
-        (click)="router.navigate(['/cart'])"
-      ></ion-icon>
-      <ion-badge id="cart-badge" color="danger" *ngIf="cart_count > 0">{{cart_count}}</ion-badge>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="router.navigate(['/cart'])">
+        <ion-icon
+          name="cart-outline"
+          class="ion-padding"
+          
+        ></ion-icon>
+        <ion-badge id="cart-badge" color="danger" *ngIf="cart_count > 0"
+          >{{cart_count}}</ion-badge
+        >
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -35,10 +28,10 @@
       refreshingText="Refreshing..."
     ></ion-refresher-content>
   </ion-refresher>
-  <ion-grid>
+
     <ion-row>
       <ion-col size="12" size-sm="12" size-md="12" size-xl="12" size-lg="12">
-        <ion-grid>
+        
           <ion-row class="row">
             <ion-col
               size="6"
@@ -63,28 +56,22 @@
                   <h3>{{item.name}}</h3>
                   <ion-item lines="none">
                     <ion-label class="text">
-                     
-               
-                        <ion-text color="dark" class="price">
-                          <h2>{{ item.offer_price | currency:'AED ' }}</h2>
-                          <h2 *ngIf="item.offer_price == null">
-                            {{ item.price | currency:'AED ' }}
-                          </h2>
-                        </ion-text>
-                        <ion-text color="danger">
-                          <p
-                            class="offer-price"
-                            *ngIf="item.offer_price != null"
-                          >
-                            {{ item.price | currency:'AED ' }}
-                          </p>
-                        </ion-text>
-                      </ion-label>
-                   
+                      <ion-text color="dark" class="price">
+                        <h2>{{ item.offer_price | currency:'AED ' }}</h2>
+                        <h2 *ngIf="item.offer_price == null">
+                          {{ item.price | currency:'AED ' }}
+                        </h2>
+                      </ion-text>
+                      <ion-text color="danger">
+                        <p class="offer-price" *ngIf="item.offer_price != null">
+                          {{ item.price | currency:'AED ' }}
+                        </p>
+                      </ion-text>
+                    </ion-label>
                   </ion-item>
                 </ion-list>
               </div>
-              
+
               <ion-button
                 (click)="addToCart(i)"
                 color="danger"
@@ -94,19 +81,26 @@
               >
                 ADD TO CART
               </ion-button>
-              <ion-button (click)="goToCart()" color="danger" expand="full" *ngIf="item?.cart_count > 0" class="tocart">   
+              <ion-button
+                (click)="goToCart()"
+                color="danger"
+                expand="full"
+                *ngIf="item?.cart_count > 0"
+                class="tocart"
+              >
                 GO TO CART
               </ion-button>
             </ion-col>
           </ion-row>
-        </ion-grid>
+        
       </ion-col>
     </ion-row>
-  </ion-grid>
+
   <ion-infinite-scroll (ionInfinite)="loadMoreContent($event)" threshold="15%">
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
-      loadingText="Loading more data...">
+      loadingText="Loading more data..."
+    >
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>
@@ -118,7 +112,8 @@
         expand="block"
         fill="clear"
         shape="round"
-        (click)="openSortMobile()">
+        (click)="openSortMobile()"
+      >
         <ion-icon slot="start" name="funnel-outline"></ion-icon>
         SORT
       </ion-button>
