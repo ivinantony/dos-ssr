@@ -1,16 +1,16 @@
 <ion-header>
-  <ion-toolbar color="light">
+  <ion-toolbar color="secondary">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home" ></ion-back-button>
+      <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
-    <ion-title></ion-title>
+    <ion-title>{{productDetails?.name}}</ion-title>
     <ion-buttons slot="end" class="ion-hide-md-up" id="cart-btn">
-      <ion-icon
-        name="cart-outline"
-        class="ion-padding"
-        (click)="router.navigate(['/cart'])"
-      ></ion-icon>
-      <ion-badge id="cart-badge" color="danger" *ngIf="data?.cart_count>0">{{data?.cart_count}}</ion-badge>
+      <ion-button (click)="router.navigate(['/cart'])">
+        <ion-icon name="cart-outline" class="ion-padding"></ion-icon>
+        <ion-badge id="cart-badge" color="danger" *ngIf="data?.cart_count>0"
+          >{{data?.cart_count}}</ion-badge
+        >
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -31,15 +31,19 @@
               ></lib-ngx-image-zoom>
             </ion-slide>
           </ion-slides>
-          
+
           <div class="thumbnailWrapper">
-              <div class="thumbnail" (click)="slideTo(i)" *ngFor="let item of productDetails?.images;let i=index">
-                <div>
-                  <ion-thumbnail>
-                    <img src="{{item.path}}" />
-                  </ion-thumbnail>
-                </div>
+            <div
+              class="thumbnail"
+              (click)="slideTo(i)"
+              *ngFor="let item of productDetails?.images;let i=index"
+            >
+              <div>
+                <ion-thumbnail>
+                  <img src="{{item.path}}" />
+                </ion-thumbnail>
               </div>
+            </div>
           </div>
 
           <!-- <ion-slides [options]="slidesOptionsThumbnail"  class="thumbnail">
@@ -82,11 +86,14 @@
 
         <div>
           <ion-row>
-            
             <!-- <ion-col size="3" class="addtocart">
               <h3 style="font-size: 15px;">Select Quantity:</h3>
             </ion-col> -->
-            <ion-col size="5" class="ion-padding" *ngIf="data?.product.in_stock > 0 && data?.product.cart_count == 0">
+            <ion-col
+              size="5"
+              class="ion-padding"
+              *ngIf="data?.product.in_stock > 0 && data?.product.cart_count == 0"
+            >
               <div class="addbutton">
                 <ion-icon
                   name="remove-outline"
@@ -101,20 +108,50 @@
                 ></ion-icon>
               </div>
             </ion-col>
-            </ion-row>
-            <ion-row>
-            <ion-col size="6" class="addtocart" *ngIf="data?.product.cart_count == 0">
-              <ion-button (click)="addToCart()" color="success" expand="block" [disabled]="data?.product.in_stock == 0">
+          </ion-row>
+          <ion-row>
+            <ion-col
+              size="6"
+              class="addtocart"
+              *ngIf="data?.product.cart_count == 0"
+            >
+              <ion-button
+                (click)="addToCart()"
+                color="success"
+                expand="block"
+                [disabled]="data?.product.in_stock == 0"
+              >
                 ADD TO CART
               </ion-button>
             </ion-col>
-            <ion-col size="6" class="addtocart" *ngIf="data?.product.cart_count > 0">
-              <ion-button (click)="goToCart()" color="success" expand="block"  [disabled]="data?.product.in_stock == 0">
+            <ion-col
+              size="6"
+              class="addtocart"
+              *ngIf="data?.product.cart_count > 0"
+            >
+              <ion-button
+                (click)="goToCart()"
+                color="success"
+                expand="block"
+                [disabled]="data?.product.in_stock == 0"
+              >
                 GO TO CART
               </ion-button>
             </ion-col>
-            <ion-col size="6" size-sm="5" size-md="4" size-lg="4" size-xl="4"  class=" addtocart">
-              <ion-button (click)="buyNow()" color="danger" expand="block" [disabled]="data?.product.in_stock == 0">
+            <ion-col
+              size="6"
+              size-sm="5"
+              size-md="4"
+              size-lg="4"
+              size-xl="4"
+              class="addtocart"
+            >
+              <ion-button
+                (click)="buyNow()"
+                color="danger"
+                expand="block"
+                [disabled]="data?.product.in_stock == 0"
+              >
                 BUY NOW
               </ion-button>
             </ion-col>
@@ -132,7 +169,7 @@
                 >
                   <h3 class="ion-margin-top">Availability :</h3>
                   &nbsp;
-                  <h5 class="inStock"> In Stock</h5>
+                  <h5 class="inStock">In Stock</h5>
                 </ion-item>
               </ion-text>
 
@@ -142,9 +179,9 @@
                   lines="none"
                   *ngIf="data?.product.in_stock == 0"
                 >
-                  <h3 class="ion-margin-top"> Availability :</h3>
+                  <h3 class="ion-margin-top">Availability :</h3>
                   &nbsp;
-                  <h5 class="outofStock"> Out Of Stock</h5>
+                  <h5 class="outofStock">Out Of Stock</h5>
                 </ion-item>
               </ion-text>
 
@@ -198,9 +235,9 @@
                   lines="none"
                   *ngIf="productDetails?.quantity"
                 >
-                  <h3 class="ion-margin-top">Net Quantity : </h3>
+                  <h3 class="ion-margin-top">Net Quantity :</h3>
                   &nbsp;
-                  <h5> {{productDetails?.quantity}}</h5>
+                  <h5>{{productDetails?.quantity}}</h5>
                 </ion-item>
               </ion-text>
             </ion-col>
@@ -236,14 +273,13 @@
     </div>
 
     <div class="ion-padding" *ngIf="productDetails?.description">
-
       <ion-item class="ion-no-padding details" lines="none">
         <h3 class="ion-margin-top">Product Details:</h3>
       </ion-item>
       <quill-view
-      [content]="productDetails?.description"
-      format="text"
-      theme="snow"
+        [content]="productDetails?.description"
+        format="text"
+        theme="snow"
       ></quill-view>
     </div>
     <!-- <div class="ion-padding-horizontal">
@@ -315,38 +351,37 @@
       </li>
       </ul>
       </div> -->
-
   </div>
-
-
 
   <hr class="ion-margin-horizontal" />
 
-<ion-grid fixed>
-  <ion-row>
-    <ion-col size="12">
-      <section id="recommended">
-        <ion-item lines="none" class="ion-text-center">
-          <ion-label class="title">Recommended For You</ion-label>
-          <!-- <ion-button expand="block" fill="clear" shape="round" slot="end">
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="12">
+        <section id="recommended">
+          <ion-item lines="none" class="ion-text-center">
+            <ion-label class="title">Recommended For You</ion-label>
+            <!-- <ion-button expand="block" fill="clear" shape="round" slot="end">
             View all
           </ion-button> -->
-        </ion-item>
-        <ion-slides [options]="recommendedSlides" class="recommended">
-          <ion-slide *ngFor="let item of data?.category_products; let i=index"  (click)="navigateToProduct(i)">
-            <ion-card>
-              <img src="{{s3url+item.images[0]?.path}}" alt="" />
-              <ion-card-content>
-                <p>{{item.name}}</p>
-              </ion-card-content>
-            </ion-card>
-          </ion-slide>
-        </ion-slides>
-      </section>
-    </ion-col>
-  </ion-row>
-</ion-grid>
-
+          </ion-item>
+          <ion-slides [options]="recommendedSlides" class="recommended">
+            <ion-slide
+              *ngFor="let item of data?.category_products; let i=index"
+              (click)="navigateToProduct(i)"
+            >
+              <ion-card>
+                <img src="{{s3url+item.images[0]?.path}}" alt="" />
+                <ion-card-content>
+                  <p>{{item.name}}</p>
+                </ion-card-content>
+              </ion-card>
+            </ion-slide>
+          </ion-slides>
+        </section>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
 <!-- <ion-col size="12" class="btnWrapper">
     <ion-button

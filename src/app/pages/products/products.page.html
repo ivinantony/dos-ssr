@@ -1,7 +1,7 @@
 <ion-header>
-  <ion-toolbar color="light">
+  <ion-toolbar color="secondary">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home" ></ion-back-button>
+      <ion-back-button  defaultHref="/home" ></ion-back-button>
     </ion-buttons>
     <ion-title>{{category_name}}</ion-title>
     <ion-button  slot="end" fill="clear" shape="round" (click)="openSort($event)" color="dark" class="ion-hide-md-down">
@@ -69,11 +69,11 @@
               </ion-list>
             </div>
              
-              <ion-button (click)="addToCart(i)" color="danger" expand="full" [disabled]="item?.in_stock == 0" class="tocart">
+              <ion-button (click)="addToCart(i)" color="primary" expand="full" [disabled]="item?.in_stock == 0" class="tocart">
               
                 ADD TO CART
               </ion-button>
-              <ion-button (click)="goToCart()" color="danger" expand="full" *ngIf="item?.cart_count > 0" class="tocart">   
+              <ion-button (click)="goToCart()" color="primary" expand="full" *ngIf="item?.cart_count > 0" class="tocart">   
                 GO TO CART
               </ion-button>
             </ion-col> 
