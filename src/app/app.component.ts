@@ -215,7 +215,7 @@ export class AppComponent implements OnInit {
     let catId =this.searchItems[index].category_id
     let type = this.searchItems[index].type
     
-    if(type == "p")
+    if(type == "P")
     {
       this.router.navigate(['product',id, {catId}])
     }
@@ -225,7 +225,7 @@ export class AppComponent implements OnInit {
       let brand_name = this.searchItems[index].brand_name
       this.router.navigate(['brand-products',brand_id,{brand_name}])
     }
-    else if(type == "c")
+    else if(type == "C")
     {
       let catId = id
       let category_name = this.searchItems[index].category_name

@@ -194,7 +194,11 @@ const routes: Routes = [
   {
     path: 'install',
     loadChildren: () => import('./pages/install/install.module').then( m => m.InstallPageModule)
+  },  {
+    path: 'successful',
+    loadChildren: () => import('./pages/successful/successful.module').then( m => m.SuccessfulPageModule)
   }
+
 
 
 
