@@ -19,33 +19,29 @@ import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontaweso
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
-import { Component, ViewChild } from '@angular/core';
 import { IonicStorageModule } from '@ionic/storage';
-import { FilterComponent} from './pages/filter/filter.component';
-import { AngularFireModule } from '@angular/fire';  
+import { FilterComponent } from './pages/filter/filter.component';
+import { AngularFireModule } from '@angular/fire';
 import { AngularFireMessagingModule } from '@angular/fire/messaging';
 import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
-// import { IonicImageZoomer } from 'ionic-image-zoomer';
 
 
 @NgModule({
-  declarations: [AppComponent,FilterComponent],
+  declarations: [AppComponent, FilterComponent],
   entryComponents: [],
   imports: [
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireMessagingModule,
     IonicModule.forRoot({
-      mode:'ios',
+      mode: 'ios',
       swipeBackEnabled: true,
     }),
     IonicStorageModule.forRoot(),
-   
     AppRoutingModule,
     FontAwesomeModule,
     HttpClientModule,
     ReactiveFormsModule,
-    
     ServiceWorkerModule.register('combined-sw.js', { enabled: environment.production })
   ],
   providers: [
@@ -59,9 +55,8 @@ import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule 
-{
-  constructor(library: FaIconLibrary) { 
-		library.addIconPacks(fas, fab, far);
-	}
+export class AppModule {
+  constructor(library: FaIconLibrary) {
+    library.addIconPacks(fas, fab, far);
+  }
 }

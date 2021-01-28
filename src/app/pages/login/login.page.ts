@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NavController, LoadingController, ToastController, ModalController, AlertController } from '@ionic/angular';
@@ -24,22 +24,23 @@ export class LoginPage implements OnInit {
     private loadingController: LoadingController,
     private toastController: ToastController,
     private formBuilder: FormBuilder,
-    private loginService:LoginService,
-    private modalController:ModalController,
-    private router:Router,
+    private loginService: LoginService,
+    private modalController: ModalController,
+    private router: Router,
     public alertController: AlertController,
     private afMessaging: AngularFireMessaging,
     private fcm: FCM,
-    public platform: Platform) {
-    
-    this.setupFCM() 
+    public platform: Platform,
+    private zone: NgZone) {
+
+    this.setupFCM();
     this.loginGroup = this.formBuilder.group({
       name: ['', Validators.compose([Validators.required, Validators.minLength(4)])],
-   
+
       phone: ['', Validators.compose([Validators.required, Validators.minLength(9), Validators.maxLength(9), Validators.pattern("[0-9]*"),])],
-      
+
       email: ['', Validators.compose([Validators.maxLength(70), Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$'), Validators.required])],
-      fcm_token:['']
+      fcm_token: ['']
     });
   }
   validation_messages = {
@@ -79,7 +80,7 @@ export class LoginPage implements OnInit {
         type: "pattern",
         message: "Invalid Email",
       },
-    ]  
+    ]
   };
 
   ngOnInit() {
@@ -92,56 +93,51 @@ export class LoginPage implements OnInit {
     console.log('FCM setup started');
 
     if (!this.platform.is('cordova')) {
-       // requesting permission
-        this.afMessaging.requestToken // getting tokens
-          .subscribe(
-            (token) => { // USER-REQUESTED-TOKEN
-              console.log('Permission granted! Save to the server!', token);
-              this.loginGroup.controls['fcm_token'].setValue(token);
-            },
-            (error) => {
-              console.error(error);
-            }
-          );
-      
+      // requesting permission
+      this.afMessaging.requestToken // getting tokens
+        .subscribe(
+          (token) => { // USER-REQUESTED-TOKEN
+            console.log('Permission granted! Save to the server!', token);
+            this.loginGroup.controls['fcm_token'].setValue(token);
+          },
+          (error) => {
+            console.error(error);
+          }
+        );
+
     }
-    else{
+    else {
       console.log('In cordova platform');
       console.log('Subscribing to token updates');
       this.fcm.onTokenRefresh().subscribe((newToken) => {
         this.loginGroup.controls['fcm_token'].setValue(newToken);
         console.log('onTokenRefresh received event with: ', newToken);
       });
-  
-  
+
+
       this.hasPermission = await this.fcm.requestPushPermission();
       console.log('requestPushPermission result: ', this.hasPermission);
-  
-     let newToken = await this.fcm.getToken();
-     this.loginGroup.controls['fcm_token'].setValue(newToken);
+
+      let newToken = await this.fcm.getToken();
+      this.loginGroup.controls['fcm_token'].setValue(newToken);
       console.log('getToken result: ', newToken);
-  ;
+      ;
     }
 
   }
 
 
   login() {
-console.log('this.loginGroup.value',this.loginGroup.value);
-    
+    this.presentLoading().then(() => {
       this.loginService.registerUser(this.loginGroup.value).subscribe(
-        (data)=>this.handleResponse(data),
-        (error)=>this.handleError(error))
-  
-  
-  
-
+        (data) => this.handleResponse(data),
+        (error) => this.handleError(error))
+    })
   }
-  
+
   async presentLoading() {
     const loading = await this.loadingController.create({
       message: 'Please wait..',
-      duration: 1000,
       spinner: 'bubbles'
     });
     await loading.present();
@@ -155,16 +151,18 @@ console.log('this.loginGroup.value',this.loginGroup.value);
     toast.present();
   }
 
- 
 
-  handleResponse(data)
-  {
-    
-    this.router.navigate(['otp',{phone:this.loginGroup.value.phone,email:this.loginGroup.value.phone}])
+
+  handleResponse(data) {
+    this.loadingController.dismiss().then(() => {
+      this.zone.run(() => {
+        this.router.navigate(['otp', { phone: this.loginGroup.value.phone, email: this.loginGroup.value.email }])
+      })
+    })
+
   }
 
-  handleError(error)
-  {
+  handleError(error) {
     // console.log(error)
   }
 
