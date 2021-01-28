@@ -14,11 +14,11 @@ import { Storage } from '@ionic/storage';
 import { CartcountService } from './cartcount.service';
 import { NotcountService } from './notcount.service';
 import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
-import { INotificationPayload } from 'plugins/cordova-plugin-fcm-with-dependecy-updated/typings';
 import { AngularFireMessaging } from '@angular/fire/messaging';
 import { InstallPage } from './pages/install/install.page';
 import { AutocloseOverlayService } from './services/autoclose-overlay.service';
 import { AuthGuard } from './guards/auth.guard';
+import { INotificationPayload } from 'cordova-plugin-fcm-with-dependecy-updated/typings/INotificationPayload';
 
 
 @Component({
