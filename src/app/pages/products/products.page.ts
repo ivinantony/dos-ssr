@@ -289,6 +289,7 @@ export class ProductsPage implements OnInit {
 
   addToCart(index:number)
   {
+    this.presentLoading()
     if(this.authService.isAuthenticated())
     {
       // console.log("hai")
