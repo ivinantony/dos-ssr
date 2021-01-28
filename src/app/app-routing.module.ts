@@ -197,6 +197,10 @@ const routes: Routes = [
   },  {
     path: 'successful',
     loadChildren: () => import('./pages/successful/successful.module').then( m => m.SuccessfulPageModule)
+  },
+  {
+    path: 'search',
+    loadChildren: () => import('./pages/search/search.module').then( m => m.SearchPageModule)
   }
 
 

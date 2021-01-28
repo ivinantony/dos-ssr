@@ -3,25 +3,12 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
-<<<<<<< HEAD
     <ion-title>{{productDetails?.name}}</ion-title>
     <ion-buttons slot="end" class="ion-hide-md-up" id="cart-btn">
       <ion-button (click)="router.navigate(['/cart'])">
         <ion-icon name="cart-outline" class="ion-padding"></ion-icon>
         <ion-badge id="cart-badge" color="danger" *ngIf="data?.cart_count>0"
           >{{data?.cart_count}}</ion-badge
-=======
-    <ion-title></ion-title>
-    <ion-buttons slot="end">
-      <ion-button>
-        <ion-icon
-          name="cart-outline"
-          class="ion-padding"
-          (click)="router.navigate(['/cart'])"
-        ></ion-icon>
-        <ion-badge id="cart-badge" color="danger" *ngIf="cart_count > 0"
-          >{{cart_count}}</ion-badge
->>>>>>> efad014305fc515d630c6caa51ba9a59ef6b6592
         >
       </ion-button>
     </ion-buttons>
@@ -121,7 +108,6 @@
                 ></ion-icon>
               </div>
             </ion-col>
-<<<<<<< HEAD
           </ion-row>
           <ion-row>
             <ion-col
@@ -166,22 +152,6 @@
                 expand="block"
                 [disabled]="data?.product.in_stock == 0"
               >
-=======
-            </ion-row>
-            <ion-row>
-            <ion-col size="6" class="addtocart" *ngIf="data?.product.cart_count == 0">
-              <ion-button (click)="addToCart()" color="primary" expand="block" [disabled]="data?.product.in_stock == 0">
-                ADD TO CART
-              </ion-button>
-            </ion-col>
-            <ion-col size="6" class="addtocart" *ngIf="data?.product.cart_count > 0">
-              <ion-button (click)="goToCart()" color="primary" expand="block"  [disabled]="data?.product.in_stock == 0">
-                GO TO CART
-              </ion-button>
-            </ion-col>
-            <ion-col size="6" size-sm="5" size-md="4" size-lg="4" size-xl="4"  class=" addtocart">
-              <ion-button (click)="buyNow()" color="secondary" expand="block" [disabled]="data?.product.in_stock == 0">
->>>>>>> efad014305fc515d630c6caa51ba9a59ef6b6592
                 BUY NOW
               </ion-button>
             </ion-col>

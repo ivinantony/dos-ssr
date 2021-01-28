@@ -88,7 +88,7 @@
               </div>
             </ng-container>
           </ion-list>
-          <ion-button color="primary" type="submit" shape="round" expand="block"
+          <ion-button color="primary" type="submit" shape="round" expand="block" [disabled]="!loginGroup.valid"
             >Login</ion-button
           >
         </form>

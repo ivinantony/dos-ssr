@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Badge } from '@ionic-native/badge/ngx';
 import { ActionSheetController, IonRouterOutlet, LoadingController, ModalController } from '@ionic/angular';
 import { NotcountService } from 'src/app/notcount.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
@@ -25,7 +26,8 @@ export class NotificationPage implements OnInit {
     private modalController:ModalController,
     private routerOutlet: IonRouterOutlet,
     private notcountService:NotcountService,
-    private actionSheetController:ActionSheetController) 
+    private actionSheetController:ActionSheetController,
+    private badge:Badge) 
   {
     this.s3url = utils.getS3url()
     // console.log(this.s3url)
@@ -48,6 +50,7 @@ export class NotificationPage implements OnInit {
     this.notf_count -=1
     this.notcountService.setNotCount(this.notf_count)
     localStorage.setItem("notf_count",this.notf_count)
+    this.badge.set(this.notf_count);
    } 
     let notification_id = this.data[index].notification_id
     let data={
