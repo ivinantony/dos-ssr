@@ -1,7 +1,7 @@
 <ion-header class="ion-no-border">
-  <ion-toolbar color="light">
+  <ion-toolbar color="secondary">
     <ion-buttons slot="start">
-      <ion-back-button color="dark" defaultHref="profile"></ion-back-button>
+      <ion-back-button color="light" defaultHref="profile"></ion-back-button>
     </ion-buttons>
     <ion-title>WALLET</ion-title>
   </ion-toolbar>
@@ -54,7 +54,8 @@
             <div class="content">
               <div>
                 <h3>{{item.option}}</h3>
-                <h6>{{item.created_at}}</h6>
+              
+                <h6>{{item.created_at | date}}</h6>
               </div>
               <div [ngClass]="{'amountRecieved': item.option === 'credited', 'amountPaid': item.option === 'debited' }">
                 

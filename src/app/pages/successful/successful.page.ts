@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Router } from '@angular/router';
+import { defineCustomElements } from "@teamhive/lottie-player/loader";
 @Component({
   selector: 'app-successful',
   templateUrl: './successful.page.html',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SuccessfulPage implements OnInit {
 
-  constructor() { }
+  constructor(public router:Router) {
+    defineCustomElements(window);
+   }
 
   ngOnInit() {
   }

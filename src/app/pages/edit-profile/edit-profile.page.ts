@@ -173,7 +173,7 @@ export class EditProfilePage implements OnInit {
       duration: 1000,
       mode: "ios",
       cssClass: "my-custom-toast",
-      position: "middle",
+      position: "top",
     });
     toast.present();
   }

@@ -77,8 +77,8 @@ export class CouponPage implements OnInit {
     let toast = await this.toastController.create({
       message: message,
       duration: 1500,
-      position: "middle",
-      color: "success",
+      position: "top",
+      color: "dark",
     });
     toast.present();
   }

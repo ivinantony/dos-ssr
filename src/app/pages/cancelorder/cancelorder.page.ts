@@ -29,15 +29,17 @@ export class CancelorderPage implements OnInit {
     this.orderService.cancelOrder(data).subscribe(
       (data)=>this.handleResponse(data),
       (error)=>this.handleError(error))
-    this.modalController.dismiss()
+    
   }
 
   handleResponse(data)
   {
+    this.modalController.dismiss()
     // console.log(data)
   }
   handleError(error)
   {
+    this.modalController.dismiss()
     // console.log(error)
   }
 }

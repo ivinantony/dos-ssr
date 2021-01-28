@@ -168,7 +168,7 @@ export class CheckoutPage implements OnInit {
       else if(this.payment_id == 2) {
         // this.presentToastSuccess("Order placed Successfully");
 
-        this.router.navigate(["order-placed"]);
+        this.router.navigate(["successful"]);
       }
 
       else if(this.payment_id == 6)
@@ -293,8 +293,8 @@ export class CheckoutPage implements OnInit {
     const toast = await this.toastController.create({
       message: msg,
       cssClass: "custom-toast",
-      position: "middle",
-      color: "success",
+      position: "top",
+      color: "dark",
       duration: 2000,
     });
     toast.present();

@@ -1,6 +1,7 @@
 import { Component, NgZone, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import {
+  AlertController,
   LoadingController,
   ModalController,
   Platform,
@@ -72,6 +73,7 @@ export class CartmodalPage implements OnInit {
     private zone: NgZone,
     private cartCountService:CartcountService,
     private loadingController: LoadingController,
+    private alertController:AlertController,
 
     @Inject(DOCUMENT) private _document: Document
   ) {
@@ -140,8 +142,8 @@ export class CartmodalPage implements OnInit {
     const toast = await this.toastController.create({
       message: msg,
       cssClass: "custom-toast-danger",
-      color: "danger",
-      position: "middle",
+      color: "dark",
+      position: "top",
       duration: 2000,
     });
     toast.present();
@@ -236,17 +238,6 @@ export class CartmodalPage implements OnInit {
     }
   }
 
-  remove(index: number, id: number) {
-    let name = this.cart[index].name;
-    let client_id = localStorage.getItem("client_id");
-    this.cartService.deleteFromCart(client_id, id).subscribe(
-      (data) => this.handleResponse(data, REMOVE),
-      (error) => this.handleError(error)
-    );
-    this.cart.splice(index, 1);
-    this.getData();
-    this.presentToastDanger("You've removed " + name + " from cart.");
-  }
 
   close() {
     this.modalController.dismiss(1);
@@ -260,8 +251,8 @@ export class CartmodalPage implements OnInit {
     const toast = await this.toastController.create({
       message: msg,
       cssClass: "custom-toast",
-      position: "middle",
-      color: "tertiary",
+      position: "top",
+      color: "dark",
       duration: 2000,
     });
     toast.present();
@@ -350,7 +341,7 @@ export class CartmodalPage implements OnInit {
           // this.addressForm.patchValue({delivery_location_id:this.delivery_locations[shop_index].id})
           this.selectedAddress = this.current_selection;
           // console.log("selectedAddress", this.selectedAddress);
-          this.address_id = this.addresses[this.selectedAddress].id;
+          this.address_id = this.address_selected.id;
           // console.log(this.address_id);
           this.valid_address = true;
         } else {
@@ -364,13 +355,12 @@ export class CartmodalPage implements OnInit {
       }
     });
   }
-
   async showToast(message) {
     let toast = await this.toastController.create({
       message: message,
       duration: 2500,
       position: "top",
-      color: "danger",
+      color: "dark",
     });
     toast.present();
   }
@@ -380,7 +370,7 @@ export class CartmodalPage implements OnInit {
       message: message,
       duration: 2500,
       position: "top",
-      color: "success",
+      color: "dark",
     });
     toast.present();
   }
@@ -389,6 +379,7 @@ export class CartmodalPage implements OnInit {
     let id = this.cart[index].id;
     this.router.navigate(["product", id]);
   }
+
 
   async presentAddressModal() {
     const modal = await this.modalController.create({
@@ -402,16 +393,55 @@ export class CartmodalPage implements OnInit {
     await modal.present();
 
     await modal.onDidDismiss().then((data) => {
+      //  this.getData()
       console.log("data",data)
       this.address_selected = data.data
       this.current_selection = data.role
       console.log(this.address_selected)
       this.getDistance(
-        this.data.address[this.current_selection].latitude,
-        this.data.address[this.current_selection].longitude
+        this.address_selected.latitude,
+        this.address_selected.longitude
       );
     }); 
     
   }
+
+  async remove(index:number,id:number) {
+    let name = this.cart[index].name;
+    let client_id = localStorage.getItem("client_id");
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Delete',
+      message: 'Do you want to remove '+name+' from cart',
+      buttons: [
+        {
+          text: 'cancel',
+          role:'cancel',
+          handler: () => {
+            // console.log('Confirm Okey');
+            // let balance = this.data.payable_amount - this.data.wallet_balance
+            // this.router.navigate(['recharge',{balance}])
+          }
+        },
+        {
+          text: 'Confirm',
+          cssClass: 'secondary',
+          handler: () => {
+            this.cartService.deleteFromCart(client_id, id).subscribe(
+              (data) => this.handleResponse(data, REMOVE),
+              (error) => this.handleError(error)
+            );
+            this.cart.splice(index, 1);
+            
+            this.presentToastDanger("You've removed " + name + " from cart.");
+            this.getData();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
 
 }

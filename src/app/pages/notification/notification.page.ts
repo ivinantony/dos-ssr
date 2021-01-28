@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IonRouterOutlet, LoadingController, ModalController } from '@ionic/angular';
+import { ActionSheetController, IonRouterOutlet, LoadingController, ModalController } from '@ionic/angular';
 import { NotcountService } from 'src/app/notcount.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { UtilsService } from 'src/app/services/utils.service';
@@ -18,12 +18,14 @@ export class NotificationPage implements OnInit {
   data:any
   s3url:any
   notf_count:any
+  client_id:any
   constructor(private notifications:NotificationService,
     private utils:UtilsService,
     private loadingController:LoadingController,
     private modalController:ModalController,
     private routerOutlet: IonRouterOutlet,
-    private notcountService:NotcountService) 
+    private notcountService:NotcountService,
+    private actionSheetController:ActionSheetController) 
   {
     this.s3url = utils.getS3url()
     // console.log(this.s3url)
@@ -31,6 +33,7 @@ export class NotificationPage implements OnInit {
       this.notf_count = res
     })
     this.getData()
+    this.client_id = localStorage.getItem('client_id')
   }
 
 
@@ -58,13 +61,6 @@ export class NotificationPage implements OnInit {
   this.presentModal(id)
   }
 
-  delete(){
-    let client_id = Number(localStorage.getItem('client_id'))
-    this.notifications.deleteNotification(client_id).subscribe(
-      (data)=>this.handleResponse(data,DEL_DATA),
-      (error)=>this.handleError(error)
-    )
-  }
 
   getData()
   {
@@ -136,9 +132,26 @@ export class NotificationPage implements OnInit {
     await loading.present();
   }
 
-  options()
-  {
-    console.log('opt')
-  }
+ 
 
+
+  async prsentOptions(index: number) {
+    const actionSheet = await this.actionSheetController.create({
+      cssClass: "my-custom-class",
+      buttons: [
+        {
+          text: "Delete",
+          icon: "trash-outline",
+          handler: () => {
+            this.data.splice(1,1)
+            this.notifications.deleteNotification(this.client_id,this.data[index].notification_id).subscribe(
+              (data)=>this.handleResponse(data,DEL_DATA),
+              (error)=>this.handleError(error)
+            )
+          },
+        },
+      ],
+    });
+    await actionSheet.present();
+  }
 }

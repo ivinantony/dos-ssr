@@ -500,7 +500,7 @@ export class AddAddressPage implements OnInit {
       message: message,
       duration: 2500,
       position: "top",
-      color: "danger",
+      color: "dark",
     });
     toast.present();
   }
@@ -509,7 +509,7 @@ export class AddAddressPage implements OnInit {
       message: message,
       duration: 2500,
       position: "top",
-      color: "success",
+      color: "dark",
     });
     toast.present();
   }
@@ -518,7 +518,7 @@ export class AddAddressPage implements OnInit {
       message: message,
       duration: 2500,
       position: "top",
-      color: "danger",
+      color: "dark",
     });
     toast.present();
   }
@@ -527,7 +527,7 @@ export class AddAddressPage implements OnInit {
       message: message,
       duration: 3000,
       position: "top",
-      color: "danger",
+      color: "dark",
     });
     toast.present();
   }

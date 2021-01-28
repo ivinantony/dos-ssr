@@ -1,22 +1,25 @@
 <ion-header>
-  <ion-toolbar color="light">
+  <ion-toolbar color="secondary">
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home" ></ion-back-button>
     </ion-buttons>
     <ion-title>{{category_name}}</ion-title>
-    <ion-button  slot="end" fill="clear" shape="round" (click)="openSort($event)" color="dark" class="ion-hide-md-down">
-      <ion-icon name="funnel-outline"></ion-icon>
-      SORT
-    </ion-button>
-    <ion-buttons slot="end" class="ion-hide-md-up" id="cart-btn">
-      <ion-icon
-        name="cart-outline"
-        class="ion-padding"
-        (click)="router.navigate(['/cart'])"
-      ></ion-icon>
-      <ion-badge id="cart-badge" color="danger" *ngIf="cart_count > 0">
-        {{cart_count}}
-      </ion-badge>
+    
+    <ion-buttons slot="end">
+      <ion-button  slot="end" fill="clear" shape="round" (click)="openSort($event)" color="light" class="ion-hide-md-down">
+        <ion-icon name="funnel-outline"></ion-icon>
+        SORT
+      </ion-button>
+      <ion-button class="ion-hide-md-up" (click)="router.navigate(['/cart'])">
+        <ion-icon
+          name="cart-outline"
+          class="ion-padding"
+          
+        ></ion-icon>
+        <ion-badge id="cart-badge" color="danger" *ngIf="cart_count > 0"
+          >{{cart_count}}</ion-badge
+        >
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
