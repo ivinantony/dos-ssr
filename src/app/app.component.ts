@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { LoadingController, MenuController, Platform, ToastController } from '@ionic/angular';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { LoadingController, MenuController, ModalController, Platform, ToastController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { HttpClient } from '@angular/common/http';
@@ -16,6 +16,9 @@ import { NotcountService } from './notcount.service';
 import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
 import { INotificationPayload } from 'plugins/cordova-plugin-fcm-with-dependecy-updated/typings';
 import { AngularFireMessaging } from '@angular/fire/messaging';
+import { InstallPage } from './pages/install/install.page';
+import { AutocloseOverlayService } from './services/autoclose-overlay.service';
+import { AuthGuard } from './guards/auth.guard';
 
 
 @Component({
@@ -37,7 +40,13 @@ export class AppComponent implements OnInit {
   notf_count:any
   cart_count_initial:any
   notf_count_initial:any
-  public token: string;
+  deferredPrompt:any
+  categories: Array<any> = [
+    { id: 1, name: 'Home', url: '/home', icon: 'home-outline' },
+    { id: 1, name: 'Offers', url: '/offers', icon: 'flash-outline' },
+    { id: 1, name: 'Categories', url: '/categories', icon: 'grid-outline' },
+    { id: 1, name: 'Manufactures', url: '/manufacturers', icon: 'construct-outline' },]
+    selectedCategoryIndex:number=0;
 
   constructor(
     private platform: Platform,
@@ -45,7 +54,6 @@ export class AppComponent implements OnInit {
     private statusBar: StatusBar,
     public menuController: MenuController,
     private authService: AuthenticationService,
-    private menu: MenuController,
     private loadingController: LoadingController,
     private toastController: ToastController,
     public router: Router,
@@ -57,22 +65,26 @@ export class AppComponent implements OnInit {
     private notCountService:NotcountService,
     private fcm: FCM,
     private afMessaging: AngularFireMessaging,
-
+    private autocloseOverlaysService:AutocloseOverlayService,
+    private modalController:ModalController,
+    private authguard:AuthGuard
   ) {
-    this.client_id = localStorage.getItem('client_id')
+    this.initializeApp();
+    this.client_id = localStorage.getItem('client_id');
     this.cart_count_initial = localStorage.getItem('cart_count')
     console.log(this.cart_count_initial)
-    cartCountService.setCartCount(this.cart_count_initial)
-    cartCountService.getCartCount().subscribe(res => {
+    this.cartCountService.setCartCount(this.cart_count_initial)
+    this.cartCountService.getCartCount().subscribe(res => {
       this.cart_count=res}
       )
     this.notf_count_initial = localStorage.getItem('notf_count')
-    notCountService.setNotCount(this.notf_count_initial)
-    notCountService.getNotCount().subscribe(res => {
+    this.notCountService.setNotCount(this.notf_count_initial)
+    this.notCountService.getNotCount().subscribe(res => {
       this.notf_count=res}
       )
+
     this.searchTerm = new FormControl();
-    this.initializeApp();
+   
     
     this.searchService.searchResult.subscribe(data => {
       // console.log('data', data)
@@ -91,18 +103,48 @@ export class AppComponent implements OnInit {
       this.statusBar.backgroundColorByHexString('#585858');
       this.splashScreen.hide();
       this.setupFCM();
+
+
+      window.addEventListener('beforeinstallprompt', (e) => {
+        // Prevent the mini-infobar from appearing on mobile
+        e.preventDefault();
+        // Stash the event so it can be triggered later.
+        this.deferredPrompt = e;
+        // Update UI notify the user they can install the PWA
+        this.showInstallPromotion();
+        console.log('show banne')
+        });
+        
+
+        this.swUpdate.available.subscribe(async res => {
+        const toast = await this.toastController.create({
+        message: 'Update available!',
+        position: 'bottom',
+        cssClass: 'update-toast',
+        buttons: [
+        {
+        role: 'cancel',
+        text: 'Reload'
+        }
+        ]
+        });
+        
+        await toast.present();
+        
+        toast
+        .onDidDismiss()
+        .then(() => this.swUpdate.activateUpdate())
+        .then(() => window.location.reload());
+        });
     });
   }
 
 
   async ngOnInit() {
-
-
     this.router.events
     .pipe(filter((e: any) => e instanceof NavigationEnd),
       pairwise()
     ).subscribe((e: any) => {
-      // console.log(e,"array")
       if (e[0].urlAfterRedirects.startsWith('/login') || e[0].urlAfterRedirects.startsWith('/otp') || e[0].urlAfterRedirects.startsWith('/recharge') || e[0].urlAfterRedirects.startsWith('/checkout-pay')) 
       {
 
@@ -118,60 +160,26 @@ export class AppComponent implements OnInit {
         this.searching = false;
         this.setFilteredItems(search);
       });
-
-
-    this.swUpdate.available.subscribe(async res => {
-      const toast = await this.toastController.create({
-        message: 'Update available!',
-        position: 'bottom',
-        buttons: [
-          {
-            role: 'cancel',
-            text: 'Reload'
-          }
-        ]
-      });
-
-      await toast.present();
-
-      toast
-        .onDidDismiss()
-        .then(() => this.swUpdate.activateUpdate())
-        .then(() => window.location.reload());
-    });
   }
 
    private async setupFCM() {
     await this.platform.ready();
+    
     console.log('FCM setup started');
 
     if (!this.platform.is('cordova')) {
-       // requesting permission
-        this.afMessaging.requestToken // getting tokens
-          .subscribe(
-            (token) => { // USER-REQUESTED-TOKEN
-              console.log('Permission granted! Save to the server!', token);
-              this.token = token
-            },
-            (error) => {
-              console.error(error);
-            }
-          );
+      
          await this.afMessaging.messages.subscribe( async (msg:any)=>{
            console.log()
             console.log('msg',msg);
-            // this.showToast(msg.notification.title)
+            this.showToast(msg.notification.title)
           })
       
     }
     else{
       console.log('In cordova platform');
       console.log('Subscribing to token updates');
-      this.fcm.onTokenRefresh().subscribe((newToken) => {
-        this.token = newToken;
-        // this.loginForm.controls['fcm_token'].setValue(newToken);
-        console.log('onTokenRefresh received event with: ', newToken);
-      });
+   
   
       console.log('Subscribing to new notifications');
       this.fcm.onNotification().subscribe((payload) => {
@@ -182,17 +190,13 @@ export class AppComponent implements OnInit {
           console.log('Received in background');
         } else {
           console.log('Received in foreground');
-          // this.showToast(payload.notification.title)
-          this.router.navigate(['notification',{data:payload}]);
+          this.showToast(payload.notification.title)
         }
       });
   
       this.hasPermission = await this.fcm.requestPushPermission();
       console.log('requestPushPermission result: ', this.hasPermission);
   
-      this.token = await this.fcm.getToken();
-      // this.loginForm.controls['fcm_token'].setValue(this.token);
-      console.log('getToken result: ', this.token);
   
       this.pushPayload = await this.fcm.getInitialPushPayload();
       console.log('getInitialPushPayload result: ', this.pushPayload);
@@ -245,13 +249,18 @@ export class AppComponent implements OnInit {
     this.presentLoading().then(() => {
       this.authService.logout().then(() => {
         this.presentToast().finally(() => {
-          this.menu.close()
+          this.menuController.close()
         })
 
       })
     })
 
 
+  }
+
+  login()
+  {
+    this.authguard.canActivate();
   }
   
   async presentLoading() {
@@ -281,35 +290,6 @@ export class AppComponent implements OnInit {
     // console.log(error)
   }
 
-  goToOffer()
-  {this.menuController.close()
-    this.router.navigate(['offer'])
-  }
-  goToHome()
-  {this.menuController.close()
-    this.router.navigate(['home'])
-  }
-  goToCategories()
-  {this.menuController.close()
-    this.router.navigate(['categories'])
-  }
-  goToManufacturers()
-  {this.menuController.close()
-    this.router.navigate(['manufacturers'])
-  }
-  goToProfile()
-  {this.menuController.close()
-    this.router.navigate(['profile'])
-  }
-  goToCart()
-  {this.menuController.close()
-    this.router.navigate(['cart'])
-  }
-  goToNotification()
-  {
-    this.menuController.close()
-    this.router.navigate(['notification'])
-  }
 
   async presentToastWithOptions(msg) {
     const toast = await this.toastController.create({
@@ -326,6 +306,66 @@ export class AppComponent implements OnInit {
           console.log('Cancel clicked');
         }
       }
+      ]
+    });
+    toast.present();
+  }
+
+
+  @HostListener("window:popstate")
+onPopState(): void {
+this.autocloseOverlaysService.trigger();
+}
+
+async showInstallPromotion() {
+const modal = await this.modalController.create({
+component: InstallPage,
+cssClass: 'install'
+});
+modal.onDidDismiss().then((data) => {
+console.log(data)
+if (data.data) {
+this.deferredPrompt.prompt();
+this.deferredPrompt.userChoice.then((choiceResult) => {
+if (choiceResult.outcome === 'accepted') {
+console.log('User accepted the install prompt');
+} else {
+console.log('User dismissed the install prompt');
+}
+}
+)
+
+}
+})
+return await modal.present();
+}
+
+navigateByUrl(index: number) {
+  this.selectedCategoryIndex = index
+  this.menuController.close().then(() => {
+  this.router.navigate([this.categories[index].url])
+  })
+  
+  }
+  onNavigate(url){
+    this.menuController.close().then(() => {
+      this.router.navigate([url])
+      }) 
+  }
+  async showToast(message) {
+    let toast = await this.toastController.create({
+      message: message,
+      duration: 2500,
+      position: "top",
+      color: "dark",
+      buttons: [
+        {
+          side: 'end',
+          text: 'view',
+          handler: () => {
+            this.router.navigate(['notification'])
+          }
+        }
       ]
     });
     toast.present();

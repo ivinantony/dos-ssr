@@ -2,8 +2,9 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { LoadingController, Platform, ToastController } from "@ionic/angular";
 import { PaymentService } from "src/app/services/payment/payment.service";
-import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
-import { Storage } from '@ionic/storage';
+import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
+import { Storage } from "@ionic/storage";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 @Component({
   selector: "app-recharge",
@@ -11,60 +12,38 @@ import { Storage } from '@ionic/storage';
   styleUrls: ["./recharge.page.scss"],
 })
 export class RechargePage implements OnInit {
-  inputAmount: number = null;
-  balance: number = 0;
-  temp: number;
+  public rechargeForm: FormGroup;
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private loadingController: LoadingController,
     private storage: Storage,
-    private platform:Platform,
-    private iab:InAppBrowser,
-    private pay:PaymentService,
-    private toastController:ToastController
+    private platform: Platform,
+    private iab: InAppBrowser,
+    private pay: PaymentService,
+    private toastController: ToastController,
+    private formBuilder: FormBuilder
   ) {
-    let amount = activatedRoute.snapshot.params.balance;
-    if(amount)
-    {
-    this.inputAmount = activatedRoute.snapshot.params.balance;
-
+    let amount = this.activatedRoute.snapshot.params.balance;
+    if (amount) {
+      this.rechargeForm.controls['amount'].setValue(amount);
     }
-    console.log(this.inputAmount)
-    // if(this.temp)
-    // {
-    //   console.log("hello")
-    //   this.inputAmount = this.balance
-
-    // }
+    this.rechargeForm = this.formBuilder.group({
+      client_id: [localStorage.getItem("client_id")],
+      amount: [
+        "",
+        Validators.compose([Validators.required, Validators.pattern("[0-9]*")]),
+      ],
+    });
   }
 
   ngOnInit() {}
 
   recharge() {
-    // console.log(inputAmount)
-    if(this.inputAmount == 0)
-    {
-      this.presentToast("Enter a valid Amount")
-    }
-    else{
-      let amount = this.inputAmount.toString();
-      localStorage.setItem("total_amount", amount);
-      this.hostedSubmit()
-    }
-    
-
-    // let type = "recharge";
-    // this.router.navigate(["checkout-pay", { type }]);
-  }
-
-  hostedSubmit() {
     this.presentLoading().then(() => {
-      let data = {
-        client_id:(localStorage.getItem("client_id")),
-        amount: localStorage.getItem("total_amount"),
-      };
-      this.pay.wallet_hostedPay(data).subscribe(
+      console.log(this.rechargeForm.value);
+      localStorage.setItem("total_amount", this.rechargeForm.value.amount);
+      this.pay.wallet_hostedPay(this.rechargeForm.value).subscribe(
         (data) => this.handleResponse(data),
         (error) => this.handleError(error)
       );
@@ -113,7 +92,7 @@ export class RechargePage implements OnInit {
       message: msg,
       cssClass: "custom-toast-success",
       position: "top",
-      color:"danger",
+      color: "danger",
       duration: 1500,
     });
     toast.present();

@@ -136,4 +136,9 @@ export class NotificationPage implements OnInit {
     await loading.present();
   }
 
+  options()
+  {
+    console.log('opt')
+  }
+
 }

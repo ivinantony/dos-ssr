@@ -113,7 +113,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/categories/categories.module').then( m => m.CategoriesPageModule)
   },
   {
-    path: 'offer',
+    path: 'offers',
     loadChildren: () => import('./pages/offer/offer.module').then( m => m.OfferPageModule)
   },
   {
@@ -190,7 +190,12 @@ const routes: Routes = [
   {
     path: 'shippingpolicy',
     loadChildren: () => import('./pages/shippingpolicy/shippingpolicy.module').then( m => m.ShippingpolicyPageModule)
+  },
+  {
+    path: 'install',
+    loadChildren: () => import('./pages/install/install.module').then( m => m.InstallPageModule)
   }
+
 
 
 

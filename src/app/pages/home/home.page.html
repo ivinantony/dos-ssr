@@ -1,46 +1,40 @@
-<ion-header transclusent class="ion-no-border" class="ion-hide-md-up">
-  <ion-toolbar #toolbar>
+<ion-header class="ion-no-border" class="ion-hide-md-up">
+  <ion-toolbar color="secondary" class="ion-hide-md-up" >
     <ion-buttons slot="start">
-      <ion-menu-button color="magenta"></ion-menu-button>
+      <ion-menu-button color="primary"></ion-menu-button>
     </ion-buttons>
-    <ion-title
-      ><ion-text color="magenta"><b>DEAL </b> </ion-text>
-      <ion-text color="dark"><b>ON STORE</b> </ion-text></ion-title
+    <ion-title  color="light" class="ion-text-left"
+      >Deal on Store</ion-title
     >
 
-    <!-- <ion-buttons slot="end">
-      <ion-icon name="cart-outline"class="ion-padding" (click)="router.navigate(['/cart'])" color="magenta"></ion-icon>
-    </ion-buttons> -->
-
-    <ion-buttons slot="end" class="ion-hide-md-up" id="cart-btn">
+    <ion-buttons slot="end">
+      <ion-button (click)="router.navigate(['/notification'])">
       <ion-icon
-        name="notifications-outline"
-        class="ion-padding"
-        (click)="router.navigate(['/notification'])"
-        color="magenta"
-        style="padding-right: 3px;"
+      color="light"
+      slot="icon-only"
+      src="../assets/imgs/icons/notifications-outline.svg"
       ></ion-icon>
-      <ion-badge id="notf-badge" color="danger" *ngIf="notf_count > 0">{{notf_count}}</ion-badge>
-    </ion-buttons>
-    <ion-buttons slot="end" class="ion-hide-md-up" id="cart-btn">
+      <ion-badge id="cart-badge" color="danger" *ngIf="notf_count > 0"
+      >{{ notf_count }}</ion-badge
+      >
+      </ion-button>
+      <ion-button (click)="router.navigate(['/cart'])">
       <ion-icon
-        name="cart-outline"
-        class="ion-padding"
-        (click)="router.navigate(['/cart'])"
-        color="magenta"
+      color="light"
+      slot="icon-only"
+      src="../assets/imgs/icons/cart.svg"
       ></ion-icon>
-      <ion-badge id="cart-badge" color="danger" *ngIf="cart_count > 0">{{cart_count}}</ion-badge>
-    </ion-buttons>
+      <ion-badge id="cart-badge" color="danger" *ngIf="cart_count > 0"
+      >{{ cart_count }}</ion-badge
+      >
+      </ion-button>
+      </ion-buttons>
 
     
   </ion-toolbar>
 </ion-header>
 
 <ion-content
-  fullscreen
-  #content
-  [scrollEvents]="true"
-  [appFadeHeader]="toolbar"
 >
   <div *ngIf="data">
     <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
@@ -51,12 +45,12 @@
         refreshingText="Refreshing..."
       ></ion-refresher-content>
     </ion-refresher>
-
-    <ion-grid fixed>
+ 
+ <!--   <ion-grid fixed   class="ion-hide-md-up">
       <ion-row>
         <ion-col size="12" size-lg="8" push-lg="4" size-xl="8" push-xl="4">
           <ion-searchbar
-            class="ion-hide-md-up"
+         
             [formControl]="searchTerm"
             showCancelButton="focus"
             (ionChange)="onSearchInputMobile()"
@@ -82,76 +76,46 @@
           </ion-content>
         </ion-col>
       </ion-row>
-    </ion-grid>
+    </ion-grid> -->
 
-    <!-- Banner -1 start -->
-    <!-- [ngStyle]="{'background-image': 'url( '+ item.path +' )'}"
-  [ngStyle]="{'background-image': 'url( '+ item.path +' )'}" -->
-    <section id="banr">
-      <ion-slides class="banner" [options]="bannerSlideOpts1">
+    <section>
+      <ion-slides [options]="bannerSlideOpts" pager="ios">
         <ion-slide
           *ngFor="let item of data?.banner[0]?.desktop_images; let i=index"
-          class="dsk"
           (click)="onRoute(item.application_url)"
         >
-          <img src="{{item.path}}" alt="" />
-        </ion-slide>
-
-        <ion-slide
-          *ngFor="let item of data?.banner[0]?.mobile_images; let i=index"
-          class="mob"
-          (click)="onRoute(item.application_url)"
-        >
-          <img src="{{item.path}}" alt="" />
+          <img [src]="s3url + item?.path" alt="" />
         </ion-slide>
       </ion-slides>
     </section>
-    <!-- <picture *ngIf="item.type == 0">
-    <source media="(min-width: 1024px)" srcset="{{item.desktopImg}}" >
-    <img src="{{item.path}}" />
-  </picture> -->
-    <!-- Banner -1 end -->
-
-    <section class="catSection">
-      <ion-item lines="none" class="ion-text-center">
-        <ion-label class="title" color="magenta">All Categories</ion-label>
-      </ion-item>
-      <ion-grid fixed>
+  
+    <section>
+      <ion-grid fixed class="ion-margin-top">
         <ion-row>
-          <ion-col
-            class="category"
-            size="6"
-            size-sm="6"
-            size-md="6"
-            size-lg="4"
-            size-xl="2"
-            *ngFor="let item of categories; let i=index"
-            (click)="navigateToProducts(i)"
-          >
-            <ion-card
-              [class.selected]="selectedIndex == i"
-              class="roundCard"
-              [ngStyle]="{'background-image': 'url( '+ item.path +' )'}"
-            >
-            </ion-card>
-            <ion-label class="ion-text-center cat">
-              <ion-text color="dark">
-                <h3><b>{{item.category_name}}</b></h3>
-              </ion-text>
-            </ion-label>
+          <ion-col class="ion-padding" style="background: #fff" size="12">
+            <ion-list-header>
+              <ion-label>Top Categories</ion-label>
+              <ion-button (click)="viewAll()">See All</ion-button>
+            </ion-list-header>
+            <ion-slides [options]="categoryOpts" class="ion-padding">
+              <ion-slide
+                style="background: #f2f2f2; min-height: 200px; max-height: 200px"
+                *ngFor="let item of categories; let i=index"
+                (click)="navigateToProducts(i)"
+              >
+                <ion-card class="img-card">
+                  <div class="img-wrapper">
+                    <img [src]="s3url + item?.path" alt="" />
+                  </div>
+  
+                  <p class="ion-padding-horizontal">
+                    {{item.category_name | titlecase}}
+                  </p>
+                </ion-card>
+              </ion-slide>
+            </ion-slides>
           </ion-col>
         </ion-row>
-        <div class="ion-text-center morebtn">
-          <ion-button
-            (click)="viewAll()"
-            shape="round"
-            fill="outline"
-            color="primary"
-          >
-            <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
-            VIEW ALL
-          </ion-button>
-        </div>
       </ion-grid>
     </section>
 
@@ -163,7 +127,9 @@
           class="dsk"
           (click)="onRoute(item.application_url)"
         >
-          <img src="{{item.path}}" alt="" />
+         
+          <img [src]="s3url + item?.path" alt="" />
+
         </ion-slide>
 
         <ion-slide
@@ -171,7 +137,8 @@
           class="mob"
           (click)="onRoute(item.application_url)"
         >
-          <img src="{{item.path}}" alt="" />
+        <img [src]="s3url + item?.path" alt="" />
+          
         </ion-slide>
       </ion-slides>
     </section>
@@ -257,6 +224,8 @@
               (click)="navigateToBrandProducts(i)"
             >
               <ion-card-content class="ion-text-center">
+    
+
                 <img
                   style="
                     height: 120px;
@@ -264,7 +233,7 @@
                     object-fit: contain;
                     object-position: center;
                   "
-                  [src]="item.path"
+                  [src]="s3url + item?.path" 
                   alt=""
                 />
               </ion-card-content>
@@ -294,7 +263,8 @@
           <div class="main">
             <img
               class="imge"
-              [src]="data?.banner[2]?.desktop_images[0]?.path"
+              [src]="s3url + data?.banner[2]?.desktop_images[0]?.path"
+           
               alt=""
               (click)="onRoute(data?.banner[2]?.desktop_images[0]?.application_url)"
             />
@@ -304,14 +274,14 @@
           <ion-row>
             <ion-col size="6" class="col">
               <img
-                [src]="data?.banner[2]?.desktop_images[1]?.path"
+                [src]="s3url + data?.banner[2]?.desktop_images[1]?.path"
                 alt=""
                 (click)="onRoute(data?.banner[2]?.desktop_images[1]?.application_url)"
               />
             </ion-col>
             <ion-col size="6" class="col">
               <img
-                [src]="data?.banner[2]?.desktop_images[2]?.path"
+                [src]="s3url + data?.banner[2]?.desktop_images[2]?.path"
                 alt=""
                 (click)="onRoute(data?.banner[2]?.desktop_images[2]?.application_url)"
               />
@@ -320,14 +290,14 @@
           <ion-row>
             <ion-col size="6" class="col">
               <img
-                [src]="data?.banner[2]?.desktop_images[3]?.path"
+                [src]="s3url + data?.banner[2]?.desktop_images[3]?.path"
                 alt=""
                 (click)="onRoute(data?.banner[2]?.desktop_images[3]?.application_url)"
               />
             </ion-col>
             <ion-col size="6" class="col">
               <img
-                [src]="data?.banner[2]?.desktop_images[4]?.path"
+                [src]="s3url + data?.banner[2]?.desktop_images[4]?.path"
                 alt=""
                 (click)="onRoute(data?.banner[2]?.desktop_images[4]?.application_url)"
               />
@@ -383,7 +353,7 @@
           class="dsk"
           (click)="onRoute(item.application_url)"
         >
-          <img src="{{item.path}}" alt="" />
+          <img [src]="s3url + item?.path"  alt="" />
         </ion-slide>
 
         <ion-slide
@@ -391,7 +361,7 @@
           class="mob"
           (click)="onRoute(item.application_url)"
         >
-          <img src="{{item.path}}" alt="" />
+          <img [src]="s3url + item?.path"  alt="" />
         </ion-slide>
       </ion-slides>
     </section>
@@ -480,8 +450,8 @@
             <p>Dubai, UAE</p>
             <h5 class="accept">WE ACCEPT</h5>
             <div class="logosPayment">
-              <img src="../../../assets/icon/mastercard.svg" alt="" class="payLogo">
-              <img src="../../../assets/icon/visa.svg" alt="" class="payLogo">
+              <img src="../../../assets/imgs/icons/mastercard.svg" alt="" class="payLogo">
+              <img src="../../../assets/imgs/icons/visa.svg" alt="" class="payLogo">
             </div>
             <!-- <ion-icon name="logo-paypal" class="payIcon"></ion-icon> -->
             

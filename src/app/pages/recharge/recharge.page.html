@@ -9,6 +9,7 @@
 </ion-header>
 
 <ion-content>
+  <form [formGroup]="rechargeForm" (ngSubmit)= "recharge()">
   <ion-grid fixed>
     <ion-row>
       <ion-col size="12">
@@ -20,7 +21,7 @@
           </div>
           
           <ion-item class="ion-text-center" lines="none">
-        <ion-input placeholder="0" autocapitalize="off" autocomplete="off" autocorrect="off" minlength="" maxlength="4"  name="amount" type="tel" [(ngModel)]="inputAmount"  class="amount"></ion-input>
+        <ion-input formControlName="amount" placeholder="0" autocapitalize="off" autocomplete="off" autocorrect="off"  name="amount" type="tel"  class="amount"></ion-input>
       </ion-item>
 
       <div  class="ion-padding flag">
@@ -34,7 +35,7 @@
 
           <ion-item lines=none>
             <ion-col size="12" class="btnWrapper">
-              <ion-button class="btn" (click)="recharge()" expand="full" fill="solid" shape="round" color="tertiary" >
+              <ion-button class="btn" type="submit" [disabled]="!rechargeForm.valid" expand="full" fill="solid" shape="round" color="tertiary" >
                 RECHARGE
               </ion-button>
             </ion-col>
@@ -46,5 +47,5 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-
+</form>
 </ion-content>

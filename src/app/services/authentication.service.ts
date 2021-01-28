@@ -39,13 +39,13 @@ export class AuthenticationService {
   }
 
   
-  isAuthenticated() {
-    const token = this.getToken();
+  async isAuthenticated() {
+   const token = this.getToken();
     // console.log('token', token)
     if (token != null) {
-      return true;
+      return await true;
     } else {
-      return false;
+      return await false;
     }
   }
 

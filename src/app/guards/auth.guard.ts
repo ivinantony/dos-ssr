@@ -15,15 +15,16 @@ export class AuthGuard implements CanActivate {
   ) {
   }
 
-  canActivate(): boolean | Observable<boolean> | Promise<boolean> {
-    console.log('this.authservice.isAuthenticated()', this.authservice.isAuthenticated())
-    if (this.authservice.isAuthenticated()) {
-      return true;
-    } else {
+
+
+  canActivate():Promise<boolean>  {
+    return this.authservice.isAuthenticated().then(res => {
+      if (res) {
+        return true;
+      }
       this.presentModal();
       return false;
-    }
-
+    });
   }
 
   async presentModal() {

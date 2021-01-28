@@ -15,27 +15,28 @@
   </ion-refresher>
 
 <ion-grid fixed>
-
-    <div class="wrapper">
+  <ion-list>
+    <ion-item *ngFor="let item of data; let i=index" [ngClass]="item.push_notification_read_status == 1 ?'read':'notread'" (click)="viewNotification(i)">
+      <ion-thumbnail slot="start">
+        <img src="{{s3url + item.image}}" *ngIf="item.image != null">
+        <img src="../../../assets/imgs/chat.svg">
+      </ion-thumbnail>
+      <ion-label>
+        <h3>{{item.title}}</h3>
+        <p> {{item.description}}</p>
+      </ion-label>
       
-
-      <ion-card  *ngFor="let item of data; let i=index" [ngClass]="item.push_notification_read_status == 1 ?'read':'notread'" (click)="viewNotification(i)"> 
-        <ion-item lines="none" >
-          <ion-thumbnail slot="start">
-            <img src="{{s3url + item.image}}" *ngIf="item.image != null">
-            <img src="../../../assets/imgs/chat.svg">
-          </ion-thumbnail>
-          <ion-label>
-            <h3>{{item.title}}</h3>
-            <p> {{item.description}}</p>
-          </ion-label>
+       <ion-buttons slot="start">
+         <ion-button (click)="options()">
+          <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+         </ion-button>
+       </ion-buttons>
      
-          </ion-item>
-          <!-- <ion-icon name="checkmark-done-outline" *ngIf="item.push_notification_read_status == 1" class="read_icon" color="success"></ion-icon> -->
-      </ion-card> 
     
-    </div>
-
+    </ion-item>
+  </ion-list>
+  
+    
 </ion-grid>
 <div class="ion-text-center whenEmpty" *ngIf="!data">
   <!-- <img src="../../../assets/icon/orders.png"> -->
@@ -54,6 +55,8 @@
   </ion-fab-button>
 </ion-fab>
 </ion-content>
+
+
 
 
 

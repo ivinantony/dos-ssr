@@ -34,19 +34,7 @@ export class HomePage implements OnInit {
     this.slides1.slidePrev();
   }
 
-  bannerSlideOpts1 = {
-    slidesPerView: 1,
-    initialSlide: 0,
-    spaceBetween: 20,
-
-    centeredSlides: true,
-    autoplay: {
-      delay: 3000,
-      disableOnInteraction: false,
-      loop: true,
-    },
-    speed: 1000,
-  };
+ ;
   bannerSlideOpts4 = {
     slidesPerView: 1,
     initialSlide: 0,
@@ -84,11 +72,101 @@ export class HomePage implements OnInit {
     },
     speed: 400,
   };
+  bannerSlideOpts = {
+    on: {
+    beforeInit() {
+    const swiper = this;
+    swiper.classNames.push(`${swiper.params.containerModifierClass}fade`);
+    const overwriteParams = {
+    slidesPerView: 1,
+    slidesPerColumn: 1,
+    slidesPerGroup: 1,
+    watchSlidesProgress: true,
+    spaceBetween: 0,
+    virtualTranslate: true,
+    };
+    swiper.params = Object.assign(swiper.params, overwriteParams);
+    swiper.params = Object.assign(swiper.originalParams, overwriteParams);
+    },
+    setTranslate() {
+    const swiper = this;
+    const { slides } = swiper;
+    for (let i = 0; i < slides.length; i += 1) {
+    const $slideEl = swiper.slides.eq(i);
+    const offset$$1 = $slideEl[0].swiperSlideOffset;
+    let tx = -offset$$1;
+    if (!swiper.params.virtualTranslate) tx -= swiper.translate;
+    let ty = 0;
+    if (!swiper.isHorizontal()) {
+    ty = tx;
+    tx = 0;
+    }
+    const slideOpacity = swiper.params.fadeEffect.crossFade
+    ? Math.max(1 - Math.abs($slideEl[0].progress), 0)
+    : 1 + Math.min(Math.max($slideEl[0].progress, -1), 0);
+    $slideEl
+    .css({
+    opacity: slideOpacity,
+    })
+    .transform(`translate3d(${tx}px, ${ty}px, 0px)`);
+    }
+    },
+    setTransition(duration) {
+    const swiper = this;
+    const { slides, $wrapperEl } = swiper;
+    slides.transition(duration);
+    if (swiper.params.virtualTranslate && duration !== 0) {
+    let eventTriggered = false;
+    slides.transitionEnd(() => {
+    if (eventTriggered) return;
+    if (!swiper || swiper.destroyed) return;
+    eventTriggered = true;
+    swiper.animating = false;
+    const triggerEvents = ['webkitTransitionEnd', 'transitionend'];
+    for (let i = 0; i < triggerEvents.length; i += 1) {
+    $wrapperEl.trigger(triggerEvents[i]);
+    }
+    });
+    }
+    },
+    }
+    }
+    categoryOpts = {
+    updateOnWindowResize: true,
+    
+    breakpoints: {
+    // when window width is <= 320px
+    320: {
+    slidesPerView: 2.2,
+    initialSlide: 0,
+    spaceBetween: 10,
+    },
+    // when window width is <= 640px
+    768: {
+    slidesPerView: 2,
+    initialSlide: 0,
+    spaceBetween: 10,
+    autoplay: {
+      delay: 2000,
+      loop: true,
+      disableOnInteraction: false,
+    },
+    speed: 400,
+    },
+    1024: {
+    slidesPerView: 6,
+    initialSlide: 0,
+    spaceBetween: 10,
+    autoplay: {
+      delay: 2000,
+      loop: true,
+      disableOnInteraction: false,
+    },
+    speed: 400,
+    }
+    }
+    }
 
-  categorySlides = {
-    slidesPerView: 2.7,
-    spaceBetween: 5,
-  };
 
   productSlides = window.matchMedia("(max-width: 320px)").matches
     ? {
@@ -158,9 +236,8 @@ export class HomePage implements OnInit {
     private notCountService:NotcountService,
   ) {
     this.s3url = utils.getS3url();
-    this.badge.set(10);
+    // this.badge.set(10);
     this.searchTerm = new FormControl();
-    this.checkWidth();
     this.getData();
     this.cart_count = localStorage.getItem("cart_count");
     this.notf_count = localStorage.getItem("notf_count");
@@ -242,15 +319,7 @@ export class HomePage implements OnInit {
     });
   }
 
-  checkWidth() {
-    if (this.platform.width() > 768) {
-  
-      this.categorySlides = {
-        slidesPerView: 5.7,
-        spaceBetween: 5,
-      };
-    }
-  }
+
 
   onRoute(link) {
     this.result = [];
@@ -287,22 +356,7 @@ export class HomePage implements OnInit {
     this.categories = data.categories;
     this.products = data.products;
     this.banners = data.banner;
-    for (let i = 0; i < this.brands.length; i++) {
-      this.brands[i].path = this.s3url + this.brands[i].path;
-    }
-    for (let i = 0; i < this.categories.length; i++) {
-      this.categories[i].path = this.s3url + this.categories[i].path;
-    }
-    for (let i = 0; i < this.data.banner.length; i++) {
-      for (let j = 0; j < this.data.banner[i].desktop_images.length; j++) {
-        this.data.banner[i].desktop_images[j].path =
-          this.s3url + this.data.banner[i].desktop_images[j].path;
-      }
-      for (let j = 0; j < this.banners[i].mobile_images.length; j++) {
-        this.data.banner[i].mobile_images[j].path =
-          this.s3url + this.data.banner[i].mobile_images[j].path;
-      }
-    }
+   
   }
 
   handleError(error) {

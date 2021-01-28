@@ -1,0 +1,14 @@
+.icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    overflow: hidden;
+    width: 80px;
+    height: 80px;
+    margin: auto;
+    padding: 5px;
+  }
+  ion-content{
+      --overflow: hidden;
+  }
