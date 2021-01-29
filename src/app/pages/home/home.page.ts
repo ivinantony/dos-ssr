@@ -197,9 +197,10 @@ export class HomePage implements OnInit {
     }
     )
     notCountService.getNotCount().subscribe(res => {
-      this.notf_count = res
-    }
+        this.notf_count=res}
     )
+    this.badge.set(this.notf_count);
+
   }
 
   ionViewWillEnter() {

@@ -6,6 +6,7 @@ import { VerifyOtpService } from "src/app/services/otp/verify-otp.service";
 import { Storage } from "@ionic/storage";
 import { CartcountService } from "src/app/cartcount.service";
 import { NotcountService } from "src/app/notcount.service";
+import { Badge } from "@ionic-native/badge/ngx";
 const POST_OTP = 200;
 const RESEND_OTP = 210;
 @Component({
@@ -27,7 +28,8 @@ export class OtpPage implements OnInit {
     private cartCountService: CartcountService,
     private notCountService: NotcountService,
     private router: Router,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private badge:Badge
   ) {
     this.phone = this.activatedRoute.snapshot.params.phone;
     this.email = this.activatedRoute.snapshot.params.email;
@@ -74,6 +76,8 @@ export class OtpPage implements OnInit {
       localStorage.setItem("notf_count", data.notification_count);
       this.cartCountService.setCartCount(data.cart_count);
       this.notCountService.setNotCount(data.notification_count);
+      this.badge.set(data.notification_count);
+
 
       this.storage.get("prev_url").then((val) => {
         // console.log(val,"prev url")

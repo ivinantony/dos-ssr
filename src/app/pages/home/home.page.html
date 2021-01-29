@@ -6,6 +6,13 @@
     <ion-title color="light" class="ion-text-left">Deal on Store</ion-title>
 
     <ion-buttons slot="end">
+
+        <ion-button (click)="router.navigate(['/search'])">
+          <ion-icon name="search-outline"
+          color="light"
+          slot="icon-only"></ion-icon>
+        </ion-button>
+      
       <ion-button (click)="router.navigate(['/notification'])">
         <ion-icon
           color="light"

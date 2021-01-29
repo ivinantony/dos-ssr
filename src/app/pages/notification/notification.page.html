@@ -21,24 +21,30 @@
     <ion-list>
       <ion-item
         *ngFor="let item of data; let i=index"
-        [ngClass]="item.push_notification_read_status == 1 ?'read':'notread'"
-        (click)="viewNotification(i)"
-        class="ion-margin"
-      >
-        <ion-thumbnail slot="start">
-          <img src="{{s3url + item.image}}" *ngIf="item.image != null" />
-          <img src="../../../assets/imgs/chat.svg" />
-        </ion-thumbnail>
-        <ion-label>
-          <h3>{{item.title}}</h3>
-          <p>{{item.description}}</p>
-        </ion-label>
+        
 
-        <ion-buttons slot="end">
-          <ion-button (click)="prsentOptions(i)">
-            <ion-icon name="ellipsis-vertical-outline"></ion-icon>
-          </ion-button>
-        </ion-buttons>
+        class="ion-no-margin"
+      >
+     
+      <ion-row style="width: 100%;">
+        <ion-col size="11" style="display: flex;" (click)="viewNotification(i)">
+          <ion-thumbnail >
+            <img src="{{s3url + item.image}}" *ngIf="item.image != null" />
+            <img src="../../../assets/imgs/chat.svg" />
+          </ion-thumbnail>
+          <ion-label style="margin-left: 7px;">
+            <h3>{{item.title}}</h3>
+            <p>{{item.description}}</p>
+          </ion-label>
+        </ion-col>
+        <ion-col size="1">
+          <ion-buttons >
+            <ion-button (click)="prsentOptions(i)">
+              <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-col>
+      </ion-row>
       </ion-item>
     </ion-list>
   </ion-grid>

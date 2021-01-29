@@ -1,0 +1,36 @@
+
+
+<ion-header class="ion-no-border" >
+  <ion-toolbar color="secondary">
+    <ion-title>Search</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar class="ion-no-border search">
+    
+      <ion-searchbar  placeholder="Search your faviourate products"
+      [formControl]="searchTerm" 
+      (ionCancel)="onCancel()" 
+      (ionChange)="onSearchInputMobile()"
+      >
+
+      </ion-searchbar>
+    
+    
+  </ion-toolbar>
+
+   
+ 
+</ion-header>
+
+<ion-content>
+  <ion-item *ngFor="let item of result ; let i=index" (click)="viewSearchProduct(i)" detail>
+    <ion-row size="12" class="searchResult">
+      {{ item.name }} {{item.brand_name}} {{item.category_name}}
+
+    </ion-row> 
+    
+
+</ion-item>
+</ion-content>

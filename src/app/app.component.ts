@@ -19,6 +19,7 @@ import { InstallPage } from './pages/install/install.page';
 import { AutocloseOverlayService } from './services/autoclose-overlay.service';
 import { AuthGuard } from './guards/auth.guard';
 import { INotificationPayload } from 'cordova-plugin-fcm-with-dependecy-updated/typings/INotificationPayload';
+import { Badge } from '@ionic-native/badge/ngx';
 
 
 @Component({
@@ -68,7 +69,8 @@ export class AppComponent implements OnInit {
     private autocloseOverlaysService: AutocloseOverlayService,
     private modalController: ModalController,
     private authguard: AuthGuard,
-    private zone: NgZone
+    private zone: NgZone,
+    private badge:Badge
   ) {
     this.initializeApp();
     this.client_id = localStorage.getItem('client_id');
@@ -84,9 +86,8 @@ export class AppComponent implements OnInit {
     this.notCountService.setNotCount(this.notf_count_initial)
     this.notCountService.getNotCount().subscribe(res => {
       this.notf_count = res
-    }
-    )
-
+    })
+    this.badge.set(this.notf_count);
     this.searchTerm = new FormControl();
 
 
@@ -207,6 +208,7 @@ export class AppComponent implements OnInit {
   }
 
   logout() {
+    this.badge.clear();
     this.presentLoading().then(() => {
       this.authService.logout().then(() => {
         this.presentToast().finally(() => {

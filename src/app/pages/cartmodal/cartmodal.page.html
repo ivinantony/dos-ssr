@@ -17,51 +17,6 @@
   
   <ion-grid fixed [ngClass]="cartLength > 0 ? 'active' : 'inactive'">
     <ion-row>
-     
-        <ion-card style="box-shadow: none" class="card">
-          <ion-list-header>
-            <ion-label> Delivery Address </ion-label>
-          </ion-list-header>
-          <ion-item class="ion-text-center" *ngIf="addresses?.length == 0">
-            <p >No Addresses Added </p>
-          </ion-item>
-          
-          <ion-card-content style="max-height: 30vh" class="ion-no-padding" *ngIf="addresses?.length != 0" class="" >
-            
-              
-          
-            <ion-content style="height: 30vh" class="ion-padding">
-              <ion-radio-group
-                [(ngModel)]="selectedAddress"
-                mode="md"
-                (ionChange)="onChangeAddress($event)"
-              >
-                
-                <ion-item *ngFor="let item of addresses; let i=index" lines="none">
-                  <ion-label>
-                    <ion-text color="primary">
-                      <h3>{{item.name}}</h3>
-                    </ion-text>
-                    <p>{{item.full_address}}</p>
-                    <p>{{item.landmark}}</p>
-                  </ion-label>
-                  <ion-radio slot="start" value="{{i}}"></ion-radio>
-                </ion-item>
-              </ion-radio-group>
-            </ion-content>
-          </ion-card-content>
-          <ion-footer class="ion-no-border">
-            <ion-toolbar>
-              <ion-buttons slot="end">
-                <ion-button color="danger" (click)="addAddress()" >
-                  <ion-icon slot="start" color="danger" name="add"></ion-icon>
-                  Add Address
-                </ion-button>
-              </ion-buttons>
-            </ion-toolbar>
-          </ion-footer>
-        </ion-card>
-      </ion-col> -->
       <ion-col size-sm="12" size-md="12" size-lg="12" size-xl="12">
         <ion-list-header>
           <ion-label> Summary </ion-label>
