@@ -1,0 +1,52 @@
+<ion-header class="ion-no-border ion-hide-md-down">
+  <ion-toolbar color="dark">
+    <ion-title
+      size="large"
+      style="font-weight: bold"
+      class="ion-text-left ion-no-padding ion-padding-horizontal"
+      color="light"
+      >Deal on Store</ion-title
+    >
+  </ion-toolbar>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start" class="ion-hide-md-up">
+      <ion-menu-button color="light"></ion-menu-button>
+    </ion-buttons>
+    <ion-buttons slot="start">
+      <ion-button
+        *ngFor="let item of categories; let i = index"
+        class="ion-padding-horizontal"
+        [color]="selectedCategoryIndex == i ? 'warning' : 'light'"
+        fill="clear"
+        (click)="navigateByUrl(i)"
+      >
+        {{ item?.name }}
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end" class="ion-padding-horizontal">
+      <ion-button
+        class="ion-padding-horizontal"
+        (click)="onNavigate('/profile')"
+      >
+        <ion-icon
+          color="light"
+          slot="icon-only"
+          src="../assets/imgs/icons/profile.svg"
+        ></ion-icon>
+      </ion-button>
+      <ion-button
+        class="ion-padding-horizontal"
+        (click)="onNavigate('/notification')"
+      >
+        <ion-icon
+          color="light"
+          slot="icon-only"
+          src="../assets/imgs/icons/notifications-outline.svg"
+        ></ion-icon>
+        <ion-badge id="cart-badge" color="danger" *ngIf="notf_count > 0">{{
+          notf_count
+        }}</ion-badge>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
