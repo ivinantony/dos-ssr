@@ -34,7 +34,7 @@ declare var google;
 declare var RazorpayCheckout: any;
 declare var Razorpay: any;
 const GET_CART = 200;
-const POST_DATA = 210;
+const ADD = 210;
 const DEL_DATA = 220;
 const REMOVE = 230;
 const GET_ADDRESS = 240;
@@ -76,6 +76,8 @@ export class CartPage implements OnInit {
   data: any;
   valid_address: boolean = false;
   isOut: boolean = false;
+  name:any
+  qty:any
   constructor(
     public modalController: ModalController,
     private routerOutlet: IonRouterOutlet,
@@ -98,8 +100,6 @@ export class CartPage implements OnInit {
   ) {
 
     this.client_id = localStorage.getItem("client_id");
-    // this.getData();
-    // this.getAddress();
     this.s3url = utils.getS3url();
     
     
@@ -110,21 +110,6 @@ export class CartPage implements OnInit {
   }
   ngOnInit() {}
 
-
-
-
-  async addAddress() {
-    const modal = await this.modalController.create({
-      component: AddAddressPage,
-      swipeToClose: true,
-      presentingElement: this.routerOutlet.nativeEl,
-      cssClass: "my-custom-class",
-    });
-    modal.onDidDismiss().finally(() => {
-      this.getAddress();
-    });
-    return await modal.present();
-  }
 
   async openPaymentModes() {
     const modal = await this.modalController.create({
@@ -173,8 +158,6 @@ export class CartPage implements OnInit {
     }
   }
 
- 
-
   getData() {
     this.presentLoading().then(() => {
       this.cartService.getCart(this.client_id).subscribe(
@@ -185,8 +168,8 @@ export class CartPage implements OnInit {
   }
 
   getAddress() {
-    let client_id = localStorage.getItem("client_id");
-    this.addressService.getAddress(client_id).subscribe(
+    
+    this.addressService.getAddress(this.client_id).subscribe(
       (data) => this.handleResponse(data, GET_ADDRESS),
       (error) => this.handleError(error)
     );
@@ -201,82 +184,88 @@ export class CartPage implements OnInit {
       this.cart = data.cart;
       this.amountDetails = data;
       this.addresses = data.address;
-
       this.cartLength = this.cart.length;
-      // console.log(this.cart, "This is cart");
       for (let i = 0; i < this.cart?.length; i++) {
         this.cart[i].images[0].path = this.s3url + this.cart[i].images[0].path;
       }
-    } else if (type == GET_PAY) {
-      // console.log(data);
-    } else if (type == REMOVE) {
+    } 
+    else if(type == ADD)
+    {
+    this.loadingController.dismiss()
+    this.presentToastSuccessQtyChange("You've changed " + this.name + " quantity to " + this.qty);
+    this.getData();
+    }
+     else if (type == REMOVE) {   
+      this.loadingController.dismiss()   
+      this.presentToastDanger("You've removed " + this.name + " from cart.");
+      this.getData();
       localStorage.setItem("cart_count", data.cart_count);
       this.cartCountService.setCartCount(data.cart_count);
-      // console.log("removed", data);
-    } else {
+      
+    } 
+    else if (type == DEL_DATA) {
+      this.loadingController.dismiss()
+      this.presentToastSuccessQtyChange( "You've changed " + this.name + " quantity to " + this.qty);
+      this.getData();
+    // if (this.qty > 0) {
+      
+    // } 
+    // else {
+    //   let cartCount = Number(localStorage.getItem("cart_count"));
+    //   let count = cartCount - 1;
+    //   let data = count.toString();
+    //   localStorage.setItem("cart_count", data);
+    //   this.cartCountService.setCartCount(data);
+    //   this.presentToastDanger("You've removed " + this.name + " from cart.");
+    // }
+    
+    }
+    
+    else {
       // console.log(data);
     }
   }
 
   handleError(error) {
     this.loadingController.dismiss();
-    // console.log(error);
+    if (error.status == 400) {
+      this.presentAlert(error.error.message);
+    }
   }
 
   add(index: number, id: number) {
-    let name = this.cart[index].name;
-    let qty = this.cart[index].count + 1;
+    this.presentLoading()
+    this.name = this.cart[index].name;
+    this.qty = this.cart[index].count + 1;
     let data = {
       product_id: id,
-      client_id: localStorage.getItem("client_id"),
+      client_id: this.client_id,
     };
     this.cartService.addToCart(data).subscribe(
-      (data) => this.handleResponse(data, POST_DATA),
+      (data) => this.handleResponse(data, ADD),
       (error) => this.handleError(error)
-    );
-    //  this.cart[index].count = this.cart[index].count+1
-    this.getData();
-    this.presentToastSuccessQtyChange(
-      "You've changed " + name + " quantity to " + qty
     );
   }
 
   subtract(index: number, id: number) {
-    let name = this.cart[index].name;
-    let qty = this.cart[index].count - 1;
-    let client_id = localStorage.getItem("client_id");
-    this.cartService.removeFromCart(client_id, id).subscribe(
-      (data) => this.handleResponse(data, DEL_DATA),
-      (error) => this.handleError(error)
-    );
-    // this.cart[index].count = this.cart[index].count-1
-    this.getData();
-    if (qty > 0) {
-      this.presentToastSuccessQtyChange(
-        "You've changed " + name + " quantity to " + qty
-      );
-    } else {
-      let cartCount = Number(localStorage.getItem("cart_count"));
-      let count = cartCount - 1;
-      let data = count.toString();
-      localStorage.setItem("cart_count", data);
-      this.cartCountService.setCartCount(data);
-      this.presentToastDanger("You've removed " + name + " from cart.");
+    
+    this.name = this.cart[index].name;
+    this.qty = this.cart[index].count;
+    if(this.qty==1)
+    {
+      this.remove(index,id)
     }
+    else{
+      this.qty = this.cart[index].count - 1;
+      this.presentLoading()
+      this.cartService.removeFromCart(this.client_id, id).subscribe(
+        (data) => this.handleResponse(data, DEL_DATA),
+        (error) => this.handleError(error)
+      );
+    }
+    
   }
 
-  // remove(index: number, id: number) {
-  //   this.presentAlertDelete(index,id)
-  //   // let name = this.cart[index].name;
-  //   // let client_id = localStorage.getItem("client_id");
-  //   // this.cartService.deleteFromCart(client_id, id).subscribe(
-  //   //   (data) => this.handleResponse(data, REMOVE),
-  //   //   (error) => this.handleError(error)
-  //   // );
-  //   // this.cart.splice(index, 1);
-  //   // this.getData();
-  //   // this.presentToastDanger("You've removed " + name + " from cart.");
-  // }
 
   continueShopping() {
     this.router.navigate(["home"]);
@@ -303,6 +292,7 @@ export class CartPage implements OnInit {
       message: msg,
       cssClass: "custom-toast-success",
       position: "bottom",
+      color:"dark",
 
       duration: 2000,
     });
@@ -468,12 +458,11 @@ export class CartPage implements OnInit {
 
 
   async remove(index:number,id:number) {
-    let name = this.cart[index].name;
-    let client_id = localStorage.getItem("client_id");
+   this.name = this.cart[index].name;
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Delete',
-      message: 'Do you want to remove '+name+' from cart',
+      message: 'Do you want to remove '+this.name+' from cart',
       buttons: [
         {
           text: 'cancel',
@@ -488,17 +477,28 @@ export class CartPage implements OnInit {
           text: 'Confirm',
           cssClass: 'secondary',
           handler: () => {
-            this.cartService.deleteFromCart(client_id, id).subscribe(
+            this.presentLoading()
+            this.cartService.deleteFromCart(this.client_id, id).subscribe(
               (data) => this.handleResponse(data, REMOVE),
               (error) => this.handleError(error)
             );
-            this.cart.splice(index, 1);
-            
-            this.presentToastDanger("You've removed " + name + " from cart.");
-            this.getData();
           }
         }
       ]
+    });
+
+    await alert.present();
+  }
+
+  async presentAlert(msg: string) {
+    const alert = await this.alertController.create({
+      cssClass: "my-custom-class",
+      header: "Low Stock Alert",
+
+      message:
+        msg +
+        " For ordering large quantities contact us through email or whatsapp.",
+      buttons: ["OK"],
     });
 
     await alert.present();

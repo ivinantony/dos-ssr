@@ -84,7 +84,7 @@
             slot="start"
             expand="block"
             fill="clear"
-            (click)="openPromo()"
+            *ngIf="!promo_id"
           >
           <ion-icon
          slot="start"
@@ -92,6 +92,29 @@
         src="assets/imgs/discount.svg">
         </ion-icon>
             APPLY PROMO CODE
+          </ion-button>
+
+          <ion-button
+            size="small"
+            color="dark"
+            slot="start"
+            expand="block"
+            fill="clear"
+            *ngIf="promo_id"
+          >
+          <ion-icon
+         slot="start"
+         color="danger"
+        src="assets/imgs/discount.svg">
+        </ion-icon>
+            PROMO CODE APPLIED
+          </ion-button>
+
+          <ion-button (click)="openPromo()" color="primary" slot="end" *ngIf="!promo_id" fill="outline"  >
+            Select
+          </ion-button>
+          <ion-button (click)="removePromo()" color="primary" slot="end" *ngIf="promo_id" fill="outline">
+            Remove
           </ion-button>
         </ion-item>
         

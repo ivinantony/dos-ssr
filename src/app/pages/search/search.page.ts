@@ -32,8 +32,7 @@ export class SearchPage implements OnInit {
             (error)=>this.handleErrorSearch(error)
           )
         }
-      
-      // this.setFilteredItems(search);
+
     });
   }
 

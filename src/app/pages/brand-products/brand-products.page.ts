@@ -347,7 +347,7 @@ export class BrandProductsPage implements OnInit {
       message: msg,
       cssClass: "custom-toast-success",
       position: "bottom",
-      
+      color:"dark",
       duration: 1500,
     });
     toast.present();

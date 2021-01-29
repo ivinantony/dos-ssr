@@ -32,15 +32,44 @@ const BUY_NOW = 240;
 export class ProductPage implements OnInit {
   @ViewChild("slides", { static: false }) slides: IonSlides;
   recommendedSlides = {
-    slidesPerView: 1.5,
+    slidesPerView: 1,
     initialSlide: 0,
     spaceBetween: 5,
     centeredSlides: true,
+    updateOnWindowResize: true,
     autoplay: {
       delay: 2500,
       disableOnInteraction: false,
       loop: true,
     },
+    speed: 400,
+    breakpoints: {
+
+      // when window width is <= 320px
+      320: {
+        slidesPerView: 1.3,
+        initialSlide: 0,
+        spaceBetween: 5,
+        loop: true,
+        centeredSlides: true,
+
+      },
+      480: {
+        slidesPerView: 2,
+        initialSlide: 0,
+        spaceBetween: 3,
+        loop: true,
+      },
+      // when window width is <= 640px
+      768: {
+        slidesPerView: 3,
+        initialSlide: 1,
+        spaceBetween: 5,
+        loop: true,
+        centeredSlides: true,
+
+      }
+    }
   };
 
   slidesOptionsThumbnail = {
@@ -86,6 +115,7 @@ export class ProductPage implements OnInit {
     this.productId = parseInt(this.activatedRoute.snapshot.paramMap.get("id"));
     this.catId = parseInt(this.activatedRoute.snapshot.paramMap.get("catId"));
     this.client_id = localStorage.getItem("client_id");
+    console.log(this.client_id,"client_id")
     this.s3url = utils.getS3url();
   }
 
@@ -314,7 +344,7 @@ export class ProductPage implements OnInit {
       message: msg,
       cssClass: "custom-toast-success",
       position: "bottom",
-
+      color:"dark",
       duration: 1500,
     });
     toast.present();

@@ -252,6 +252,7 @@ export class OfferPage implements OnInit {
       cssClass: "custom-toast-success",
       position: "bottom",
       duration: 1500,
+      color:"dark"
     });
     toast.present();
   }
