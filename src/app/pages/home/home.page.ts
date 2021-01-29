@@ -220,7 +220,6 @@ export class HomePage implements OnInit {
           (error) => this.handleErrorSearch(error)
         )
       }
-
       // this.setFilteredItems(search);
     });
   }
