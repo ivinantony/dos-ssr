@@ -61,39 +61,61 @@
       </ion-slides>
     </section>
 
-    <section>
-      <ion-grid fixed class="ion-margin-top">
+    <section id="searchByManufactures">
+      <ion-item lines="none" class="ion-text-left">
+        <ion-label class="title" color="dark"
+          >Categories</ion-label
+        >
+      </ion-item>
+      <ion-grid>
         <ion-row>
-          <ion-col style="background: #fff" size="12">
-            <ion-list-header>
-              <ion-label>Categories</ion-label>
-              <ion-button (click)="viewAll()">See All</ion-button>
-            </ion-list-header>
-            <ion-slides [options]="categoryOpts" class="ion-padding">
-              <ion-slide
-                style="
-                  background: #f2f2f2;
-                  min-height: 200px;
-                  max-height: 200px;
-                "
-                *ngFor="let item of categories; let i=index"
-                (click)="navigateToProducts(i)"
-              >
-                <ion-card class="img-card">
-                  <div class="img-wrapper">
-                    <img [src]="s3url + item?.path" alt="" />
-                  </div>
-
-                  <p class="ion-padding-horizontal">
-                    {{item.category_name | titlecase}}
-                  </p>
-                </ion-card>
-              </ion-slide>
-            </ion-slides>
+          <ion-col
+            class="brandCard"
+            size="6"
+            size-sm="6"
+            size-md="4"
+            size-lg="4"
+            size-xl="2"
+            *ngFor="let item of categories; let i=index"
+          >
+            <ion-card
+              class="ion-no-margin"
+              (click)="navigateToProducts(i)"
+              style="min-height: 167px;"
+            >
+              <ion-card-content class="ion-text-center ion-no-padding">
+                <img
+                  style="
+                    height: 120px;
+                    width: 120px;
+                    object-fit: contain;
+                    object-position: center;
+                  "
+                  [src]="s3url + item?.path"
+                  alt=""
+                />
+              </ion-card-content>
+              <ion-card-header class="ion-text-center logoHdr">
+                <ion-card-title>{{item.category_name}}</ion-card-title>
+              </ion-card-header>
+            </ion-card>
           </ion-col>
         </ion-row>
+        <div class="ion-text-center morebtn">
+          <ion-button
+            (click)="router.navigate(['/categories'])"
+            shape="round"
+            fill="outline"
+            color="primary"
+          >
+            <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+            VIEW ALL
+          </ion-button>
+        </div>
       </ion-grid>
     </section>
+
+    
 
     <section id="banr">
       <ion-slides class="banner" [options]="bannerSlideOpts2">
@@ -168,58 +190,41 @@
       </div>
     </section>
 
-    <section id="searchByManufactures">
-      <ion-item lines="none" class="ion-text-center">
-        <ion-label class="title" color="magenta"
-          >Shop By Brand</ion-label
-        >
-      </ion-item>
-      <ion-grid>
+    <section>
+      <ion-grid fixed class="ion-margin-top">
         <ion-row>
-          <ion-col
-            class="brandCard"
-            size="6"
-            size-sm="6"
-            size-md="4"
-            size-lg="4"
-            size-xl="2"
-            *ngFor="let item of brands; let i=index"
-          >
-            <ion-card
-              class="ion-no-margin"
-              (click)="navigateToBrandProducts(i)"
-            >
-              <ion-card-content class="ion-text-center">
-                <img
-                  style="
-                    height: 120px;
-                    width: 120px;
-                    object-fit: contain;
-                    object-position: center;
-                  "
-                  [src]="s3url + item?.path"
-                  alt=""
-                />
-              </ion-card-content>
-              <ion-card-header class="ion-text-center logoHdr">
-                <ion-card-title>{{item.brand_name}}</ion-card-title>
-              </ion-card-header>
-            </ion-card>
+          <ion-col style="background: #fff" size="12">
+            <ion-list-header>
+              <ion-label>Shop By Brand</ion-label>
+              <ion-button (click)="viewAll()">See All</ion-button>
+            </ion-list-header>
+            <ion-slides [options]="categoryOpts" class="ion-padding">
+              <ion-slide
+                style="
+                  background: #f2f2f2;
+                  min-height: 200px;
+                  max-height: 200px;
+                "
+                *ngFor="let item of brands; let i=index"
+                (click)="navigateToBrandProducts(i)"
+              >
+                <ion-card class="img-card">
+                  <div class="img-wrapper">
+                    <img [src]="s3url + item?.path" alt="" />
+                  </div>
+
+                  <p class="ion-padding-horizontal">
+                    {{item.brand_name | titlecase}}
+                  </p>
+                </ion-card>
+              </ion-slide>
+            </ion-slides>
           </ion-col>
         </ion-row>
-        <div class="ion-text-center morebtn">
-          <ion-button
-            (click)="router.navigate(['/manufacturers'])"
-            shape="round"
-            fill="outline"
-            color="primary"
-          >
-            <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
-            VIEW ALL
-          </ion-button>
-        </div>
       </ion-grid>
     </section>
+
+    
 
     <section class="banr">
       <ion-row class="main_row">

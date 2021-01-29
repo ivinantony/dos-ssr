@@ -128,10 +128,6 @@ export class LoginPage implements OnInit {
 
 
   login() {
-    // let code = 971;
-    // let phone = this.loginGroup.value.phone;
-    // this.loginGroup.controls['phone'].setValue(code+phone);
-    console.log(this.loginGroup.value)
     this.presentLoading().then(() => {
       this.loginService.registerUser(this.loginGroup.value).subscribe(
         (data) => this.handleResponse(data),
@@ -168,6 +164,7 @@ export class LoginPage implements OnInit {
 
   handleError(error) {
     // console.log(error)
+    this.loadingController.dismiss()
   }
 
 
