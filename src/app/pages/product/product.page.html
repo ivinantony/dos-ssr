@@ -86,27 +86,27 @@
 
         <div>
           <ion-row>
-            <!-- <ion-col size="3" class="addtocart">
-              <h3 style="font-size: 15px;">Select Quantity:</h3>
-            </ion-col> -->
             <ion-col
               size="5"
-              class="ion-padding"
+              class="ion-padding-vertical"
               *ngIf="data?.product.in_stock > 0 && data?.product.cart_count == 0"
             >
-              <div class="addbutton">
-                <ion-icon
-                  name="remove-outline"
-                  class="icon"
-                  (click)="qtyDecrease()"
-                ></ion-icon>
-                {{qty}}
-                <ion-icon
-                  name="add-outline"
-                  class="icon"
-                  (click)="qtyIncrease()"
-                ></ion-icon>
-              </div>
+              <section>
+                <ion-toolbar>
+                  <ion-buttons
+                    slot="start"
+                    style="border: 1px solid #565656; border-radius: 10px"
+                  >
+                    <ion-button (click)="qtyDecrease()">
+                      <ion-icon slot="start" name="remove"></ion-icon>
+                    </ion-button>
+                    <ion-button> {{qty}} </ion-button>
+                    <ion-button (click)="qtyIncrease()">
+                      <ion-icon slot="start" name="add"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                </ion-toolbar>
+              </section>
             </ion-col>
           </ion-row>
           <ion-row>
@@ -117,7 +117,7 @@
             >
               <ion-button
                 (click)="addToCart()"
-                color="success"
+                color="primary"
                 expand="block"
                 [disabled]="data?.product.in_stock == 0"
               >
@@ -131,7 +131,7 @@
             >
               <ion-button
                 (click)="goToCart()"
-                color="success"
+                color="primary"
                 expand="block"
                 [disabled]="data?.product.in_stock == 0"
               >
@@ -148,7 +148,7 @@
             >
               <ion-button
                 (click)="buyNow()"
-                color="danger"
+                color="secondary"
                 expand="block"
                 [disabled]="data?.product.in_stock == 0"
               >
@@ -217,18 +217,6 @@
                 </ion-item>
               </ion-text>
 
-              <!-- <ion-text color="dark">
-                <ion-item
-                  class="ion-no-padding"
-                  lines="none"
-                  *ngIf="productDetails?.weight"
-                >
-                  <h3 class="ion-margin-top">Weight :</h3>
-                  &nbsp;
-                  <h5>{{productDetails?.weight}} {{ productDetails?.unit}}</h5>
-                </ion-item>
-              </ion-text> -->
-
               <ion-text color="dark">
                 <ion-item
                   class="ion-no-padding"
@@ -269,88 +257,19 @@
             </ion-col>
           </ion-row>
         </div>
+
+        <div class="ion-padding" *ngIf="productDetails?.description">
+          <ion-item class="ion-no-padding details" lines="none">
+            <h3 class="ion-margin-top">Product Details:</h3>
+          </ion-item>
+          <quill-view
+            [content]="productDetails?.description"
+            format="text"
+            theme="snow"
+          ></quill-view>
+        </div>
       </div>
     </div>
-
-    <div class="ion-padding" *ngIf="productDetails?.description">
-      <ion-item class="ion-no-padding details" lines="none">
-        <h3 class="ion-margin-top">Product Details:</h3>
-      </ion-item>
-      <quill-view
-        [content]="productDetails?.description"
-        format="text"
-        theme="snow"
-      ></quill-view>
-    </div>
-    <!-- <div class="ion-padding-horizontal">
-      <h6>Share Product :</h6>
-      <ul>
-      <li>
-      <ion-button
-      color="dark"
-      href="https://www.facebook.com/sharer/sharer.php?u={{this.appUrl}}"
-      target="_blank"
-      fill="clear"
-      size="small"
-      >
-      <ion-icon
-      slot="icon-only"
-      class="facebook"
-      name="logo-facebook"
-      ></ion-icon>
-      Facebook
-      </ion-button>
-      </li>
-      <li>
-      <ion-button
-      color="dark"
-      href="http://twitter.com/share?url={{this.appUrl}}"
-      target="_blank"
-      fill="clear"
-      size="small"
-      >
-      <ion-icon
-      slot="icon-only"
-      class="twitter"
-      name="logo-twitter"
-      ></ion-icon>
-      Twitter
-      </ion-button>
-      </li>
-      <li>
-      <ion-button
-      color="dark"
-      href="https://plus.google.com/share?url={{this.appUrl}}"
-      target="_blank"
-      fill="clear"
-      size="small"
-      >
-      <ion-icon
-      slot="icon-only"
-      class="google"
-      name="logo-google"
-      ></ion-icon>
-      Google
-      </ion-button>
-      </li>
-      <li>
-      <ion-button
-      color="dark"
-      target="_blank"
-      href="whatsapp://send?text=Hi%20please%20checkout%20this%20product,{{this.appUrl}}"
-      fill="clear"
-      size="small"
-      >
-      <ion-icon
-      slot="icon-only"
-      class="whatsapp"
-      name="logo-whatsapp"
-      ></ion-icon>
-      Whatsapp
-      </ion-button>
-      </li>
-      </ul>
-      </div> -->
   </div>
 
   <hr class="ion-margin-horizontal" />
@@ -361,9 +280,6 @@
         <section id="recommended">
           <ion-item lines="none" class="ion-text-center">
             <ion-label class="title">Recommended For You</ion-label>
-            <!-- <ion-button expand="block" fill="clear" shape="round" slot="end">
-            View all
-          </ion-button> -->
           </ion-item>
           <ion-slides [options]="recommendedSlides" class="recommended">
             <ion-slide

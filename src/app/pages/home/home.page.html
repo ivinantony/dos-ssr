@@ -1,5 +1,5 @@
 <ion-header class="ion-no-border">
-  <ion-toolbar color="secondary">
+  <ion-toolbar color="secondary" class="ion-hide-md-up">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -36,7 +36,7 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content [fullscreen]="true">
+<ion-content>
   <ion-refresher
     slot="fixed"
     pullFactor="0.5"
@@ -410,7 +410,7 @@
     </section>
     <section>
       <ion-footer>
-        <ion-row>
+        <ion-row class="footer">
           <ion-col size="10" class="footerWrapper">
             <ion-row>
               <ion-col size="12" size-md="3">
