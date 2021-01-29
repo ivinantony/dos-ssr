@@ -31,6 +31,7 @@
     "@ionic-native/core": "^5.0.0",
     "@ionic-native/geolocation": "^5.29.0",
     "@ionic-native/in-app-browser": "^5.30.0",
+    "@ionic-native/ionic-webview": "^5.31.1",
     "@ionic-native/native-geocoder": "^5.29.0",
     "@ionic-native/native-storage": "^5.30.0",
     "@ionic-native/paypal": "^5.30.0",
@@ -42,7 +43,6 @@
     "algoliasearch": "^4.8.3",
     "checkout-sdk-node": "^1.0.19",
     "cordova-android": "9.0.0",
-    "cordova-ios": "6.1.1",
     "cordova-plugin-badge": "^0.8.8",
     "drift-zoom": "^1.4.1",
     "firebase": "^8.2.3",
@@ -69,6 +69,8 @@
     "card.io.cordova.mobilesdk": "^2.1.0",
     "codelyzer": "^6.0.0",
     "com.paypal.cordova.mobilesdk": "^3.5.0",
+    "cordova-browser": "^6.0.0",
+    "cordova-ios": "^6.1.1",
     "cordova-plugin-add-swift-support": "^2.0.2",
     "cordova-plugin-androidx": "^3.0.0",
     "cordova-plugin-androidx-adapter": "^1.1.3",
@@ -125,12 +127,11 @@
         "ANDROID_GRADLE_TOOLS_VERSION": "4.1.0",
         "IOS_FIREBASE_MESSAGING_VERSION": "~> 7.0.0"
       },
-      "cordova-plugin-ionic-webview": {
-        "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
-      }
+      "cordova-plugin-ionic-webview": {}
     },
     "platforms": [
       "android",
+      "browser",
       "ios"
     ]
   }

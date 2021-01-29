@@ -1,11 +1,13 @@
-import { Component, NgZone, OnInit, ɵConsole } from '@angular/core';
+import { Component, OnInit, ɵConsole } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoadingController, Platform, ToastController } from '@ionic/angular';
+import { LoadingController, ModalController, Platform, ToastController } from '@ionic/angular';
 import { PaymentService } from 'src/app/services/payment/payment.service';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { Storage } from '@ionic/storage';
+import { DomSanitizer } from '@angular/platform-browser';
+import { PaytabsPage } from '../paytabs/paytabs.page';
 
-const POST_DATA=200;
+const POST_DATA = 200;
 @Component({
   selector: 'app-paypal',
   templateUrl: './paypal.page.html',
@@ -15,29 +17,32 @@ export class PaypalPage implements OnInit {
   paymentAmount: string;
   currency: string = 'USD';
   currencyIcon: string = '$';
-  order_id:any
-  details:any
-  constructor(private pay:PaymentService,public router:Router,private toastController:ToastController,
-    private zone:NgZone,private loadingController:LoadingController,
-    private platform:Platform,private iab:InAppBrowser,
-    private storage: Storage,) 
-  { 
+  order_id: any
+  details: any;
+  response: any;
+  url: any
+  constructor(private pay: PaymentService, public router: Router, private toastController: ToastController,
+    private sanitizer: DomSanitizer,
+    private modalController: ModalController, private loadingController: LoadingController,
+    private platform: Platform, private iab: InAppBrowser,
+    private storage: Storage,) {
     this.paymentAmount = localStorage.getItem('total_amount')
-    
+
     // this.paypal()
   }
 
   ngOnInit() {
+
   }
 
   hostedSubmit() {
     this.presentLoading().then(() => {
 
       let data = {
-        client_id:Number(localStorage.getItem('client_id')),
-        payable_order_id:localStorage.getItem('order_id'),
-        payable_amount:localStorage.getItem('total_amount'),
-        address_id:localStorage.getItem('address_id')
+        client_id: Number(localStorage.getItem('client_id')),
+        payable_order_id: localStorage.getItem('order_id'),
+        payable_amount: localStorage.getItem('total_amount'),
+        address_id: localStorage.getItem('address_id')
       }
       this.pay.hostedPay(data)
         .subscribe(
@@ -46,89 +51,47 @@ export class PaypalPage implements OnInit {
 
     })
   }
+  async presentPaytabModal(redirect_url) {
+    const modal = await this.modalController.create({
+      component: PaytabsPage,
+      componentProps: { url: redirect_url }
+    });
 
+    await modal.present();
+
+  }
 
   handleResponse(data) {
     this.loadingController.dismiss()
     console.log('data n Tab3', data)
-    this.storage.set("tran_ref",data.tran_ref).then(()=>{
-    this.openUrl(data.redirect_url)
+    this.response = data;
+    this.storage.set("tran_ref", data.tran_ref).then(() => {
+      // this.openUrl(data.redirect_url)
+      this.presentPaytabModal(data.redirect_url)
     })
   }
+
+
   handleError(error) {
     // console.log('error in Tab3', error)
     this.loadingController.dismiss()
-    }
-    openUrl(url) {
+  }
+  openUrl(url) {
     if (!this.platform.is('cordova')) {
-    window.open(url, '_self')
-    return;
+      window.open(url, '_self')
+      return;
     }
     const browser = this.iab.create(url, '_self');
-    
     browser.on('loadstop').subscribe(event => {
-    browser.insertCSS({ code: "body{color: red;" });
+      // browser.insertCSS({ code: "body{color: red;" });
     });
-    
+
     // browser.close();
   }
 
-//   paypal()
-// {
-//   let _this = this;
-//   setTimeout(() => {
-//     // Render the PayPal button into #paypal-button-container
-//     <any>window['paypal'].Buttons({
-
-//       // Set up the transaction
-//       createOrder: function (data, actions) {
-        
-//         return actions.order.create({
-//           purchase_units: [{
-//             amount: {
-//               value: _this.paymentAmount
-//             }
-//           }]
-//         });
-//       },
-
-//       // Finalize the transaction
-//       onApprove: function (data, actions) {
-//         _this.presentLoading()
-//         return actions.order.capture()
-//           .then(function (details) {
-            
-//             // console.log(details)
-//             // Show a success message to the buyer
-//             if(details.status == "COMPLETED")
-//             {
-//               let data={
-//                 payable_order_id:localStorage.getItem("order_id"),
-//                 client_id:localStorage.getItem("client_id")
-//               }
-              
-//               _this.pay.capturePayment(data).subscribe(
-//                 (data)=>console.log(data),
-//                 (error)=>console.log(error)    
-//               )
-//               _this.loadingController.dismiss()
-//               _this.zone.run(() => {
-//                _this.router.navigate(['order-placed'])
-//               })
-//             }
-//             // alert('Transaction completed by ' + details.payer.name.given_name + '!');
-
-//           })
-//           .catch(err => {
-//             console.log(err);
-//             console.log("payment failed")
-//             _this.presentToast("Payment Failed")
-//             _this.router.navigate(['cart'])
-//           })
-//       }
-//     }).render('#paypal-button-container');
-//   }, 500)
-//   }
+  openApp() {
+    window.location.href = "dealonstore://myparam";
+  }
 
 
   async presentToast(msg) {
@@ -136,7 +99,7 @@ export class PaypalPage implements OnInit {
       message: msg,
       cssClass: 'custom-toast',
       position: 'top',
-      color:'dark',
+      color: 'dark',
       duration: 2000
     });
     toast.present();
@@ -145,7 +108,7 @@ export class PaypalPage implements OnInit {
   async presentLoading() {
     const loading = await this.loadingController.create({
       spinner: 'crescent',
-      cssClass:'custom-spinner',
+      cssClass: 'custom-spinner',
       message: 'Please wait...',
       showBackdrop: true
     });

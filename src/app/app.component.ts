@@ -93,10 +93,10 @@ export class AppComponent implements OnInit {
 
   initializeApp() {
     this.platform.ready().then(() => {
+      this.splashScreen.hide();
       this.statusBar.styleDefault();
       this.statusBar.overlaysWebView(false);
       this.statusBar.backgroundColorByHexString("#565656");
-      this.splashScreen.hide();
       this.setupFCM();
 
       this.client_id = localStorage.getItem("client_id");
