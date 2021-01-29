@@ -1,7 +1,7 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="secondary">
     <ion-buttons slot="end">
-      <ion-button (click)="close()">
+      <ion-button (click)="close()" color="light">
         <ion-icon name="close-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -12,8 +12,8 @@
 <ion-content>
   <ion-toolbar>
     <ion-buttons slot="end">
-      <ion-button color="danger" (click)="addAddress()">
-        <ion-icon slot="start" color="danger" name="add"></ion-icon>
+      <ion-button color="primary" (click)="addAddress()">
+        <ion-icon name="location-outline"></ion-icon>
         Add Address
       </ion-button>
     </ion-buttons>

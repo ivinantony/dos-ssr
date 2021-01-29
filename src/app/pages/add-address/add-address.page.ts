@@ -39,7 +39,6 @@ declare var google;
   templateUrl: "./add-address.page.html",
   styleUrls: ["./add-address.page.scss"],
 })
-
 export class AddAddressPage implements OnInit {
   @ViewChild("map", { static: false }) mapElement: ElementRef;
   map: any;
@@ -75,7 +74,10 @@ export class AddAddressPage implements OnInit {
     this.getData();
     this.addressForm = this.formBuilder.group({
       client_id: [""],
-      name: [ "",Validators.compose([Validators.required, Validators.minLength(3)]),],
+      name: [
+        "",
+        Validators.compose([Validators.required, Validators.minLength(3)]),
+      ],
       address: ["", Validators.required],
       latitude: [""],
       longitude: [""],
@@ -107,12 +109,20 @@ export class AddAddressPage implements OnInit {
         this.loadMap().finally(() => {
           this.dismiss();
           // console.log("handle permisasions next");
-          this.handlePermission();
+          // this.handlePermission();
         });
       });
     });
   }
   ngOnInit() {}
+
+
+  getData() {
+    this.addressService.getDeliveryLocations().subscribe(
+      (data) => this.handleResponse(data, GET_DELIVERY_LOC),
+      (error) => this.handleError(error)
+    );
+  }
 
   validation_messages = {
     full_address: [
@@ -155,20 +165,6 @@ export class AddAddressPage implements OnInit {
       },
     ],
   };
-
-  async presentLoading() {
-    const loading = await this.loadingController.create({
-      spinner: "bubbles",
-      cssClass: "custom-spinner",
-      message: "Please wait...",
-      showBackdrop: true,
-    });
-    await loading.present();
-  }
-
-  async dismiss() {
-    await this.loadingController.dismiss();
-  }
 
   async loadMap() {
     // this.is_granted=true
@@ -297,7 +293,7 @@ export class AddAddressPage implements OnInit {
         .then((result: NativeGeocoderResult[]) => {
           console.log(result, "mobile");
 
-          // this.addressForm.controls["address"].setValue(null);
+          this.addressForm.controls["address"].setValue(null);
           let responseAddress = [];
           for (let [key, value] of Object.entries(result[0])) {
             if (value.length > 0) responseAddress.push(value);
@@ -310,7 +306,9 @@ export class AddAddressPage implements OnInit {
           }
           address = address.slice(0, -2);
           console.log("addresss from init", address);
-          this.addressForm.controls["address"].setValue(address);
+          this.zone.run(()=>{
+            this.addressForm.controls["address"].setValue(address);
+          })
         })
         .catch((error: any) => {});
     } else {
@@ -480,19 +478,14 @@ export class AddAddressPage implements OnInit {
     }
   }
 
-  getData() {
-    this.addressService.getDeliveryLocations().subscribe(
-      (data) => this.handleResponse(data, GET_DELIVERY_LOC),
-      (error) => this.handleError(error)
-    );
-  }
+  
 
   handleResponse(data, type) {
     // console.log(data, "Delivery loc");
     this.delivery_locations = data.delivery_locations;
   }
   handleError(error) {
-    // console.log(error);
+    // this.showToast(error.msg)
   }
 
   async showToast(message) {
@@ -513,6 +506,7 @@ export class AddAddressPage implements OnInit {
     });
     toast.present();
   }
+
   async showToastDanger(message) {
     let toast = await this.toastController.create({
       message: message,
@@ -522,6 +516,7 @@ export class AddAddressPage implements OnInit {
     });
     toast.present();
   }
+
   async showToastDangerDenied(message) {
     let toast = await this.toastController.create({
       message: message,
@@ -556,6 +551,20 @@ export class AddAddressPage implements OnInit {
   }
 
   report(state) {
-    // console.log("Permission " + state);
+    console.log("Permission " + state);
+  }
+
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      spinner: "bubbles",
+      cssClass: "custom-spinner",
+      message: "Please wait...",
+      showBackdrop: true,
+    });
+    await loading.present();
+  }
+
+  async dismiss() {
+    await this.loadingController.dismiss();
   }
 }

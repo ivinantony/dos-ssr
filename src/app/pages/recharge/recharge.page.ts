@@ -24,17 +24,14 @@ export class RechargePage implements OnInit {
     private toastController: ToastController,
     private formBuilder: FormBuilder
   ) {
-    let amount = this.activatedRoute.snapshot.params.balance;
-    if (amount) {
-      this.rechargeForm.controls['amount'].setValue(amount);
-    }
     this.rechargeForm = this.formBuilder.group({
       client_id: [localStorage.getItem("client_id")],
-      amount: [
-        "",
-        Validators.compose([Validators.required, Validators.pattern("[0-9]*")]),
-      ],
+      amount: [ "", Validators.compose([Validators.required, Validators.pattern("[0-9]*")]),],
     });
+    let amount = this.activatedRoute.snapshot.params.balance;
+    if (amount) {
+      this.rechargeForm.controls["amount"].setValue(amount);
+    }
   }
 
   ngOnInit() {}
@@ -43,6 +40,7 @@ export class RechargePage implements OnInit {
     this.presentLoading().then(() => {
       console.log(this.rechargeForm.value);
       localStorage.setItem("total_amount", this.rechargeForm.value.amount);
+      console.log("form value",this.rechargeForm.value)
       this.pay.wallet_hostedPay(this.rechargeForm.value).subscribe(
         (data) => this.handleResponse(data),
         (error) => this.handleError(error)
@@ -59,7 +57,6 @@ export class RechargePage implements OnInit {
   }
 
   handleError(error) {
-    // console.log('error in Tab3', error)
     this.loadingController.dismiss();
   }
 
@@ -73,8 +70,6 @@ export class RechargePage implements OnInit {
     browser.on("loadstop").subscribe((event) => {
       browser.insertCSS({ code: "body{color: red;" });
     });
-
-    // browser.close();
   }
 
   async presentLoading() {
@@ -92,7 +87,7 @@ export class RechargePage implements OnInit {
       message: msg,
       cssClass: "custom-toast-success",
       position: "top",
-      color: "danger",
+      color: "dark",
       duration: 1500,
     });
     toast.present();

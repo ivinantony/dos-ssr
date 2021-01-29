@@ -42,7 +42,7 @@
     "@teamhive/lottie-player": "^1.0.0",
     "algoliasearch": "^4.8.3",
     "checkout-sdk-node": "^1.0.19",
-    "cordova-android": "9.0.0",
+    "cordova-ios": "6.1.1",
     "cordova-plugin-badge": "^0.8.8",
     "drift-zoom": "^1.4.1",
     "firebase": "^8.2.3",
@@ -69,8 +69,7 @@
     "card.io.cordova.mobilesdk": "^2.1.0",
     "codelyzer": "^6.0.0",
     "com.paypal.cordova.mobilesdk": "^3.5.0",
-    "cordova-browser": "^6.0.0",
-    "cordova-ios": "^6.1.1",
+    "cordova-android": "^9.0.0",
     "cordova-plugin-add-swift-support": "^2.0.2",
     "cordova-plugin-androidx": "^3.0.0",
     "cordova-plugin-androidx-adapter": "^1.1.3",
@@ -130,8 +129,6 @@
       "cordova-plugin-ionic-webview": {}
     },
     "platforms": [
-      "android",
-      "browser",
       "ios"
     ]
   }

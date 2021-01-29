@@ -239,17 +239,9 @@ ion-slides {
   font-size: 1.2rem;
 }
 .recommended {
-  // .swiper-slide-prev {
-  //   opacity: 0.5;
-  // }
-  // .swiper-slide-next {
-  //   opacity: 0.5;
-  // }
-  // .swiper-slide-active {
-  //   transform: scale(1.1);
-  // }
   padding-bottom: 16px;
   padding-top: 16px;
+  
   img {
     height: 127px;
   }
@@ -259,12 +251,13 @@ ion-slides {
     margin-top: 10px;
   }
   ion-card {
-    margin: 16px 0px 16px 16px;
+    // margin: 16px 0px 16px 16px;
     width: 100%;
     border-radius: 15px;
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
+    min-height: 211px;
   }
 }
 

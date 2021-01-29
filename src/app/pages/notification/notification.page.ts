@@ -88,6 +88,11 @@ export class NotificationPage implements OnInit {
     }
     else if(type == DEL_DATA)
     {
+      this.loadingController.dismiss()
+      this.notf_count -=1
+    this.notcountService.setNotCount(this.notf_count)
+    localStorage.setItem("notf_count",this.notf_count)
+    this.badge.set(this.notf_count);
       this.getData()
     }
     else{
@@ -146,7 +151,8 @@ export class NotificationPage implements OnInit {
           text: "Delete",
           icon: "trash-outline",
           handler: () => {
-            this.data.splice(1,1)
+
+            this.presentLoading()
             this.notifications.deleteNotification(this.client_id,this.data[index].notification_id).subscribe(
               (data)=>this.handleResponse(data,DEL_DATA),
               (error)=>this.handleError(error)
