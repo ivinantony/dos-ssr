@@ -232,6 +232,8 @@ export class HomePage implements OnInit {
     this.result = [];
   }
 
+
+
   navigateToProducts(index: number) {
     this.result = [];
     this.selectedIndex = index;
