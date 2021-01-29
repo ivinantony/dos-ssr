@@ -3,7 +3,7 @@
     <name>Deal On Store</name>
     <description>Deal On Store Online Shop.</description>
     <author email="support@mermerapps.com" href="https://mermerapps.com/">Mermer Technologies</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://192.168.1.7:8101" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -116,4 +116,6 @@
     <plugin name="cordova-plugin-device" spec="2.0.2" />
     <plugin name="cordova-plugin-splashscreen" spec="5.0.2" />
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
+    <allow-navigation href="http://192.168.1.7:8101" sessionid="8d0aaf21" />
+    <allow-navigation href="http://localhost:8102" sessionid="de63e882" />
 </widget>

@@ -1,28 +1,34 @@
+<!-- <iframe src="https://www.paytabs.com/1ucY6nAsQJB_mZGK9WbustgfBWNBC_0jnSNVPIwea4rIQ_4/oHVmPOXNGFy6kkK3Xrj2OCGI5Lvltauyz4skdJ5VyL1iZpk/nIgBkDujvlozJ1dO3F4JshKUe7vSSZQno_ghY8s2TlCa0yE/PqxVat3xUEXAQwjsS0T-HlWbBMgBuqD7eHh9GOJ7f1UPFIOjBMowOMuGJnN6c-uwxRzia57dyXYSbZZBpVic_vyczA" title="W3Schools Free Online Web Tutorials"></iframe> -->
+
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="start" name="chevron-back"></ion-icon>
+        Back
+      </ion-button>
+    </ion-buttons>
     <ion-title>PAY</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <!-- <iframe src="https://www.paytabs.com/1ucY6nAsQJB_mZGK9WbustgfBWNBC_0jnSNVPIwea4rIQ_4/oHVmPOXNGFy6kkK3Xrj2OCGI5Lvltauyz4skdJ5VyL1iZpk/nIgBkDujvlozJ1dO3F4JshKUe7vSSZQno_ghY8s2TlCa0yE/PqxVat3xUEXAQwjsS0T-HlWbBMgBuqD7eHh9GOJ7f1UPFIOjBMowOMuGJnN6c-uwxRzia57dyXYSbZZBpVic_vyczA" title="W3Schools Free Online Web Tutorials"></iframe> -->
+  <!-- <iframe
+    src="https://www.paytabs.com/1ucY6nAsQJB_mZGK9WbustgfBWNBC_0jnSNVPIwea4rIQ_4/oHVmPOXNGFy6kkK3Xrj2OCGI5Lvltauyz4skdJ5VyL1iZpk/nIgBkDujvlozJ1dO3F4JshKUe7vSSZQno_ghY8s2TlCa0yE/PqxVat3xUEXAQwjsS0T-HlWbBMgBuqD7eHh9GOJ7f1UPFIOjBMowOMuGJnN6c-uwxRzia57dyXYSbZZBpVic_vyczA"
+    title="W3Schools Free Online Web Tutorials"
+  ></iframe> -->
 
-  <form action="https://yourserver.com/payment" id="payform" method="post">
-    <span id="paymentErrors"></span>
-    <div class="row">
-      <label>Card Number</label>
-      <input type="text" name="number" size="20">
-    </div>
-    <div class="row">
-      <label>Expiry Date (MM/YYYY)</label>
-      <input type="text" name="expmonth" size="2">
-      <input type="text" name="expyear" size="4">
-    </div>
-    <div class="row">
-      <label>Security Code</label>
-      <input type="text" name="cvv" size="4">
-    </div>
-    <input type="submit" value="Place order">
-  </form>
+  <iframe
+    [src]="redirectUrl"
+    style="width: 100%; height: 100vh"
+    scrolling="yes"
+  ></iframe>
 
+  <!-- <iframe
+    sandbox=""
+    [src]="redirectUrl"
+    style="width: 100%; height: 100vh"
+    scrolling="yes"
+    (load)="loaded()"
+  ></iframe> -->
 </ion-content>

@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-paytabs',
@@ -6,10 +8,25 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./paytabs.page.scss'],
 })
 export class PaytabsPage implements OnInit {
+  @Input() url: any;
+  redirectUrl: any;
+  constructor(private sanitizer: DomSanitizer, private modalController: ModalController) {
 
-  constructor() { }
-
-  ngOnInit() {
   }
 
+
+  ngOnInit() {
+
+    this.redirectUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.url)
+    console.log('redirectUrl', this.url)
+
+
+
+  }
+  beforeunload() {
+    alert(23)
+  }
+  dismiss() {
+    this.modalController.dismiss()
+  }
 }

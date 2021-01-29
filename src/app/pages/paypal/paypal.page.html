@@ -1,24 +1,23 @@
 <ion-header>
   <ion-toolbar color="secondary">
     <ion-title>PAYMENT</ion-title>
-  
-      <ion-buttons slot="start">
-        <ion-back-button (click)="router.navigate(['cart'])"  color="light" defaultHref="cart"></ion-back-button>
-      </ion-buttons>
-   
+
+    <ion-buttons slot="start">
+      <ion-back-button
+        (click)="router.navigate(['cart'])"
+        color="light"
+        defaultHref="cart"
+      ></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
- 
-
   <div class="wrapper">
-
-
     <ion-card class="card">
       <div class="ion-text-center imgWrapper">
         <h2>Complete the transaction.</h2>
-        <img src="../../../assets/imgs/payment.svg" alt="">
+        <img src="../../../assets/imgs/payment.svg" alt="" />
       </div>
       <!-- <div id="paypal-button-container"></div> -->
       <ion-button (click)="hostedSubmit()" expand="block" color="dark">

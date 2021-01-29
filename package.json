@@ -31,6 +31,7 @@
     "@ionic-native/core": "^5.0.0",
     "@ionic-native/geolocation": "^5.29.0",
     "@ionic-native/in-app-browser": "^5.30.0",
+    "@ionic-native/ionic-webview": "^5.31.1",
     "@ionic-native/native-geocoder": "^5.29.0",
     "@ionic-native/native-storage": "^5.30.0",
     "@ionic-native/paypal": "^5.30.0",
@@ -125,9 +126,7 @@
         "ANDROID_GRADLE_TOOLS_VERSION": "4.1.0",
         "IOS_FIREBASE_MESSAGING_VERSION": "~> 7.0.0"
       },
-      "cordova-plugin-ionic-webview": {
-        "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
-      }
+      "cordova-plugin-ionic-webview": {}
     },
     "platforms": [
       "ios"
