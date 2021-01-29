@@ -31,66 +31,70 @@
   </ion-refresher>
  
 
-    <ion-row>
-      <ion-col size="12" size-sm="12" size-md="12" size-xl="12" size-lg="12">
-        <ion-grid>
-          <ion-row class="row">
-            <ion-col
-              size="6"
-              size-sm="4"
-              size-md="4"
-              size-lg="3"
-              size-xl="2"
-              *ngFor="let item of products; let i=index"
-              class="prod"
-            >
-              <div class="select" (click)="navigateToProduct(i)">
-              <div style=" position: relative; overflow: hidden" class="img_wrapper ion-text-center">
-            
-                <img [src]="s3url + item?.images[0]?.path" alt="">
-                <div  class="ion-text-center stock"  *ngIf="item.in_stock == 0">
+  <ion-row>
+    <ion-col size="12" size-sm="12" size-md="12" size-xl="12" size-lg="12">
+      <ion-grid>
+        <ion-row class="row">
+          <ion-col
+            size="6"
+            size-sm="4"
+            size-md="4"
+            size-lg="3"
+            size-xl="2"
+            *ngFor="let item of products; let i=index"
+            class="prod"
+            [ngClass]="{outofstock: !item.in_stock}"
+          >
+            <div class="select" (click)="navigateToProduct(i)">
+              <div
+                style="position: relative; overflow: hidden"
+                class="img_wrapper ion-text-center"
+              >
+                <div class="ion-text-center stock" *ngIf="item.in_stock == 0">
                   <h3>OUT OF STOCK</h3>
                 </div>
+                <img [src]="s3url + item?.images[0]?.path" alt="" />
               </div>
               <ion-list class="ion-text-center details">
-                
-                  <h3>{{item.name}}</h3>
-             
-                
+                <h3>{{item.name}}</h3>
+
                 <ion-item lines="none">
                   <ion-label class="text">
-                    
-                    
-                      <ion-text color="dark" class="price">
-                        <h2>{{ item.offer_price | currency:'AED ' }}</h2>
-                        <h2 *ngIf="item.offer_price == null">{{ item.price | currency:'AED ' }}</h2>
-                      </ion-text>
-                      <ion-text color="danger">
-                        <p class="offer-price" *ngIf="item.offer_price != null">{{ item.price | currency:'AED ' }}</p>
-                      </ion-text>
-                    </ion-label>
-                    <!-- <p class="price">{{ 225 | currency:'AED' }}</p>
-                    <p class="offer-price">{{ 225 | currency:'AED' }}</p> -->
+                    <ion-text
+                      class="ion-text-center"
+                      color="primary"
+                      [ngStyle]="{'display': item?.offer_price?'':'none'}"
+                    >
+                      <h6><b> {{ item.offer_price | currency:'AED ' }}</b></h6>
+                    </ion-text>
+                    <ion-text
+                      class="ion-text-center"
+                      color="dark"
+                      [ngStyle]="{'text-decoration': item?.offer_price ? 'line-through':'none'}"
+                    >
+                      <p style="font-size: 12px">
+                        {{ item.price | currency:'AED ' }}
+                      </p>
+                    </ion-text>
+                  </ion-label>
                 </ion-item>
               </ion-list>
             </div>
-         
-            
-            <ion-button (click)="addToCart(i)" color="secondary" expand="full" *ngIf="item?.cart_count == 0" [disabled]="item?.in_stock == 0" class="tocart">   
-              ADD TO CART
-            </ion-button>
-            <ion-button (click)="goToCart()" color="secondary" expand="full" *ngIf="item?.cart_count > 0" class="tocart">   
-              GO TO CART
-            </ion-button>
-            </ion-col> 
-            
-            
-            
-          </ion-row>
-        </ion-grid>
 
-      </ion-col>
-    </ion-row>
+            <ion-button
+              (click)="item?.cart_count > 0 ? goToCart() : addToCart(i)"
+              color="primary"
+              expand="full"
+              [disabled]="item?.in_stock == 0"
+              class="tocart"
+            >
+              {{ item?.cart_count > 0 ? 'Go To Cart' : 'Add To Cart'}}
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-col>
+  </ion-row>
   
    
     
