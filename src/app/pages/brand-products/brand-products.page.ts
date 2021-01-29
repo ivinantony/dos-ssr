@@ -254,24 +254,26 @@ export class BrandProductsPage implements OnInit {
   }
 
   addToCart(index: number) {
-    if (this.authService.isAuthenticated()) {
-      let data = {
-        product_id: this.products[index].id,
-        client_id: this.client_id,
-      };
-      this.cartService.addToCart(data).subscribe(
-        (data) => this.handleResponse(data, POST_DATA),
-        (error) => this.handleError(error)
-      );
-      this.products[index].cart_count++;
-      //  this.getData()
-      this.name = this.products[index].name
-
-        // this.presentToastSuccess("One ' " + name +" ' added to cart.");
-        localStorage.setItem('cart_count',this.cart_count)
-    } else {
-      this.presentLogin();
-    }
+    this.authService.isAuthenticated().then((val)=>{
+      if(val){
+        let data = {
+          product_id: this.products[index].id,
+          client_id: this.client_id,
+        };
+        this.cartService.addToCart(data).subscribe(
+          (data) => this.handleResponse(data, POST_DATA),
+          (error) => this.handleError(error)
+        );
+        this.products[index].cart_count++;
+        //  this.getData()
+        this.name = this.products[index].name
+  
+          // this.presentToastSuccess("One ' " + name +" ' added to cart.");
+          localStorage.setItem('cart_count',this.cart_count)
+      }else{
+        this.presentLogin();
+      }
+    })
   }
 
   goToCart()

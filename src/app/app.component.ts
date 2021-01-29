@@ -85,15 +85,17 @@ export class AppComponent implements OnInit {
     private autocloseOverlaysService: AutocloseOverlayService,
     private modalController: ModalController,
     private authguard: AuthGuard,
-    private zone: NgZone,
     private badge: Badge
   ) {
     this.initializeApp();
+    this.searchTerm = new FormControl();
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
+      this.statusBar.overlaysWebView(false);
+      this.statusBar.backgroundColorByHexString("#565656");
       this.splashScreen.hide();
       this.setupFCM();
 
@@ -110,24 +112,18 @@ export class AppComponent implements OnInit {
         this.notf_count = res;
       });
       this.badge.set(this.notf_count);
-      this.searchTerm = new FormControl();
 
       this.searchService.searchResult.subscribe((data) => {
-        // console.log('data', data)
         if (data) {
           this.searchItems = data;
-          // console.log(this.searchItems,"searchItems")
         } else {
           this.searchItems = [];
         }
       });
 
       window.addEventListener("beforeinstallprompt", (e) => {
-        // Prevent the mini-infobar from appearing on mobile
         e.preventDefault();
-        // Stash the event so it can be triggered later.
         this.deferredPrompt = e;
-        // Update UI notify the user they can install the PWA
         this.showInstallPromotion();
         console.log("show banne");
       });
@@ -202,7 +198,6 @@ export class AppComponent implements OnInit {
     } else if (type == "C") {
       let catId = id;
       let category_name = this.searchItems[index].category_name;
-
       this.router.navigate(["products", catId, { category_name }]);
     }
 
@@ -211,10 +206,6 @@ export class AppComponent implements OnInit {
 
   onCancel() {
     this.searchItems = [];
-  }
-
-  navigateToProducts(index: number) {
-    this.selectedIndex = index;
   }
 
   logout() {
@@ -250,13 +241,6 @@ export class AppComponent implements OnInit {
     toast.present();
   }
 
-  handleResponse(data) {
-    // console.log(data)
-    this.user_name = data.client_Details.name;
-  }
-  handleError(error) {
-    // console.log(error)
-  }
 
   @HostListener("window:popstate")
   onPopState(): void {
