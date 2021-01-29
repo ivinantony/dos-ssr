@@ -47,6 +47,7 @@ export class AppComponent implements OnInit {
   cart_count_initial: any;
   notf_count_initial: any;
   deferredPrompt: any;
+  loggedIn:boolean=false;
   categories: Array<any> = [
     { id: 1, name: "Home", url: "/home", icon: "home-outline" },
     { id: 1, name: "Offers", url: "/offers", icon: "flash-outline" },
@@ -152,6 +153,16 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.authService.isAuthenticated().then((data)=>{
+      console.log(data)
+      if(data)
+      {
+        this.loggedIn=true
+      }
+      else{
+        this.loggedIn=false
+      }
+    })
     this.router.events
       .pipe(
         filter((e: any) => e instanceof NavigationEnd),
@@ -213,6 +224,7 @@ export class AppComponent implements OnInit {
     this.presentLoading().then(() => {
       this.authService.logout().then(() => {
         this.presentToast().finally(() => {
+          this.loggedIn=false
           this.menuController.close();
         });
       });

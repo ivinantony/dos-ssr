@@ -249,14 +249,14 @@
           <ion-button
             fill="clear"
             expand="full"
-            (click)="client_id != null ? logout() : login()"
+            (click)="loggedIn ? logout() : login()"
           >
             <ion-icon
               color="primary"
               slot="start"
               src="../assets/imgs/logout.svg"
             ></ion-icon>
-            {{ client_id ? "Sign out" : "Sign in" }}
+            {{ loggedIn ? "Sign out" : "Sign in" }}
           </ion-button>
         </ion-menu-toggle>
       </ion-toolbar>
