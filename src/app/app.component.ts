@@ -45,8 +45,8 @@ export class AppComponent implements OnInit {
   categories: Array<any> = [
     { id: 1, name: 'Home', url: '/home', icon: 'home-outline' },
     { id: 1, name: 'Offers', url: '/offers', icon: 'flash-outline' },
-    { id: 1, name: 'Categories', url: '/categories', icon: 'grid-outline' },
-    { id: 1, name: 'Manufactures', url: '/manufacturers', icon: 'construct-outline' },]
+    { id: 1, name: 'Shop by Category', url: '/categories', icon: 'grid-outline' },
+    { id: 1, name: 'Shop by Brand', url: '/manufacturers', icon: 'construct-outline' },]
   selectedCategoryIndex: number = 0;
 
   constructor(
