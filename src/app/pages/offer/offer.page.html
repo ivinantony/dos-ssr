@@ -73,7 +73,7 @@
 
               <ion-button
                 (click)="addToCart(i)"
-                color="danger"
+                color="primary"
                 expand="full"
                 [disabled]="item?.in_stock == 0"
                 class="tocart"
@@ -82,7 +82,7 @@
               </ion-button>
               <ion-button
                 (click)="goToCart()"
-                color="danger"
+                color="primary"
                 expand="full"
                 *ngIf="item?.cart_count > 0"
                 class="tocart"
