@@ -41,6 +41,8 @@
     "@teamhive/lottie-player": "^1.0.0",
     "algoliasearch": "^4.8.3",
     "checkout-sdk-node": "^1.0.19",
+    "cordova-android": "9.0.0",
+    "cordova-ios": "6.1.1",
     "cordova-plugin-badge": "^0.8.8",
     "drift-zoom": "^1.4.1",
     "firebase": "^8.2.3",
@@ -118,7 +120,6 @@
       "cordova-plugin-inappbrowser": {},
       "cordova-plugin-fcm-with-dependecy-updated": {
         "ANDROID_DEFAULT_NOTIFICATION_ICON": "@mipmap/ic_launcher",
-        "ANDROID_FCM_VERSION": "21.0.0",
         "ANDROID_FIREBASE_BOM_VERSION": "26.0.0",
         "ANDROID_GOOGLE_SERVICES_VERSION": "4.3.4",
         "ANDROID_GRADLE_TOOLS_VERSION": "4.1.0",
@@ -128,6 +129,9 @@
         "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
       }
     },
-    "platforms": []
+    "platforms": [
+      "android",
+      "ios"
+    ]
   }
 }
