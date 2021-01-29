@@ -34,7 +34,7 @@ export class HomePage implements OnInit {
     this.slides1.slidePrev();
   }
 
- ;
+  ;
   bannerSlideOpts4 = {
     slidesPerView: 1,
     initialSlide: 0,
@@ -73,111 +73,62 @@ export class HomePage implements OnInit {
     speed: 400,
   };
   bannerSlideOpts = {
-    on: {
-    beforeInit() {
-    const swiper = this;
-    swiper.classNames.push(`${swiper.params.containerModifierClass}fade`);
-    const overwriteParams = {
     slidesPerView: 1,
-    slidesPerColumn: 1,
-    slidesPerGroup: 1,
-    watchSlidesProgress: true,
-    spaceBetween: 0,
-    virtualTranslate: true,
-    };
-    swiper.params = Object.assign(swiper.params, overwriteParams);
-    swiper.params = Object.assign(swiper.originalParams, overwriteParams);
-    },
-    setTranslate() {
-    const swiper = this;
-    const { slides } = swiper;
-    for (let i = 0; i < slides.length; i += 1) {
-    const $slideEl = swiper.slides.eq(i);
-    const offset$$1 = $slideEl[0].swiperSlideOffset;
-    let tx = -offset$$1;
-    if (!swiper.params.virtualTranslate) tx -= swiper.translate;
-    let ty = 0;
-    if (!swiper.isHorizontal()) {
-    ty = tx;
-    tx = 0;
-    }
-    const slideOpacity = swiper.params.fadeEffect.crossFade
-    ? Math.max(1 - Math.abs($slideEl[0].progress), 0)
-    : 1 + Math.min(Math.max($slideEl[0].progress, -1), 0);
-    $slideEl
-    .css({
-    opacity: slideOpacity,
-    })
-    .transform(`translate3d(${tx}px, ${ty}px, 0px)`);
-    }
-    },
-    setTransition(duration) {
-    const swiper = this;
-    const { slides, $wrapperEl } = swiper;
-    slides.transition(duration);
-    if (swiper.params.virtualTranslate && duration !== 0) {
-    let eventTriggered = false;
-    slides.transitionEnd(() => {
-    if (eventTriggered) return;
-    if (!swiper || swiper.destroyed) return;
-    eventTriggered = true;
-    swiper.animating = false;
-    const triggerEvents = ['webkitTransitionEnd', 'transitionend'];
-    for (let i = 0; i < triggerEvents.length; i += 1) {
-    $wrapperEl.trigger(triggerEvents[i]);
-    }
-    });
-    }
-    },
-    }
-    }
-    categoryOpts = {
+    spaceBetween: 20,
+    loop: true,
+    centeredSlides: true,
     updateOnWindowResize: true,
-    
+    autoplay: {
+      delay: 3500,
+      disableOnInteraction: false,
+    },
+  }
+  categoryOpts = {
+    updateOnWindowResize: true,
     breakpoints: {
-    // when window width is <= 320px
-    320: {
-    slidesPerView: 2.2,
-    initialSlide: 0,
-    spaceBetween: 10,
-    },
-    // when window width is <= 640px
-    768: {
-    slidesPerView: 2,
-    initialSlide: 0,
-    spaceBetween: 10,
-    autoplay: {
-      delay: 2000,
-      loop: true,
-      disableOnInteraction: false,
-    },
-    speed: 400,
-    },
-    1024: {
-    slidesPerView: 6,
-    initialSlide: 0,
-    spaceBetween: 10,
-    autoplay: {
-      delay: 2000,
-      loop: true,
-      disableOnInteraction: false,
-    },
-    speed: 400,
+      // when window width is <= 320px
+      320: {
+        slidesPerView: 2.2,
+        initialSlide: 0,
+        spaceBetween: 10,
+      },
+      // when window width is <= 640px
+      768: {
+        slidesPerView: 2,
+        initialSlide: 0,
+        spaceBetween: 10,
+        autoplay: {
+          delay: 2000,
+          loop: true,
+          disableOnInteraction: false,
+        },
+        speed: 400,
+      },
+      1024: {
+        slidesPerView: 6,
+        initialSlide: 0,
+        spaceBetween: 10,
+        autoplay: {
+          delay: 2000,
+          loop: true,
+          disableOnInteraction: false,
+        },
+        speed: 400,
+      }
     }
-    }
-    }
+  }
 
 
   productSlides = window.matchMedia("(max-width: 320px)").matches
     ? {
-        slidesPerView: 1.5,
+      slidesPerView: 1.5,
 
-        spaceBetween: 2,
-        autoplay: true,
-        speed: 900,
-      }
+      spaceBetween: 2,
+      autoplay: true,
+      speed: 900,
+    }
     : window.matchMedia("(max-width: 576px)").matches
-    ? {
+      ? {
         slidesPerView: 1.5,
         spaceBetween: 5,
         autoplay: true,
@@ -185,26 +136,26 @@ export class HomePage implements OnInit {
 
         //spaceBetween: 2
       }
-    : window.matchMedia(" (max-width: 768px)").matches
-    ? {
-        slidesPerView: 4,
-        spaceBetween: 8,
-        autoplay: true,
-        speed: 900,
-      }
-    : window.matchMedia(" (max-width: 992px)").matches
-    ? {
-        slidesPerView: 4,
-        spaceBetween: 10,
-        autoplay: true,
-        speed: 900,
-      }
-    : {
-        slidesPerView: 5.9,
-        spaceBetween: 10,
-        autoplay: true,
-        speed: 900,
-      };
+      : window.matchMedia(" (max-width: 768px)").matches
+        ? {
+          slidesPerView: 4,
+          spaceBetween: 8,
+          autoplay: true,
+          speed: 900,
+        }
+        : window.matchMedia(" (max-width: 992px)").matches
+          ? {
+            slidesPerView: 4,
+            spaceBetween: 10,
+            autoplay: true,
+            speed: 900,
+          }
+          : {
+            slidesPerView: 5.9,
+            spaceBetween: 10,
+            autoplay: true,
+            speed: 900,
+          };
 
   selectedIndex = 0;
   banners: any;
@@ -219,7 +170,7 @@ export class HomePage implements OnInit {
   public searchTerm: FormControl;
   public searchItems;
   searching: any = false;
-  result:Array<any>=[]
+  result: Array<any> = []
 
   myDate: String = new Date().toISOString();
   banner_image: any;
@@ -231,9 +182,9 @@ export class HomePage implements OnInit {
     private utils: UtilsService,
     private loadingController: LoadingController,
     private authService: AuthenticationService,
-    private searchService:SearchService,
-    private cartCountService:CartcountService,
-    private notCountService:NotcountService,
+    private searchService: SearchService,
+    private cartCountService: CartcountService,
+    private notCountService: NotcountService,
   ) {
     this.s3url = utils.getS3url();
     // this.badge.set(10);
@@ -242,11 +193,13 @@ export class HomePage implements OnInit {
     this.cart_count = localStorage.getItem("cart_count");
     this.notf_count = localStorage.getItem("notf_count");
     cartCountService.getCartCount().subscribe(res => {
-      this.cart_count=res}
-      )
+      this.cart_count = res
+    }
+    )
     notCountService.getNotCount().subscribe(res => {
-        this.notf_count=res}
-        )
+      this.notf_count = res
+    }
+    )
   }
 
   ionViewWillEnter() {
@@ -259,15 +212,14 @@ export class HomePage implements OnInit {
     this.searchTerm.valueChanges.pipe(debounceTime(700)).subscribe((searchTerm) => {
       this.searching = false;
       console.log(searchTerm)
-      if(searchTerm)
-        {
-          this.result=[]
-          this.searchService.getSearchResult(searchTerm).subscribe(
-            (data)=>this.handleResponseSearch(data),
-            (error)=>this.handleErrorSearch(error)
-          )
-        }
-      
+      if (searchTerm) {
+        this.result = []
+        this.searchService.getSearchResult(searchTerm).subscribe(
+          (data) => this.handleResponseSearch(data),
+          (error) => this.handleErrorSearch(error)
+        )
+      }
+
       // this.setFilteredItems(search);
     });
   }
@@ -275,7 +227,7 @@ export class HomePage implements OnInit {
   onSearchInputMobile() {
     this.searching = true;
   }
-  
+
   onCancel() {
     this.result = [];
   }
@@ -303,30 +255,27 @@ export class HomePage implements OnInit {
   }
 
   viewSearchProduct(index: number) {
-    console.log("type",this.result[index].type)
+    console.log("type", this.result[index].type)
     let id = this.result[index].id
-    let catId =this.result[index].category_id
+    let catId = this.result[index].category_id
     let type = this.result[index].type
-    
-    if(type == "P")
-    {
-      this.router.navigate(['product',id, {catId}])
+
+    if (type == "P") {
+      this.router.navigate(['product', id, { catId }])
     }
-    else if(type == "B")
-    {
+    else if (type == "B") {
       let brand_id = id
       let brand_name = this.result[index].brand_name
-      this.router.navigate(['brand-products',brand_id,{brand_name}])
+      this.router.navigate(['brand-products', brand_id, { brand_name }])
     }
-    else if(type == "C")
-    {
+    else if (type == "C") {
       let catId = id
       let category_name = this.result[index].category_name
-      
-      this.router.navigate(['products', catId, {category_name}])
+
+      this.router.navigate(['products', catId, { category_name }])
 
     }
-    
+
     this.searchItems = [];
   }
 
@@ -374,7 +323,7 @@ export class HomePage implements OnInit {
     this.categories = data.categories;
     this.products = data.products;
     this.banners = data.banner;
-   
+
   }
 
   handleError(error) {
@@ -427,8 +376,8 @@ export class HomePage implements OnInit {
     console.log(data)
     data.data.filter(item => {
       this.result.push(item)
-      }) 
-    console.log(this.result,"result")
+    })
+    console.log(this.result, "result")
   }
   handleErrorSearch(error) {
     console.log(error)
