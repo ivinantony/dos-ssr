@@ -6,24 +6,24 @@
     <ion-title color="light" class="ion-text-left">Deal on Store</ion-title>
 
     <ion-buttons slot="end">
-
+      <!-- 
         <ion-button (click)="router.navigate(['/search'])">
           <ion-icon name="search-outline"
           color="light"
           slot="icon-only"></ion-icon>
-        </ion-button>
-      
+        </ion-button> -->
+
       <ion-button (click)="router.navigate(['/notification'])">
         <ion-icon
           color="light"
           slot="icon-only"
           src="../assets/imgs/icons/notifications-outline.svg"
         ></ion-icon>
-        <ion-badge id="cart-badge" color="danger" *ngIf="notf_count > 0"
-          >{{ notf_count }}</ion-badge
+        <ion-badge id="cart-badge" color="primary" *ngIf="notf_count > 0"
+          >{{ notf_count > 9 ? '9+':notf_count }}</ion-badge
         >
       </ion-button>
-      <ion-button (click)="router.navigate(['/cart'])">
+      <!-- <ion-button (click)="router.navigate(['/cart'])">
         <ion-icon
           color="light"
           slot="icon-only"
@@ -32,7 +32,7 @@
         <ion-badge id="cart-badge" color="danger" *ngIf="cart_count > 0"
           >{{ cart_count > 9 ? '9+':cart_count }}</ion-badge
         >
-      </ion-button>
+      </ion-button> -->
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -170,9 +170,7 @@
 
     <section id="searchByManufactures">
       <ion-item lines="none" class="ion-text-center">
-        <ion-label class="title" color="magenta"
-          >Shop By Brand</ion-label
-        >
+        <ion-label class="title" color="magenta">Shop By Brand</ion-label>
       </ion-item>
       <ion-grid>
         <ion-row>
