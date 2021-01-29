@@ -72,11 +72,11 @@
               </ion-list>
             </div>
              
-              <ion-button (click)="addToCart(i)" color="primary" expand="full" *ngIf="item?.cart_count == 0" [disabled]="item?.in_stock == 0" class="tocart">
+              <ion-button (click)="addToCart(i)" color="secondary" expand="full" *ngIf="item?.cart_count == 0" [disabled]="item?.in_stock == 0" class="tocart">
               
                 ADD TO CART
               </ion-button>
-              <ion-button (click)="goToCart()" color="primary" expand="full" *ngIf="item?.cart_count > 0" class="tocart">   
+              <ion-button (click)="goToCart()" color="secondary" expand="full" *ngIf="item?.cart_count > 0" class="tocart">   
                 GO TO CART
               </ion-button>
             </ion-col> 
