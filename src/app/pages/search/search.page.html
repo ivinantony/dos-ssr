@@ -1,6 +1,4 @@
-
-
-<ion-header class="ion-no-border" >
+<ion-header class="ion-no-border">
   <ion-toolbar color="secondary">
     <ion-title>Search</ion-title>
     <ion-buttons slot="start">
@@ -8,29 +6,39 @@
     </ion-buttons>
   </ion-toolbar>
   <ion-toolbar class="ion-no-border search">
-    
-      <ion-searchbar  placeholder="Search your faviourate products"
-      [formControl]="searchTerm" 
-      (ionCancel)="onCancel()" 
+    <ion-searchbar
+      placeholder="Search for products, brands and more"
+      showCancelButton="focus"
+      [formControl]="searchTerm"
+      (ionCancel)="onCancel()"
       (ionChange)="onSearchInputMobile()"
-      >
-
-      </ion-searchbar>
-    
-    
+    >
+    </ion-searchbar>
   </ion-toolbar>
-
-   
- 
 </ion-header>
 
-<ion-content>
-  <ion-item *ngFor="let item of result ; let i=index" (click)="viewSearchProduct(i)" detail>
+<ion-content *ngIf="searchTerm.value">
+  <ng-container
+    *ngIf="result.length > 0; then thenTemplate; else elseTemplate"
+  ></ng-container>
+
+  <ng-template #thenTemplate>
+    <ion-item
+    *ngFor="let item of result ; let i=index"
+    (click)="viewSearchProduct(i)"
+    detail
+  >
     <ion-row size="12" class="searchResult">
       {{ item.name }} {{item.brand_name}} {{item.category_name}}
+    </ion-row>
+  </ion-item>
+  </ng-template>
 
-    </ion-row> 
-    
+  <ng-template #elseTemplate> 
+    <ion-item lines="none" class="ion-text-center">
+      <ion-label>No results found.</ion-label>
+    </ion-item>
+  </ng-template>
 
-</ion-item>
+
 </ion-content>

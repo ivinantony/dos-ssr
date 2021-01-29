@@ -21,21 +21,24 @@
     <ion-list>
       <ion-item
         *ngFor="let item of data; let i=index"
-        
-
         class="ion-no-margin"
+        lines="none"
+        [ngClass]="{read: item.push_notification_read_status==1}"
       >
      
       <ion-row style="width: 100%;">
-        <ion-col size="11" style="display: flex;" (click)="viewNotification(i)">
-          <ion-thumbnail >
-            <img src="{{s3url + item.image}}" *ngIf="item.image != null" />
-            <img src="../../../assets/imgs/chat.svg" />
-          </ion-thumbnail>
-          <ion-label style="margin-left: 7px;">
-            <h3>{{item.title}}</h3>
-            <p>{{item.description}}</p>
-          </ion-label>
+        <ion-col size="11" style="display: flex; justify-content: space-between;" (click)="viewNotification(i)">
+          <ion-item lines="none" class="ion-no-margin ion-no-padding" [ngClass]="{read: item.push_notification_read_status==1}">
+            <ion-thumbnail>
+              <img src="{{s3url + item.image}}" *ngIf="item.image != null" />
+              <img src="../../../assets/imgs/chat.svg" />
+            </ion-thumbnail>
+            <ion-label style="margin-left: 7px;">
+              <h3>{{item.title}}</h3>
+              <p>{{item.description}}</p>
+            </ion-label>
+          </ion-item>
+          
         </ion-col>
         <ion-col size="1">
           <ion-buttons >

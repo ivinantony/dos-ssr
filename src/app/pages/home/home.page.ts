@@ -220,7 +220,6 @@ export class HomePage implements OnInit {
           (error) => this.handleErrorSearch(error)
         )
       }
-
       // this.setFilteredItems(search);
     });
   }
@@ -232,6 +231,8 @@ export class HomePage implements OnInit {
   onCancel() {
     this.result = [];
   }
+
+
 
   navigateToProducts(index: number) {
     this.result = [];

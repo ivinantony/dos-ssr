@@ -81,5 +81,8 @@ export class SearchPage implements OnInit {
   }
 
   
+  onCancel() {
+    this.result = [];
+  }
 
 }
