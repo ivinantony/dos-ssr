@@ -57,9 +57,6 @@ export class OfferPage implements OnInit {
   ) {
     this.client_id = localStorage.getItem("client_id");
     this.s3url = utils.getS3url();
-    // this.page_count = 1;
-    // this.products = [];
-    // this.getData();
   }
 
   ngOnInit() {}
@@ -92,7 +89,7 @@ export class OfferPage implements OnInit {
       data.product.forEach((element) => {
         this.products.push(element);
       });
-      // console.log(this.products, "API called");
+    
     } else if (type == POST_DATA) {
       // console.log("add to cart", data);
       this.cart_count = data.cart_count;
@@ -115,23 +112,24 @@ export class OfferPage implements OnInit {
   }
 
   addToCart(index: number) {
-    if (this.authService.isAuthenticated()) {
-      // console.log("hai");
-      let data = {
-        product_id: this.products[index].id,
-        client_id: this.client_id,
-      };
-      this.cartService.addToCart(data).subscribe(
-        (data) => this.handleResponse(data, POST_DATA),
-        (error) => this.handleError(error)
-      );
-      this.products[index].cart_count++;
-      //  this.getData()
-
-      this.name = this.products[index].name;
-    } else {
-      this.presentLogin();
-    }
+    this.authService.isAuthenticated().then((val)=>{
+      if(val){
+        console.log("auth value",this.authService.isAuthenticated());
+        let data = {
+          product_id: this.products[index].id,
+          client_id: this.client_id,
+        };
+        this.cartService.addToCart(data).subscribe(
+          (data) => this.handleResponse(data, POST_DATA),
+          (error) => this.handleError(error)
+        );
+        this.products[index].cart_count++;
+        this.name = this.products[index].name;
+      } else {
+        this.presentLogin();
+      }
+    })
+  
   }
 
   goToCart()

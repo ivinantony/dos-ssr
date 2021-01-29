@@ -302,11 +302,15 @@ export class HomePage implements OnInit {
   }
 
   getData() {
-    if (this.authService.isAuthenticated()) {
-      this.client_id = localStorage.getItem("client_id");
-    } else {
-      this.client_id = null;
-    }
+    this.authService.isAuthenticated().then((val)=>{
+      if(val){
+        this.client_id = localStorage.getItem("client_id");
+      }else {
+        this.client_id = null;
+      } 
+
+    })
+   
     // console.log("client_id",this.client_id)
     this.presentLoading().then(() => {
       this.homeService.getHomeDetails(this.client_id).subscribe(

@@ -19,7 +19,6 @@ import { CartPage } from "../cart/cart.page";
 import { CartmodalPage } from "../cartmodal/cartmodal.page";
 import { CartcountService } from "src/app/cartcount.service";
 
-
 const GET_DATA = 200;
 const POST_DATA = 210;
 const GET_CART = 220;
@@ -44,19 +43,17 @@ export class ProductPage implements OnInit {
     },
   };
 
-
-  slidesOptionsThumbnail={
+  slidesOptionsThumbnail = {
     slidesPerView: 4,
     initialSlide: 0,
     spaceBetween: 0,
     centeredSlides: true,
-  }
+  };
 
-  slidesOptions={
+  slidesOptions = {
     slidesPerView: 1,
     initialSlide: 0,
-   
-  }
+  };
 
   product: any;
   productId: any;
@@ -69,9 +66,8 @@ export class ProductPage implements OnInit {
   client_id: any;
   myThumbnail: any;
   myFullresImage: any;
-  appUrl:any
+  appUrl: any;
   constructor(
-    private platform: Platform,
     private modalController: ModalController,
     public authencationservice: AuthenticationService,
     public checkloginGuard: AuthGuard,
@@ -85,39 +81,21 @@ export class ProductPage implements OnInit {
     private alertController: AlertController,
     private loadingController: LoadingController,
     private routerOutlet: IonRouterOutlet,
-    private cartCountService:CartcountService
+    private cartCountService: CartcountService
   ) {
     this.productId = parseInt(this.activatedRoute.snapshot.paramMap.get("id"));
     this.catId = parseInt(this.activatedRoute.snapshot.paramMap.get("catId"));
-    // this.product = PRODUCTS.find(data => data.id == this.productId)
     this.client_id = localStorage.getItem("client_id");
     this.s3url = utils.getS3url();
-    this.checkWidth();
-    this.platform.resize.subscribe(async () => {
-      // console.log("Resize event detected", this.platform.width());
-      this.checkWidth();
-    });
-
-    this.client_id = localStorage.getItem("client_id");
   }
 
   ngOnInit() {
-
-    this.appUrl = window.location.hostname + this.router.url
+    this.appUrl = window.location.hostname + this.router.url;
   }
 
   ionViewWillEnter() {
     this.getData();
   }
-
-  // getData()
-  // {
-
-  //   this.productsDetailsService.getProductDetails().subscribe(
-  //     (data)=>this.handleResponse(data,GET_DATA),
-  //     (error)=>this.handleError(error)
-  //   )
-  // }
 
   getData() {
     this.presentLoading().then(() => {
@@ -133,40 +111,28 @@ export class ProductPage implements OnInit {
   handleResponse(data, type) {
     if (type == GET_DATA) {
       this.data = data;
-      // console.log(data);
-      this.cartCountService.setCartCount(data.cart_count)
+      this.cartCountService.setCartCount(data.cart_count);
       this.productDetails = data.product;
       for (let i = 0; i < this.productDetails.images.length; i++) {
         this.productDetails.images[i].path =
           this.s3url + this.productDetails.images[i].path;
       }
-
       this.myThumbnail = this.productDetails.images[0].path;
       this.myFullresImage = this.productDetails.images[0].path;
 
       this.loadingController.dismiss();
+    } else if (type == POST_DATA) {
+      this.getData();
+    } else if (type == BUY_NOW) {
+      this.productDetails.cart_count++;
+      this.presentModal();
     }
-    else if(type == POST_DATA)
-    {
-      
-      // console.log(data)
-    }
-    else if(type == BUY_NOW)
-    {
-      this.presentModal()
-    }
-   
   }
   handleError(error) {
-    // console.log(error);
     this.loadingController.dismiss;
-
-    if(error.status == 400)
-    {
-      this.presentAlert(error.error.message)
+    if (error.status == 400) {
+      this.presentAlert(error.error.message);
     }
-    
-  
   }
 
   onSubmit() {
@@ -208,39 +174,21 @@ export class ProductPage implements OnInit {
   async presentModal() {
     const modal = await this.modalController.create({
       component: CartmodalPage,
-      cssClass:'cartmodal',
+      cssClass: "cartmodal",
       componentProps: { value: 123 },
       swipeToClose: true,
-      presentingElement: this.routerOutlet.nativeEl
+      presentingElement: this.routerOutlet.nativeEl,
     });
 
     await modal.present();
 
     await modal.onDidDismiss().then((data) => {
-      if(data.data = 1)
-      {
-      this.getData();
+      if ((data.data = 1)) {
+        this.getData();
       }
-    }); 
-    
+    });
   }
 
-
-  checkWidth() {
-    if (this.platform.width() > 768) {
-      this.recommendedSlides = {
-        slidesPerView: 3.5,
-        spaceBetween: 10,
-        initialSlide: 1,
-        centeredSlides: true,
-        autoplay: {
-          delay: 2700,
-          disableOnInteraction: false,
-          loop: true,
-        },
-      };
-    }
-  }
   add() {
     this.qty += 1;
   }
@@ -249,47 +197,41 @@ export class ProductPage implements OnInit {
   }
 
   addToCart() {
-    if (this.authService.isAuthenticated()) {
-      let data = {
-        product_id: this.productDetails.id,
-        client_id: this.client_id,
-        qty:this.qty
-      };
-      this.cartService.addToCartQty(data).subscribe(
-        (data) => this.handleResponse(data, POST_DATA),
-        (error) => this.handleError(error)
-      );
-      // this.productDetails.cart_count++;
-      //  this.getData()
-      // let name = this.productDetails.name
-      // this.presentToastSuccess(data.qty + " ' " + name +" ' added to cart.");
-      this.getData()
-    } else {
-      this.presentLogin();
-    }
+    this.authService.isAuthenticated().then((val) => {
+      if (val) {
+        let data = {
+          product_id: this.productDetails.id,
+          client_id: this.client_id,
+          qty: this.qty,
+        };
+        this.cartService.addToCartQty(data).subscribe(
+          (data) => this.handleResponse(data, POST_DATA),
+          (error) => this.handleError(error)
+        );
+      } else {
+        this.presentLogin();
+      }
+    });
   }
 
-  buyNow()
-  {
-    if (this.authService.isAuthenticated()) {
-      let data = {
-        product_id: this.productDetails.id,
-        client_id: this.client_id,
-        qty:this.qty
-      };
-      this.cartService.addToCartQty(data).subscribe(
-        (data) => this.handleResponse(data, BUY_NOW),
-        (error) => this.handleError(error)
-      );
-      this.productDetails.cart_count++;
-      //  this.getData()
-      let name = this.productDetails.name
-      // this.presentModal()
-      
-      // this.presentToastSuccess(data.qty + " '" + name +" ' added to cart.");
-    } else {
-      this.presentLogin();
-    }
+  buyNow() {
+    this.authService.isAuthenticated().then((val)=>{
+      if(val){
+        let data = {
+          product_id: this.productDetails.id,
+          client_id: this.client_id,
+          qty: this.qty,
+        };
+        this.cartService.addToCartQty(data).subscribe(
+          (data) => this.handleResponse(data, BUY_NOW),
+          (error) => this.handleError(error)
+        );
+      }else{
+        this.presentLogin();
+      }
+    })
+
+ 
   }
 
   goToCart() {
@@ -360,23 +302,19 @@ export class ProductPage implements OnInit {
 
   qtyIncrease() {
     this.qty = this.qty + 1;
-    
   }
   qtyDecrease() {
-    if(this.qty>1)
-      {
-    this.qty = this.qty - 1;  
-      }
+    if (this.qty > 1) {
+      this.qty = this.qty - 1;
+    }
   }
-
-
 
   async presentToastSuccess(msg) {
     const toast = await this.toastController.create({
       message: msg,
       cssClass: "custom-toast-success",
       position: "bottom",
-      
+
       duration: 1500,
     });
     toast.present();
@@ -386,14 +324,15 @@ export class ProductPage implements OnInit {
     this.slides.slideTo(index, 500);
   }
 
-
-  async presentAlert(msg:string) {
+  async presentAlert(msg: string) {
     const alert = await this.alertController.create({
-      cssClass: 'my-custom-class',
-      header: 'Low Stock Alert',
-     
-      message:msg + "\ For ordering large quantities contact us through email or whatsapp.",
-      buttons: ['OK']
+      cssClass: "my-custom-class",
+      header: "Low Stock Alert",
+
+      message:
+        msg +
+        " For ordering large quantities contact us through email or whatsapp.",
+      buttons: ["OK"],
     });
 
     await alert.present();
