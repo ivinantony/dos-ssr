@@ -8,40 +8,21 @@ import {
   Platform,
   ToastController,
 } from "@ionic/angular";
-import { AddressService } from "src/app/services/address/address.service";
 import { CartService } from "src/app/services/cart/cart.service";
-import { CheckoutService } from "src/app/services/checkout/checkout.service";
-import { OrderService } from "src/app/services/order/order.service";
 import { UtilsService } from "src/app/services/utils.service";
-import { AddAddressPage } from "../add-address/add-address.page";
-import { CouponPage } from "../coupon/coupon.page";
 import { ModeofpaymentPage } from "../modeofpayment/modeofpayment.page";
-import {
-  PayPal,
-  PayPalPayment,
-  PayPalConfiguration,
-} from "@ionic-native/paypal/ngx";
-import { PaytabsService } from "src/app/services/paytabs.service";
-import { Renderer2, Inject } from "@angular/core";
+import { Inject } from "@angular/core";
 import { DOCUMENT } from "@angular/common";
-import { hasLifecycleHook } from "@angular/compiler/src/lifecycle_reflector";
-import { Console } from "console";
 import { CartcountService } from "src/app/cartcount.service";
 import { AddressModalPage } from "../address-modal/address-modal.page";
 import { IonSlides} from '@ionic/angular';
 
 declare var google;
-declare var RazorpayCheckout: any;
-declare var Razorpay: any;
 const GET_CART = 200;
 const ADD = 210;
 const DEL_DATA = 220;
 const REMOVE = 230;
-const GET_ADDRESS = 240;
-const POST_ADDRESS_DETAILS = 250;
-const ORDER_RESPONSE = 260;
-const GET_PAY = 270;
-const paytabs = require("paytabs_api");
+
 
 @Component({
   selector: "app-cart",
@@ -82,17 +63,9 @@ export class CartPage implements OnInit {
     public modalController: ModalController,
     private routerOutlet: IonRouterOutlet,
     private toastController: ToastController,
-    private platform: Platform,
     private cartService: CartService,
     private utils: UtilsService,
-    private addressService: AddressService,
-    private checkoutService: CheckoutService,
-    private orderService: OrderService,
     private router: Router,
-    private payPal: PayPal,
-    private paytabService: PaytabsService,
-    private renderer2: Renderer2,
-    private zone: NgZone,
     private loadingController: LoadingController,
     private alertController:AlertController,
     private cartCountService: CartcountService,
@@ -100,7 +73,7 @@ export class CartPage implements OnInit {
   ) {
 
     this.client_id = localStorage.getItem("client_id");
-    this.s3url = utils.getS3url();
+    this.s3url = this.utils.getS3url();
     
     
   }
@@ -167,13 +140,6 @@ export class CartPage implements OnInit {
     });
   }
 
-  getAddress() {
-    
-    this.addressService.getAddress(this.client_id).subscribe(
-      (data) => this.handleResponse(data, GET_ADDRESS),
-      (error) => this.handleError(error)
-    );
-  }
 
   handleResponse(data, type) {
     

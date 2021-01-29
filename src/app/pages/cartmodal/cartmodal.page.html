@@ -16,6 +16,28 @@
   </ion-refresher>
   
   <ion-grid fixed [ngClass]="cartLength > 0 ? 'active' : 'inactive'">
+    <ion-list-header>
+      <ion-label>Select Delivery Address </ion-label>
+    </ion-list-header>
+    <ion-item lines="none" *ngIf="address_selected">
+              
+      <ion-label>
+        <ion-text color="primary">
+          <h3>{{address_selected.name}}</h3>
+        </ion-text>
+        <p>{{address_selected.full_address}}</p>
+        <p>{{address_selected.landmark}}</p>
+        <p>{{address_selected.phone}}</p>
+      </ion-label>
+      <ion-radio slot="start" ></ion-radio>
+      <ion-thumbnail class="ion-padding">
+        <img src="../../../assets/imgs/icons/location.svg">
+      </ion-thumbnail>
+    </ion-item>
+    <ion-button (click)="presentAddressModal()" fill='clear'>
+      select address
+      <ion-icon name="location-outline"></ion-icon>
+    </ion-button>
     <ion-row>
       <ion-col size-sm="12" size-md="12" size-lg="12" size-xl="12">
         <ion-list-header>
@@ -37,10 +59,10 @@
               </ion-label> -->
             </ion-item>
             
-            <ion-buttons slot="end">
-            <ion-icon name="trash-outline" (click)="remove(i,item.id)"></ion-icon>
-              
-            </ion-buttons>
+            <ion-button slot="end" icon-only (click)="remove(i,item.id)" fill="clear">
+            <ion-icon name="trash-outline"></ion-icon>  
+            </ion-button>
+            
             <ion-buttons class="cart-btns" slot="end">
               <ion-button (click)="subtract(i,item.id)">
                 <ion-icon slot="start" color="danger" name="remove"></ion-icon>
@@ -134,28 +156,7 @@
         </ion-list>
       </ion-col>
     </ion-row>
-    <ion-list-header>
-      <ion-label>Select Delivery Address </ion-label>
-    </ion-list-header>
-    <ion-item lines="none" *ngIf="address_selected">
-              
-      <ion-label>
-        <ion-text color="primary">
-          <h3>{{address_selected.name}}</h3>
-        </ion-text>
-        <p>{{address_selected.full_address}}</p>
-        <p>{{address_selected.landmark}}</p>
-        <p>{{address_selected.phone}}</p>
-      </ion-label>
-      <ion-radio slot="start" ></ion-radio>
-      <ion-thumbnail class="ion-padding">
-        <img src="../../../assets/imgs/icons/location.svg">
-      </ion-thumbnail>
-    </ion-item>
-    <ion-button (click)="presentAddressModal()" fill='clear'>
-      select address
-      <ion-icon name="location-outline"></ion-icon>
-    </ion-button>
+    
   </ion-grid>
 
 
@@ -177,8 +178,7 @@
     <ion-button
       
       slot="end"
-      shape="round"
-      color="danger"
+      color="primary"
       (click)="continue()"
     >
       <ion-icon slot="end" name="chevron-forward"></ion-icon>

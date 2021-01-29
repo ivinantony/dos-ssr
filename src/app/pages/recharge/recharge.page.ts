@@ -40,6 +40,7 @@ export class RechargePage implements OnInit {
     this.presentLoading().then(() => {
       console.log(this.rechargeForm.value);
       localStorage.setItem("total_amount", this.rechargeForm.value.amount);
+      console.log("form value",this.rechargeForm.value)
       this.pay.wallet_hostedPay(this.rechargeForm.value).subscribe(
         (data) => this.handleResponse(data),
         (error) => this.handleError(error)
