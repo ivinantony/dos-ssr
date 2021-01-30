@@ -2,6 +2,7 @@ import { Platform } from '@ionic/angular';
 import { Injectable } from '@angular/core';
 import { CartcountService } from '../cartcount.service';
 import { NotcountService } from '../notcount.service';
+import { observable } from 'rxjs';
 
 export const TOKEN_KEY = 'auth-token';
 
@@ -10,6 +11,7 @@ export const TOKEN_KEY = 'auth-token';
 })
 export class AuthenticationService {
 
+  
   constructor(private plt: Platform,private cartCountService:CartcountService,private notfCountSertvice:NotcountService) {
    
   }
@@ -23,7 +25,9 @@ export class AuthenticationService {
   }
 
   async login(token) {
+    console.log(token,"token")
     await localStorage.setItem(TOKEN_KEY, token)
+    // await localStorage.setItem(TOKEN_KEY, token)
     // console.log(token,"this is token")
     // console.log('token saved')
   }

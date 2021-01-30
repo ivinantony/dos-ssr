@@ -144,7 +144,7 @@ export class AppComponent implements OnInit {
         this.loggedIn = false;
       }
     });
-    this.cartCountService.setCartCount(localStorage.getItem('cart_count'));
+    this.cartCountService.setCartCount(localStorage.getItem('cart_count'))
     this.notCountService.setNotCount( localStorage.getItem('notf_count'))
 
     this.router.events

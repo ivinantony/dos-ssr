@@ -1,7 +1,7 @@
 <desktop-header></desktop-header>
 <ion-header class="ion-hide-md-up">
   <ion-toolbar color="secondary">
-    <ion-title>CHECKOUT</ion-title>
+    <ion-title>Checkout</ion-title>
     <ion-buttons slot="start" mode="ios">
       <ion-back-button defaultHref="cart"  color="light"></ion-back-button>
     </ion-buttons>
@@ -74,7 +74,7 @@
             fill="clear"
             size="small"
           >
-          {{ data?.saved_amount | currency:'AED  ' }}
+          {{ discount_amount| currency:'AED  ' }}
           </ion-button>
         </ion-item>
 

@@ -71,7 +71,7 @@ export class CheckoutPage implements OnInit {
   handleResponse(data, type) {
     if (type == GET_AMOUNTDETAILS) {
       this.loadingController.dismiss();
-      // console.log(data);
+      console.log(data);
       this.data = data;
     } else if (type == GET_PAY) {
       // console.log(data)
@@ -138,7 +138,6 @@ export class CheckoutPage implements OnInit {
       if (promo_Details) {
         // console.log(promo_Details);
         this.data.payable_amount -= promo_Details.discount_amount;
-        this.data.saved_amount = promo_Details.discount_amount;
         this.discount_amount = promo_Details.discount_amount;
         this.promo_id = promo_Details.promo_Id;
       }
@@ -148,8 +147,9 @@ export class CheckoutPage implements OnInit {
 
   removePromo()
   {
-    this.data.saved_amount -= this.discount_amount;
+    
     this.data.payable_amount += this.discount_amount;
+    this.discount_amount = 0
 
     this.discount_amount = 0;
     this.promo_id = null

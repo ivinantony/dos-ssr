@@ -114,7 +114,7 @@ export class CartPage implements OnInit {
       this.presentToast("Please select a serviceable delivery Location.");
     } else {
       let address_id = this.address_id;
-      this.router.navigate(["checkout", address_id]);
+      this.router.navigate(["/checkout", address_id]);
       // console.log(this.selectedAddress);
     }
   }
@@ -288,7 +288,7 @@ export class CartPage implements OnInit {
       travelMode: "DRIVING",
       unitSystem: google.maps.UnitSystem.IMPERIAL,
     };
-    service.getDistanceMatrix(matrixOptions, (response, status) => {
+    service.getDistanceMatrix(matrixOptions, (response, status) => {  
       if (status !== "OK") {
         var msg = "Error with distance matrix";
         this.presentToast(msg);

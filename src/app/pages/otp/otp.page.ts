@@ -72,6 +72,8 @@ export class OtpPage implements OnInit {
       // console.log("haiiiiiiiiiii",data)
       this.authService.login(data.data);
       localStorage.setItem("client_id", data.client_id);
+      localStorage.setItem("cart_count", data.cart_count);
+      localStorage.setItem("notf_count", data.notification_count);
       this.cartCountService.setCartCount(data.cart_count);
       this.notCountService.setNotCount(data.notification_count);
       this.badge.set(data.notification_count);

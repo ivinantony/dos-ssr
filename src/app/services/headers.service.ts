@@ -11,7 +11,7 @@ export class HeadersService {
    }
   getHttpHeaders() {
     // const tokenService = new TokenService();
-    console.log('HTTP CONSTR')
+    // console.log('HTTP CONSTR')
     var headers = new HttpHeaders()
       .set("Accept", "application/json")
       .set("client-id", "1")
