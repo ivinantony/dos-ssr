@@ -23,7 +23,7 @@
 
   <ion-content>
     <ng-container
-      *ngIf="addresses.length > 0; then thenTemplate; else elseTemplate"
+      *ngIf="addresses?.length > 0; then thenTemplate; else elseTemplate"
     ></ng-container>
   
     <ng-template #thenTemplate>

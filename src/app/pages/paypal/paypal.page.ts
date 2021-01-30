@@ -51,15 +51,15 @@ export class PaypalPage implements OnInit {
 
     })
   }
-  async presentPaytabModal(redirect_url) {
-    const modal = await this.modalController.create({
-      component: PaytabsPage,
-      componentProps: { url: redirect_url }
-    });
+  // async presentPaytabModal(redirect_url) {
+  //   const modal = await this.modalController.create({
+  //     component: PaytabsPage,
+  //     componentProps: { url: redirect_url }
+  //   });
 
-    await modal.present();
+  //   await modal.present();
 
-  }
+  // }
 
   handleResponse(data) {
     this.loadingController.dismiss()
@@ -67,7 +67,11 @@ export class PaypalPage implements OnInit {
     this.response = data;
     this.storage.set("tran_ref", data.tran_ref).then(() => {
       // this.openUrl(data.redirect_url)
-      this.presentPaytabModal(data.redirect_url)
+      let postData={
+        
+      }
+      this.router.navigate(['iframe',{tran_ref: data.tran_ref,redirect_url:data.redirect_url,client_id:12,}],)
+      // this.presentPaytabModal(data.redirect_url)
     })
   }
 

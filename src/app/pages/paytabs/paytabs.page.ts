@@ -10,22 +10,21 @@ import { ModalController } from '@ionic/angular';
 export class PaytabsPage implements OnInit {
   @Input() url: any;
   redirectUrl: any;
+  safeUrl:any;
   constructor(private sanitizer: DomSanitizer, private modalController: ModalController) {
 
   }
 
 
   ngOnInit() {
-
-    this.redirectUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.url)
+  let url ="https://arba.mermerapps.com/paypal"
+  this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url)
     console.log('redirectUrl', this.url)
 
 
 
   }
-  beforeunload() {
-    alert(23)
-  }
+
   dismiss() {
     this.modalController.dismiss()
   }
