@@ -13,7 +13,7 @@ import { NotificationdetailPage } from './notificationdetail.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    NotificationdetailPageRoutingModule
+    NotificationdetailPageRoutingModule,
   ],
   declarations: [NotificationdetailPage]
 })

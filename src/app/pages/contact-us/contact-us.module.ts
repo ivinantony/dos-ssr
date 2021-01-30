@@ -8,6 +8,7 @@ import { ContactUsPageRoutingModule } from './contact-us-routing.module';
 
 import { ContactUsPage } from './contact-us.page';
 import { QuillModule } from 'ngx-quill'
+import { SharedComponentsModule } from 'src/app/components/shared-components.module';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { QuillModule } from 'ngx-quill'
     IonicModule,
     ContactUsPageRoutingModule,
     QuillModule.forRoot(),
+    SharedComponentsModule
   ],
   declarations: [ContactUsPage]
 })

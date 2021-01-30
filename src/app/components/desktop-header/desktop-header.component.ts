@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NotcountService } from 'src/app/notcount.service';
+
 
 @Component({
   selector: 'desktop-header',
@@ -8,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class DesktopHeaderComponent implements OnInit {
   categories: Array<any> = [
-    { id: 1, name: "Home", url: "/home", icon: "home-outline" },
+    { id: 1, name: "Home", url: "/tabs/home", icon: "home-outline" },
     { id: 1, name: "Offers", url: "/offers", icon: "flash-outline" },
     {
       id: 1,
@@ -24,9 +26,15 @@ export class DesktopHeaderComponent implements OnInit {
     },
   ];
   selectedCategoryIndex: number = 0;
-  constructor(private router: Router) { }
+  notf_count:any;
+  constructor(private router: Router,private notificationCountService:NotcountService) {
+  this.notificationCountService.getNotCount().subscribe((res)=>{
+      this.notf_count = res
+    })
+   }
 
   ngOnInit() { }
+
   navigateByUrl(index: number) {
     this.selectedCategoryIndex = index;
 

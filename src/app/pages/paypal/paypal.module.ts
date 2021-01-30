@@ -8,13 +8,15 @@ import { PaypalPageRoutingModule } from './paypal-routing.module';
 
 import { PaypalPage } from './paypal.page';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { SharedComponentsModule } from 'src/app/components/shared-components.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    PaypalPageRoutingModule
+    PaypalPageRoutingModule,
+    SharedComponentsModule
   ],
   declarations: [PaypalPage],
   providers:[InAppBrowser]

@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { SearchPageRoutingModule } from './search-routing.module';
 
 import { SearchPage } from './search.page';
+import { SharedComponentsModule } from 'src/app/components/shared-components.module';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { SearchPage } from './search.page';
     IonicModule,
     SearchPageRoutingModule,
     ReactiveFormsModule,
+    SharedComponentsModule
   ],
   declarations: [SearchPage]
 })

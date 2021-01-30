@@ -8,6 +8,7 @@ import { AboutPageRoutingModule } from './about-routing.module';
 
 import { AboutPage } from './about.page';
 import { QuillModule } from 'ngx-quill'
+import { SharedComponentsModule } from 'src/app/components/shared-components.module';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { QuillModule } from 'ngx-quill'
     IonicModule,
     AboutPageRoutingModule,
     QuillModule.forRoot(),
+    SharedComponentsModule
 
   ],
   declarations: [AboutPage]

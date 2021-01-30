@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { AddAddressPageRoutingModule } from './add-address-routing.module';
 
 import { AddAddressPage } from './add-address.page';
+import { SharedComponentsModule } from 'src/app/components/shared-components.module';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { AddAddressPage } from './add-address.page';
     FormsModule,
     IonicModule,
     AddAddressPageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedComponentsModule
   ],
   declarations: [AddAddressPage]
 })

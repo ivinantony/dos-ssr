@@ -8,6 +8,7 @@ import { ShippingpolicyPageRoutingModule } from './shippingpolicy-routing.module
 
 import { ShippingpolicyPage } from './shippingpolicy.page';
 import { QuillModule } from 'ngx-quill'
+import { SharedComponentsModule } from 'src/app/components/shared-components.module';
 
 @NgModule({
   imports: [
@@ -16,6 +17,8 @@ import { QuillModule } from 'ngx-quill'
     IonicModule,
     ShippingpolicyPageRoutingModule,
     QuillModule.forRoot(),
+    SharedComponentsModule,
+    
   ],
   declarations: [ShippingpolicyPage]
 })

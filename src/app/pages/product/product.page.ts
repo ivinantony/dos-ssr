@@ -137,11 +137,30 @@ export class ProductPage implements OnInit {
         );
     });
   }
+  onSubmit() {
+    let data = {
+      product_id: this.productDetails.id,
+      client_id: localStorage.getItem("client_id"),
+    };
+    this.cartService.addToCart(data).subscribe(
+      (data) => this.handleResponse(data, POST_DATA),
+      (error) => this.handleError(error)
+    );
+    this.presentToast();
+  }
+  viewCart() {
+    let client_id = localStorage.getItem("client_id");
+    this.cartService.getCart(client_id).subscribe(
+      (data) => this.handleResponse(data, GET_CART),
+      (error) => this.handleError(error)
+    );
+  }
 
   handleResponse(data, type) {
     if (type == GET_DATA) {
       this.data = data;
       this.cartCountService.setCartCount(data.cart_count);
+      localStorage.setItem('cart_count',data.cart_count)
       this.productDetails = data.product;
       for (let i = 0; i < this.productDetails.images.length; i++) {
         this.productDetails.images[i].path =
@@ -165,24 +184,6 @@ export class ProductPage implements OnInit {
     }
   }
 
-  onSubmit() {
-    let data = {
-      product_id: this.productDetails.id,
-      client_id: localStorage.getItem("client_id"),
-    };
-    this.cartService.addToCart(data).subscribe(
-      (data) => this.handleResponse(data, POST_DATA),
-      (error) => this.handleError(error)
-    );
-    this.presentToast();
-  }
-  viewCart() {
-    let client_id = localStorage.getItem("client_id");
-    this.cartService.getCart(client_id).subscribe(
-      (data) => this.handleResponse(data, GET_CART),
-      (error) => this.handleError(error)
-    );
-  }
 
   async presentToast() {
     const toast = await this.toastController.create({

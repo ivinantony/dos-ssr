@@ -97,7 +97,6 @@ export class LoginPage implements OnInit {
       this.afMessaging.requestToken // getting tokens
         .subscribe(
           (token) => { // USER-REQUESTED-TOKEN
-            console.log('Permission granted! Save to the server!', token);
             this.loginGroup.controls['fcm_token'].setValue(token);
           },
           (error) => {
@@ -107,21 +106,14 @@ export class LoginPage implements OnInit {
 
     }
     else {
-      console.log('In cordova platform');
-      console.log('Subscribing to token updates');
       this.fcm.onTokenRefresh().subscribe((newToken) => {
         this.loginGroup.controls['fcm_token'].setValue(newToken);
-        console.log('onTokenRefresh received event with: ', newToken);
       });
 
-
       this.hasPermission = await this.fcm.requestPushPermission();
-      console.log('requestPushPermission result: ', this.hasPermission);
 
       let newToken = await this.fcm.getToken();
       this.loginGroup.controls['fcm_token'].setValue(newToken);
-      console.log('getToken result: ', newToken);
-      ;
     }
 
   }

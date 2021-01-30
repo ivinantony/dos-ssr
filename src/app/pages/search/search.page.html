@@ -1,44 +1,51 @@
+<desktop-header></desktop-header>
 <ion-header class="ion-no-border">
-  <ion-toolbar color="secondary">
+  <ion-toolbar color="secondary" class="ion-hide-md-up">
     <ion-title>Search</ion-title>
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-menu-button ></ion-menu-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-toolbar class="ion-no-border search">
-    <ion-searchbar
-      placeholder="Search for products, brands and more"
-      showCancelButton="focus"
-      [formControl]="searchTerm"
-      (ionCancel)="onCancel()"
-      (ionChange)="onSearchInputMobile()"
-    >
-    </ion-searchbar>
-  </ion-toolbar>
+
 </ion-header>
 
 <ion-content>
-  <ng-container
-    *ngIf="result.length > 0; then thenTemplate; else elseTemplate"
-  ></ng-container>
-
-  <ng-template #thenTemplate>
-    <ion-item
-    *ngFor="let item of result ; let i=index"
-    (click)="viewSearchProduct(i)"
-    detail
-  >
-    <ion-row size="12" class="searchResult">
-      {{ item.name }} {{item.brand_name}} {{item.category_name}}
-    </ion-row>
-  </ion-item>
-  </ng-template>
-
-  <ng-template #elseTemplate> 
-    <!-- <ion-item lines="none" class="ion-text-center">
-      <ion-label>No results found.</ion-label>
-    </ion-item> -->
-  </ng-template>
+  <ion-grid fixed>
+    <ion-header class="ion-no-border">
+      <ion-toolbar class="ion-no-border search">
+        <ion-searchbar
+          placeholder="Search for products, brands and more"
+          showCancelButton="focus"
+          [formControl]="searchTerm"
+          (ionCancel)="onCancel()"
+          (ionChange)="onSearchInputMobile()"
+        >
+        </ion-searchbar>
+      </ion-toolbar>
+    </ion-header>
+    <ng-container
+      *ngIf="result.length > 0; then thenTemplate; else elseTemplate"
+    ></ng-container>
+  
+    <ng-template #thenTemplate>
+      <ion-item
+      *ngFor="let item of result ; let i=index"
+      (click)="viewSearchProduct(i)"
+      detail
+    >
+      <ion-row size="12" class="searchResult">
+        {{ item.name }} {{item.brand_name}} {{item.category_name}}
+      </ion-row>
+    </ion-item>
+    </ng-template>
+  
+    <ng-template #elseTemplate > 
+      <ion-item lines="none" class="ion-text-center" *ngIf="isSearchResult">
+        <ion-label>No results found.</ion-label>
+      </ion-item>
+    </ng-template>
+  </ion-grid>
+  
 
 
 </ion-content>

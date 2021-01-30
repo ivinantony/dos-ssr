@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CartcountService } from 'src/app/cartcount.service';
 
 @Component({
   selector: 'app-tabs',
@@ -6,8 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./tabs.page.scss'],
 })
 export class TabsPage implements OnInit {
-
-  constructor() { }
+cart_count:any
+  constructor(private cartcountService:CartcountService) {
+ this.cartcountService.getCartCount().subscribe((val)=>{
+  this.cart_count=val
+    })
+   }
 
   ngOnInit() {
   }

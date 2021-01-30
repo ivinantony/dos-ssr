@@ -53,7 +53,7 @@ export class OrdersPage implements OnInit {
 
   continueShopping()
   {
-    this.router.navigate(['home'])
+    this.router.navigate(['/tabs/home'])
   }
   details(index:number)
   {

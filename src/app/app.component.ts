@@ -40,16 +40,13 @@ export class AppComponent implements OnInit {
   searching: boolean = false;
   public searchTerm: FormControl;
   searchItems: Array<any>;
-  client_id: any = null;
   user_name: any;
   cart_count: any;
   notf_count: any;
-  cart_count_initial: any;
-  notf_count_initial: any;
   deferredPrompt: any;
-  loggedIn:boolean=false;
+  loggedIn: boolean = false;
   categories: Array<any> = [
-    { id: 1, name: "Home", url: "/home", icon: "home-outline" },
+    { id: 1, name: "Home", url: "/tabs/home", icon: "home-outline" },
     { id: 1, name: "Offers", url: "/offers", icon: "flash-outline" },
     {
       id: 1,
@@ -100,20 +97,6 @@ export class AppComponent implements OnInit {
       this.statusBar.backgroundColorByHexString("#565656");
       this.setupFCM();
 
-      this.client_id = localStorage.getItem("client_id");
-      this.cart_count_initial = localStorage.getItem("cart_count");
-      console.log(this.cart_count_initial);
-      this.cartCountService.setCartCount(this.cart_count_initial);
-      this.cartCountService.getCartCount().subscribe((res) => {
-        this.cart_count = res;
-      });
-      this.notf_count_initial = localStorage.getItem("notf_count");
-      this.notCountService.setNotCount(this.notf_count_initial);
-      this.notCountService.getNotCount().subscribe((res) => {
-        this.notf_count = res;
-      });
-      this.badge.set(this.notf_count);
-
       this.searchService.searchResult.subscribe((data) => {
         if (data) {
           this.searchItems = data;
@@ -153,16 +136,17 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.authService.isAuthenticated().then((data)=>{
-      console.log(data)
-      if(data)
-      {
-        this.loggedIn=true
+    this.authService.isAuthenticated().then((data) => {
+      console.log(data);
+      if (data) {
+        this.loggedIn = true;
+      } else {
+        this.loggedIn = false;
       }
-      else{
-        this.loggedIn=false
-      }
-    })
+    });
+    this.cartCountService.setCartCount(localStorage.getItem('cart_count'));
+    this.notCountService.setNotCount( localStorage.getItem('notf_count'))
+
     this.router.events
       .pipe(
         filter((e: any) => e instanceof NavigationEnd),
@@ -224,7 +208,7 @@ export class AppComponent implements OnInit {
     this.presentLoading().then(() => {
       this.authService.logout().then(() => {
         this.presentToast().finally(() => {
-          this.loggedIn=false
+          this.loggedIn = false;
           this.menuController.close();
         });
       });
@@ -252,7 +236,6 @@ export class AppComponent implements OnInit {
     });
     toast.present();
   }
-
 
   @HostListener("window:popstate")
   onPopState(): void {
@@ -294,27 +277,28 @@ export class AppComponent implements OnInit {
   }
   private async setupFCM() {
     await this.platform.ready();
-    console.log("FCM setup started");
 
     if (!this.platform.is("cordova")) {
+      await this.afMessaging.messages.subscribe(async (msg: any) => {
+        console.log("msgafMessaging", msg);
+        let notifi_count:number = Number(localStorage.getItem("notf_count")) ;
+        localStorage.setItem("notf_count", JSON.stringify(notifi_count + 1));
+        this.presentToastWithOptions(msg.notification);
+      });
       return;
     }
 
-    console.log("Subscribing to token updates");
-
-    console.log("Subscribing to new notifications");
     this.fcm.onNotification().subscribe((payload) => {
       this.pushPayload = payload;
       this.notCountService.setNotCount(payload.count);
       if (payload.wasTapped) {
-        // this.router.navigateByUrl('notifications');
+        this.badge.set(payload.badge);
         this.router.navigate(["notification"]);
         console.log("Received in background");
       } else {
+        this.badge.set(payload.badge);
         console.log("Received in foreground");
-        // this.router.navigate(['notifications']);
         this.presentToastWithOptions(payload);
-        // this.router.navigate(['notifications']);
       }
       console.log("onNotification received event with: ", payload);
     });

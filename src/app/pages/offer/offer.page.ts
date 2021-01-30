@@ -89,6 +89,8 @@ export class OfferPage implements OnInit {
       data.product.forEach((element) => {
         this.products.push(element);
       });
+      localStorage.setItem("cart_count", data.cart_count);
+      this.cartCountService.setCartCount(data.cart_count);
     
     } else if (type == POST_DATA) {
       // console.log("add to cart", data);

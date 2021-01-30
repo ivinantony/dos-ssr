@@ -8,6 +8,7 @@ import { RechargePageRoutingModule } from './recharge-routing.module';
 
 import { RechargePage } from './recharge.page';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { SharedComponentsModule } from 'src/app/components/shared-components.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
     FormsModule,
     IonicModule,
     RechargePageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedComponentsModule
   ],
   declarations: [RechargePage],
   providers:[InAppBrowser]

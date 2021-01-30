@@ -189,24 +189,14 @@ export class HomePage implements OnInit {
     this.s3url = utils.getS3url();
     // this.badge.set(10);
     this.searchTerm = new FormControl();
-    this.getData();
-    this.cart_count = localStorage.getItem("cart_count");
-    this.notf_count = localStorage.getItem("notf_count");
-    cartCountService.getCartCount().subscribe(res => {
-      this.cart_count = res
-    }
-    )
-    notCountService.getNotCount().subscribe(res => {
-        this.notf_count=res}
-    )
-    this.badge.set(this.notf_count);
+
+    
 
   }
 
   ionViewWillEnter() {
+    this.getData();
     this.searchTerm.reset();
-    this.cart_count = localStorage.getItem("cart_count");
-    this.notf_count = localStorage.getItem("notf_count");
   }
 
   ngOnInit() {
@@ -220,7 +210,6 @@ export class HomePage implements OnInit {
           (error) => this.handleErrorSearch(error)
         )
       }
-      // this.setFilteredItems(search);
     });
   }
 
@@ -292,11 +281,9 @@ export class HomePage implements OnInit {
 
   onRoute(link) {
     this.result = [];
-    // console.log(link)
     if (link != null || link != undefined) {
       let data = link.split(".com").pop();
 
-      // console.log(data)
       this.router.navigateByUrl(data);
     }
   }
@@ -322,8 +309,14 @@ export class HomePage implements OnInit {
 
   handleResponse(data) {
     this.loadingController.dismiss();
-    localStorage.setItem("cart_count", data.cart_count);
-    localStorage.setItem("notf_count", data.notification_count);
+    localStorage.setItem("cart_count",data.cart_count);
+    localStorage.setItem("notf_count",data.notification_count);
+    this.cart_count =data.cart_count;
+    this.notf_count = data.notification_count;
+    this.cartCountService.setCartCount(data.cart_count);
+    this.notCountService.setNotCount( data.notification_count)
+    this.badge.set(this.notf_count);
+
     this.data = data;
     this.brands = data.brands;
     this.categories = data.categories;

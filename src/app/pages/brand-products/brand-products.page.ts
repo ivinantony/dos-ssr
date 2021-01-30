@@ -155,11 +155,11 @@ export class BrandProductsPage implements OnInit {
       this.page_limit = data.page_count;
       this.data = data;
       this.cart_count = data.cart_count
-      localStorage.setItem("cart_count",data.cart_count)
       this.data.product.forEach((element) => {
         this.products.push(element);
       });
-      // console.log(this.products, "API called");
+      localStorage.setItem("cart_count", data.cart_count);
+      this.cartCountService.setCartCount(data.cart_count);
     }
     else if(type == POST_DATA)
     {

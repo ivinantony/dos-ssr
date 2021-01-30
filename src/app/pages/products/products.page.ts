@@ -37,19 +37,6 @@ export class ProductsPage implements OnInit {
   page_limit: number;
   page_count: number = 1;
   client_id: any;
-
-  bannerSlideOpts = {
-    slidesPerView: 1,
-    initialSlide: 0,
-    spaceBetween: 20,
-    loop: true,
-    centeredSlides: true,
-    autoplay: {
-      delay: 3000,
-      disableOnInteraction: false,
-    },
-    speed: 400,
-  };
   catId: any;
   category_name: any;
   s3url: string;
@@ -61,9 +48,7 @@ export class ProductsPage implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private platform: Platform,
     public router: Router,
-    private modalController: ModalController,
     private CatProductService: SubcatProductsService,
     private utils: UtilsService,
     private loadingController: LoadingController,
@@ -76,7 +61,6 @@ export class ProductsPage implements OnInit {
     private cartCountService: CartcountService
   ) {
     this.page_count = 1;
-    this.checkWidth();
     this.s3url = utils.getS3url();
     this.catId = parseInt(this.activatedRoute.snapshot.paramMap.get("id"));
     this.category_name = this.activatedRoute.snapshot.paramMap.get("name");
@@ -116,6 +100,7 @@ export class ProductsPage implements OnInit {
       this.page_limit = data.page_count;
       this.cart_count = data.cart_count;
       localStorage.setItem("cart_count", data.cart_count);
+      this.cartCountService.setCartCount(data.cart_count);
     } else if (type == POST_DATA) {
       this.cart_count = data.cart_count;
       localStorage.setItem("cart_count", data.cart_count);
@@ -167,22 +152,6 @@ export class ProductsPage implements OnInit {
     await popover.present();
   }
 
-  checkWidth() {
-    if (this.platform.width() > 768) {
-      this.bannerSlideOpts = {
-        slidesPerView: 3,
-        initialSlide: 0,
-        spaceBetween: 10,
-        loop: true,
-        centeredSlides: true,
-        autoplay: {
-          delay: 3000,
-          disableOnInteraction: false,
-        },
-        speed: 400,
-      };
-    }
-  }
 
   loadMoreContent(infiniteScroll) {
     if (this.page_count == this.page_limit) {

@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class NotcountService {
 
-  notCount = new BehaviorSubject(0);
+  notCount = new BehaviorSubject( 0);
 
   constructor() { }
 

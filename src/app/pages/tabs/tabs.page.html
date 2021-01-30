@@ -18,7 +18,7 @@
     <ion-tab-button tab="cart">
       <ion-icon src="../assets/imgs/icons/cart.svg"></ion-icon>
       <ion-label>Cart</ion-label>
-      <ion-badge>6</ion-badge>
+      <ion-badge [ngStyle]="{'opacity': cart_count > 0 ? '1' :'0'}">{{cart_count}}</ion-badge>
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>

@@ -138,10 +138,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/about/about.module').then(m => m.AboutPageModule)
   },
   {
-    path: 'recommended',
-    loadChildren: () => import('./pages/recommended/recommended.module').then(m => m.RecommendedPageModule)
-  },
-  {
     path: 'order-placed',
     loadChildren: () => import('./pages/order-placed/order-placed.module').then(m => m.OrderPlacedPageModule)
   },

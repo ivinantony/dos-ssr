@@ -1,4 +1,5 @@
-<ion-header>
+<desktop-header></desktop-header>
+<ion-header class="ion-hide-md-up">
   <ion-toolbar color="secondary">
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/tabs/home"></ion-back-button>
@@ -101,6 +102,12 @@
       </ion-grid>
     </ion-col>
   </ion-row>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="danger" (click)="openSort($event)">
+      <ion-icon name="funnel-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
   <ion-infinite-scroll threshold="15%" (ionInfinite)="loadMoreContent($event)">
     <ion-infinite-scroll-content

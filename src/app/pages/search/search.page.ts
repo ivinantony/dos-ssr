@@ -12,6 +12,7 @@ import { SearchService } from 'src/app/services/search/search.service';
 })
 export class SearchPage implements OnInit {
   searching: any = false;
+  isSearchResult:boolean = false;
   result:Array<any>=[]
   public searchTerm: FormControl;
 
@@ -26,6 +27,7 @@ export class SearchPage implements OnInit {
       console.log(searchTerm)
       if(searchTerm)
         {
+          this.isSearchResult = false
           this.result=[]
           this.searchService.getSearchResult(searchTerm).subscribe(
             (data)=>this.handleResponseSearch(data),
@@ -46,6 +48,7 @@ export class SearchPage implements OnInit {
       this.result.push(item)
       }) 
     console.log(this.result,"result")
+    this.isSearchResult = true
   }
   handleErrorSearch(error) {
     console.log(error)
@@ -81,6 +84,7 @@ export class SearchPage implements OnInit {
 
   
   onCancel() {
+    this.isSearchResult = false
     this.result = [];
   }
 

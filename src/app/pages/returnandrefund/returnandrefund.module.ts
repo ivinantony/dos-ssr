@@ -8,6 +8,7 @@ import { ReturnandrefundPageRoutingModule } from './returnandrefund-routing.modu
 
 import { ReturnandrefundPage } from './returnandrefund.page';
 import { QuillModule } from 'ngx-quill'
+import { SharedComponentsModule } from 'src/app/components/shared-components.module';
 
 
 
@@ -18,6 +19,7 @@ import { QuillModule } from 'ngx-quill'
     IonicModule,
     ReturnandrefundPageRoutingModule,
     QuillModule.forRoot(),
+    SharedComponentsModule
   ],
   declarations: [ReturnandrefundPage]
 })

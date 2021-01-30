@@ -249,7 +249,7 @@ export class CartmodalPage implements OnInit {
   }
 
   continueShopping() {
-    this.router.navigate(["home"]);
+    this.router.navigate(["/tabs/home"]);
   }
 
   navigateToProduct(index: number) {
