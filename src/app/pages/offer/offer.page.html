@@ -7,14 +7,11 @@
     <ion-title>OFFERS</ion-title>
 
     <ion-buttons slot="end">
-      <ion-button (click)="router.navigate(['/cart'])">
-        <ion-icon
-          name="cart-outline"
-          class="ion-padding"
-          
-        ></ion-icon>
-        <ion-badge id="cart-badge" color="danger" *ngIf="cart_count > 0"
-          >{{cart_count}}</ion-badge>
+      <ion-button class="ion-hide-md-up" (click)="router.navigate(['/cart'])">
+        <ion-icon src="../assets/imgs/icons/cart.svg"></ion-icon>
+        <ion-badge id="cart-badge" color="primary" *ngIf="cart_count > 0"
+          >{{cart_count}}</ion-badge
+        >
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -93,12 +90,17 @@
     </ion-col>
   </ion-row>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button color="danger" (click)="openSort($event)">
+  <ion-fab
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed"
+    class="ion-hide-md-down"
+  >
+    <ion-fab-button color="secondary" (click)="openSort($event)">
       <ion-icon name="funnel-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-  
+
   <ion-infinite-scroll (ionInfinite)="loadMoreContent($event)" threshold="15%">
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"

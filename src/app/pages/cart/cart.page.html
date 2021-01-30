@@ -2,7 +2,7 @@
 <ion-header class="ion-no-border ion-hide-md-up">
   <ion-toolbar color="secondary">
     <ion-buttons slot="start">
-      <ion-menu-button ></ion-menu-button>
+      <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>CART</ion-title>
   </ion-toolbar>
@@ -63,9 +63,14 @@
               </ion-thumbnail>
             </ion-item>
 
-            <ion-button slot="end" icon-only (click)="remove(i,item.id)" fill="clear">
-              <ion-icon name="trash-outline"></ion-icon>  
-              </ion-button>
+            <ion-button
+              slot="end"
+              icon-only
+              (click)="remove(i,item.id)"
+              fill="clear"
+            >
+              <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
             <ion-buttons class="cart-btns" slot="end">
               <ion-button (click)="subtract(i,item.id)">
                 <ion-icon slot="start" color="danger" name="remove"></ion-icon>
@@ -158,7 +163,6 @@
         </ion-list>
       </ion-col>
     </ion-row>
-    
   </ion-grid>
 
   <div
@@ -174,12 +178,24 @@
     </ion-button>
   </div>
 </ion-content>
-
-<ion-footer *ngIf="cartLength > 0">
-  <ion-toolbar>
-    <ion-button slot="end"  color="primary" (click)="continue()">
+<ion-footer>
+  <ion-toolbar
+    color="secondary"
+    class="ion-no-padding"
+    style="padding-bottom: 0px !important"
+  >
+    <ion-button slot="end" color="primary" shape="round" (click)="continue()">
       <ion-icon slot="end" name="chevron-forward"></ion-icon>
       CONTINUE
     </ion-button>
   </ion-toolbar>
 </ion-footer>
+<!--<ion-footer *ngIf="cartLength > 0">
+  <ion-toolbar>
+  
+   <ion-button slot="end"  color="primary" (click)="continue()">
+      <ion-icon slot="end" name="chevron-forward"></ion-icon>
+      CONTINUE
+    </ion-button>
+  </ion-toolbar>
+</ion-footer> -->

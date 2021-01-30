@@ -7,13 +7,6 @@
     <ion-title color="light" class="ion-text-left">Deal on Store</ion-title>
 
     <ion-buttons slot="end">
-      <!-- 
-        <ion-button (click)="router.navigate(['/search'])">
-          <ion-icon name="search-outline"
-          color="light"
-          slot="icon-only"></ion-icon>
-        </ion-button> -->
-
       <ion-button (click)="router.navigate(['/notification'])">
         <ion-icon
           color="light"
@@ -24,28 +17,11 @@
           >{{ notf_count > 9 ? '9+':notf_count }}</ion-badge
         >
       </ion-button>
-      <!-- <ion-button (click)="router.navigate(['/cart'])">
-        <ion-icon
-          color="light"
-          slot="icon-only"
-          src="../assets/imgs/icons/cart.svg"
-        ></ion-icon>
-        <ion-badge id="cart-badge" color="danger" *ngIf="cart_count > 0"
-          >{{ cart_count > 9 ? '9+':cart_count }}</ion-badge
-        >
-      </ion-button> -->
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-refresher
-    slot="fixed"
-    pullFactor="0.5"
-    pullMin="30"
-    pullMax="50"
-    (ionRefresh)="doRefresh($event)"
-  >
-  </ion-refresher>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)"> </ion-refresher>
 
   <ng-container
     *ngIf="data; then thenTemplate; else elseTemplate"
@@ -64,9 +40,7 @@
 
     <section id="searchByManufactures">
       <ion-item lines="none" class="ion-text-left">
-        <ion-label class="title" color="dark"
-          >Categories</ion-label
-        >
+        <ion-label class="title" color="dark">Categories</ion-label>
       </ion-item>
       <ion-grid>
         <ion-row>
@@ -82,7 +56,7 @@
             <ion-card
               class="ion-no-margin"
               (click)="navigateToProducts(i)"
-              style="min-height: 167px;"
+              style="min-height: 167px"
             >
               <ion-card-content class="ion-text-center ion-no-padding">
                 <img
@@ -115,8 +89,6 @@
         </div>
       </ion-grid>
     </section>
-
-    
 
     <section id="banr">
       <ion-slides class="banner" [options]="bannerSlideOpts2">
@@ -224,8 +196,6 @@
         </ion-row>
       </ion-grid>
     </section>
-
-    
 
     <section class="banr">
       <ion-row class="main_row">

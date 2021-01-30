@@ -1,25 +1,35 @@
 <desktop-header></desktop-header>
 <ion-header class="ion-no-border ion-hide-md-up">
-  <ion-toolbar color="secondary" >
+  <ion-toolbar color="secondary">
     <ion-buttons slot="start">
-      <ion-back-button
-        color="light"
-        defaultHref="/login"
-        
-      ></ion-back-button>
+      <ion-back-button color="light" defaultHref="/login"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content >
-  
-    <ion-card mode="ios" class="card main">
+<ion-content>
+  <ion-card mode="ios" class="card main">
     <div style="width: 100%" class="ion-text-center">
-      <ion-label>Please check your Email inbox for a 4 digit OTP and enter it here.</ion-label>
+      <ion-label>
+        <h3>
+          Please check your Email inbox for a 4 digit OTP and enter it here.
+        </h3>
+      </ion-label>
       <ion-item class="ion-text-center" lines="none">
-      <ion-input placeholder="-  -  -  -" autocapitalize="off" autocomplete="off" autocorrect="off" minlength="4" maxlength="4"  name="otp" type="tel" [(ngModel)]="inputOtp"  class="otp"></ion-input>
+        <ion-input
+          placeholder="-  -  -  -"
+          autocapitalize="off"
+          autocomplete="off"
+          autocorrect="off"
+          minlength="4"
+          maxlength="4"
+          name="otp"
+          type="tel"
+          [(ngModel)]="inputOtp"
+          class="otp"
+        ></ion-input>
       </ion-item>
-     <p (click)="resendOtp()">Resend OTP</p>
+      <p (click)="resendOtp()">Resend OTP</p>
       <ion-button
         (click)="continue()"
         class="ion-margin-vertical"
@@ -39,14 +49,13 @@
       </ion-button>
     </div>
   </ion-card>
-
 </ion-content>
 
 <!-- <ion-content class="ion-padding">
   <ion-grid fixed>
     <ion-row>
       <ion-col class="ion-hide-lg-down" size-sm="12" size-md="12"  size-lg="6" size-xl="12"></ion-col> -->
-      <!-- <ion-col
+<!-- <ion-col
         class="ion-padding"
         size-sm="12"
         size-md="12"

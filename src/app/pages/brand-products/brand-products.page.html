@@ -1,22 +1,14 @@
 <desktop-header></desktop-header>
 <ion-header class="ion-hide-md-up">
-  <ion-toolbar color="secondary" >
-    <ion-buttons slot="start" color="light" >
-      <ion-back-button defaultHref="/tabs/home"  color="light"></ion-back-button>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start" color="light">
+      <ion-back-button defaultHref="/tabs/home" color="light"></ion-back-button>
     </ion-buttons>
     <ion-title>{{brand_name}}</ion-title>
     <ion-buttons slot="end">
-      <ion-button  slot="end" fill="clear" shape="round" (click)="openSort($event)" color="light" class="ion-hide-md-down">
-        <ion-icon name="funnel-outline"></ion-icon>
-        SORT
-      </ion-button>
       <ion-button class="ion-hide-md-up" (click)="router.navigate(['/cart'])">
-        <ion-icon
-          name="cart-outline"
-          class="ion-padding"
-          
-        ></ion-icon>
-        <ion-badge id="cart-badge" color="danger" *ngIf="cart_count > 0"
+        <ion-icon src="../assets/imgs/icons/cart.svg"></ion-icon>
+        <ion-badge id="cart-badge" color="primary" *ngIf="cart_count > 0"
           >{{cart_count}}</ion-badge
         >
       </ion-button>
@@ -25,12 +17,14 @@
 </ion-header>
 
 <ion-content>
-
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content pullingIcon="refresh" pullingText="Pull to refresh" refreshingSpinner="crescent"
-      refreshingText="Refreshing..."></ion-refresher-content>
+    <ion-refresher-content
+      pullingIcon="refresh"
+      pullingText="Pull to refresh"
+      refreshingSpinner="crescent"
+      refreshingText="Refreshing..."
+    ></ion-refresher-content>
   </ion-refresher>
- 
 
   <ion-row>
     <ion-col size="12" size-sm="12" size-md="12" size-xl="12" size-lg="12">
@@ -96,25 +90,35 @@
       </ion-grid>
     </ion-col>
   </ion-row>
-  
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button color="danger" (click)="openSort($event)">
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="ion-hide-md-down" >
+    <ion-fab-button color="secondary" (click)="openSort($event)">
       <ion-icon name="funnel-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
-    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreContent($event)" >
-      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
-      </ion-infinite-scroll-content>
-    </ion-infinite-scroll>
-
+  <ion-infinite-scroll
+    threshold="100px"
+    (ionInfinite)="loadMoreContent($event)"
+  >
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
 <ion-footer class="ion-hide-md-up">
   <ion-toolbar>
     <ion-buttons class="ion-justify-content-around">
-      <ion-button expand="block" fill="clear" shape="round" (click)="opensortMobile()">
+      <ion-button
+        expand="block"
+        fill="clear"
+        shape="round"
+        (click)="opensortMobile()"
+      >
         <ion-icon slot="start" name="funnel-outline"></ion-icon>
-        
+
         SORT
       </ion-button>
     </ion-buttons>

@@ -1,6 +1,9 @@
 #cart-badge{
     position: absolute;
-    top: 0;
+    top: 0px;
+    right: -5px;
+    padding: 3px;
+    font-size: 10px;
 }
 ion-badge{
     transition:all 2s;
