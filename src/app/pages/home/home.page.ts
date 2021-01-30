@@ -341,7 +341,7 @@ export class HomePage implements OnInit {
 
   viewAll() {
     this.result = [];
-    this.router.navigate(["categories"]);
+    this.router.navigate(["manufacturers"]);
   }
 
   doRefresh(event) {
