@@ -206,8 +206,9 @@ const routes: Routes = [
   {
     path: 'tabs',
     loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule)
-  },  {
-    path: 'iframe',
+  },
+  {
+    path: 'iframe/:data',
     loadChildren: () => import('./pages/iframe/iframe.module').then( m => m.IframePageModule)
   }
 

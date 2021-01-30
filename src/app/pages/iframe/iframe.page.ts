@@ -10,24 +10,27 @@ import { ActivatedRoute } from '@angular/router';
 export class IframePage implements OnInit {
   redirectUrl: any;
   constructor(private activatedRoute:ActivatedRoute,private sanitizer:DomSanitizer,private zone:NgZone) { 
-    let values={
-      redirect_url:this.activatedRoute.snapshot.params.redirect_url,
-      tran_ref:this.activatedRoute.snapshot.params.tran_ref,
-      client_id:this.activatedRoute.snapshot.params.client_id
-    }
-    console.log(values)
-    this.setLocal(values)
-  }
-
-  ngOnInit() {
-
-  this.redirectUrl = this.activatedRoute.snapshot.params.redirect_url;
+  
     
   }
+
+
+  ngOnInit() {
+  console.log(JSON.parse(this.activatedRoute.snapshot.params.data))
+  let encodedData = JSON.parse(this.activatedRoute.snapshot.params.data)
+ this.setLocal(encodedData)
+  this.redirectUrl = encodedData.data.redirect_url;
+    
+  }
+
+
   transform(url) {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
-}
-  async setLocal(data){
+} 
+
+
+async setLocal(data){
     await localStorage.setItem('cred_initial',JSON.stringify(data))
     }
+  
 }

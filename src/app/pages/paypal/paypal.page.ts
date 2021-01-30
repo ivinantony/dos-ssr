@@ -63,14 +63,18 @@ export class PaypalPage implements OnInit {
 
   handleResponse(data) {
     this.loadingController.dismiss()
-    console.log('data n Tab3', data)
     this.response = data;
+    let encodedData = {
+      redirect_url:encodeURIComponent(data.redirect_url),
+      tran_ref:data.tran_ref,
+      client_id:23
+
+    }
+
     this.storage.set("tran_ref", data.tran_ref).then(() => {
-      // this.openUrl(data.redirect_url)
-      let postData={
-        
-      }
-      this.router.navigate(['iframe',{tran_ref: data.tran_ref,redirect_url:data.redirect_url,client_id:12,}],)
+
+console.log('encodedData',encodedData)
+      this.router.navigate(['paytabs',{data:JSON.stringify(encodedData)}],)
       // this.presentPaytabModal(data.redirect_url)
     })
   }
