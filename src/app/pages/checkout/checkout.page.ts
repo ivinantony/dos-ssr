@@ -52,6 +52,8 @@ export class CheckoutPage implements OnInit {
   }
 
   ionViewWillEnter() {
+    this.promo_id=null
+    this.discount_amount=0
     this.getData();
   }
 
