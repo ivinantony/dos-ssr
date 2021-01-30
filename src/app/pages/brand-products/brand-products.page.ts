@@ -163,6 +163,7 @@ export class BrandProductsPage implements OnInit {
     }
     else if(type == POST_DATA)
     {
+      this.loadingController.dismiss()
       // console.log("add to cart",data)
       this.cart_count = data.cart_count
       localStorage.setItem("cart_count",data.cart_count)
@@ -256,18 +257,18 @@ export class BrandProductsPage implements OnInit {
   addToCart(index: number) {
     this.authService.isAuthenticated().then((val)=>{
       if(val){
-        let data = {
-          product_id: this.products[index].id,
-          client_id: this.client_id,
-        };
-        this.cartService.addToCart(data).subscribe(
-          (data) => this.handleResponse(data, POST_DATA),
-          (error) => this.handleError(error)
-        );
+        this.presentLoading().then(()=>{
+          let data = {
+            product_id: this.products[index].id,
+            client_id: this.client_id,
+          };
+          this.cartService.addToCart(data).subscribe(
+            (data) => this.handleResponse(data, POST_DATA),
+            (error) => this.handleError(error)
+          );
+        })   
         this.products[index].cart_count++;
-        //  this.getData()
         this.name = this.products[index].name
-  
           // this.presentToastSuccess("One ' " + name +" ' added to cart.");
           localStorage.setItem('cart_count',this.cart_count)
       }else{
@@ -278,7 +279,7 @@ export class BrandProductsPage implements OnInit {
 
   goToCart()
   {
-    this.router.navigate(['cart'])
+    this.router.navigate(['/tabs/cart'])
   }
  
   async presentLoading() {

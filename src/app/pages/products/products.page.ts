@@ -91,8 +91,9 @@ export class ProductsPage implements OnInit {
 
   handleResponse(data, type, infiniteScroll?) {
     this.infiniteScroll.disabled = false;
-    this.loadingController.dismiss();
+    
     if (type == GET_DATA) {
+      this.loadingController.dismiss();
       this.data = data;
       this.data.products.forEach((element) => {
         this.products.push(element);
@@ -102,6 +103,7 @@ export class ProductsPage implements OnInit {
       localStorage.setItem("cart_count", data.cart_count);
       this.cartCountService.setCartCount(data.cart_count);
     } else if (type == POST_DATA) {
+      this.loadingController.dismiss();
       this.cart_count = data.cart_count;
       localStorage.setItem("cart_count", data.cart_count);
       this.cartCountService.setCartCount(data.cart_count);
@@ -212,28 +214,29 @@ export class ProductsPage implements OnInit {
   }
 
   addToCart(index: number) {
-    this.presentLoading();
+    
     if (this.authService.isAuthenticated()) {
-      let data = {
-        product_id: this.products[index].id,
-        client_id: this.client_id,
-      };
-      this.cartService.addToCart(data).subscribe(
-        (data) => this.handleResponse(data, POST_DATA),
-        (error) => this.handleError(error)
-      );
+      this.presentLoading().then(()=>{
+        let data = {
+          product_id: this.products[index].id,
+          client_id: this.client_id,
+        };
+        this.cartService.addToCart(data).subscribe(
+          (data) => this.handleResponse(data, POST_DATA),
+          (error) => this.handleError(error)
+        );
+      })
+      
       this.products[index].cart_count++;
 
       this.name = this.products[index].name;
-
-      localStorage.setItem("cart_count", this.cart_count);
     } else {
       this.presentLogin();
     }
   }
 
   goToCart() {
-    this.router.navigate(["cart"]);
+    this.router.navigate(["/tabs/cart"]);
   }
 
   removeFromcart(index: number) {

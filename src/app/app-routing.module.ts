@@ -54,6 +54,7 @@ const routes: Routes = [
   },
   {
     path: 'coupon',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/coupon/coupon.module').then(m => m.CouponPageModule)
   },
   {
@@ -70,6 +71,7 @@ const routes: Routes = [
   },
   {
     path: 'edit-profile',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/edit-profile/edit-profile.module').then(m => m.EditProfilePageModule)
   },
   {
@@ -78,30 +80,37 @@ const routes: Routes = [
   },
   {
     path: 'my-addresses',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/my-addresses/my-addresses.module').then(m => m.MyAddressesPageModule)
   },
   {
     path: 'edit-address',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/edit-address/edit-address.module').then(m => m.EditAddressPageModule)
   },
   {
     path: 'modeofpayment',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/modeofpayment/modeofpayment.module').then(m => m.ModeofpaymentPageModule)
   },
   {
     path: 'paypal',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/paypal/paypal.module').then(m => m.PaypalPageModule)
   },
   {
     path: 'orders',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/orders/orders.module').then(m => m.OrdersPageModule)
   },
   {
     path: 'order-details',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/order-details/order-details.module').then(m => m.OrderDetailsPageModule)
   },
   {
     path: 'cancelorder',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/cancelorder/cancelorder.module').then(m => m.CancelorderPageModule)
   },
   {
@@ -118,11 +127,13 @@ const routes: Routes = [
   },
   {
     path: 'paytabs',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/paytabs/paytabs.module').then(m => m.PaytabsPageModule)
   },
 
   {
     path: 'checkout/:address_id',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/checkout/checkout.module').then(m => m.CheckoutPageModule)
   },
   {
@@ -131,6 +142,7 @@ const routes: Routes = [
   },
   {
     path: 'order-placed',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/order-placed/order-placed.module').then(m => m.OrderPlacedPageModule)
   },
   {
@@ -147,14 +159,17 @@ const routes: Routes = [
   },
   {
     path: 'wallet',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/wallet/wallet.module').then(m => m.WalletPageModule)
   },
   {
     path: 'recharge',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/recharge/recharge.module').then(m => m.RechargePageModule)
   },
   {
     path: 'cartmodal',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/cartmodal/cartmodal.module').then(m => m.CartmodalPageModule)
   },
 
@@ -165,14 +180,17 @@ const routes: Routes = [
   },
   {
     path: 'notificationdetail',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/notificationdetail/notificationdetail.module').then(m => m.NotificationdetailPageModule)
   },
   {
     path: 'address-modal',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/address-modal/address-modal.module').then(m => m.AddressModalPageModule)
   },
   {
     path: 'recharge-status',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/recharge-status/recharge-status.module').then(m => m.RechargeStatusPageModule)
   },
   {
@@ -189,6 +207,7 @@ const routes: Routes = [
   },
   {
     path: 'successful',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/successful/successful.module').then(m => m.SuccessfulPageModule)
   },
   {
@@ -198,8 +217,10 @@ const routes: Routes = [
   {
     path: 'tabs',
     loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule)
-  },  {
+  },
+  {
     path: 'iframe',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pages/iframe/iframe.module').then( m => m.IframePageModule)
   }
 
