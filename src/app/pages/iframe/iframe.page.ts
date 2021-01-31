@@ -1,6 +1,8 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { Storage } from '@ionic/storage';
+import { url } from 'inspector';
 
 @Component({
   selector: 'app-iframe',
@@ -8,26 +10,40 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./iframe.page.scss'],
 })
 export class IframePage implements OnInit {
-  redirectUrl: any;
-  constructor(private activatedRoute:ActivatedRoute,private sanitizer:DomSanitizer,private zone:NgZone) { 
-    let values={
-      redirect_url:this.activatedRoute.snapshot.params.redirect_url,
-      tran_ref:this.activatedRoute.snapshot.params.tran_ref,
-      client_id:this.activatedRoute.snapshot.params.client_id
-    }
-    console.log(values)
-    this.setLocal(values)
+  orderData: any;
+  constructor(private storage: Storage) {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const data = urlParams.get('data')
+
+    this.orderData = JSON.parse(data);
+
+    // this.storage.set('client_id', this.orderData.client_id);
+    // this.storage.set('tran_ref', this.orderData.tran_ref).finally(()=>{
+    //   this.openUrl()
+    // })
+    console.log(JSON.parse(data));
+
+    this.setStorage().finally(() => {
+      // this.openUrl();
+    })
   }
 
   ngOnInit() {
-
-  this.redirectUrl = this.activatedRoute.snapshot.params.redirect_url;
-    
+   
   }
-  transform(url) {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
-}
-  async setLocal(data){
-    await localStorage.setItem('cred_initial',JSON.stringify(data))
-    }
+  async setStorage() {
+    console.log('fjldvj',this.orderData)
+    await localStorage.setItem('tran_ref', this.orderData.tran_ref)
+    await localStorage.set('client_id', this.orderData.client_id);
+  }
+
+  openUrl() {
+    window.open(this.orderData.redirect_url, "_self")
+  }
+
+  ngAfterViewInit(): void {
+  
+    alert(JSON.stringify(localStorage.getItem('client_id')))
+  }
 }
