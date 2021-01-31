@@ -42,7 +42,6 @@
     "@teamhive/lottie-player": "^1.0.0",
     "algoliasearch": "^4.8.3",
     "checkout-sdk-node": "^1.0.19",
-    "cordova-ios": "6.1.1",
     "cordova-plugin-badge": "^0.8.8",
     "drift-zoom": "^1.4.1",
     "firebase": "^8.2.3",
