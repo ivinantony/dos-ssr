@@ -56,7 +56,7 @@ export class CartPage implements OnInit {
   isOut: boolean = false;
   name: any;
   qty: any;
-  current_url:any
+  current_url: any
   constructor(
     public modalController: ModalController,
     private routerOutlet: IonRouterOutlet,
@@ -71,7 +71,7 @@ export class CartPage implements OnInit {
   ) {
     this.current_url = window.location.href
     this.s3url = this.utils.getS3url();
-    
+
   }
 
   ionViewWillEnter() {
@@ -80,7 +80,7 @@ export class CartPage implements OnInit {
     console.log(this.selectedAddress);
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   getData() {
     this.presentLoading().then(() => {
@@ -260,7 +260,7 @@ export class CartPage implements OnInit {
       }
     } else if (type == ADD) {
       this.loadingController.dismiss();
-      this.presentToastSuccessQtyChange(
+      this.presentToast(
         "You've changed " + this.name + " quantity to " + this.qty
       );
       this.getData();
@@ -272,7 +272,7 @@ export class CartPage implements OnInit {
       this.getData();
     } else if (type == DEL_DATA) {
       this.loadingController.dismiss();
-      this.presentToastSuccessQtyChange(
+      this.presentToast(
         "You've changed " + this.name + " quantity to " + this.qty
       );
       this.getData();
@@ -355,8 +355,7 @@ export class CartPage implements OnInit {
     });
   }
 
-  changeAddress()
-  {
+  changeAddress() {
     this.presentAddressModal()
   }
 
@@ -374,34 +373,11 @@ export class CartPage implements OnInit {
     await alert.present();
   }
 
-  async presentToastSuccess(msg) {
-    const toast = await this.toastController.create({
-      message: msg,
-      cssClass: "custom-toast",
-      position: "top",
-      color: "dark",
-      duration: 2000,
-    });
-    toast.present();
-  }
-
-  async presentToastSuccessQtyChange(msg) {
-    const toast = await this.toastController.create({
-      message: msg,
-      cssClass: "custom-toast-success",
-      position: "bottom",
-      color: "dark",
-
-      duration: 2000,
-    });
-    toast.present();
-  }
-
   async presentToast(msg) {
     const toast = await this.toastController.create({
       message: msg,
       position: "top",
-      duration: 2000,
+      duration: 1500,
       color: "dark",
     });
     toast.present();

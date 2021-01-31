@@ -27,10 +27,9 @@ export class OrderPlacedPage implements OnInit {
   }
 
   ngOnInit() {
-
-    let tran_ref = localStorage.getItem('tran_ref');
-    let client_id = localStorage.getItem('client_id');
-    alert(client_id);
+    let data = JSON.parse(localStorage.getItem('tran_data'))
+    let tran_ref = data.tran_ref;
+    let client_id = data.client_id;
     this.presentLoading().then(() => {
       this.paymentService.confirmPayment(tran_ref, client_id).subscribe(
         (data) => this.handleResponse(data),
@@ -60,7 +59,6 @@ export class OrderPlacedPage implements OnInit {
 
   handleError(error) {
     this.loadingController.dismiss();
-
     console.log(error);
   }
 
@@ -74,7 +72,6 @@ export class OrderPlacedPage implements OnInit {
         {
           text: "OK",
           handler: () => {
-            // this.router.navigate(["/tabs/cart"]);
           },
         },
       ],

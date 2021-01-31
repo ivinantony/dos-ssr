@@ -18,24 +18,18 @@ export class IframePage implements OnInit {
 
     this.orderData = JSON.parse(data);
 
-    // this.storage.set('client_id', this.orderData.client_id);
-    // this.storage.set('tran_ref', this.orderData.tran_ref).finally(()=>{
-    //   this.openUrl()
-    // })
     console.log(JSON.parse(data));
 
     this.setStorage().finally(() => {
-      // this.openUrl();
+      this.openUrl();
     })
   }
 
   ngOnInit() {
-   
+
   }
   async setStorage() {
-    console.log('fjldvj',this.orderData)
-    await localStorage.setItem('tran_ref', this.orderData.tran_ref)
-    await localStorage.set('client_id', this.orderData.client_id);
+    await localStorage.setItem('tran_data', JSON.stringify(this.orderData));
   }
 
   openUrl() {
@@ -43,7 +37,6 @@ export class IframePage implements OnInit {
   }
 
   ngAfterViewInit(): void {
-  
-    alert(JSON.stringify(localStorage.getItem('client_id')))
+
   }
 }

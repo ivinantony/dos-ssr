@@ -1,19 +1,17 @@
-import { Component, OnInit, ɵConsole } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import {
   LoadingController,
-  ModalController,
   Platform,
   ToastController,
 } from "@ionic/angular";
 import { PaymentService } from "src/app/services/payment/payment.service";
-import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
+import { InAppBrowser, InAppBrowserEvent } from "@ionic-native/in-app-browser/ngx";
 import { Storage } from "@ionic/storage";
-import { DomSanitizer } from "@angular/platform-browser";
-import { PaytabsPage } from "../paytabs/paytabs.page";
 import { AuthenticationService } from "src/app/services/authentication.service";
 
 const POST_DATA = 200;
+const CONFIRM = 777
 @Component({
   selector: "app-paypal",
   templateUrl: "./paypal.page.html",
@@ -25,17 +23,24 @@ export class PaypalPage implements OnInit {
   response: any;
   url: any;
   address_id: any;
-  client_id:any;
+  client_id: any;
+  tran_ref: any
+  private subscription: any
   constructor(
     private pay: PaymentService,
     public router: Router,
     private toastController: ToastController,
     private loadingController: LoadingController,
     private platform: Platform,
-    private iab: InAppBrowser,
+    private paymentService: PaymentService,
     private storage: Storage,
     private authservice: AuthenticationService
   ) {
+    // this.platform.resume.subscribe(() => {
+    //   alert('platfor resumed')
+    //   this.router.navigate(['/tabs/home'], { replaceUrl: true })
+    // })
+
     this.storage.get("total_amount").then((val) => {
       if (val) {
         console.log(val);
@@ -46,8 +51,10 @@ export class PaypalPage implements OnInit {
     // this.paypal()
   }
 
-  ngOnInit() {}
-
+  ngOnInit() { }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe()
+  }
   hostedSubmit() {
     this.presentLoading().then(() => {
       this.authservice.isAuthenticated().then((id) => {
@@ -56,14 +63,14 @@ export class PaypalPage implements OnInit {
           this.storage.get("data_store").then((val) => {
             let localValues = JSON.parse(val);
             let data = {
-              client_id:  JSON.stringify(id),
+              client_id: JSON.stringify(id),
               payable_order_id: JSON.stringify(localValues.payable_order_id),
-              payable_amount:  JSON.stringify(localValues.payable_amount),
-              address_id:  JSON.stringify(this.address_id),
+              payable_amount: JSON.stringify(localValues.payable_amount),
+              address_id: JSON.stringify(this.address_id),
             };
             console.log("data_store", localValues);
             this.pay.hostedPay(data).subscribe(
-              (data) => this.handleResponse(data),
+              (data) => this.handleResponse(data, POST_DATA),
               (error) => this.handleError(error)
             );
           });
@@ -72,45 +79,56 @@ export class PaypalPage implements OnInit {
     });
   }
 
-  handleResponse(data) {
-    this.loadingController.dismiss();
-    this.response = data;
-    let encodedData = {
-      redirect_url: encodeURIComponent(data.redirect_url),
-      tran_ref: data.tran_ref,
-      client_id: this.client_id,
-    };
-    // this.storage.set("tran_ref", data.tran_ref).then(() => {
-    // window.open(`http://localhost:8100/iframe?data=${JSON.stringify(encodedData)}`, "_self")
-    window.open(
-      `https://arba.mermerapps.com/iframe?data=${JSON.stringify(encodedData)}`,
-      "_self"
-    );
-    // this.router.navigate(["paytabs", data.tran_ref, encodedData ]);
+  handleResponse(data, type: any) {
+    if (type == POST_DATA) {
+      this.response = data;
+      this.storage.set('tran_ref', data.tran_ref).then(() => {
+        let encodedData = {
+          redirect_url: encodeURIComponent(data.redirect_url),
+          tran_ref: data.tran_ref,
+          client_id: this.client_id,
+        };
 
-    // })
+        var url = `https://arba.mermerapps.com/iframe?data=${JSON.stringify(encodedData)}`;
+        window.open(url, "_self");
+
+        this.subscription = this.platform.resume.subscribe(async () => {
+          this.storage.get('tran_ref').then((ref) => {
+            if (ref) {
+
+              this.paymentService.confirmPayment(ref, this.client_id).subscribe(
+                (data) => this.handleResponse(data, CONFIRM),
+                (error) => this.handleError(error)
+              );
+
+            }
+          })
+        });
+      })
+      this.loadingController.dismiss();
+    } else if (type == CONFIRM) {
+      if (data.details) {
+        if (data.details.response_status == "A") {
+          this.router.navigate(['/tabs/home'], { replaceUrl: true })
+        } else {
+          this.router.navigate(['/tabs/cart'], { replaceUrl: true })
+        }
+
+      } else {
+        alert('Payment Cancelled.')
+      }
+
+    }
+
+
+
+
   }
 
   handleError(error) {
-    // console.log('error in Tab3', error)
     this.loadingController.dismiss();
   }
-  openUrl(url) {
-    if (!this.platform.is("cordova")) {
-      window.open(url, "_self");
-      return;
-    }
-    const browser = this.iab.create(url, "_self");
-    browser.on("loadstop").subscribe((event) => {
-      // browser.insertCSS({ code: "body{color: red;" });
-    });
 
-    // browser.close();
-  }
-
-  openApp() {
-    window.location.href = "dealonstore://myparam";
-  }
 
   async presentToast(msg) {
     const toast = await this.toastController.create({

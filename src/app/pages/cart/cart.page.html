@@ -1,10 +1,16 @@
 <desktop-header></desktop-header>
 <ion-header class="ion-no-border ion-hide-md-up">
   <ion-toolbar color="secondary">
-    <ion-buttons slot="start" [ngStyle]="{'display':  current_url?.includes('/tabs/cart') ? '':'none'}">
+    <ion-buttons
+      slot="start"
+      [ngStyle]="{'display':  current_url?.includes('/tabs/cart') ? '':'none'}"
+    >
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-buttons slot="start" [ngStyle]="{'display':  current_url?.includes('/cart') ? 'none':''}">
+    <ion-buttons
+      slot="start"
+      [ngStyle]="{'display':  current_url?.includes('/tabs/cart') ? 'none':''}"
+    >
       <ion-back-button defaultHref="/tabs/home"></ion-back-button>
     </ion-buttons>
     <ion-title>Cart</ion-title>
@@ -35,17 +41,19 @@
         <p>{{address_selected.phone}}</p>
       </ion-label>
 
-  
-        <ion-button (click)="changeAddress()" color="primary" fill="outline">
-          change
-        </ion-button>
-  
-    
+      <ion-button (click)="changeAddress()" color="primary" fill="outline">
+        change
+      </ion-button>
+
       <!-- <ion-thumbnail class="ion-padding">
         <img src="../../../assets/imgs/icons/location.svg" />
       </ion-thumbnail> -->
     </ion-item>
-    <ion-button (click)="presentAddressModal()" fill="clear" *ngIf="!address_selected">
+    <ion-button
+      (click)="presentAddressModal()"
+      fill="clear"
+      *ngIf="!address_selected"
+    >
       select address
       <ion-icon name="location-outline"></ion-icon>
     </ion-button>
@@ -188,11 +196,7 @@
   </div>
 </ion-content>
 <ion-footer class="ion-no-border" *ngIf="cartLength > 0">
-  <ion-toolbar
-    class="ion-no-padding"
-    style="padding-bottom: 0px !important"
-    
-  >
+  <ion-toolbar class="ion-no-padding" style="padding-bottom: 0px !important">
     <ion-button slot="end" color="primary" (click)="continue()">
       <ion-icon slot="end" name="chevron-forward"></ion-icon>
       CONTINUE
