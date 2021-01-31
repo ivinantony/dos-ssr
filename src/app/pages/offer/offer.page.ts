@@ -13,6 +13,7 @@ import {
 } from "@ionic/angular";
 import { IonContent } from "@ionic/angular";
 import { CartcountService } from "src/app/cartcount.service";
+import { AuthGuard } from "src/app/guards/auth.guard";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { CartService } from "src/app/services/cart/cart.service";
 import { OfferService } from "src/app/services/offer/offer.service";
@@ -53,7 +54,8 @@ export class OfferPage implements OnInit {
     private loadingController: LoadingController,
     private popOverCtrl: PopoverController,
     private toastController: ToastController,
-    private cartCountService: CartcountService
+    private cartCountService: CartcountService,
+    private authGuard:AuthGuard
   ) {
 
     this.s3url = utils.getS3url();
@@ -148,7 +150,7 @@ export class OfferPage implements OnInit {
         this.products[index].cart_count++;
         this.name = this.products[index].name;
       } else {
-        this.presentLogin();
+        this.authGuard.presentModal()
       }
     })
   

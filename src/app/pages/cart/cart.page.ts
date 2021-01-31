@@ -355,6 +355,11 @@ export class CartPage implements OnInit {
     });
   }
 
+  changeAddress()
+  {
+    this.presentAddressModal()
+  }
+
   async presentAlert(msg: string) {
     const alert = await this.alertController.create({
       cssClass: "my-custom-class",

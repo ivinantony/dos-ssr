@@ -53,6 +53,7 @@ export class PaypalPage implements OnInit {
     this.presentLoading().then(() => {
       this.authservice.isAuthenticated().then(val=>{
         if(val)
+        console.log(val,"value of is authenticated")
         {
           this.storage.get('order_id').then(val=>{
             this.order_id = val

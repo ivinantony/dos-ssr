@@ -210,6 +210,7 @@ export class CheckoutPage implements OnInit {
         } else {
           this.authservice.isAuthenticated().then(val=>{
             if(val){
+              console.log(val,"isauthenticated")
               let data = {
                 client_id: val,
                 promo_code_id: this.promo_id,
