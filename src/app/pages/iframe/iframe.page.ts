@@ -25,15 +25,16 @@ export class IframePage implements OnInit {
     console.log(JSON.parse(data));
 
     this.setStorage(data).finally(() => {
-      this.openUrl();
+      // this.openUrl();
     })
   }
 
   ngOnInit() {
-
+   
   }
   async setStorage(data) {
-    await localStorage.setItem('data', JSON.stringify(data))
+    await localStorage.setItem('tran_ref', this.orderData.tran_ref)
+    await localStorage.set('client_id', this.orderData.client_id);
   }
 
   openUrl() {
@@ -41,7 +42,7 @@ export class IframePage implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    // alert(JSON.stringify(localStorage.getItem('data')))
-
+  
+    alert(JSON.stringify(localStorage.getItem('client_id')))
   }
 }

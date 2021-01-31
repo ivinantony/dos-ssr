@@ -24,50 +24,50 @@ export class PaypalPage implements OnInit {
   details: any;
   response: any;
   url: any;
-  order_id:any
-  address_id:any
-  total_amount:any
+  order_id: any
+  address_id: any
+  total_amount: any
   constructor(
     private pay: PaymentService,
     public router: Router,
     private toastController: ToastController,
-    private sanitizer: DomSanitizer,
-    private modalController: ModalController,
     private loadingController: LoadingController,
     private platform: Platform,
     private iab: InAppBrowser,
     private storage: Storage,
-    private authservice:AuthenticationService,
+    private authservice: AuthenticationService,
 
   ) {
     this.storage.get("total_amount").then((val) => {
+     if(val){
+       console.log(val)
       this.paymentAmount = val;
+     }
     });
 
     // this.paypal()
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   hostedSubmit() {
     this.presentLoading().then(() => {
-      this.authservice.isAuthenticated().then(val=>{
-        if(val)
-        {
-          this.storage.get('order_id').then(val=>{
+      this.authservice.isAuthenticated().then(val => {
+        if (val) {
+          this.storage.get('order_id').then(val => {
             this.order_id = val
           })
-          this.storage.get('address_id').then(val=>{
+          this.storage.get('address_id').then(val => {
             this.address_id = val
           })
-          this.storage.get('total_amount').then(val=>{
+          this.storage.get('total_amount').then(val => {
             this.total_amount = val
           })
           let data = {
             client_id: val,
             payable_order_id: this.order_id,
             payable_amount: this.total_amount,
-            address_id:this.address_id,
+            address_id: this.address_id,
           };
           this.pay.hostedPay(data).subscribe(
             (data) => this.handleResponse(data),
@@ -75,7 +75,7 @@ export class PaypalPage implements OnInit {
           );
         }
       })
-     
+
     });
   }
 
@@ -90,7 +90,7 @@ export class PaypalPage implements OnInit {
     }
     // this.storage.set("tran_ref", data.tran_ref).then(() => {
     // window.open(`http://localhost:8100/iframe?data=${JSON.stringify(encodedData)}`, "_self")
-     window.open(`https://demo4.mermerapps.com/iframe?data=${JSON.stringify(encodedData)}`,"_self")
+    window.open(`https://arba.mermerapps.com/iframe?data=${JSON.stringify(encodedData)}`, "_self")
     // this.router.navigate(["paytabs", data.tran_ref, encodedData ]);
 
     // })

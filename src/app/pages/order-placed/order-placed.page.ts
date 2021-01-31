@@ -22,13 +22,15 @@ export class OrderPlacedPage implements OnInit {
     private alertController: AlertController,
     private loadingController: LoadingController
   ) {
+    // window.location.href = "mycoolapp://";
 
-   
   }
 
   ngOnInit() {
+
     let tran_ref = localStorage.getItem('tran_ref');
-    let client_id = localStorage.getItem('client_id')
+    let client_id = localStorage.getItem('client_id');
+    alert(client_id);
     this.presentLoading().then(() => {
       this.paymentService.confirmPayment(tran_ref, client_id).subscribe(
         (data) => this.handleResponse(data),
@@ -55,7 +57,7 @@ export class OrderPlacedPage implements OnInit {
       this.presentAlert(data.details.response_message);
     }
   }
-  
+
   handleError(error) {
     this.loadingController.dismiss();
 
@@ -72,7 +74,7 @@ export class OrderPlacedPage implements OnInit {
         {
           text: "OK",
           handler: () => {
-            this.router.navigate(["cart"]);
+            // this.router.navigate(["cart"]);
           },
         },
       ],

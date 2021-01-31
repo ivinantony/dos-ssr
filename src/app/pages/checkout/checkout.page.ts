@@ -39,49 +39,47 @@ export class CheckoutPage implements OnInit {
     private orderService: OrderService,
     private modalController: ModalController,
     private routerOutlet: IonRouterOutlet,
-    private platform: Platform,
     private router: Router,
-    private paytabService: PaytabsService,
     private toastController: ToastController,
     private loadingController: LoadingController,
     private walletService: WalletService,
     private alertController: AlertController,
-    private authservice:AuthenticationService,
-    private storgae:Storage
+    private authservice: AuthenticationService,
+    private storgae: Storage
   ) {
-    console.log("promo_id",this.promo_id)
+    console.log("promo_id", this.promo_id)
     this.address_id = this.activatedRoute.snapshot.params.address_id;
   }
 
   ionViewWillEnter() {
-    this.promo_id=null
-    this.discount_amount=0
+    this.promo_id = null
+    this.discount_amount = 0
     this.getData();
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   getData() {
     this.presentLoading().then(() => {
-      this.authservice.isAuthenticated().then(val=>{
-        if(val)
-        {
+      this.authservice.isAuthenticated().then(val => {
+        if (val) {
+          console.log(val)
           this.checkoutService
-          .getAmountDetails(val,this.address_id)
-          .subscribe(
-            (data) => this.handleResponse(data, GET_AMOUNTDETAILS),
-            (error) => this.handleError(error, GET_AMOUNTDETAILS)
-          );
+            .getAmountDetails(val, this.address_id)
+            .subscribe(
+              (data) => this.handleResponse(data, GET_AMOUNTDETAILS),
+              (error) => this.handleError(error, GET_AMOUNTDETAILS)
+            );
         }
-        else{
+        else {
           this.checkoutService
-          .getAmountDetails(null,this.address_id)
-          .subscribe(
-            (data) => this.handleResponse(data, GET_AMOUNTDETAILS),
-            (error) => this.handleError(error, GET_AMOUNTDETAILS)
-          );
+            .getAmountDetails(null, this.address_id)
+            .subscribe(
+              (data) => this.handleResponse(data, GET_AMOUNTDETAILS),
+              (error) => this.handleError(error, GET_AMOUNTDETAILS)
+            );
         }
-       
+
       })
 
     });
@@ -96,28 +94,13 @@ export class CheckoutPage implements OnInit {
       // console.log(data)
     } else if (type == ORDER_RESPONSE) {
       console.log(data, "pay response");
-      this.storgae.set("order_id",data.payable_order_id)
+      this.storgae.set('payment_details', JSON.stringify(data));
       if (this.payment_id == 4) {
-        this.storgae.set("total_amount",this.data.payable_amount)
-        console.log("cordova not supported");
         this.router.navigate(["paypal"]);
-      } else if (this.payment_id == 5) {
-        let data = {};
-
-        this.paytabService.getPaymentUi(data).subscribe(
-          (data) => this.handleResponse(data, GET_PAY),
-          (error) => this.handleError(error, GET_PAY)
-        );
       } else if (this.payment_id == 2) {
-        // this.presentToastSuccess("Order placed Successfully");
-
         this.router.navigate(["successful"]);
-      } else if (this.payment_id == 6) {
-        this.storgae.set("total_amount",this.data.payable_amount)
-        this.router.navigate(["checkout-pay"]);
       }
     } else if (type == WALLET_RESPONSE) {
-      // console.log(data)
       this.router.navigate(["order-placed"]);
     } else {
       // console.log(data);
@@ -143,8 +126,8 @@ export class CheckoutPage implements OnInit {
   }
 
   async openPromo() {
-    
-    
+
+
     const modal = await this.modalController.create({
       component: CouponPage,
       swipeToClose: true,
@@ -164,9 +147,8 @@ export class CheckoutPage implements OnInit {
     return await modal.present();
   }
 
-  removePromo()
-  {
-    
+  removePromo() {
+
     this.data.payable_amount += this.discount_amount;
     this.discount_amount = 0
 
@@ -188,8 +170,8 @@ export class CheckoutPage implements OnInit {
       if (paymentDetails) {
         this.payment_id = paymentDetails.modeOfPayment_Id;
         if (this.payment_id == 7) {
-          this.authservice.isAuthenticated().then(val=>{
-            if(val){
+          this.authservice.isAuthenticated().then(val => {
+            if (val) {
               let data = {
                 client_id: val,
                 promo_code_id: this.promo_id,
@@ -199,17 +181,17 @@ export class CheckoutPage implements OnInit {
                 payable_amount: Math.round(this.data.payable_amount),
                 delivery_charge: this.data.delivery_charge,
               };
-    
+
               this.walletService.captureWallet(data).subscribe(
                 (data) => this.handleResponse(data, WALLET_RESPONSE),
                 (error) => this.handleError(error, WALLET_RESPONSE)
               );
             }
           })
-          
+
         } else {
-          this.authservice.isAuthenticated().then(val=>{
-            if(val){
+          this.authservice.isAuthenticated().then(val => {
+            if (val) {
               let data = {
                 client_id: val,
                 promo_code_id: this.promo_id,
@@ -218,13 +200,13 @@ export class CheckoutPage implements OnInit {
                 product_total: this.data.total_amount,
                 payable_amount: this.data.payable_amount,
                 delivery_charge: this.data.delivery_charge,
-              };   
+              };
               this.orderService.captureOrder(data).subscribe(
                 (data) => this.handleResponse(data, ORDER_RESPONSE),
                 (error) => this.handleError(error, ORDER_RESPONSE)
               );
             }
-          }) 
+          })
         }
       }
     });
@@ -264,7 +246,7 @@ export class CheckoutPage implements OnInit {
           role: "cancel",
           cssClass: "secondary",
           handler: () => {
-        
+
           },
         },
         {
