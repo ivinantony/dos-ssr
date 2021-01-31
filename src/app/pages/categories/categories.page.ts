@@ -14,6 +14,7 @@ export class CategoriesPage implements OnInit {
   s3url: any
   page_count: number = 1
   page_limit: number
+  result:any
   categories: Array<any> = []
 
   bannerSlideOpts = {
@@ -49,6 +50,15 @@ export class CategoriesPage implements OnInit {
 
   navigateToProducts(index: number) {
     this.router.navigate(['products', this.categories[index].id, { name: this.categories[index].category_name }])
+  }
+
+  onRoute(link) {
+    this.result = [];
+    if (link != null || link != undefined) {
+      let data = link.split(".com").pop();
+
+      this.router.navigateByUrl(data);
+    }
   }
 
   loadMoreContent(infiniteScroll) {
