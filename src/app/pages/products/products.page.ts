@@ -13,13 +13,14 @@ import {
 import { utils } from "protractor";
 import { SubcatProductsService } from "src/app/services/subcatProducts/subcat-products.service";
 import { UtilsService } from "src/app/services/utils.service";
-import { FiltersPage } from "../filters/filters.page";
+
 import { FilterComponent } from "../filter/filter.component";
-import { SortPage } from "../sort/sort.page";
+
 import { CartService } from "src/app/services/cart/cart.service";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { IonContent } from "@ionic/angular";
 import { CartcountService } from "src/app/cartcount.service";
+import { AuthGuard } from "src/app/guards/auth.guard";
 const GET_DATA = 200;
 const POST_DATA = 210;
 const DEL_DATA = 220;
@@ -36,7 +37,6 @@ export class ProductsPage implements OnInit {
 
   page_limit: number;
   page_count: number = 1;
-  client_id: any;
   catId: any;
   category_name: any;
   s3url: string;
@@ -45,7 +45,7 @@ export class ProductsPage implements OnInit {
   sortType: any = null;
   cart_count: any;
   name: any;
-
+currentIndex:number
   constructor(
     private activatedRoute: ActivatedRoute,
     public router: Router,
@@ -58,13 +58,13 @@ export class ProductsPage implements OnInit {
     private alertController: AlertController,
     private popOverCtrl: PopoverController,
     private toastController: ToastController,
-    private cartCountService: CartcountService
+    private cartCountService: CartcountService,
+    private authGuard:AuthGuard
   ) {
     this.page_count = 1;
-    this.s3url = utils.getS3url();
+    this.s3url = this.utils.getS3url();
     this.catId = parseInt(this.activatedRoute.snapshot.paramMap.get("id"));
     this.category_name = this.activatedRoute.snapshot.paramMap.get("name");
-    this.client_id = Number(localStorage.getItem("client_id"));
   }
 
   ngOnInit() {}
@@ -72,40 +72,61 @@ export class ProductsPage implements OnInit {
     this.page_count = 1;
     this.products = [];
     this.getData();
-    this.cart_count = localStorage.getItem("cart_count");
+    this.cartCountService.getCartCount().subscribe((val)=>{
+      this.cart_count=val
+        })
   }
 
   getData(infiniteScroll?) {
     this.presentLoading().then(() => {
-      this.CatProductService.getSubCatProducts(
-        this.catId,
-        this.client_id,
-        this.page_count,
-        this.sortType
-      ).subscribe(
-        (data) => this.handleResponse(data, GET_DATA, infiniteScroll),
-        (error) => this.handleError(error)
-      );
+      this.authService.isAuthenticated().then(res=>{
+        if(res){
+          this.CatProductService.getSubCatProducts(
+            this.catId,
+            res,
+            this.page_count,
+            this.sortType
+          ).subscribe(
+            (data) => this.handleResponse(data, GET_DATA, infiniteScroll),
+            (error) => this.handleError(error)
+          );
+        }else{
+          this.CatProductService.getSubCatProducts(
+            this.catId,
+            null,
+            this.page_count,
+            this.sortType
+          ).subscribe(
+            (data) => this.handleResponse(data, GET_DATA, infiniteScroll),
+            (error) => this.handleError(error)
+          );
+        }
+      })
+   
     });
   }
 
   handleResponse(data, type, infiniteScroll?) {
     this.infiniteScroll.disabled = false;
-    this.loadingController.dismiss();
+    
     if (type == GET_DATA) {
+      this.loadingController.dismiss();
       this.data = data;
       this.data.products.forEach((element) => {
         this.products.push(element);
       });
       this.page_limit = data.page_count;
       this.cart_count = data.cart_count;
-      localStorage.setItem("cart_count", data.cart_count);
-      this.cartCountService.setCartCount(data.cart_count);
+    this.authService.setCartCount(data.cart_count)
+    this.cartCountService.setCartCount(data.cart_count);
     } else if (type == POST_DATA) {
+      this.products[this.currentIndex].cart_count++;
+      this.name = this.products[this.currentIndex].name;
       this.cart_count = data.cart_count;
-      localStorage.setItem("cart_count", data.cart_count);
+      this.authService.setCartCount(data.cart_count)
       this.cartCountService.setCartCount(data.cart_count);
-      this.presentToastSuccess("One ' " + this.name + " ' added to cart.");
+      this.presentToastSuccess("One ' " + this.name + " ' added to cart."); 
+      this.loadingController.dismiss();
     }
     if (infiniteScroll) {
       infiniteScroll.target.complete();
@@ -212,39 +233,31 @@ export class ProductsPage implements OnInit {
   }
 
   addToCart(index: number) {
-    this.presentLoading();
-    if (this.authService.isAuthenticated()) {
-      let data = {
-        product_id: this.products[index].id,
-        client_id: this.client_id,
-      };
-      this.cartService.addToCart(data).subscribe(
-        (data) => this.handleResponse(data, POST_DATA),
-        (error) => this.handleError(error)
-      );
-      this.products[index].cart_count++;
+    this.currentIndex =index;
+    this.authService.isAuthenticated().then((token)=>{
+      if(token){
+         this.presentLoading().then(()=>{
+        let data = {
+          product_id: this.products[index].id,
+          client_id:token,
+        };
+        this.cartService.addToCart(data).subscribe(
+          (data) => this.handleResponse(data, POST_DATA),
+          (error) => this.handleError(error)
+        );
+      })
+      
+      }else{
+        this.authGuard.presentModal()
+      }
+    })
 
-      this.name = this.products[index].name;
-
-      localStorage.setItem("cart_count", this.cart_count);
-    } else {
-      this.presentLogin();
-    }
   }
 
   goToCart() {
-    this.router.navigate(["cart"]);
+    this.router.navigate(["/tabs/cart"]);
   }
 
-  removeFromcart(index: number) {
-    this.cartService
-      .removeFromCart(this.client_id, this.products[index].id)
-      .subscribe(
-        (data) => this.handleResponse(data, DEL_DATA),
-        (error) => this.handleError(error)
-      );
-    this.products[index].cart_count--;
-  }
 
   async presentLoading() {
     const loading = await this.loadingController.create({

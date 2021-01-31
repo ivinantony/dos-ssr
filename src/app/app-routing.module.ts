@@ -61,18 +61,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/products/products.module').then(m => m.ProductsPageModule)
   },
   {
-    path: 'filters',
-    loadChildren: () => import('./pages/filters/filters.module').then(m => m.FiltersPageModule)
-  },
-  {
-    path: 'sort',
-    loadChildren: () => import('./pages/sort/sort.module').then(m => m.SortPageModule)
-  },
-  {
-    path: 'otpmodal',
-    loadChildren: () => import('./pages/otpmodal/otpmodal.module').then(m => m.OtpmodalPageModule)
-  },
-  {
     path: 'brand-products/:brand_id',
     loadChildren: () => import('./pages/brand-products/brand-products.module').then(m => m.BrandProductsPageModule)
   },

@@ -22,19 +22,8 @@ export class OrderPlacedPage implements OnInit {
     private alertController: AlertController,
     private loadingController: LoadingController
   ) {
-    // this.client_id = localStorage.getItem("client_id");
-    // this.storage.get("tran_ref").then((val) => {
-    //   this.ref = val;
-    //   this.presentLoading().then(() => {
-    //     paymentService.confirmPayment(this.ref, this.client_id).subscribe(
-    //       (data) => this.handleResponse(data),
-    //       (error) => this.handleError(error)
-    //     );
-    //   });
-    // });
-    // localStorage.removeItem("cart_count");
-    // cartCountService.setCartCount(0);
-    // defineCustomElements(window);
+
+   
   }
 
   ngOnInit() {
@@ -66,6 +55,7 @@ export class OrderPlacedPage implements OnInit {
       this.presentAlert(data.details.response_message);
     }
   }
+  
   handleError(error) {
     this.loadingController.dismiss();
 

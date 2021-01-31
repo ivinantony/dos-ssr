@@ -14,7 +14,7 @@ export class ProfilePage implements OnInit {
   user:any
   constructor(private authService: AuthenticationService,
   private navCtrl: NavController, private loadingController: LoadingController, 
-  private toastController: ToastController,private router:Router,private profileService:ProfileService) 
+  private toastController: ToastController,private router:Router,private profileService:ProfileService,private authservice:AuthenticationService) 
   {
     
   }
@@ -40,16 +40,31 @@ export class ProfilePage implements OnInit {
 
   getData()
   {
-    let client_id = Number(localStorage.getItem('client_id'))
-    this.profileService.getProfileDetails(client_id).subscribe(
-      (data)=>this.handleResponse(data,GET_DATA),
-      (error)=>this.handleError(error)
-    )
+    this.presentLoading().then(()=>{
+      this.authservice.isAuthenticated().then(val=>{
+        if(val)
+        {
+          let client_id = val
+          this.profileService.getProfileDetails(client_id).subscribe(
+            (data)=>this.handleResponse(data,GET_DATA),
+            (error)=>this.handleError(error)
+          )
+        }
+      })
+    })
+   
+    
   }
 
   handleResponse(data,type)
   {
-    this.user = data.client_Details
+    if(type == GET_DATA)
+    {
+      this.loadingController.dismiss().then(()=>{
+        this.user = data.client_Details
+      })
+    }
+    
     // console.log(this.user)
   }
   handleError(error)

@@ -114,7 +114,12 @@ export class AddAddressPage implements OnInit {
       });
     });
   }
-  ngOnInit() {}
+  ngOnInit() {
+    if (!window.history.state.modal) {
+      const modalState = { modal: true };
+      history.pushState(modalState, null);
+      }
+  }
 
 
   getData() {
@@ -167,11 +172,14 @@ export class AddAddressPage implements OnInit {
   };
 
   async loadMap() {
-    // this.is_granted=true
     console.log("load map started");
 
-    let client_id = localStorage.getItem("client_id");
-    this.addressForm.patchValue({ client_id: client_id });
+    this.authservice.isAuthenticated().then(token=>{
+      if(token){
+        this.addressForm.patchValue({ client_id: token });
+      }
+    })
+
     if (this.platform.is("cordova")) {
       console.log("cordova location fetch");
       await this.geolocation

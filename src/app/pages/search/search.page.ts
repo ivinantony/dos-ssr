@@ -34,6 +34,12 @@ export class SearchPage implements OnInit {
             (error)=>this.handleErrorSearch(error)
           )
         }
+        else
+        {
+          this.result=[]
+
+        }
+        
 
     });
   }

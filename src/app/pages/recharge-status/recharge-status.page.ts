@@ -2,6 +2,7 @@ import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { PaymentService } from 'src/app/services/payment/payment.service';
 
 @Component({
@@ -10,23 +11,24 @@ import { PaymentService } from 'src/app/services/payment/payment.service';
   styleUrls: ['./recharge-status.page.scss'],
 })
 export class RechargeStatusPage implements OnInit {
-  client_id:any
   ref:any
   status:boolean
 
   constructor(private storage:Storage,private paymentService:PaymentService,
     private alertController:AlertController,private router:Router,private loadingController:LoadingController,
-    private ngZone:NgZone) 
+    private ngZone:NgZone,private authservice:AuthenticationService) 
   { 
-    this.client_id = localStorage.getItem("client_id")
+    
 
     this.storage.get('tran_ref').then((val) => {
       this.ref = val
       this.presentLoading().then(() => {
-        paymentService.confirmPayment(this.ref, this.client_id).subscribe(
-          (data) => this.handleResponse(data),
-          (error) => this.handleError(error)
-        );
+        authservice.isAuthenticated().then(val=>{
+          paymentService.confirmPayment(this.ref,val).subscribe(
+            (data) => this.handleResponse(data),
+            (error) => this.handleError(error)
+          );
+        })
       });
    })
   }

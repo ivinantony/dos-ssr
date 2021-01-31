@@ -5,6 +5,7 @@ import { PaymentService } from "src/app/services/payment/payment.service";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 import { Storage } from "@ionic/storage";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { AuthenticationService } from "src/app/services/authentication.service";
 
 @Component({
   selector: "app-recharge",
@@ -13,6 +14,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 })
 export class RechargePage implements OnInit {
   public rechargeForm: FormGroup;
+  client_id:any
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -22,10 +24,15 @@ export class RechargePage implements OnInit {
     private iab: InAppBrowser,
     private pay: PaymentService,
     private toastController: ToastController,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authservice:AuthenticationService
   ) {
+
+    authservice.isAuthenticated().then(val=>{
+this.client_id = val
+    })
     this.rechargeForm = this.formBuilder.group({
-      client_id: [localStorage.getItem("client_id")],
+      client_id: [this.client_id],
       amount: [ "", Validators.compose([Validators.required, Validators.pattern("[0-9]*")]),],
     });
     let amount = this.activatedRoute.snapshot.params.balance;
@@ -39,7 +46,7 @@ export class RechargePage implements OnInit {
   recharge() {
     this.presentLoading().then(() => {
       console.log(this.rechargeForm.value);
-      localStorage.setItem("total_amount", this.rechargeForm.value.amount);
+      this.storage.set("total_amount",this.rechargeForm.value.amount)
       console.log("form value",this.rechargeForm.value)
       this.pay.wallet_hostedPay(this.rechargeForm.value).subscribe(
         (data) => this.handleResponse(data),

@@ -69,14 +69,12 @@ export class OtpPage implements OnInit {
 
   handleResponseData(data, type) {
     if (type == POST_OTP) {
-      // console.log("haiiiiiiiiiii",data)
-      this.authService.login(data.data);
-      localStorage.setItem("client_id", data.client_id);
+      this.authService.setClientId(data.data);
+      this.authService.setCartCount(data.cart_count)
+      this.authService.setNotificationCount(data.notification_count)
       this.cartCountService.setCartCount(data.cart_count);
       this.notCountService.setNotCount(data.notification_count);
       this.badge.set(data.notification_count);
-
-
       this.storage.get("prev_url").then((val) => {
         // console.log(val,"prev url")
         this.ngZone.run(() => {

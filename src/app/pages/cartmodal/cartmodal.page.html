@@ -5,7 +5,7 @@
           <ion-icon name="close-outline"></ion-icon>
         </ion-button>
     </ion-buttons>
-    <ion-title>CART</ion-title>
+    <ion-title>Cart</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -173,7 +173,7 @@
 
 </ion-content>
 
-<ion-footer>
+<ion-footer *ngIf="cartLength > 0"> 
   <ion-toolbar>
     <ion-button
       

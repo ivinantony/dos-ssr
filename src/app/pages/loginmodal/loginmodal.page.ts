@@ -12,6 +12,10 @@ export class LoginmodalPage implements OnInit {
   constructor(private modalController: ModalController, private router: Router) { }
 
   ngOnInit() {
+    if (!window.history.state.modal) {
+      const modalState = { modal: true };
+      history.pushState(modalState, null);
+      }
   }
   async navigateToLogin() {
     await this.modalController.dismiss().then(() => {

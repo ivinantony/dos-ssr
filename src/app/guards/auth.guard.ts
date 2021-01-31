@@ -3,7 +3,7 @@ import { CanActivate } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { LoginmodalPage } from '../pages/loginmodal/loginmodal.page';
-import { AuthenticationService, TOKEN_KEY } from '../services/authentication.service';
+import { AuthenticationService } from '../services/authentication.service';
 
 @Injectable({
   providedIn: 'root'

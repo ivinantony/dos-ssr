@@ -7,8 +7,8 @@ import { Injectable } from '@angular/core';
 export class HeadersService {
 
   constructor() {
-   
-   }
+
+  }
   getHttpHeaders() {
     var headers = new HttpHeaders()
       .set("Accept", "application/json")

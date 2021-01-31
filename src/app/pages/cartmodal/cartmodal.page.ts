@@ -12,25 +12,19 @@ import { CartService } from "src/app/services/cart/cart.service";
 import { CheckoutService } from "src/app/services/checkout/checkout.service";
 import { OrderService } from "src/app/services/order/order.service";
 import { UtilsService } from "src/app/services/utils.service";
-import { AddAddressPage } from "../add-address/add-address.page";
 import { PaytabsService } from "src/app/services/paytabs.service";
 import { Renderer2, Inject } from "@angular/core";
 import { DOCUMENT } from "@angular/common";
 import { CartcountService } from "src/app/cartcount.service";
 import { AddressModalPage } from "../address-modal/address-modal.page";
+import { AuthenticationService } from "src/app/services/authentication.service";
 
 declare var google;
 
-const POST_DATA = 210;
-const POST_ADDRESS_DETAILS = 250;
-const ORDER_RESPONSE = 260;
-const GET_PAY = 270;
-const paytabs = require("paytabs_api");
 const GET_CART = 200;
 const ADD = 210;
 const DEL_DATA = 220;
 const REMOVE = 230;
-const GET_ADDRESS = 240;
 
 @Component({
   selector: "app-cartmodal",
@@ -52,7 +46,6 @@ export class CartmodalPage implements OnInit {
   payment_id: any;
   address_id: any;
   url: any;
-  client_id: any;
   delivery_locations: Array<any>;
   current_selection: any;
   data: any;
@@ -76,10 +69,10 @@ export class CartmodalPage implements OnInit {
     private cartCountService: CartcountService,
     private loadingController: LoadingController,
     private alertController: AlertController,
+    private authservice: AuthenticationService,
 
     @Inject(DOCUMENT) private _document: Document
   ) {
-    this.client_id = localStorage.getItem("client_id");
     this.s3url = utils.getS3url();
   }
 
@@ -87,39 +80,13 @@ export class CartmodalPage implements OnInit {
     this.getData();
     console.log(this.selectedAddress);
   }
-  ngOnInit() {}
 
-  // async addAddress() {
-  //   const modal = await this.modalController.create({
-  //     component: AddAddressPage,
-  //     swipeToClose: true,
-  //     presentingElement: this.routerOutlet.nativeEl,
-  //     cssClass: "my-custom-class",
-  //   });
-  //   modal.onDidDismiss().finally(() => {
-  //     this.getAddress();
-  //   });
-  //   return await modal.present();
-  // }
-
-  // async openPaymentModes() {
-  //   const modal = await this.modalController.create({
-  //     component: ModeofpaymentPage,
-  //     swipeToClose: true,
-  //     presentingElement: this.routerOutlet.nativeEl,
-  //     cssClass: "paymentOptions",
-  //     backdropDismiss: true,
-  //   });
-  //   modal.onDidDismiss().then((data) => {
-  //     const paymentDetails = data["data"];
-  //     // console.log(paymentDetails);
-  //     if (paymentDetails) {
-  //       this.payment_id = paymentDetails.modeOfPayment_Id;
-  //       // console.log(this.payment_id);
-  //     }
-  //   });
-  //   return await modal.present();
-  // }
+  ngOnInit() {
+    if (!window.history.state.modal) {
+      const modalState = { modal: true };
+      history.pushState(modalState, null);
+    }
+  }
 
   continue() {
     this.checkOutofStock();
@@ -133,7 +100,6 @@ export class CartmodalPage implements OnInit {
       let address_id = this.address_id;
       this.modalController.dismiss();
       this.router.navigate(["checkout", address_id]);
-      // console.log(this.selectedAddress);
     }
   }
 
@@ -151,18 +117,20 @@ export class CartmodalPage implements OnInit {
 
   getData() {
     this.presentLoading().then(() => {
-      this.cartService.getCart(this.client_id).subscribe(
-        (data) => this.handleResponse(data, GET_CART),
-        (error) => this.handleError(error)
-      );
+      this.authservice.isAuthenticated().then((val) => {
+        if (val) {
+          this.cartService.getCart(val).subscribe(
+            (data) => this.handleResponse(data, GET_CART),
+            (error) => this.handleError(error)
+          );
+        } else {
+          this.cartService.getCart(null).subscribe(
+            (data) => this.handleResponse(data, GET_CART),
+            (error) => this.handleError(error)
+          );
+        }
+      });
     });
-  }
-
-  getAddress() {
-    this.addressService.getAddress(this.client_id).subscribe(
-      (data) => this.handleResponse(data, GET_ADDRESS),
-      (error) => this.handleError(error)
-    );
   }
 
   handleResponse(data, type) {
@@ -187,7 +155,6 @@ export class CartmodalPage implements OnInit {
       this.loadingController.dismiss();
       this.presentToastDanger("You've removed " + this.name + " from cart.");
       this.getData();
-      localStorage.setItem("cart_count", data.cart_count);
       this.cartCountService.setCartCount(data.cart_count);
     } else if (type == DEL_DATA) {
       this.loadingController.dismiss();
@@ -195,19 +162,6 @@ export class CartmodalPage implements OnInit {
         "You've changed " + this.name + " quantity to " + this.qty
       );
       this.getData();
-      // if (this.qty > 0) {
-
-      // }
-      // else {
-      //   let cartCount = Number(localStorage.getItem("cart_count"));
-      //   let count = cartCount - 1;
-      //   let data = count.toString();
-      //   localStorage.setItem("cart_count", data);
-      //   this.cartCountService.setCartCount(data);
-      //   this.presentToastDanger("You've removed " + this.name + " from cart.");
-      // }
-    } else {
-      // console.log(data);
     }
   }
 
@@ -223,14 +177,28 @@ export class CartmodalPage implements OnInit {
     this.presentLoading();
     this.name = this.cart[index].name;
     this.qty = this.cart[index].count + 1;
-    let data = {
-      product_id: id,
-      client_id: this.client_id,
-    };
-    this.cartService.addToCart(data).subscribe(
-      (data) => this.handleResponse(data, ADD),
-      (error) => this.handleError(error)
-    );
+
+    this.authservice.isAuthenticated().then((val) => {
+      if (val) {
+        let data = {
+          product_id: id,
+          client_id: val,
+        };
+        this.cartService.addToCart(data).subscribe(
+          (data) => this.handleResponse(data, ADD),
+          (error) => this.handleError(error)
+        );
+      } else {
+        let data = {
+          product_id: id,
+          client_id: null,
+        };
+        this.cartService.addToCart(data).subscribe(
+          (data) => this.handleResponse(data, ADD),
+          (error) => this.handleError(error)
+        );
+      }
+    });
   }
 
   subtract(index: number, id: number) {
@@ -240,11 +208,21 @@ export class CartmodalPage implements OnInit {
       this.remove(index, id);
     } else {
       this.qty = this.cart[index].count - 1;
-      this.presentLoading();
-      this.cartService.removeFromCart(this.client_id, id).subscribe(
-        (data) => this.handleResponse(data, DEL_DATA),
-        (error) => this.handleError(error)
-      );
+      this.presentLoading().then(() => {
+        this.authservice.isAuthenticated().then((val) => {
+          if (val) {
+            this.cartService.removeFromCart(val, id).subscribe(
+              (data) => this.handleResponse(data, DEL_DATA),
+              (error) => this.handleError(error)
+            );
+          } else {
+            this.cartService.removeFromCart(null, id).subscribe(
+              (data) => this.handleResponse(data, DEL_DATA),
+              (error) => this.handleError(error)
+            );
+          }
+        });
+      });
     }
   }
 
@@ -257,30 +235,111 @@ export class CartmodalPage implements OnInit {
     this.router.navigate(["product", id]);
   }
 
-  async presentToastSuccess(msg) {
-    const toast = await this.toastController.create({
-      message: msg,
-      cssClass: "custom-toast",
-      position: "top",
-      color: "dark",
-      duration: 2000,
-    });
-    toast.present();
-  }
-
-  async presentToastSuccessQtyChange(msg) {
-    const toast = await this.toastController.create({
-      message: msg,
-      cssClass: "custom-toast-success",
-      position: "bottom",
-      color:"dark",
-      duration: 2000,
-    });
-    toast.present();
-  }
-
   handle(url: any) {
     this.router.navigate(["paytabs"]);
+  }
+
+  getDistance(latitude, longitude) {
+    const service = new google.maps.DistanceMatrixService();
+    var current_coords = new google.maps.LatLng(latitude, longitude);
+
+    var lat: string = latitude.toString();
+    var long: string = longitude.toString();
+    var destination = lat + "," + long;
+
+    var shop_coords = new Array();
+
+    this.data.delivery_location?.forEach((element) => {
+      shop_coords.push(element.location);
+    });
+
+    const matrixOptions = {
+      origins: shop_coords, // shop coords
+      destinations: [destination], // customer coords
+      travelMode: "DRIVING",
+      unitSystem: google.maps.UnitSystem.IMPERIAL,
+    };
+
+    service.getDistanceMatrix(matrixOptions, (response, status) => {
+      if (status !== "OK") {
+        var msg = "Error with distance matrix";
+        this.showToast(msg);
+      } else {
+        var response_data = new Array();
+        var distances = new Array();
+        let shortest_distance;
+        let shop_index: number;
+        response_data = response.rows;
+
+        response_data.forEach((ele) => {
+          distances.push(ele.elements[0].distance.value);
+        });
+        shortest_distance = Math.min.apply(null, distances);
+        shop_index = distances.findIndex(
+          (element) => element == shortest_distance
+        );
+        if (
+          shortest_distance <
+          this.data.delivery_location[shop_index].radius * 1000
+        ) {
+          var msg =
+            "Delivery available from " +
+            this.data.delivery_location[shop_index].location;
+          this.showToastSuccess(msg);
+          this.selectedAddress = this.current_selection;
+
+          this.address_id = this.address_selected.id;
+
+          this.valid_address = true;
+        } else {
+          var msg = "Sorry, this location is currently not serviceable";
+          this.showToast(msg);
+          this.valid_address = false;
+        }
+      }
+    });
+  }
+
+  async remove(index: number, id: number) {
+    this.name = this.cart[index].name;
+    const alert = await this.alertController.create({
+      cssClass: "my-custom-class",
+      header: "Delete",
+      message: "Do you want to remove " + this.name + " from cart",
+      buttons: [
+        {
+          text: "cancel",
+          role: "cancel",
+        },
+        {
+          text: "Confirm",
+          cssClass: "secondary",
+          handler: () => {
+            this.presentLoading().then(() => {
+              this.authservice.isAuthenticated().then((val) => {
+                if (val) {
+                  this.cartService.deleteFromCart(val, id).subscribe(
+                    (data) => this.handleResponse(data, REMOVE),
+                    (error) => this.handleError(error)
+                  );
+                } else {
+                  this.cartService.deleteFromCart(null, id).subscribe(
+                    (data) => this.handleResponse(data, REMOVE),
+                    (error) => this.handleError(error)
+                  );
+                }
+              });
+            });
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
+  close() {
+    this.modalController.dismiss();
   }
 
   doRefresh(event) {
@@ -300,74 +359,15 @@ export class CartmodalPage implements OnInit {
     await loading.present();
   }
 
-  getDistance(latitude, longitude) {
-    // console.log("GEt Distance started", latitude, longitude);
-    const service = new google.maps.DistanceMatrixService();
-    var current_coords = new google.maps.LatLng(latitude, longitude);
-    // console.log("current coords getdistance", current_coords);
-    var lat: string = latitude.toString();
-    var long: string = longitude.toString();
-    var destination = lat + "," + long;
-    // var origin = '10.008,76.329'
-
-    var shop_coords = new Array();
-
-    this.data.delivery_location?.forEach((element) => {
-      shop_coords.push(element.location);
+  async presentToastSuccess(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast",
+      position: "top",
+      color: "dark",
+      duration: 2000,
     });
-    // console.log("shop", shop_coords);
-    // console.log("current_coords", latitude, longitude);
-    const matrixOptions = {
-      origins: shop_coords, // shop coords
-      destinations: [destination], // customer coords
-      travelMode: "DRIVING",
-      unitSystem: google.maps.UnitSystem.IMPERIAL,
-    };
-    // console.log("matrix", matrixOptions);
-    service.getDistanceMatrix(matrixOptions, (response, status) => {
-      // console.log("GET DISTANCE MATRIX");
-      if (status !== "OK") {
-        var msg = "Error with distance matrix";
-        this.showToast(msg);
-      } else {
-        var response_data = new Array();
-        var distances = new Array();
-        let shortest_distance;
-        let shop_index: number;
-        response_data = response.rows;
-        // console.log("responsee data", response_data);
-        response_data.forEach((ele) => {
-          distances.push(ele.elements[0].distance.value);
-        });
-        shortest_distance = Math.min.apply(null, distances);
-        shop_index = distances.findIndex(
-          (element) => element == shortest_distance
-        );
-        if (
-          shortest_distance <
-          this.data.delivery_location[shop_index].radius * 1000
-        ) {
-          var msg =
-            "Delivery available from " +
-            this.data.delivery_location[shop_index].location;
-          this.showToastSuccess(msg);
-          // this.locationAvailability = true;
-          // this.addressForm.patchValue({delivery_location_id:this.delivery_locations[shop_index].id})
-          this.selectedAddress = this.current_selection;
-          // console.log("selectedAddress", this.selectedAddress);
-          this.address_id = this.address_selected.id;
-          // console.log(this.address_id);
-          this.valid_address = true;
-        } else {
-          // this.locationAvailability = false;
-          var msg = "Sorry, this location is currently not serviceable";
-          // this.addressForm.patchValue({ latitude: null });
-          // this.addressForm.patchValue({ longitude: null });
-          this.showToast(msg);
-          this.valid_address = false;
-        }
-      }
-    });
+    toast.present();
   }
 
   async showToast(message) {
@@ -435,37 +435,15 @@ export class CartmodalPage implements OnInit {
     });
   }
 
-  async remove(index: number, id: number) {
-    this.name = this.cart[index].name;
-    const alert = await this.alertController.create({
-      cssClass: "my-custom-class",
-      header: "Delete",
-      message: "Do you want to remove " + this.name + " from cart",
-      buttons: [
-        {
-          text: "cancel",
-          role: "cancel",
-          handler: () => {
-            // console.log('Confirm Okey');
-            // let balance = this.data.payable_amount - this.data.wallet_balance
-            // this.router.navigate(['recharge',{balance}])
-          },
-        },
-        {
-          text: "Confirm",
-          cssClass: "secondary",
-          handler: () => {
-            this.presentLoading();
-            this.cartService.deleteFromCart(this.client_id, id).subscribe(
-              (data) => this.handleResponse(data, REMOVE),
-              (error) => this.handleError(error)
-            );
-          },
-        },
-      ],
+  async presentToastSuccessQtyChange(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast-success",
+      position: "bottom",
+      color: "dark",
+      duration: 2000,
     });
-
-    await alert.present();
+    toast.present();
   }
 
   async presentAlert(msg: string) {
@@ -480,9 +458,5 @@ export class CartmodalPage implements OnInit {
     });
 
     await alert.present();
-  }
-
-  close() {
-    this.modalController.dismiss();
   }
 }

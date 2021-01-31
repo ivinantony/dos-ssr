@@ -2,12 +2,10 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import {
   AlertController,
-  IonFab,
   IonRouterOutlet,
   IonSlides,
   LoadingController,
   ModalController,
-  Platform,
   ToastController,
 } from "@ionic/angular";
 import { AuthGuard } from "src/app/guards/auth.guard";
@@ -15,14 +13,11 @@ import { AuthenticationService } from "src/app/services/authentication.service";
 import { CartService } from "src/app/services/cart/cart.service";
 import { ProductDetailsService } from "src/app/services/productDetails/product-details.service";
 import { UtilsService } from "src/app/services/utils.service";
-import { CartPage } from "../cart/cart.page";
 import { CartmodalPage } from "../cartmodal/cartmodal.page";
 import { CartcountService } from "src/app/cartcount.service";
 
 const GET_DATA = 200;
 const POST_DATA = 210;
-const GET_CART = 220;
-const DEL_DATA = 230;
 const BUY_NOW = 240;
 @Component({
   selector: "app-product",
@@ -44,7 +39,6 @@ export class ProductPage implements OnInit {
     },
     speed: 400,
     breakpoints: {
-
       // when window width is <= 320px
       320: {
         slidesPerView: 1.3,
@@ -52,7 +46,6 @@ export class ProductPage implements OnInit {
         spaceBetween: 5,
         loop: true,
         centeredSlides: true,
-
       },
       480: {
         slidesPerView: 2,
@@ -67,9 +60,8 @@ export class ProductPage implements OnInit {
         spaceBetween: 5,
         loop: true,
         centeredSlides: true,
-
-      }
-    }
+      },
+    },
   };
 
   slidesOptionsThumbnail = {
@@ -92,7 +84,6 @@ export class ProductPage implements OnInit {
   qty: number = 1;
   data: any;
   lens: any;
-  client_id: any;
   myThumbnail: any;
   myFullresImage: any;
   appUrl: any;
@@ -114,8 +105,6 @@ export class ProductPage implements OnInit {
   ) {
     this.productId = parseInt(this.activatedRoute.snapshot.paramMap.get("id"));
     this.catId = parseInt(this.activatedRoute.snapshot.paramMap.get("catId"));
-    this.client_id = localStorage.getItem("client_id");
-    console.log(this.client_id,"client_id")
     this.s3url = utils.getS3url();
   }
 
@@ -129,38 +118,31 @@ export class ProductPage implements OnInit {
 
   getData() {
     this.presentLoading().then(() => {
-      this.productsDetailsService
-        .getProductDetails(this.productId, this.client_id)
-        .subscribe(
-          (data) => this.handleResponse(data, GET_DATA),
-          (error) => this.handleError(error)
-        );
+      this.authService.isAuthenticated().then((val) => {
+        if (val) {
+          this.productsDetailsService
+            .getProductDetails(this.productId, val)
+            .subscribe(
+              (data) => this.handleResponse(data, GET_DATA),
+              (error) => this.handleError(error)
+            );
+        } else {
+          this.productsDetailsService
+            .getProductDetails(this.productId, val)
+            .subscribe(
+              (data) => this.handleResponse(data, GET_DATA),
+              (error) => this.handleError(error)
+            );
+        }
+      });
     });
-  }
-  onSubmit() {
-    let data = {
-      product_id: this.productDetails.id,
-      client_id: localStorage.getItem("client_id"),
-    };
-    this.cartService.addToCart(data).subscribe(
-      (data) => this.handleResponse(data, POST_DATA),
-      (error) => this.handleError(error)
-    );
-    this.presentToast();
-  }
-  viewCart() {
-    let client_id = localStorage.getItem("client_id");
-    this.cartService.getCart(client_id).subscribe(
-      (data) => this.handleResponse(data, GET_CART),
-      (error) => this.handleError(error)
-    );
   }
 
   handleResponse(data, type) {
     if (type == GET_DATA) {
       this.data = data;
       this.cartCountService.setCartCount(data.cart_count);
-      localStorage.setItem('cart_count',data.cart_count)
+      this.authService.setCartCount(data.cart_count);
       this.productDetails = data.product;
       for (let i = 0; i < this.productDetails.images.length; i++) {
         this.productDetails.images[i].path =
@@ -177,13 +159,13 @@ export class ProductPage implements OnInit {
       this.presentModal();
     }
   }
+
   handleError(error) {
     this.loadingController.dismiss;
     if (error.status == 400) {
       this.presentAlert(error.error.message);
     }
   }
-
 
   async presentToast() {
     const toast = await this.toastController.create({
@@ -232,7 +214,7 @@ export class ProductPage implements OnInit {
       if (val) {
         let data = {
           product_id: this.productDetails.id,
-          client_id: this.client_id,
+          client_id: val,
           qty: this.qty,
         };
         this.cartService.addToCartQty(data).subscribe(
@@ -246,38 +228,25 @@ export class ProductPage implements OnInit {
   }
 
   buyNow() {
-    this.authService.isAuthenticated().then((val)=>{
-      if(val){
+    this.authService.isAuthenticated().then((val) => {
+      if (val) {
         let data = {
           product_id: this.productDetails.id,
-          client_id: this.client_id,
+          client_id: val,
           qty: this.qty,
         };
         this.cartService.addToCartQty(data).subscribe(
           (data) => this.handleResponse(data, BUY_NOW),
           (error) => this.handleError(error)
         );
-      }else{
+      } else {
         this.presentLogin();
       }
-    })
-
- 
+    });
   }
 
   goToCart() {
-    this.router.navigate(["cart"]);
-  }
-
-  removeFromcart() {
-    this.cartService
-      .removeFromCart(this.client_id, this.productDetails.id)
-      .subscribe(
-        (data) => this.handleResponse(data, DEL_DATA),
-        (error) => this.handleError(error)
-      );
-    // this.getData()
-    this.productDetails.cart_count--;
+    this.router.navigate(["/tabs/cart"]);
   }
 
   async presentLogin() {
@@ -345,7 +314,7 @@ export class ProductPage implements OnInit {
       message: msg,
       cssClass: "custom-toast-success",
       position: "bottom",
-      color:"dark",
+      color: "dark",
       duration: 1500,
     });
     toast.present();

@@ -6,7 +6,9 @@ import {
   LoadingController,
   ModalController,
 } from "@ionic/angular";
+import { Storage } from "@ionic/storage";
 import { NotcountService } from "src/app/notcount.service";
+import { AuthenticationService } from "src/app/services/authentication.service";
 import { NotificationService } from "src/app/services/notification/notification.service";
 import { UtilsService } from "src/app/services/utils.service";
 import { NotificationdetailPage } from "../notificationdetail/notificationdetail.page";
@@ -23,7 +25,6 @@ export class NotificationPage implements OnInit {
   data: Array<any>;
   s3url: any;
   notf_count: any;
-  client_id: any;
   currentIndex: number;
   constructor(
     private notifications: NotificationService,
@@ -33,14 +34,15 @@ export class NotificationPage implements OnInit {
     private routerOutlet: IonRouterOutlet,
     private notcountService: NotcountService,
     private actionSheetController: ActionSheetController,
-    private badge: Badge
+    private badge: Badge,
+    private storage:Storage,
+    private authservice:AuthenticationService
   ) {
     this.s3url = utils.getS3url();
     notcountService.getNotCount().subscribe((res) => {
       this.notf_count = res;
     });
     this.getData();
-    this.client_id = localStorage.getItem("client_id");
   }
 
   ngOnInit() {}
@@ -49,7 +51,7 @@ export class NotificationPage implements OnInit {
     if (this.notf_count > 0) {
       this.notf_count -= 1;
       this.notcountService.setNotCount(this.notf_count);
-      localStorage.setItem("notf_count", this.notf_count);
+      this.storage.set("notf_count",this.notf_count)
       this.badge.set(this.notf_count);
     }
     let notification_id = this.data[index].notification_id;
@@ -66,11 +68,24 @@ export class NotificationPage implements OnInit {
 
   getData() {
     this.presentLoading().then(() => {
-      let client_id = Number(localStorage.getItem("client_id"));
-      this.notifications.getNotifications(client_id).subscribe(
-        (data) => this.handleResponse(data, GET_DATA),
-        (error) => this.handleError(error)
-      );
+      this.authservice.isAuthenticated().then(val=>{
+        if(val)
+        {
+          this.notifications.getNotifications(val).subscribe(
+            (data) => this.handleResponse(data, GET_DATA),
+            (error) => this.handleError(error)
+          );
+        }
+        else{
+          this.notifications.getNotifications(null).subscribe(
+            (data) => this.handleResponse(data, GET_DATA),
+            (error) => this.handleError(error)
+          );
+        }
+        
+      })
+  
+     
     });
   }
 
@@ -85,7 +100,7 @@ export class NotificationPage implements OnInit {
         this.notf_count -= 1;
         console.log(this.notf_count)
         this.notcountService.setNotCount(this.notf_count);
-        localStorage.setItem("notf_count", this.notf_count);
+        this.storage.set("notf_count", this.notf_count)
         this.badge.set(this.notf_count);
       }
       this.data.splice(this.currentIndex, 1);
@@ -141,16 +156,14 @@ export class NotificationPage implements OnInit {
           icon: "trash-outline",
           handler: () => {
             this.presentLoading().then(() => {
-              console.log("this.data[index].notification_id", this.data[index]);
-              this.notifications
-                .deleteNotification(
-                  this.client_id,
-                  this.data[index].notification_id
-                )
+              this.authservice.isAuthenticated().then(val=>{
+                this.notifications
+                .deleteNotification(val,this.data[index].notification_id)
                 .subscribe(
                   (data) => this.handleResponse(data, DEL_DATA),
                   (error) => this.handleError(error)
                 );
+              })
             });
           },
         },

@@ -44,6 +44,31 @@ ion-content {
   --min-width: 300px;
 }
 
+.install {
+  --height: calc(100% - 40%);
+  --max-height: calc(100% - 40%);
+  --min-height: calc(100% - 40%);
+  
+  --max-width: calc(100% - 30%);
+  --min-width: calc(100% - 30%);
+  --width: calc(100% - 30%);
+  background-color: var(--ion-color-light);
+  --border-radius: 12px;
+  }
+  @media only screen and (min-width: 769px) {
+  .install {
+  --height: calc(100% - 50%);
+  --max-height: calc(100% - 50%);
+  --min-height: calc(100% - 50%);
+  
+  --max-width: calc(100% - 70%);
+  --min-width: calc(100% - 70%);
+  --width: calc(100% - 70%);
+  background-color: var(--ion-color-light);
+  --border-radius: 12px;
+  }
+  }
+
 // .custom-toast-success {
 //   --background: #212121;
 //   color: white;

@@ -2,7 +2,9 @@ import { Route } from '@angular/compiler/src/core';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActionSheetController, ModalController } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
 import { AddressService } from 'src/app/services/address/address.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { AddAddressPage } from '../add-address/add-address.page';
 import { EditAddressPage } from '../edit-address/edit-address.page';
 const GET_ADDRESS= 200;
@@ -14,8 +16,11 @@ const POST_DATA = 210;
 })
 export class MyAddressesPage implements OnInit {
 addresses:any
-  constructor(private addressService:AddressService,private actionSheetController:ActionSheetController,private router:Router,
-    private modalController:ModalController) 
+  constructor(private addressService:AddressService,private actionSheetController:ActionSheetController,
+    private router:Router,
+    private modalController:ModalController,
+    private authservice:AuthenticationService,
+    private storage:Storage) 
   { 
     
   }
@@ -30,11 +35,17 @@ addresses:any
 
   getAddress()
   {
-    let client_id = Number(localStorage.getItem('client_id'))
-    this.addressService.getAddress(client_id).subscribe(
-      (data)=>this.handleResponse(data,GET_ADDRESS),
-      (error)=>this.handleError(error)
-    )
+    this.authservice.isAuthenticated().then(val=>{
+      if(val)
+      {
+        this.addressService.getAddress(val).subscribe(
+          (data)=>this.handleResponse(data,GET_ADDRESS),
+          (error)=>this.handleError(error)
+        )
+      }
+      
+    })
+    
   }
 
   handleResponse(data,type)
@@ -64,7 +75,7 @@ addresses:any
           text: "Edit",
           icon: "create-outline",
           handler: () => {
-            localStorage.setItem('address_id',this.addresses[index].id)
+            this.storage.set('address_id',this.addresses[index].id)
             this.navigateToEditAddress()
           },
         },
