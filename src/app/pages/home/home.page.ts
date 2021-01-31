@@ -12,6 +12,7 @@ import { AuthenticationService } from "src/app/services/authentication.service";
 import { SearchService } from "src/app/services/search/search.service";
 import { CartcountService } from "src/app/cartcount.service";
 import { NotcountService } from "src/app/notcount.service";
+import { Storage } from "@ionic/storage";
 
 @Component({
   selector: "app-home",
@@ -185,6 +186,7 @@ export class HomePage implements OnInit {
     private searchService: SearchService,
     private cartCountService: CartcountService,
     private notCountService: NotcountService,
+    private storage:Storage
   ) {
     this.s3url = utils.getS3url();
     // this.badge.set(10);
@@ -291,14 +293,13 @@ export class HomePage implements OnInit {
   getData() {
     this.authService.isAuthenticated().then((val)=>{
       if(val){
-        this.client_id = localStorage.getItem("client_id");
+        this.client_id = val;
       }else {
         this.client_id = null;
       } 
 
     })
-   
-    // console.log("client_id",this.client_id)
+
     this.presentLoading().then(() => {
       this.homeService.getHomeDetails(this.client_id).subscribe(
         (data) => this.handleResponse(data),
@@ -309,8 +310,8 @@ export class HomePage implements OnInit {
 
   handleResponse(data) {
     this.loadingController.dismiss();
-    localStorage.setItem("cart_count",data.cart_count);
-    localStorage.setItem("notf_count",data.notification_count);
+    this.authService.setCartCount(data.cart_count)
+    this.authService.setNotificationCount(data.notification_count)
     this.cart_count =data.cart_count;
     this.notf_count = data.notification_count;
     this.cartCountService.setCartCount(data.cart_count);

@@ -4,12 +4,10 @@ import { Router } from '@angular/router';
 import { NavController, LoadingController, ToastController, ModalController, AlertController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { LoginService } from 'src/app/services/login/login.service';
-import { INotificationPayload } from 'plugins/cordova-plugin-fcm-with-dependecy-updated/typings';
 import { AngularFireMessaging } from '@angular/fire/messaging';
 import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
-import { UsernameValidator } from 'src/app/validators/username';
-import { OtpmodalPage } from '../otpmodal/otpmodal.page';
 import { Platform } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-login',
@@ -19,13 +17,12 @@ import { Platform } from '@ionic/angular';
 export class LoginPage implements OnInit {
   public loginGroup: FormGroup;
   public hasPermission: boolean;
-  constructor(private authService: AuthenticationService,
-    private navCtrl: NavController,
+  constructor(
     private loadingController: LoadingController,
     private toastController: ToastController,
     private formBuilder: FormBuilder,
     private loginService: LoginService,
-    private modalController: ModalController,
+    private storage: Storage,
     private router: Router,
     public alertController: AlertController,
     private afMessaging: AngularFireMessaging,
@@ -143,12 +140,19 @@ export class LoginPage implements OnInit {
     toast.present();
   }
 
-
+navigateBack(){
+  this.storage.get("prev_url").then((val) => {
+    // console.log(val,"prev url")
+    this.zone.run(() => {
+      this.router.navigate([val] || ["/"], { replaceUrl: true });
+    });
+  });
+}
 
   handleResponse(data) {
     this.loadingController.dismiss().then(() => {
       this.zone.run(() => {
-        this.router.navigate(['otp', { phone: this.loginGroup.value.phone, email: this.loginGroup.value.email }])
+        this.router.navigate(['otp', { phone: this.loginGroup.value.phone, email: this.loginGroup.value.email }],{ replaceUrl: true })
       })
     })
 

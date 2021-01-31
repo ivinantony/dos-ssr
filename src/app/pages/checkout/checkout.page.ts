@@ -14,6 +14,8 @@ import { CouponPage } from "../coupon/coupon.page";
 import { ModeofpaymentPage } from "../modeofpayment/modeofpayment.page";
 import { PaytabsService } from "src/app/services/paytabs.service";
 import { WalletService } from "src/app/services/wallet/wallet.service";
+import { AuthenticationService } from "src/app/services/authentication.service";
+import { Storage } from "@ionic/storage";
 
 const GET_AMOUNTDETAILS = 200;
 const ORDER_RESPONSE = 210;
@@ -27,7 +29,6 @@ const WALLET_RESPONSE = 230;
 })
 export class CheckoutPage implements OnInit {
   address_id: any;
-  client_id: any;
   data: any;
   promo_id: any;
   payment_id: any;
@@ -44,10 +45,11 @@ export class CheckoutPage implements OnInit {
     private toastController: ToastController,
     private loadingController: LoadingController,
     private walletService: WalletService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private authservice:AuthenticationService,
+    private storgae:Storage
   ) {
     console.log("promo_id",this.promo_id)
-    this.client_id = Number(localStorage.getItem("client_id"));
     this.address_id = this.activatedRoute.snapshot.params.address_id;
   }
 
@@ -61,12 +63,27 @@ export class CheckoutPage implements OnInit {
 
   getData() {
     this.presentLoading().then(() => {
-      this.checkoutService
-        .getAmountDetails(this.client_id, this.address_id)
-        .subscribe(
-          (data) => this.handleResponse(data, GET_AMOUNTDETAILS),
-          (error) => this.handleError(error, GET_AMOUNTDETAILS)
-        );
+      this.authservice.isAuthenticated().then(val=>{
+        if(val)
+        {
+          this.checkoutService
+          .getAmountDetails(val,this.address_id)
+          .subscribe(
+            (data) => this.handleResponse(data, GET_AMOUNTDETAILS),
+            (error) => this.handleError(error, GET_AMOUNTDETAILS)
+          );
+        }
+        else{
+          this.checkoutService
+          .getAmountDetails(null,this.address_id)
+          .subscribe(
+            (data) => this.handleResponse(data, GET_AMOUNTDETAILS),
+            (error) => this.handleError(error, GET_AMOUNTDETAILS)
+          );
+        }
+       
+      })
+
     });
   }
 
@@ -79,9 +96,9 @@ export class CheckoutPage implements OnInit {
       // console.log(data)
     } else if (type == ORDER_RESPONSE) {
       console.log(data, "pay response");
-      localStorage.setItem("order_id", data.payable_order_id);
+      this.storgae.set("order_id",data.payable_order_id)
       if (this.payment_id == 4) {
-        localStorage.setItem("total_amount", this.data.payable_amount);
+        this.storgae.set("total_amount",this.data.payable_amount)
         console.log("cordova not supported");
         this.router.navigate(["paypal"]);
       } else if (this.payment_id == 5) {
@@ -96,7 +113,7 @@ export class CheckoutPage implements OnInit {
 
         this.router.navigate(["successful"]);
       } else if (this.payment_id == 6) {
-        localStorage.setItem("total_amount", this.data.payable_amount);
+        this.storgae.set("total_amount",this.data.payable_amount)
         this.router.navigate(["checkout-pay"]);
       }
     } else if (type == WALLET_RESPONSE) {
@@ -171,37 +188,43 @@ export class CheckoutPage implements OnInit {
       if (paymentDetails) {
         this.payment_id = paymentDetails.modeOfPayment_Id;
         if (this.payment_id == 7) {
-          // console.log("wallet")
-          let data = {
-            client_id: localStorage.getItem("client_id"),
-            promo_code_id: this.promo_id,
-            address_id: this.address_id,
-            payment_option_id: this.payment_id,
-            product_total: this.data.total_amount,
-            payable_amount: Math.round(this.data.payable_amount),
-            delivery_charge: this.data.delivery_charge,
-          };
-
-          this.walletService.captureWallet(data).subscribe(
-            (data) => this.handleResponse(data, WALLET_RESPONSE),
-            (error) => this.handleError(error, WALLET_RESPONSE)
-          );
+          this.authservice.isAuthenticated().then(val=>{
+            if(val){
+              let data = {
+                client_id: val,
+                promo_code_id: this.promo_id,
+                address_id: this.address_id,
+                payment_option_id: this.payment_id,
+                product_total: this.data.total_amount,
+                payable_amount: Math.round(this.data.payable_amount),
+                delivery_charge: this.data.delivery_charge,
+              };
+    
+              this.walletService.captureWallet(data).subscribe(
+                (data) => this.handleResponse(data, WALLET_RESPONSE),
+                (error) => this.handleError(error, WALLET_RESPONSE)
+              );
+            }
+          })
+          
         } else {
-          // console.log(this.payment_id);
-          let data = {
-            client_id: localStorage.getItem("client_id"),
-            promo_code_id: this.promo_id,
-            address_id: this.address_id,
-            payment_option_id: this.payment_id,
-            product_total: this.data.total_amount,
-            payable_amount: this.data.payable_amount,
-            delivery_charge: this.data.delivery_charge,
-          };
-
-          this.orderService.captureOrder(data).subscribe(
-            (data) => this.handleResponse(data, ORDER_RESPONSE),
-            (error) => this.handleError(error, ORDER_RESPONSE)
-          );
+          this.authservice.isAuthenticated().then(val=>{
+            if(val){
+              let data = {
+                client_id: val,
+                promo_code_id: this.promo_id,
+                address_id: this.address_id,
+                payment_option_id: this.payment_id,
+                product_total: this.data.total_amount,
+                payable_amount: this.data.payable_amount,
+                delivery_charge: this.data.delivery_charge,
+              };   
+              this.orderService.captureOrder(data).subscribe(
+                (data) => this.handleResponse(data, ORDER_RESPONSE),
+                (error) => this.handleError(error, ORDER_RESPONSE)
+              );
+            }
+          }) 
         }
       }
     });

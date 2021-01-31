@@ -74,7 +74,6 @@ export class AppComponent implements OnInit {
     public router: Router,
     private swUpdate: SwUpdate,
     private searchService: ProductSearchService,
-    private profileService: ProfileService,
     private storage: Storage,
     private cartCountService: CartcountService,
     private notCountService: NotcountService,
@@ -144,8 +143,16 @@ export class AppComponent implements OnInit {
         this.loggedIn = false;
       }
     });
-    this.cartCountService.setCartCount(localStorage.getItem('cart_count'))
-    this.notCountService.setNotCount( localStorage.getItem('notf_count'))
+    this.authService.getCartCount().then((count) => {
+      if (count) {
+        this.cartCountService.setCartCount(count);
+      }
+    });
+    this.authService.getNotificationCount().then((count) => {
+      if (count) {
+        this.notCountService.setNotCount(count);
+      }
+    });
 
     this.router.events
       .pipe(
@@ -281,8 +288,14 @@ export class AppComponent implements OnInit {
     if (!this.platform.is("cordova")) {
       await this.afMessaging.messages.subscribe(async (msg: any) => {
         console.log("msgafMessaging", msg);
-        let notifi_count:number = Number(localStorage.getItem("notf_count")) ;
-        localStorage.setItem("notf_count", JSON.stringify(notifi_count + 1));
+        this.authService.getNotificationCount().then((count) => {
+          if (count) {
+            this.authService.setNotificationCount(count + 1);
+          } else {
+            this.authService.setNotificationCount(count);
+          }
+        });
+
         this.presentToastWithOptions(msg.notification);
       });
       return;

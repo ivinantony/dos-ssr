@@ -1,5 +1,5 @@
 
-import { HttpErrorResponse } from '@angular/common/http';
+
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult } from '@ionic-native/native-geocoder/ngx';
 import { LoadingController, ModalController, Platform, ToastController } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
 import { AreaSearchPage } from 'src/app/pages/area-search/area-search.page';
 import { AddressService } from 'src/app/services/address/address.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -41,6 +42,7 @@ export class EditAddressPage implements OnInit {
   delivery_locations:any
   selectedAddress:any
   editAddress:any
+  address_id:any
   constructor(
     private geolocation: Geolocation,
     private zone: NgZone,
@@ -52,13 +54,15 @@ export class EditAddressPage implements OnInit {
     private formBuilder: FormBuilder,
     private authservice: AuthenticationService,
     private addressService: AddressService,
-    
+    private storage:Storage,
   ) {
     this.getEditAddress()
     // this.getData()
     
-
     
+    this.storage.get("address_id").then(val=>{
+      this.address_id = val
+    })
     
     
     
@@ -74,21 +78,17 @@ export class EditAddressPage implements OnInit {
       alternate_phone: ['',Validators.compose([Validators.maxLength(9), Validators.minLength(9),Validators.pattern("[0-9]*")]),],
       phone: ['',Validators.compose([Validators.required,Validators.maxLength(9), Validators.minLength(9),Validators.pattern("[0-9]*")]),],
       delivery_location_id:[''],
-      address_id:[Number(localStorage.getItem('address_id'))],
+      address_id:[this.address_id],
 
     });
-    // this.platform.ready().then(() => {
-      
-    //   this.presentLoading().then(() => {
-    //     console.log('presented')
-    //     this.loadMap().finally(() => {
-    //       this.dismiss()
-    //     })
-    //   })
-
-    // })
   }
-  ngOnInit() {}
+  ngOnInit() {
+
+    if (!window.history.state.modal) {
+      const modalState = { modal: true };
+      history.pushState(modalState, null);
+      }
+  }
 
   validation_messages = {
     full_address: [
@@ -135,8 +135,10 @@ export class EditAddressPage implements OnInit {
  
 
   async loadMap() {
-    let client_id = localStorage.getItem('client_id')
-    this.addressForm.patchValue({ client_id: client_id });
+    this.authservice.isAuthenticated().then(val=>{
+      this.addressForm.patchValue({ client_id: val });
+    })
+    
     if (this.platform.is('cordova')) {
 
       await this.geolocation.getCurrentPosition().then((resp) => {
@@ -236,7 +238,6 @@ export class EditAddressPage implements OnInit {
   getAddressFromCoords(latitude, longitude) {
 
     if (this.platform.is('cordova')) {
-      // console.log('cordova  available')
       let options: NativeGeocoderOptions = {
         useLocale: true,
         maxResults: 5
@@ -287,31 +288,30 @@ export class EditAddressPage implements OnInit {
 
 
   getDistance() {
-    // console.log("GEt Distance started",this.latitude,this.longitude)
+
     const service = new google.maps.DistanceMatrixService();
     var current_coords = new google.maps.LatLng(this.latitude, this.longitude);
-    // console.log("current coords getdistance", current_coords);
+
     var lat: string = this.latitude.toString();
     var long: string = this.longitude.toString();
     var destination = lat + "," + long;
-    // var origin = '10.008,76.329'
+
 
     var shop_coords = new Array();
 
     this.delivery_locations?.forEach((element) => {
       shop_coords.push(element.location);
     });
-    // console.log("shop", shop_coords);
-    // console.log("current_coords", this.latitude, this.longitude);
+
     const matrixOptions = {
       origins: shop_coords, // shop coords
       destinations: [destination], // customer coords
       travelMode: "DRIVING",
       unitSystem: google.maps.UnitSystem.IMPERIAL,
     };
-    // console.log("matrix", matrixOptions);
+
     service.getDistanceMatrix(matrixOptions, (response, status) => {
-      // console.log("GET DISTANCE MATRIX");
+
       if (status !== "OK") {
         var msg = "Error with distance matrix";
         this.showToast(msg);
@@ -452,30 +452,18 @@ export class EditAddressPage implements OnInit {
     if(type == GET_EDIT_ADDRESS)
     {
       this.loadingController.dismiss()
-      // console.log("Edit data",data)
+
       this.editAddress = data.address
       this.latitude = data.address.latitude
       this.longitude = data.address.longitude
       this.delivery_locations = data.delivery_locations
-      // console.log(this.latitude,this.longitude,"lat long in edit address")
+
       this.update()
       this.inItMap(this.latitude,this.longitude)
       this.getDistance()
-      
-    
-      
+
     }
-    // else if(type == GET_DELIVERY_LOC)
-    // {
-    //   console.log(data,"Delivery loc")
-    //   this.delivery_locations = data.delivery_locations
-    //   console.log("heyyy")
-    //   this.inItMap(this.latitude,this.longitude)
-    //   this.getDistance()
-    // }
-    
-    
-    
+
   }
 
   handleError(error)
@@ -508,17 +496,17 @@ export class EditAddressPage implements OnInit {
 
   getEditAddress() {
     this.presentLoading().then(()=>{
-      let address_id = Number(localStorage.getItem('address_id'))
-    this.addressService.getEditAddress(address_id).subscribe(
-      (data)=>this.handleResponse(data,GET_EDIT_ADDRESS),
-      (error)=>this.handleError(error)
-    )})
+      this.storage.get('address_id').then(val=>{
+        this.addressService.getEditAddress(val).subscribe(
+          (data)=>this.handleResponse(data,GET_EDIT_ADDRESS),
+          (error)=>this.handleError(error)
+        )
+      })
+    })
   }
 
   update()
   {
-    // console.log("edit address address",this.editAddress?.landmark)
-    // document.getElementById("address").innerText = this.editAddress?.full_address;
     this.addressForm.patchValue({name:this.editAddress?.name});
     this.addressForm.patchValue({address:this.editAddress?.address});
    

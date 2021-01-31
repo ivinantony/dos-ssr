@@ -7,7 +7,7 @@
     <ion-title>Offers</ion-title>
 
     <ion-buttons slot="end">
-      <ion-button class="ion-hide-md-up" (click)="router.navigate(['/tabs/cart'])">
+      <ion-button class="ion-hide-md-up" (click)="router.navigate(['/cart'])">
         <ion-icon src="../assets/imgs/icons/cart.svg"></ion-icon>
         <ion-badge id="cart-badge" color="primary" *ngIf="cart_count > 0"
           >{{cart_count}}</ion-badge
@@ -77,7 +77,6 @@
 
             <ion-button
               (click)="item?.cart_count > 0 ? goToCart() : addToCart(i)"
-              color="primary"
               expand="full"
               [disabled]="item?.in_stock == 0"
               class="tocart"

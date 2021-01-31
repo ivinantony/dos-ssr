@@ -36,7 +36,7 @@ export class OfferPage implements OnInit {
   page_limit: number;
   page_count: number = 1;
   current_page: number;
-  client_id: any;
+
   sortType: any = null;
   scroll: boolean = true;
   cart_count: any;
@@ -55,7 +55,7 @@ export class OfferPage implements OnInit {
     private toastController: ToastController,
     private cartCountService: CartcountService
   ) {
-    this.client_id = localStorage.getItem("client_id");
+
     this.s3url = utils.getS3url();
   }
 
@@ -65,17 +65,29 @@ export class OfferPage implements OnInit {
     this.page_count = 1;
     this.products = [];
     this.getData();
-    this.cart_count = localStorage.getItem("cart_count");
   }
 
   getData(infiniteScroll?) {
     this.presentLoading().then(() => {
-      this.offerService
-        .getOfferProducts(this.client_id, this.page_count, this.sortType)
-        .subscribe(
-          (data) => this.handleResponse(data, GET_DATA, infiniteScroll),
-          (error) => this.handleError(error)
-        );
+      this.authService.isAuthenticated().then(val=>{
+        if(val){
+          this.offerService
+          .getOfferProducts(val, this.page_count, this.sortType)
+          .subscribe(
+            (data) => this.handleResponse(data, GET_DATA, infiniteScroll),
+            (error) => this.handleError(error)
+          );
+        }
+        else{
+          this.offerService
+          .getOfferProducts(null, this.page_count, this.sortType)
+          .subscribe(
+            (data) => this.handleResponse(data, GET_DATA, infiniteScroll),
+            (error) => this.handleError(error)
+          );
+        }
+      })
+      
     });
   }
 
@@ -83,23 +95,25 @@ export class OfferPage implements OnInit {
     this.infiniteScroll.disabled = false;
    
     if (type == GET_DATA) {
-      this.loadingController.dismiss();
-      this.page_limit = data.page_count;
-      this.cart_count = data.cart_count;
-      localStorage.setItem("cart_count", data.cart_count);
-      data.product.forEach((element) => {
-        this.products.push(element);
+      this.loadingController.dismiss().then(()=>{
+        this.page_limit = data.page_count;
+        this.cart_count = data.cart_count;
+        data.product.forEach((element) => {
+          this.products.push(element);
+        });
+        this.cartCountService.setCartCount(data.cart_count);
+        this.authService.setCartCount(data.cart_count)
+      }) 
+    } 
+    else if (type == POST_DATA) {
+      this.loadingController.dismiss().then(()=>{
+
+        this.cart_count = data.cart_count;
+        this.authService.setCartCount(data.cart_count)
+        this.cartCountService.setCartCount(data.cart_count);
+        this.presentToastSuccess("One ' " + this.name + " ' added to cart.");
       });
-      localStorage.setItem("cart_count", data.cart_count);
-      this.cartCountService.setCartCount(data.cart_count);
-    
-    } else if (type == POST_DATA) {
-      this.loadingController.dismiss();
-      // console.log("add to cart", data);
-      this.cart_count = data.cart_count;
-      localStorage.setItem("cart_count", data.cart_count);
-      this.cartCountService.setCartCount(data.cart_count);
-      this.presentToastSuccess("One ' " + this.name + " ' added to cart.");
+
     }
 
     if (infiniteScroll) {
@@ -123,7 +137,7 @@ export class OfferPage implements OnInit {
         this.presentLoading().then(()=>{
           let data = {
             product_id: this.products[index].id,
-            client_id: this.client_id,
+            client_id: val,
           };
           this.cartService.addToCart(data).subscribe(
             (data) => this.handleResponse(data, POST_DATA),

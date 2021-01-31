@@ -17,6 +17,10 @@ export class PaytabsPage implements OnInit {
 
 
   ngOnInit() {
+    if (!window.history.state.modal) {
+      const modalState = { modal: true };
+      history.pushState(modalState, null);
+      }
   let url ="https://arba.mermerapps.com/paypal"
   this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url)
     console.log('redirectUrl', this.url)

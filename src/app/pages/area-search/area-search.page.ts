@@ -17,6 +17,10 @@ export class AreaSearchPage implements OnInit {
   constructor(private modalController: ModalController, public zone: NgZone) { }
 
   ngOnInit() {
+    if (!window.history.state.modal) {
+      const modalState = { modal: true };
+      history.pushState(modalState, null);
+      }
   }
   dismissModal() {
     this.modalController.dismiss()

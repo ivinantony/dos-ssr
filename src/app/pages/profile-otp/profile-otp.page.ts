@@ -32,7 +32,7 @@ export class ProfileOTPPage implements OnInit {
     if(this.phone == null)
     {
       this.data={
-        client_id:localStorage.getItem('client_id'),
+        // client_id:localStorage.getItem('client_id'),
         email:this.email,
         otp:this.inputOtp ,
       }  
@@ -44,7 +44,7 @@ export class ProfileOTPPage implements OnInit {
     else if(this.email == null)
     {
      this.data={
-        client_id:localStorage.getItem('client_id'),
+        // client_id:localStorage.getItem('client_id'),
         otp:this.inputOtp ,
         phone:this.phone,
       } 
