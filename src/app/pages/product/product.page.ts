@@ -101,7 +101,8 @@ export class ProductPage implements OnInit {
     private alertController: AlertController,
     private loadingController: LoadingController,
     private routerOutlet: IonRouterOutlet,
-    private cartCountService: CartcountService
+    private cartCountService: CartcountService,
+    private authGuard:AuthGuard
   ) {
     this.productId = parseInt(this.activatedRoute.snapshot.paramMap.get("id"));
     this.catId = parseInt(this.activatedRoute.snapshot.paramMap.get("catId"));
@@ -222,7 +223,7 @@ export class ProductPage implements OnInit {
           (error) => this.handleError(error)
         );
       } else {
-        this.presentLogin();
+        this.authGuard.presentModal()
       }
     });
   }

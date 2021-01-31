@@ -69,7 +69,7 @@ export class OtpPage implements OnInit {
 
   handleResponseData(data, type) {
     if (type == POST_OTP) {
-      this.authService.setClientId(data.data);
+      this.authService.setClientId(data.client_id);
       this.authService.setCartCount(data.cart_count)
       this.authService.setNotificationCount(data.notification_count)
       this.cartCountService.setCartCount(data.cart_count);

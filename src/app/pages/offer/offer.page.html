@@ -76,10 +76,11 @@
             </div>
 
             <ion-button
-              (click)="item?.cart_count > 0 ? goToCart() : addToCart(i)"
-              expand="full"
-              [disabled]="item?.in_stock == 0"
-              class="tocart"
+            (click)="item?.cart_count > 0 ? goToCart() : addToCart(i)"
+            [color]="item?.cart_count > 0 ? 'secondary' : 'primary'"
+            expand="full"
+            [disabled]="item?.in_stock == 0"
+            class="tocart"
             >
               {{ item?.cart_count > 0 ? 'Go To Cart' : 'Add To Cart'}}
             </ion-button>

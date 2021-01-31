@@ -78,7 +78,7 @@
 
             <ion-button
               (click)="item?.cart_count > 0 ? goToCart() : addToCart(i)"
-              color="primary"
+              [color]="item?.cart_count > 0 ? 'secondary' : 'primary'"
               expand="full"
               [disabled]="item?.in_stock == 0"
               class="tocart"
