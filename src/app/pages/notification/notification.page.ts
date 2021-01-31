@@ -49,7 +49,7 @@ export class NotificationPage implements OnInit {
 
   viewNotification(index: any) {
     if (this.notf_count > 0) {
-      this.notf_count -= 1;
+      this.notf_count = this.notf_count-1;
       this.notcountService.setNotCount(this.notf_count);
       this.storage.set("notf_count",this.notf_count)
       this.badge.set(this.notf_count);
@@ -97,7 +97,7 @@ export class NotificationPage implements OnInit {
       if (this.data[this.currentIndex].push_notification_read_status) {
         this.badge.set(this.notf_count);
       } else {
-        this.notf_count -= 1;
+        this.notf_count =this.notf_count-1;
         console.log(this.notf_count)
         this.notcountService.setNotCount(this.notf_count);
         this.storage.set("notf_count", this.notf_count)

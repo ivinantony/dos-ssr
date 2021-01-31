@@ -168,23 +168,6 @@ export class ProductPage implements OnInit {
     }
   }
 
-  async presentToast() {
-    const toast = await this.toastController.create({
-      message: "Added to Cart.",
-      cssClass: "custom-toast",
-      duration: 2000,
-      buttons: [
-        {
-          text: "View Cart",
-          handler: () => {
-            this.router.navigate(["cart"]);
-          },
-        },
-      ],
-    });
-    toast.present();
-  }
-
   async presentModal() {
     const modal = await this.modalController.create({
       component: CartmodalPage,
@@ -328,11 +311,12 @@ export class ProductPage implements OnInit {
   async presentAlert(msg: string) {
     const alert = await this.alertController.create({
       cssClass: "my-custom-class",
-      header: "Low Stock Alert",
+      header: "Required quantity unavailable",
 
       message:
-        msg +
-        " For ordering large quantities contact us through email or whatsapp.",
+      "This item is not available in the volume required by you.<br/><br/>" 
+       +msg+
+        "<br/> <br/> Please contact via Email or WhatsApp to order in more volume.",
       buttons: ["OK"],
     });
 

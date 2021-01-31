@@ -75,8 +75,8 @@ addresses:any
           text: "Edit",
           icon: "create-outline",
           handler: () => {
-            this.storage.set('address_id',this.addresses[index].id)
-            this.navigateToEditAddress()
+            // this.storage.set('address_id',this.addresses[index].id)
+            this.navigateToEditAddress(this.addresses[index].id)
           },
         },
         {
@@ -110,14 +110,16 @@ addresses:any
     return await modal.present();
   }
 
-  async navigateToEditAddress()
+  async navigateToEditAddress(id:any)
   {
+    console.log(id,"address")
     const modal = await this.modalController.create({
       component: EditAddressPage,
       swipeToClose: true,
-      // presentingElement: this.routerOutlet.nativeEl,
-      cssClass: 'my-custom-class'
-    });
+      cssClass: 'my-custom-class',
+      componentProps: { address_id: id },
+      });
+      
     modal.onDidDismiss().finally(()=>{
       this.getAddress()
     })

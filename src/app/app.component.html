@@ -56,14 +56,14 @@
           <ion-button
             fill="clear"
             expand="full"
-            (click)="loggedIn ? logout() : login()"
+            (click)="islogged ? logout() : login()"
           >
             <ion-icon
               color="primary"
               slot="start"
               src="../assets/imgs/logout.svg"
             ></ion-icon>
-            {{ loggedIn ? "Sign out" : "Sign in" }}
+            {{ islogged ? "Sign out" : "Sign in" }}
           </ion-button>
         </ion-menu-toggle>
       </ion-toolbar>

@@ -18,15 +18,14 @@ export class CategoriesPage implements OnInit {
 
   bannerSlideOpts = {
     slidesPerView: 1,
-    initialSlide: 0,
     spaceBetween: 20,
     loop: true,
     centeredSlides: true,
+    updateOnWindowResize: true,
     autoplay: {
-      delay: 3000,
-      disableOnInteraction: false
+      delay: 3500,
+      disableOnInteraction: false,
     },
-    speed: 400
   }
 
   constructor(public router: Router, private categoryService: CategoryService, private utils: UtilsService,private loadingController:LoadingController) {

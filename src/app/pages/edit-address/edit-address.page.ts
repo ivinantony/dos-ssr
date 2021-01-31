@@ -1,6 +1,6 @@
 
 
-import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, NgZone, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -23,6 +23,7 @@ declare var google;
   styleUrls: ['./edit-address.page.scss'],
 })
 export class EditAddressPage implements OnInit {
+  @Input() address_id: any;
   @ViewChild('map', { static: false }) mapElement: ElementRef;
   map: any;
 
@@ -42,7 +43,6 @@ export class EditAddressPage implements OnInit {
   delivery_locations:any
   selectedAddress:any
   editAddress:any
-  address_id:any
   constructor(
     private geolocation: Geolocation,
     private zone: NgZone,
@@ -56,16 +56,7 @@ export class EditAddressPage implements OnInit {
     private addressService: AddressService,
     private storage:Storage,
   ) {
-    this.getEditAddress()
-    // this.getData()
-    
-    
-    this.storage.get("address_id").then(val=>{
-      this.address_id = val
-    })
-    
-    
-    
+    console.log(this.address_id,"address_id")
     this.addressForm = this.formBuilder.group({
       client_id: [''],
       name:['',Validators.compose([Validators.required,Validators.minLength(3)])],
@@ -78,12 +69,13 @@ export class EditAddressPage implements OnInit {
       alternate_phone: ['',Validators.compose([Validators.maxLength(9), Validators.minLength(9),Validators.pattern("[0-9]*")]),],
       phone: ['',Validators.compose([Validators.required,Validators.maxLength(9), Validators.minLength(9),Validators.pattern("[0-9]*")]),],
       delivery_location_id:[''],
-      address_id:[this.address_id],
+      address_id:[''],
 
     });
+    this.getEditAddress()
+
   }
   ngOnInit() {
-
     if (!window.history.state.modal) {
       const modalState = { modal: true };
       history.pushState(modalState, null);
@@ -495,13 +487,14 @@ export class EditAddressPage implements OnInit {
 
 
   getEditAddress() {
-    this.presentLoading().then(()=>{
-      this.storage.get('address_id').then(val=>{
-        this.addressService.getEditAddress(val).subscribe(
+    
+    this.presentLoading().then(()=>{  
+      console.log(this.address_id) 
+      this.addressForm.controls["address_id"].setValue(this.address_id);
+        this.addressService.getEditAddress(this.address_id).subscribe(
           (data)=>this.handleResponse(data,GET_EDIT_ADDRESS),
           (error)=>this.handleError(error)
         )
-      })
     })
   }
 

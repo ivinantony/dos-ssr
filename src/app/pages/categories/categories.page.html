@@ -19,20 +19,15 @@
     ></ion-refresher-content>
   </ion-refresher>
 
-  <section id="banr">
-    <ion-slides class="banner">
+
+
+  <section>
+    <ion-slides [options]="bannerSlideOpts" pager="ios">
       <ion-slide
         *ngFor="let item of data?.banner?.desktop_images; let i=index"
-        class="dsk"
+        (click)="onRoute(item.application_url)"
       >
-        <img src="{{s3url+item.path}}" alt="" />
-      </ion-slide>
-
-      <ion-slide
-        *ngFor="let item of data?.banner?.mobile_images; let i=index"
-        class="mob"
-      >
-        <img src="{{s3url + item.path}}" alt="" />
+        <img [src]="s3url + item?.path" alt="" />
       </ion-slide>
     </ion-slides>
   </section>

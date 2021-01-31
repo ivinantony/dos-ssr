@@ -266,7 +266,7 @@ export class CheckoutPage implements OnInit {
         {
           text: "Okey",
           handler: () => {
-            this.router.navigate(["cart"]);
+            this.router.navigate(["/tabs/cart"]);
           },
         },
       ],

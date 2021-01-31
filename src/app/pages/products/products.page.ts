@@ -107,27 +107,30 @@ currentIndex:number
   }
 
   handleResponse(data, type, infiniteScroll?) {
-    this.infiniteScroll.disabled = false;
     
     if (type == GET_DATA) {
-      this.loadingController.dismiss();
-      this.data = data;
-      this.data.products.forEach((element) => {
-        this.products.push(element);
-      });
-      this.page_limit = data.page_count;
-      this.cart_count = data.cart_count;
-    this.authService.setCartCount(data.cart_count)
-    this.cartCountService.setCartCount(data.cart_count);
-    } else if (type == POST_DATA) {
-      this.products[this.currentIndex].cart_count++;
-      this.name = this.products[this.currentIndex].name;
-      this.cart_count = data.cart_count;
+      this.loadingController.dismiss().then(()=>{
+        this.data = data;
+        this.data.products.forEach((element) => {
+          this.products.push(element);
+        });
+        this.page_limit = data.page_count;
+        this.cart_count = data.cart_count;
       this.authService.setCartCount(data.cart_count)
       this.cartCountService.setCartCount(data.cart_count);
-      this.presentToastSuccess("One ' " + this.name + " ' added to cart."); 
-      this.loadingController.dismiss();
+      })
+ 
+    } else if (type == POST_DATA) {
+      this.loadingController.dismiss().then(()=>{
+        this.products[this.currentIndex].cart_count++;
+        this.name = this.products[this.currentIndex].name;
+        this.cart_count = data.cart_count;
+        this.authService.setCartCount(data.cart_count)
+        this.cartCountService.setCartCount(data.cart_count);
+        this.presentToastSuccess("One ' " + this.name + " ' added to cart."); 
+      })
     }
+
     if (infiniteScroll) {
       infiniteScroll.target.complete();
     }
@@ -144,7 +147,7 @@ currentIndex:number
     this.router.navigate(["product", id, { catId }]);
   }
 
-  async openSort(ev: any) {
+ async openSort(ev: any) {
     const popover = await this.popOverCtrl.create({
       component: FilterComponent,
       event: ev,
@@ -152,26 +155,26 @@ currentIndex:number
       showBackdrop: true,
       cssClass: "popover",
     });
-
     popover.onDidDismiss().then((data) => {
       if (data.data) {
-        this.infiniteScroll.disabled = true;
-
         if (data.data == 2) {
           this.sortType = "ASC";
           this.page_count = 1;
           this.products = [];
+
           this.getData();
         } else if (data.data == 1) {
           this.sortType = "DESC";
           this.page_count = 1;
           this.products = [];
+
           this.getData();
         }
       }
     });
     await popover.present();
   }
+
 
 
   loadMoreContent(infiniteScroll) {
