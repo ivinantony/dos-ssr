@@ -343,7 +343,9 @@ export class HomePage implements OnInit {
     this.result = [];
     this.router.navigate(["manufacturers"]);
   }
-
+onNotification(){
+  this.router.navigate(['notification'])
+}
   doRefresh(event) {
     this.result = [];
     this.getData();

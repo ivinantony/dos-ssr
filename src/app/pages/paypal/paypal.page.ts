@@ -51,32 +51,22 @@ export class PaypalPage implements OnInit {
 
     })
   }
-  // async presentPaytabModal(redirect_url) {
-  //   const modal = await this.modalController.create({
-  //     component: PaytabsPage,
-  //     componentProps: { url: redirect_url }
-  //   });
-
-  //   await modal.present();
-
-  // }
 
   handleResponse(data) {
     this.loadingController.dismiss()
     this.response = data;
     let encodedData = {
-      redirect_url:encodeURIComponent(data.redirect_url),
-      tran_ref:data.tran_ref,
-      client_id:23
+      redirect_url: encodeURIComponent(data.redirect_url),
+      tran_ref: data.tran_ref,
+      client_id: localStorage.getItem('client_id')
 
     }
+    // this.storage.set("tran_ref", data.tran_ref).then(() => {
+    // window.open(`http://localhost:8100/iframe?data=${JSON.stringify(encodedData)}`, "_self")
+     window.open(`https://demo4.mermerapps.com/iframe?data=${JSON.stringify(encodedData)}`,"_self")
+    // this.router.navigate(["paytabs", data.tran_ref, encodedData ]);
 
-    this.storage.set("tran_ref", data.tran_ref).then(() => {
-
-console.log('encodedData',encodedData)
-      this.router.navigate(['paytabs',{data:JSON.stringify(encodedData)}],)
-      // this.presentPaytabModal(data.redirect_url)
-    })
+    // })
   }
 
 

@@ -134,7 +134,10 @@ export class AppComponent implements OnInit {
       });
     });
   }
-
+  @HostListener("window:popstate")
+  onPopState(): void {
+    this.autocloseOverlaysService.trigger();
+  }
   async ngOnInit() {
     this.authService.isAuthenticated().then((data) => {
       console.log(data);
@@ -153,6 +156,7 @@ export class AppComponent implements OnInit {
         pairwise()
       )
       .subscribe((e: any) => {
+        console.log('prev',e[0].urlAfterRedirects)
         if (
           e[0].urlAfterRedirects.startsWith("/login") ||
           e[0].urlAfterRedirects.startsWith("/otp") ||
@@ -236,12 +240,6 @@ export class AppComponent implements OnInit {
     });
     toast.present();
   }
-
-  @HostListener("window:popstate")
-  onPopState(): void {
-    this.autocloseOverlaysService.trigger();
-  }
-
   async showInstallPromotion() {
     const modal = await this.modalController.create({
       component: InstallPage,

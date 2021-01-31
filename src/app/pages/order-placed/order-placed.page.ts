@@ -12,8 +12,7 @@ import { AlertController, LoadingController } from "@ionic/angular";
   styleUrls: ["./order-placed.page.scss"],
 })
 export class OrderPlacedPage implements OnInit {
-  client_id: any;
-  ref: any;
+
   status: boolean;
   constructor(
     public router: Router,
@@ -39,8 +38,16 @@ export class OrderPlacedPage implements OnInit {
   }
 
   ngOnInit() {
-   let data= localStorage.getItem('cred_initial');
-   alert(JSON.stringify(data))
+    let tran_ref = localStorage.getItem('tran_ref');
+    let client_id = localStorage.getItem('client_id')
+    this.presentLoading().then(() => {
+      this.paymentService.confirmPayment(tran_ref, client_id).subscribe(
+        (data) => this.handleResponse(data),
+        (error) => this.handleError(error)
+      );
+    });
+
+
 
   }
 

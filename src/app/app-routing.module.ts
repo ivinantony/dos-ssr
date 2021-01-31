@@ -125,7 +125,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/manufacturers/manufacturers.module').then(m => m.ManufacturersPageModule)
   },
   {
-    path: 'paytabs',
+    path: 'paytabs/:id',
     loadChildren: () => import('./pages/paytabs/paytabs.module').then(m => m.PaytabsPageModule)
   },
 
@@ -210,7 +210,17 @@ const routes: Routes = [
   {
     path: 'iframe/:data',
     loadChildren: () => import('./pages/iframe/iframe.module').then( m => m.IframePageModule)
+  },
+
+  {
+    path: 'iframe',
+    loadChildren: () => import('./pages/iframe/iframe.module').then( m => m.IframePageModule)
+  },
+  {
+    path: 'iframe/:id',
+    loadChildren: () => import('./pages/iframe/iframe.module').then( m => m.IframePageModule)
   }
+
 
 
 

@@ -1,6 +1,8 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { Storage } from '@ionic/storage';
+import { url } from 'inspector';
 
 @Component({
   selector: 'app-iframe',
@@ -8,29 +10,38 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./iframe.page.scss'],
 })
 export class IframePage implements OnInit {
-  redirectUrl: any;
-  constructor(private activatedRoute:ActivatedRoute,private sanitizer:DomSanitizer,private zone:NgZone) { 
-  
-    
-  }
+  orderData: any;
+  constructor(private storage: Storage) {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const data = urlParams.get('data')
 
+    this.orderData = JSON.parse(data);
+
+    this.storage.set('client_id', this.orderData.client_id);
+    // this.storage.set('tran_ref', this.orderData.tran_ref).finally(()=>{
+    //   this.openUrl()
+    // })
+    console.log(JSON.parse(data));
+
+    this.setStorage(data).finally(() => {
+      this.openUrl();
+    })
+  }
 
   ngOnInit() {
-  console.log(JSON.parse(this.activatedRoute.snapshot.params.data))
-  let encodedData = JSON.parse(this.activatedRoute.snapshot.params.data)
- this.setLocal(encodedData)
-  this.redirectUrl = encodedData.data.redirect_url;
-    
+
+  }
+  async setStorage(data) {
+    await localStorage.setItem('data', JSON.stringify(data))
   }
 
+  openUrl() {
+    window.open(this.orderData.redirect_url, "_self")
+  }
 
-  transform(url) {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
-} 
+  ngAfterViewInit(): void {
+    // alert(JSON.stringify(localStorage.getItem('data')))
 
-
-async setLocal(data){
-    await localStorage.setItem('cred_initial',JSON.stringify(data))
-    }
-  
+  }
 }

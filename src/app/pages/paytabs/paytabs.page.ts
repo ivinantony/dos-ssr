@@ -13,15 +13,19 @@ export class PaytabsPage implements OnInit {
   redirectUrl: any;
   safeUrl:any;
   constructor(private activatedRoute:ActivatedRoute,private sanitizer:DomSanitizer,private zone:NgZone) { 
-   
+
+   let uri = decodeURIComponent(this.activatedRoute.snapshot.paramMap.get("redirect_url"))
+   console.log(uri)
+   let url =`http://localhost:8102/iframe?id=${this.activatedRoute.snapshot.paramMap.get("id")}&url=${this.activatedRoute.snapshot.paramMap.get("redirect_url")}`;
+// console.log('PAYTABS',this.activatedRoute.snapshot.params.data)
+this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url)
   }
 
 
   ngOnInit() {
-  let data = JSON.parse(this.activatedRoute.snapshot.params.data)
-console.log('PAYTABS',this.activatedRoute.snapshot.params.data)
-let url =`https://arba.mermerapps.com/iframe/${JSON.stringify({data:JSON.parse(this.activatedRoute.snapshot.params.data)})}`;
-this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url)
+// let url =`https://arba.mermerapps.com/iframe/${JSON.stringify({data:JSON.parse(this.activatedRoute.snapshot.params.data)})}`;
+// console.log('PAYTABS',this.activatedRoute.snapshot.params.data)
+// this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url)
   }
 
   // dismiss() {

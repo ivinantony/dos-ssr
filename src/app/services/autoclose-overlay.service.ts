@@ -8,8 +8,9 @@ import {
   MenuController,
   ToastController,
 } from "@ionic/angular";
-import { Router } from "@angular/router";
-
+import { NavigationStart, Router } from "@angular/router";
+import { filter } from "rxjs/operators";
+import { Event as NavigationEvent } from "@angular/router";
 @Injectable({
   providedIn: "root",
 })
