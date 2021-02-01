@@ -68,39 +68,28 @@ export class CartPage implements OnInit {
     private cartCountService: CartcountService,
     private authService: AuthenticationService
   ) {
-
-
     this.s3url = this.utils.getS3url();
-
   }
 
   ionViewWillEnter() {
-
-    let current_url = window.location.href.includes('/tabs');
-    console.log('current_url', window.location.href)
+    let current_url = window.location.href.includes("/tabs");
     if (current_url) {
-      this.current_url = true
-      console.log('tabs')
+      this.current_url = true;
+      console.log("tabs");
     } else {
-      console.log('back')
+      console.log("back");
       this.current_url = false;
     }
     this.getData();
-    console.log(this.selectedAddress);
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   getData() {
     this.presentLoading().then(() => {
       this.authService.isAuthenticated().then((val) => {
         if (val) {
           this.cartService.getCart(val).subscribe(
-            (data) => this.handleResponse(data, GET_CART),
-            (error) => this.handleError(error)
-          );
-        } else {
-          this.cartService.getCart(null).subscribe(
             (data) => this.handleResponse(data, GET_CART),
             (error) => this.handleError(error)
           );
@@ -340,7 +329,7 @@ export class CartPage implements OnInit {
     await alert.present();
   }
 
-  async presentAddressModal() {
+  async changeAddress() {
     const modal = await this.modalController.create({
       component: AddressModalPage,
       cssClass: "cartmodal",
@@ -352,22 +341,18 @@ export class CartPage implements OnInit {
     await modal.present();
 
     await modal.onDidDismiss().then((data) => {
-      //  this.getData()
       console.log("data", data);
-      this.address_selected = data.data;
-      this.current_selection = data.role;
-      console.log(this.address_selected);
-      this.getDistance(
-        this.address_selected.latitude,
-        this.address_selected.longitude
-      );
+      if (data.data) {
+        this.address_selected = data.data;
+        this.current_selection = data.role;
+        console.log(this.address_selected);
+        this.getDistance(
+          this.address_selected.latitude,
+          this.address_selected.longitude
+        );
+      }
     });
   }
-
-  changeAddress() {
-    this.presentAddressModal()
-  }
-
 
   async presentAlert(msg: string) {
     const alert = await this.alertController.create({
@@ -375,8 +360,8 @@ export class CartPage implements OnInit {
       header: "Required quantity unavailable",
 
       message:
-      "This item is not available in the volume required by you.<br/><br/>" 
-       +msg+
+        "This item is not available in the volume required by you.<br/><br/>" +
+        msg +
         "<br/> <br/> Please contact via Email or WhatsApp to order in more volume.",
       buttons: ["OK"],
     });

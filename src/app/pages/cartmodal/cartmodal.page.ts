@@ -7,13 +7,12 @@ import {
   Platform,
   ToastController,
 } from "@ionic/angular";
-import { AddressService } from "src/app/services/address/address.service";
+
 import { CartService } from "src/app/services/cart/cart.service";
-import { CheckoutService } from "src/app/services/checkout/checkout.service";
-import { OrderService } from "src/app/services/order/order.service";
+
 import { UtilsService } from "src/app/services/utils.service";
-import { PaytabsService } from "src/app/services/paytabs.service";
-import { Renderer2, Inject } from "@angular/core";
+
+import { Inject } from "@angular/core";
 import { DOCUMENT } from "@angular/common";
 import { CartcountService } from "src/app/cartcount.service";
 import { AddressModalPage } from "../address-modal/address-modal.page";
@@ -56,16 +55,10 @@ export class CartmodalPage implements OnInit {
   constructor(
     public modalController: ModalController,
     private toastController: ToastController,
-    private platform: Platform,
     private cartService: CartService,
     private utils: UtilsService,
-    private addressService: AddressService,
-    private checkoutService: CheckoutService,
-    private orderService: OrderService,
     private router: Router,
-    private paytabService: PaytabsService,
-    private renderer2: Renderer2,
-    private zone: NgZone,
+    private authService: AuthenticationService,
     private cartCountService: CartcountService,
     private loadingController: LoadingController,
     private alertController: AlertController,
@@ -73,7 +66,7 @@ export class CartmodalPage implements OnInit {
 
     @Inject(DOCUMENT) private _document: Document
   ) {
-    this.s3url = utils.getS3url();
+    this.s3url = this.utils.getS3url();
   }
 
   ionViewWillEnter() {
@@ -135,7 +128,6 @@ export class CartmodalPage implements OnInit {
 
   handleResponse(data, type) {
     if (type == GET_CART) {
-      this.loadingController.dismiss();
       console.log(data);
       this.data = data;
       this.cart = data.cart;
@@ -145,23 +137,28 @@ export class CartmodalPage implements OnInit {
       for (let i = 0; i < this.cart?.length; i++) {
         this.cart[i].images[0].path = this.s3url + this.cart[i].images[0].path;
       }
+      this.loadingController.dismiss();
     } else if (type == ADD) {
-      this.loadingController.dismiss();
-      this.presentToastSuccessQtyChange(
-        "You've changed " + this.name + " quantity to " + this.qty
-      );
-      this.getData();
+      this.loadingController.dismiss().then(() => {
+        this.presentToastSuccessQtyChange(
+          "You've changed " + this.name + " quantity to " + this.qty
+        );
+        this.getData();
+      });
     } else if (type == REMOVE) {
-      this.loadingController.dismiss();
-      this.presentToastDanger("You've removed " + this.name + " from cart.");
-      this.getData();
-      this.cartCountService.setCartCount(data.cart_count);
+      this.loadingController.dismiss().then(() => {
+        this.presentToastDanger("You've removed " + this.name + " from cart.");
+        this.authService.setCartCount(data.cart_count);
+        this.cartCountService.setCartCount(data.cart_count);
+        this.getData();
+      });
     } else if (type == DEL_DATA) {
-      this.loadingController.dismiss();
-      this.presentToastSuccessQtyChange(
-        "You've changed " + this.name + " quantity to " + this.qty
-      );
-      this.getData();
+      this.loadingController.dismiss().then(() => {
+        this.presentToastSuccessQtyChange(
+          "You've changed " + this.name + " quantity to " + this.qty
+        );
+        this.getData();
+      });
     }
   }
 
@@ -411,12 +408,7 @@ export class CartmodalPage implements OnInit {
     toast.present();
   }
 
-  changeAddress()
-  {
-    this.presentAddressModal()
-  }
-  
-  async presentAddressModal() {
+  async changeAddress() {
     const modal = await this.modalController.create({
       component: AddressModalPage,
       cssClass: "cartmodal",
@@ -428,15 +420,16 @@ export class CartmodalPage implements OnInit {
     await modal.present();
 
     await modal.onDidDismiss().then((data) => {
-      //  this.getData()
-      console.log("data", data);
-      this.address_selected = data.data;
-      this.current_selection = data.role;
-      console.log(this.address_selected);
-      this.getDistance(
-        this.address_selected.latitude,
-        this.address_selected.longitude
-      );
+      if (data.data) {
+        console.log("data", data);
+        this.address_selected = data.data;
+        this.current_selection = data.role;
+        console.log(this.address_selected);
+        this.getDistance(
+          this.address_selected.latitude,
+          this.address_selected.longitude
+        );
+      }
     });
   }
 
@@ -457,8 +450,8 @@ export class CartmodalPage implements OnInit {
       header: "Required quantity unavailable",
 
       message:
-      "This item is not available in the volume required by you.<br/><br/>" 
-       +msg+
+        "This item is not available in the volume required by you.<br/><br/>" +
+        msg +
         "<br/> <br/> Please contact via Email or WhatsApp to order in more volume.",
       buttons: ["OK"],
     });

@@ -1,17 +1,16 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import {
-  LoadingController,
-  Platform,
-  ToastController,
-} from "@ionic/angular";
+import { LoadingController, Platform, ToastController } from "@ionic/angular";
 import { PaymentService } from "src/app/services/payment/payment.service";
-import { InAppBrowser, InAppBrowserEvent } from "@ionic-native/in-app-browser/ngx";
+import {
+  InAppBrowser,
+  InAppBrowserEvent,
+} from "@ionic-native/in-app-browser/ngx";
 import { Storage } from "@ionic/storage";
 import { AuthenticationService } from "src/app/services/authentication.service";
 
 const POST_DATA = 200;
-const CONFIRM = 777
+const CONFIRM = 777;
 @Component({
   selector: "app-paypal",
   templateUrl: "./paypal.page.html",
@@ -24,8 +23,8 @@ export class PaypalPage implements OnInit {
   url: any;
   address_id: any;
   client_id: any;
-  tran_ref: any
-  private subscription: any
+  tran_ref: any;
+  private subscription: any;
   constructor(
     private pay: PaymentService,
     public router: Router,
@@ -36,11 +35,6 @@ export class PaypalPage implements OnInit {
     private storage: Storage,
     private authservice: AuthenticationService
   ) {
-    // this.platform.resume.subscribe(() => {
-    //   alert('platfor resumed')
-    //   this.router.navigate(['/tabs/home'], { replaceUrl: true })
-    // })
-
     this.storage.get("total_amount").then((val) => {
       if (val) {
         console.log(val);
@@ -48,12 +42,13 @@ export class PaypalPage implements OnInit {
       }
     });
 
-    // this.paypal()
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
   ngOnDestroy(): void {
-    this.subscription.unsubscribe()
+    if (this.platform.is("cordova")) {
+    this.subscription.unsubscribe();
+    }
   }
   hostedSubmit() {
     this.presentLoading().then(() => {
@@ -82,53 +77,49 @@ export class PaypalPage implements OnInit {
   handleResponse(data, type: any) {
     if (type == POST_DATA) {
       this.response = data;
-      this.storage.set('tran_ref', data.tran_ref).then(() => {
+      this.storage.set("tran_ref", data.tran_ref).then(() => {
         let encodedData = {
           redirect_url: encodeURIComponent(data.redirect_url),
           tran_ref: data.tran_ref,
           client_id: this.client_id,
         };
 
-        var url = `https://arba.mermerapps.com/iframe?data=${JSON.stringify(encodedData)}`;
+        var url = `https://arba.mermerapps.com/iframe?data=${JSON.stringify(
+          encodedData
+        )}`;
         window.open(url, "_self");
-
-        this.subscription = this.platform.resume.subscribe(async () => {
-          this.storage.get('tran_ref').then((ref) => {
-            if (ref) {
-
-              this.paymentService.confirmPayment(ref, this.client_id).subscribe(
-                (data) => this.handleResponse(data, CONFIRM),
-                (error) => this.handleError(error)
-              );
-
-            }
-          })
-        });
-      })
+        if (this.platform.is("cordova")) {
+          this.subscription = this.platform.resume.subscribe(async () => {
+            this.storage.get("tran_ref").then((ref) => {
+              if (ref) {
+                this.paymentService
+                  .confirmPayment(ref, this.client_id)
+                  .subscribe(
+                    (data) => this.handleResponse(data, CONFIRM),
+                    (error) => this.handleError(error)
+                  );
+              }
+            });
+          });
+        }
+      });
       this.loadingController.dismiss();
     } else if (type == CONFIRM) {
       if (data.details) {
         if (data.details.response_status == "A") {
-          this.router.navigate(['/tabs/home'], { replaceUrl: true })
+          this.router.navigate(["/tabs/home"], { replaceUrl: true });
         } else {
-          this.router.navigate(['/tabs/cart'], { replaceUrl: true })
+          this.router.navigate(["/tabs/cart"], { replaceUrl: true });
         }
-
       } else {
-        alert('Payment Cancelled.')
+        alert("Payment Cancelled.");
       }
-
     }
-
-
-
-
   }
 
   handleError(error) {
     this.loadingController.dismiss();
   }
-
 
   async presentToast(msg) {
     const toast = await this.toastController.create({

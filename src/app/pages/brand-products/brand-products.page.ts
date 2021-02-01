@@ -105,14 +105,13 @@ export class BrandProductsPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.page_count = 1;
-    this.products = [];
-    this.getData();
+    
     this.authService.getCartCount().then((count) => {
       if (count) {
         this.cart_count = count;
       }
     });
+    this.getData();
   }
 
   ngOnInit() {}
@@ -350,5 +349,11 @@ export class BrandProductsPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  ngOnDestroy(): void {
+    this.page_count = 1;
+    this.products = [];
+    // this.infiniteScroll.disabled = true;
   }
 }

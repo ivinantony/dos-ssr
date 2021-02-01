@@ -207,7 +207,11 @@ const routes: Routes = [
   {
     path: 'iframe/:id',
     loadChildren: () => import('./pages/iframe/iframe.module').then( m => m.IframePageModule)
+  },  {
+    path: 'wallet-pay',
+    loadChildren: () => import('./pages/wallet-pay/wallet-pay.module').then( m => m.WalletPayPageModule)
   }
+
 
 
 

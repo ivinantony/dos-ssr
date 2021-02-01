@@ -1,39 +1,51 @@
-import { Component, NgZone, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { AlertController, LoadingController } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
-import { AuthenticationService } from 'src/app/services/authentication.service';
-import { PaymentService } from 'src/app/services/payment/payment.service';
+import { Component, NgZone, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { AlertController, LoadingController, Platform } from "@ionic/angular";
+import { Storage } from "@ionic/storage";
+import { AuthenticationService } from "src/app/services/authentication.service";
+import { PaymentService } from "src/app/services/payment/payment.service";
 
 @Component({
-  selector: 'app-recharge-status',
-  templateUrl: './recharge-status.page.html',
-  styleUrls: ['./recharge-status.page.scss'],
+  selector: "app-recharge-status",
+  templateUrl: "./recharge-status.page.html",
+  styleUrls: ["./recharge-status.page.scss"],
 })
 export class RechargeStatusPage implements OnInit {
-  ref:any
-  status:boolean
+  status: boolean;
+  isPWA: boolean = false;
 
-  constructor(private storage:Storage,private paymentService:PaymentService,
-    private alertController:AlertController,private router:Router,private loadingController:LoadingController,
-    private ngZone:NgZone,private authservice:AuthenticationService) 
-  { 
-    
-
-    this.storage.get('tran_ref').then((val) => {
-      this.ref = val
-      this.presentLoading().then(() => {
-        authservice.isAuthenticated().then(val=>{
-          paymentService.confirmPayment(this.ref,val).subscribe(
-            (data) => this.handleResponse(data),
-            (error) => this.handleError(error)
-          );
-        })
-      });
-   })
+  constructor(
+    private storage: Storage,
+    private platform: Platform,
+    private paymentService: PaymentService,
+    private alertController: AlertController,
+    private router: Router,
+    private loadingController: LoadingController,
+    private ngZone: NgZone,
+    private authservice: AuthenticationService
+  ) {
+    if (!this.platform.is("cordova")) {
+      this.isPWA = true;
+      console.log("is platform pwa", this.isPWA);
+    }
   }
 
   ngOnInit() {
+    let data = JSON.parse(localStorage.getItem("tran_data"));
+    let tran_ref = data.tran_ref;
+    let client_id = data.client_id;
+    this.presentLoading().then(() => {
+      this.paymentService.confirmPayment(tran_ref, client_id).subscribe(
+        (data) => this.handleResponse(data),
+        (error) => this.handleError(error)
+      );
+    });
+    // this.presentLoading().then(() => {
+    //   this.paymentService.confirmPayment(tran_ref, client_id).subscribe(
+    //     (data) => this.handleResponse(data),
+    //     (error) => this.handleError(error)
+    //   );
+    // });
   }
 
   handleResponse(data) {
@@ -52,44 +64,38 @@ export class RechargeStatusPage implements OnInit {
     }
   }
 
-  
-  
-
-  handleError(error)
-  {
-    console.log(error)
+  handleError(error) {
+    this.loadingController.dismiss();
+    console.log(error);
   }
 
-
-  async presentAlert(msg:string) {
+  async presentAlert(msg: string) {
     const alert = await this.alertController.create({
-      cssClass: 'my-custom-class',
-      header: 'Recharge Failed',
-     
-      message:msg,
+      cssClass: "my-custom-class",
+      header: "Recharge Failed",
+
+      message: msg,
       buttons: [
         {
-          text: 'OK',
+          text: "OK",
           handler: () => {
-            this.router.navigate(['wallet'])
-          }
-        }
-      ]
+            this.router.navigate(["wallet"]);
+          },
+        },
+      ],
     });
 
     await alert.present();
   }
 
-  continue()
-  {
-    this.storage.get('prev_url').then((val) => {
+  continue() {
+    this.storage.get("prev_url").then((val) => {
       // console.log(val,"prev url")
-      this.ngZone.run(()=>{
-      this.router.navigate([val] || ['/wallet'], { replaceUrl: true })
+      this.ngZone.run(() => {
+        this.router.navigate([val] || ["/wallet"], { replaceUrl: true });
       });
-    })
+    });
   }
-
 
   async presentLoading() {
     const loading = await this.loadingController.create({

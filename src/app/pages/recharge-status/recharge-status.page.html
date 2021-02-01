@@ -1,13 +1,26 @@
-
 <ion-content>
   <div class="ion-text-center wrapper" *ngIf="status">
-    <img src="../../../assets/imgs/check-mark.svg" alt="">
+    <img src="../../../assets/imgs/check-mark.svg" alt="" />
     <h2>Recharge Successfull</h2>
-    <div class='button'>
-      <ion-button class="btn" (click)="continue()" expand="full" fill="solid" shape="round" color="primary"  >
+    <div class="button" *ngIf="!isPWA">
+      <ion-button
+        class="btn"
+        (click)="continue()"
+        expand="full"
+        fill="solid"
+        shape="round"
+        color="primary"
+      >
         CONTINUE
       </ion-button>
     </div>
-    
+    <div *ngIf="!isPWA">
+      <ion-text color="primary">
+        <p>
+          Visit Deal On Store App for more details on this transaction ot to
+          make another purchase. Thank you for shopping from DOS!
+        </p>
+      </ion-text>
+    </div>
   </div>
-  </ion-content>
+</ion-content>

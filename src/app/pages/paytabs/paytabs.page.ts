@@ -28,7 +28,4 @@ this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url)
 // this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url)
   }
 
-  // dismiss() {
-  //   this.modalController.dismiss()
-  // }
 }

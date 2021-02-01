@@ -1,36 +1,3 @@
-// ion-header {
-//     --background: #fcfeff;
-  
-//     ion-toolbar {
-//       margin-top: 10px;
-//       margin-bottom: 20px;
-//       --background: #fcfeff;
-//       background: #fcfeff;
-//       --padding-bottom: 20px;
-//       .btnToolbar {
-//         background: #5b09d0;
-//         border-radius: 10px;
-//         box-shadow: 2px 2px 7px;
-//         margin-right: 10px;
-//       }
-//     }
-//   }
-  // ion-title {
-  //     padding-left: 43px;
-  //     margin-top: -8px;
-  //   .subHdr {
-  //     h1 {
-  //       font-size: 22px;
-  //       padding-bottom: 10px;
-  //       text-align: left;
-  //     }
-  //     h2 {
-  //       font-size: 15px;
-  //       opacity: 50%;
-  //     }
-  //   }
-  // }
-
 
   
 .card{
@@ -40,6 +7,7 @@
     padding-bottom: 20px;
     min-height: 240px;
     border-radius: 25px;
+    box-shadow: none;
 
     .flag{
         display: flex;
@@ -70,14 +38,9 @@
       width: 200px;
       font-size: 56px;
       margin-top: 30px;
-    //   margin-bottom: 50px;
       color: #434343;
   }
   
-    .btn {
-        height: 56px;
-        letter-spacing: 2px;
-        margin-bottom: 5px;
-      }
+  
 }
 

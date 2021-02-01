@@ -1,8 +1,5 @@
 import { Component, NgZone, OnInit } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
 import { Storage } from '@ionic/storage';
-import { url } from 'inspector';
 
 @Component({
   selector: 'app-iframe',
@@ -20,9 +17,7 @@ export class IframePage implements OnInit {
 
     console.log(JSON.parse(data));
 
-    this.setStorage().finally(() => {
-      this.openUrl();
-    })
+   
   }
 
   ngOnInit() {
@@ -37,6 +32,8 @@ export class IframePage implements OnInit {
   }
 
   ngAfterViewInit(): void {
-
+    this.setStorage().finally(() => {
+      this.openUrl();
+    })
   }
 }

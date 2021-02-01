@@ -11,12 +11,16 @@
 
 <ion-content>
   <ion-toolbar>
-    <ion-buttons slot="end">
+    <ion-chip slot="end" outline color="primary" (click)="addAddress()">
+      <ion-label>Add Address</ion-label>
+      <ion-icon name="add-circle-outline"></ion-icon>
+    </ion-chip>
+    <!-- <ion-buttons slot="end">
       <ion-button color="primary" (click)="addAddress()">
         <ion-icon name="location-outline"></ion-icon>
         Add Address
       </ion-button>
-    </ion-buttons>
+    </ion-buttons> -->
   </ion-toolbar>
 
 

@@ -31,7 +31,7 @@ export class ProfilePage implements OnInit {
   }
   logout() {
     this.authService.logout().then(() => {
-      this.authService.loginStatus(false)
+      this.authService.loginStatus(false);
       this.presentToast().finally(() => {
         this.navCtrl.back();
       });
@@ -53,8 +53,8 @@ export class ProfilePage implements OnInit {
 
   handleResponse(data, type) {
     if (type == GET_DATA) {
-      this.loadingController.dismiss();
       this.user = data.client_Details;
+      this.loadingController.dismiss();
     }
 
     // console.log(this.user)

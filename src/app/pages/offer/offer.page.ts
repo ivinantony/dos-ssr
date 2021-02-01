@@ -22,7 +22,6 @@ import { FilterComponent } from "../filter/filter.component";
 
 const GET_DATA = 200;
 const POST_DATA = 210;
-const DEL_DATA = 220;
 @Component({
   selector: "app-offer",
   templateUrl: "./offer.page.html",
@@ -31,15 +30,15 @@ const DEL_DATA = 220;
 export class OfferPage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   @ViewChild(IonContent, { static: false }) content: IonContent;
+
   products: Array<any> = [];
-  data: any;
+
   s3url: any;
   page_limit: number;
   page_count: number = 1;
   current_page: number;
 
   sortType: any = null;
-  scroll: boolean = true;
   cart_count: any;
   name: any;
 
@@ -61,19 +60,19 @@ export class OfferPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.page_count = 1;
-    this.products = [];
-    this.getData();
     this.authService.getCartCount().then((count) => {
       if (count) {
         this.cart_count = count;
       }
     });
+
+    this.getData();
   }
 
   ngOnInit() {}
 
   getData(infiniteScroll?) {
+    console.log("infiniteScroll", this.page_count);
     this.presentLoading().then(() => {
       this.authService.isAuthenticated().then((val) => {
         if (val) {
@@ -97,15 +96,14 @@ export class OfferPage implements OnInit {
 
   handleResponse(data, type, infiniteScroll?) {
     if (type == GET_DATA) {
-      this.loadingController.dismiss().then(() => {
-        this.page_limit = data.page_count;
-        this.cart_count = data.cart_count;
-        data.product.forEach((element) => {
-          this.products.push(element);
-        });
-        this.cartCountService.setCartCount(data.cart_count);
-        this.authService.setCartCount(data.cart_count);
+      this.loadingController.dismiss();
+      this.page_limit = data.page_count;
+      this.cart_count = data.cart_count;
+      data.product.forEach((element) => {
+        this.products.push(element);
       });
+      this.cartCountService.setCartCount(data.cart_count);
+      this.authService.setCartCount(data.cart_count);
     } else if (type == POST_DATA) {
       this.loadingController.dismiss().then(() => {
         this.cart_count = data.cart_count;
@@ -167,7 +165,6 @@ export class OfferPage implements OnInit {
           this.sortType = "ASC";
           this.page_count = 1;
           this.products = [];
-
           this.getData();
         } else if (data.data == 1) {
           this.sortType = "DESC";
@@ -182,12 +179,10 @@ export class OfferPage implements OnInit {
   }
 
   loadMoreContent(infiniteScroll) {
-    // console.log("loadMoreContent", this.page_count);
     if (this.page_count == this.page_limit) {
       infiniteScroll.target.disabled = true;
     } else {
       this.page_count++;
-      // console.log("from load more content");
       this.getData(infiniteScroll);
     }
   }
@@ -297,5 +292,11 @@ export class OfferPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  ngOnDestroy(): void {
+    this.page_count = 1;
+    this.products = [];
+    // this.infiniteScroll.disabled = true;
   }
 }

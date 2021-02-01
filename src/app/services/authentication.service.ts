@@ -26,13 +26,14 @@ export class AuthenticationService {
   }
 
   async logout() {
-    await this.storage.clear();
     this.cartCountService.setCartCount(0);
-    this.notfCountSertvice.setNotCount(0);
+    this.notfCountSertvice.setNotCount(0); 
+    localStorage.clear();
+    await this.storage.clear()
   }
 
   isAuthenticated() {
-    return this.storage.get(TOKEN_KEY);
+    return this.storage.get(TOKEN_KEY)
   }
 
   async setCartCount(count) {

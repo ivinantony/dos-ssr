@@ -32,7 +32,6 @@ export class ProfileOTPPage implements OnInit {
     if(this.phone == null)
     {
       this.data={
-        // client_id:localStorage.getItem('client_id'),
         email:this.email,
         otp:this.inputOtp ,
       }  
@@ -44,7 +43,6 @@ export class ProfileOTPPage implements OnInit {
     else if(this.email == null)
     {
      this.data={
-        // client_id:localStorage.getItem('client_id'),
         otp:this.inputOtp ,
         phone:this.phone,
       } 
@@ -61,9 +59,6 @@ export class ProfileOTPPage implements OnInit {
 
   handleResponseData(data,type)
   {
-    // console.log(data)
-    // this.authService.login(data.data)
-    // localStorage.setItem('client_id',data.client_id)
     this.router.navigate(['profile'])
   }
 

@@ -45,7 +45,7 @@ export class ProductsPage implements OnInit {
   sortType: any = null;
   cart_count: any;
   name: any;
-currentIndex:number
+  currentIndex: number;
   constructor(
     private activatedRoute: ActivatedRoute,
     public router: Router,
@@ -59,7 +59,7 @@ currentIndex:number
     private popOverCtrl: PopoverController,
     private toastController: ToastController,
     private cartCountService: CartcountService,
-    private authGuard:AuthGuard
+    private authGuard: AuthGuard
   ) {
     this.page_count = 1;
     this.s3url = this.utils.getS3url();
@@ -69,18 +69,16 @@ currentIndex:number
 
   ngOnInit() {}
   ionViewWillEnter() {
-    this.page_count = 1;
-    this.products = [];
+    this.cartCountService.getCartCount().subscribe((val) => {
+      this.cart_count = val;
+    });
     this.getData();
-    this.cartCountService.getCartCount().subscribe((val)=>{
-      this.cart_count=val
-        })
   }
 
   getData(infiniteScroll?) {
     this.presentLoading().then(() => {
-      this.authService.isAuthenticated().then(res=>{
-        if(res){
+      this.authService.isAuthenticated().then((res) => {
+        if (res) {
           this.CatProductService.getSubCatProducts(
             this.catId,
             res,
@@ -90,7 +88,7 @@ currentIndex:number
             (data) => this.handleResponse(data, GET_DATA, infiniteScroll),
             (error) => this.handleError(error)
           );
-        }else{
+        } else {
           this.CatProductService.getSubCatProducts(
             this.catId,
             null,
@@ -101,34 +99,31 @@ currentIndex:number
             (error) => this.handleError(error)
           );
         }
-      })
-   
+      });
     });
   }
 
   handleResponse(data, type, infiniteScroll?) {
-    
     if (type == GET_DATA) {
-      this.loadingController.dismiss().then(()=>{
+      this.loadingController.dismiss().then(() => {
         this.data = data;
         this.data.products.forEach((element) => {
           this.products.push(element);
         });
         this.page_limit = data.page_count;
         this.cart_count = data.cart_count;
-      this.authService.setCartCount(data.cart_count)
-      this.cartCountService.setCartCount(data.cart_count);
-      })
- 
+        this.authService.setCartCount(data.cart_count);
+        this.cartCountService.setCartCount(data.cart_count);
+      });
     } else if (type == POST_DATA) {
-      this.loadingController.dismiss().then(()=>{
+      this.loadingController.dismiss().then(() => {
         this.products[this.currentIndex].cart_count++;
         this.name = this.products[this.currentIndex].name;
         this.cart_count = data.cart_count;
-        this.authService.setCartCount(data.cart_count)
+        this.authService.setCartCount(data.cart_count);
         this.cartCountService.setCartCount(data.cart_count);
-        this.presentToastSuccess("One ' " + this.name + " ' added to cart."); 
-      })
+        this.presentToastSuccess("One ' " + this.name + " ' added to cart.");
+      });
     }
 
     if (infiniteScroll) {
@@ -147,7 +142,7 @@ currentIndex:number
     this.router.navigate(["product", id, { catId }]);
   }
 
- async openSort(ev: any) {
+  async openSort(ev: any) {
     const popover = await this.popOverCtrl.create({
       component: FilterComponent,
       event: ev,
@@ -174,8 +169,6 @@ currentIndex:number
     });
     await popover.present();
   }
-
-
 
   loadMoreContent(infiniteScroll) {
     if (this.page_count == this.page_limit) {
@@ -236,31 +229,28 @@ currentIndex:number
   }
 
   addToCart(index: number) {
-    this.currentIndex =index;
-    this.authService.isAuthenticated().then((token)=>{
-      if(token){
-         this.presentLoading().then(()=>{
-        let data = {
-          product_id: this.products[index].id,
-          client_id:token,
-        };
-        this.cartService.addToCart(data).subscribe(
-          (data) => this.handleResponse(data, POST_DATA),
-          (error) => this.handleError(error)
-        );
-      })
-      
-      }else{
-        this.authGuard.presentModal()
+    this.currentIndex = index;
+    this.authService.isAuthenticated().then((token) => {
+      if (token) {
+        this.presentLoading().then(() => {
+          let data = {
+            product_id: this.products[index].id,
+            client_id: token,
+          };
+          this.cartService.addToCart(data).subscribe(
+            (data) => this.handleResponse(data, POST_DATA),
+            (error) => this.handleError(error)
+          );
+        });
+      } else {
+        this.authGuard.presentModal();
       }
-    })
-
+    });
   }
 
   goToCart() {
     this.router.navigate(["/cart"]);
   }
-
 
   async presentLoading() {
     const loading = await this.loadingController.create({
@@ -308,5 +298,11 @@ currentIndex:number
     });
 
     await alert.present();
+  }
+
+  ngOnDestroy(): void {
+    this.page_count = 1;
+    this.products = [];
+    // this.infiniteScroll.disabled = true;
   }
 }
