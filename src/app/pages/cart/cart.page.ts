@@ -56,7 +56,7 @@ export class CartPage implements OnInit {
   isOut: boolean = false;
   name: any;
   qty: any;
-  current_url: any
+  current_url: boolean = false;
   constructor(
     public modalController: ModalController,
     private routerOutlet: IonRouterOutlet,
@@ -69,14 +69,24 @@ export class CartPage implements OnInit {
     private cartCountService: CartcountService,
     private authService: AuthenticationService
   ) {
-    this.current_url = window.location.href
+
+
     this.s3url = this.utils.getS3url();
 
   }
 
   ionViewWillEnter() {
+
+    let current_url = window.location.href.includes('/tabs');
+    console.log('current_url', window.location.href)
+    if (current_url) {
+      this.current_url = true
+      console.log('tabs')
+    } else {
+      console.log('back')
+      this.current_url = false;
+    }
     this.getData();
-    console.log("ionViewWillEnter");
     console.log(this.selectedAddress);
   }
 
