@@ -11,7 +11,7 @@ import { AuthenticationService } from '../services/authentication.service';
 export class AuthGuard implements CanActivate {
   constructor(
     public ModalController: ModalController,
-    public authservice: AuthenticationService
+    public authservice: AuthenticationService,
   ) {
   }
 
@@ -23,7 +23,10 @@ export class AuthGuard implements CanActivate {
         return true;
       }
       this.presentModal();
+    
       return false;
+      
+
     });
   }
 

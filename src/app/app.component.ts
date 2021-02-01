@@ -45,6 +45,7 @@ export class AppComponent implements OnInit {
   notf_count: any;
   deferredPrompt: any;
   loggedIn: boolean = false;
+  islogged: boolean ;
   categories: Array<any> = [
     { id: 1, name: "Home", url: "/tabs/home", icon: "home-outline" },
     { id: 1, name: "Offers", url: "/offers", icon: "flash-outline" },
@@ -132,6 +133,11 @@ export class AppComponent implements OnInit {
           .then(() => window.location.reload());
       });
     });
+    this.authService.getLoggedStatus().subscribe((data)=>{
+      console.log('event',data)
+      this.islogged = data
+    }
+    )
   }
   @HostListener("window:popstate")
   onPopState(): void {
@@ -219,7 +225,8 @@ export class AppComponent implements OnInit {
     this.presentLoading().then(() => {
       this.authService.logout().then(() => {
         this.presentToast().finally(() => {
-          this.loggedIn = false;
+          // this.loggedIn = false;
+          this.authService.loginStatus(false)
           this.menuController.close();
         });
       });

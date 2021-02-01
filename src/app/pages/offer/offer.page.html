@@ -7,7 +7,7 @@
     <ion-title>Offers</ion-title>
 
     <ion-buttons slot="end">
-      <ion-button class="ion-hide-md-up" (click)="router.navigate(['/cart'])">
+      <ion-button class="ion-hide-md-up" (click)="router.navigate(['/tabs/cart'])">
         <ion-icon src="../assets/imgs/icons/cart.svg"></ion-icon>
         <ion-badge id="cart-badge" color="primary" *ngIf="cart_count > 0"
           >{{cart_count}}</ion-badge
@@ -101,7 +101,7 @@
     </ion-fab-button>
   </ion-fab>
 
-  <ion-infinite-scroll (ionInfinite)="loadMoreContent($event)" threshold="15%">
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreContent($event)" >
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
       loadingText="Loading more data..."

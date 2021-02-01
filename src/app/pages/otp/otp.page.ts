@@ -29,7 +29,7 @@ export class OtpPage implements OnInit {
     private notCountService: NotcountService,
     private router: Router,
     private loadingController: LoadingController,
-    private badge:Badge
+    private badge: Badge
   ) {
     this.phone = this.activatedRoute.snapshot.params.phone;
     this.email = this.activatedRoute.snapshot.params.email;
@@ -70,14 +70,15 @@ export class OtpPage implements OnInit {
   handleResponseData(data, type) {
     if (type == POST_OTP) {
       this.authService.setClientId(data.client_id);
-      this.authService.setCartCount(data.cart_count)
-      this.authService.setNotificationCount(data.notification_count)
+      this.authService.setCartCount(data.cart_count);
+      this.authService.setNotificationCount(data.notification_count);
       this.cartCountService.setCartCount(data.cart_count);
       this.notCountService.setNotCount(data.notification_count);
       this.badge.set(data.notification_count);
       this.storage.get("prev_url").then((val) => {
         // console.log(val,"prev url")
         this.ngZone.run(() => {
+          this.authService.loginStatus(true);
           this.router.navigate([val] || ["/"], { replaceUrl: true });
         });
       });

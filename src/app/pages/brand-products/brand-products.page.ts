@@ -150,7 +150,6 @@ export class BrandProductsPage implements OnInit {
   }
 
   handleResponse(data, type, infiniteScroll?) {
-    this.infiniteScroll.disabled = false;
 
     if (type == GET_DATA) {
       this.loadingController.dismiss();
@@ -175,6 +174,9 @@ export class BrandProductsPage implements OnInit {
     if (infiniteScroll) {
       infiniteScroll.target.complete();
     }
+
+
+    
   }
   handleError(error) {
     this.loadingController.dismiss();
@@ -270,7 +272,7 @@ export class BrandProductsPage implements OnInit {
   }
 
   goToCart() {
-    this.router.navigate(["/tabs/cart"]);
+    this.router.navigate(["/cart"]);
   }
 
   async presentLoading() {
@@ -300,31 +302,26 @@ export class BrandProductsPage implements OnInit {
       showBackdrop: true,
       cssClass: "popover",
     });
-
     popover.onDidDismiss().then((data) => {
-      if (data.data) this.infiniteScroll.disabled = true;
-
-      {
-        // console.log("hello")
-
+      if (data.data) {
         if (data.data == 2) {
-          // console.log("low to high")
           this.sortType = "ASC";
           this.page_count = 1;
           this.products = [];
+
           this.getData();
         } else if (data.data == 1) {
-          //  console.log("high to low")
-
           this.sortType = "DESC";
           this.page_count = 1;
           this.products = [];
+
           this.getData();
         }
       }
     });
     await popover.present();
   }
+
 
   opensortMobile() {
     this.presentActionSheet();
@@ -340,6 +337,7 @@ export class BrandProductsPage implements OnInit {
     });
     toast.present();
   }
+
   async presentAlert(msg: string) {
     const alert = await this.alertController.create({
       cssClass: "my-custom-class",

@@ -4,7 +4,7 @@ import { CartcountService } from "src/app/cartcount.service";
 import { defineCustomElements } from "@teamhive/lottie-player/loader";
 import { PaymentService } from "src/app/services/payment/payment.service";
 import { Storage } from "@ionic/storage";
-import { AlertController, LoadingController } from "@ionic/angular";
+import { AlertController, LoadingController, Platform } from "@ionic/angular";
 
 @Component({
   selector: "app-order-placed",
@@ -14,19 +14,29 @@ import { AlertController, LoadingController } from "@ionic/angular";
 export class OrderPlacedPage implements OnInit {
 
   status: boolean;
+  isPWA:boolean=false;
   constructor(
     public router: Router,
     private cartCountService: CartcountService,
     private paymentService: PaymentService,
     private storage: Storage,
     private alertController: AlertController,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private platform:Platform
   ) {
     // window.location.href = "mycoolapp://";
+    console.log('before is platform pwa check',this.isPWA)
+
+    if(this.platform.is('pwa'))
+    {
+      this.isPWA=true
+      console.log('is platform pwa',this.isPWA)
+    }
 
   }
 
   ngOnInit() {
+    
     let data = JSON.parse(localStorage.getItem('tran_data'))
     let tran_ref = data.tran_ref;
     let client_id = data.client_id;
@@ -72,6 +82,7 @@ export class OrderPlacedPage implements OnInit {
         {
           text: "OK",
           handler: () => {
+            this.router.navigate(['/tabs/home'])
           },
         },
       ],

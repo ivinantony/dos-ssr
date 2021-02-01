@@ -29,12 +29,16 @@
         <p>{{address_selected.landmark}}</p>
         <p>{{address_selected.phone}}</p>
       </ion-label>
-      <ion-radio slot="start" ></ion-radio>
-      <ion-thumbnail class="ion-padding">
+      
+      <ion-button (click)="changeAddress()" color="primary" fill="outline">
+        change
+      </ion-button>
+      <!-- <ion-thumbnail class="ion-padding">
         <img src="../../../assets/imgs/icons/location.svg">
-      </ion-thumbnail>
+      </ion-thumbnail> -->
     </ion-item>
-    <ion-button (click)="presentAddressModal()" fill='clear'>
+
+    <ion-button (click)="presentAddressModal()" fill="clear" *ngIf="!address_selected">
       select address
       <ion-icon name="location-outline"></ion-icon>
     </ion-button>

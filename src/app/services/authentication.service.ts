@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { CartcountService } from "../cartcount.service";
 import { NotcountService } from "../notcount.service";
 import { Storage } from "@ionic/storage";
+import { BehaviorSubject } from "rxjs";
 
 const TOKEN_KEY = "client_id";
 const CART_COUNT = "cart_count";
@@ -10,7 +11,9 @@ const NOTIFICATION_COUNT = "notf_count";
 @Injectable({
   providedIn: "root",
 })
+
 export class AuthenticationService {
+  islogged = new BehaviorSubject(false)
   constructor(
     private storage: Storage,
     private cartCountService: CartcountService,
@@ -44,4 +47,13 @@ export class AuthenticationService {
   async getNotificationCount() {
     return this.storage.get(NOTIFICATION_COUNT);
   }
+
+  getLoggedStatus(){
+    return this.islogged.asObservable()
+  }
+
+  loginStatus(value){
+    this.islogged.next(value)
+  }
+ 
 }

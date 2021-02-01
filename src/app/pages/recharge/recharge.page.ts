@@ -14,7 +14,6 @@ import { AuthenticationService } from "src/app/services/authentication.service";
 })
 export class RechargePage implements OnInit {
   public rechargeForm: FormGroup;
-  client_id:any
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -28,13 +27,18 @@ export class RechargePage implements OnInit {
     private authservice:AuthenticationService
   ) {
 
-    authservice.isAuthenticated().then(val=>{
-this.client_id = val
-    })
-    this.rechargeForm = this.formBuilder.group({
-      client_id: [this.client_id],
+      this.rechargeForm = this.formBuilder.group({
+      client_id: [""],
       amount: [ "", Validators.compose([Validators.required, Validators.pattern("[0-9]*")]),],
     });
+
+    authservice.isAuthenticated().then(val=>{
+      if(val){
+        let client_id = JSON.stringify(val)
+        this.rechargeForm.controls['client_id'].setValue(client_id)
+      }
+    })
+  
     let amount = this.activatedRoute.snapshot.params.balance;
     if (amount) {
       this.rechargeForm.controls["amount"].setValue(amount);

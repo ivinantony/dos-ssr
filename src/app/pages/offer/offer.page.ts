@@ -55,71 +55,67 @@ export class OfferPage implements OnInit {
     private popOverCtrl: PopoverController,
     private toastController: ToastController,
     private cartCountService: CartcountService,
-    private authGuard:AuthGuard
+    private authGuard: AuthGuard
   ) {
-
     this.s3url = utils.getS3url();
   }
-
-  ngOnInit() {}
 
   ionViewWillEnter() {
     this.page_count = 1;
     this.products = [];
     this.getData();
+    this.authService.getCartCount().then((count) => {
+      if (count) {
+        this.cart_count = count;
+      }
+    });
   }
+
+  ngOnInit() {}
 
   getData(infiniteScroll?) {
     this.presentLoading().then(() => {
-      this.authService.isAuthenticated().then(val=>{
-        if(val){
+      this.authService.isAuthenticated().then((val) => {
+        if (val) {
           this.offerService
-          .getOfferProducts(val, this.page_count, this.sortType)
-          .subscribe(
-            (data) => this.handleResponse(data, GET_DATA, infiniteScroll),
-            (error) => this.handleError(error)
-          );
-        }
-        else{
+            .getOfferProducts(val, this.page_count, this.sortType)
+            .subscribe(
+              (data) => this.handleResponse(data, GET_DATA, infiniteScroll),
+              (error) => this.handleError(error)
+            );
+        } else {
           this.offerService
-          .getOfferProducts(null, this.page_count, this.sortType)
-          .subscribe(
-            (data) => this.handleResponse(data, GET_DATA, infiniteScroll),
-            (error) => this.handleError(error)
-          );
+            .getOfferProducts(null, this.page_count, this.sortType)
+            .subscribe(
+              (data) => this.handleResponse(data, GET_DATA, infiniteScroll),
+              (error) => this.handleError(error)
+            );
         }
-      })
-      
+      });
     });
   }
 
   handleResponse(data, type, infiniteScroll?) {
-    this.infiniteScroll.disabled = false;
-   
     if (type == GET_DATA) {
-      this.loadingController.dismiss().then(()=>{
+      this.loadingController.dismiss().then(() => {
         this.page_limit = data.page_count;
         this.cart_count = data.cart_count;
         data.product.forEach((element) => {
           this.products.push(element);
         });
         this.cartCountService.setCartCount(data.cart_count);
-        this.authService.setCartCount(data.cart_count)
-      }) 
-    } 
-    else if (type == POST_DATA) {
-      this.loadingController.dismiss().then(()=>{
-
+        this.authService.setCartCount(data.cart_count);
+      });
+    } else if (type == POST_DATA) {
+      this.loadingController.dismiss().then(() => {
         this.cart_count = data.cart_count;
-        this.authService.setCartCount(data.cart_count)
+        this.authService.setCartCount(data.cart_count);
         this.cartCountService.setCartCount(data.cart_count);
         this.presentToastSuccess("One ' " + this.name + " ' added to cart.");
       });
-
     }
 
     if (infiniteScroll) {
-      // console.log("infinite scroll", infiniteScroll);
       infiniteScroll.target.complete();
     }
   }
@@ -132,11 +128,9 @@ export class OfferPage implements OnInit {
   }
 
   addToCart(index: number) {
-    this.authService.isAuthenticated().then((val)=>{
-      if(val){
-        console.log("auth value",this.authService.isAuthenticated());
-        
-        this.presentLoading().then(()=>{
+    this.authService.isAuthenticated().then((val) => {
+      if (val) {
+        this.presentLoading().then(() => {
           let data = {
             product_id: this.products[index].id,
             client_id: val,
@@ -145,20 +139,18 @@ export class OfferPage implements OnInit {
             (data) => this.handleResponse(data, POST_DATA),
             (error) => this.handleError(error)
           );
-        })
-        
+        });
+
         this.products[index].cart_count++;
         this.name = this.products[index].name;
       } else {
-        this.authGuard.presentModal()
+        this.authGuard.presentModal();
       }
-    })
-  
+    });
   }
 
-  goToCart()
-  {
-    this.router.navigate(['/tabs/cart'])
+  goToCart() {
+    this.router.navigate(["/cart"]);
   }
 
   async openSort(ev: any) {
@@ -171,25 +163,18 @@ export class OfferPage implements OnInit {
     });
     popover.onDidDismiss().then((data) => {
       if (data.data) {
-        this.infiniteScroll.disabled = true;
         if (data.data == 2) {
-          // console.log("low to high");
           this.sortType = "ASC";
           this.page_count = 1;
           this.products = [];
-          // console.log("from sort");
-          this.getData();
 
-          // console.log(this.scroll, "sort");
+          this.getData();
         } else if (data.data == 1) {
-          // console.log("high to low");
           this.sortType = "DESC";
           this.page_count = 1;
           this.products = [];
-          // console.log("from sort");
-          this.getData();
 
-          // console.log(this.scroll, "sort");
+          this.getData();
         }
       }
     });
@@ -208,6 +193,7 @@ export class OfferPage implements OnInit {
   }
 
   async presentLoading() {
+    console.log("1");
     const loading = await this.loadingController.create({
       spinner: "crescent",
       cssClass: "custom-spinner",
@@ -276,7 +262,7 @@ export class OfferPage implements OnInit {
       cssClass: "custom-toast-success",
       position: "bottom",
       duration: 1500,
-      color:"dark"
+      color: "dark",
     });
     toast.present();
   }

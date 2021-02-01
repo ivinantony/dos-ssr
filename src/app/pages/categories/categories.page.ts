@@ -14,19 +14,19 @@ export class CategoriesPage implements OnInit {
   s3url: any
   page_count: number = 1
   page_limit: number
+  result:any
   categories: Array<any> = []
 
   bannerSlideOpts = {
     slidesPerView: 1,
-    initialSlide: 0,
     spaceBetween: 20,
     loop: true,
     centeredSlides: true,
+    updateOnWindowResize: true,
     autoplay: {
-      delay: 3000,
-      disableOnInteraction: false
+      delay: 3500,
+      disableOnInteraction: false,
     },
-    speed: 400
   }
 
   constructor(public router: Router, private categoryService: CategoryService, private utils: UtilsService,private loadingController:LoadingController) {
@@ -50,6 +50,15 @@ export class CategoriesPage implements OnInit {
 
   navigateToProducts(index: number) {
     this.router.navigate(['products', this.categories[index].id, { name: this.categories[index].category_name }])
+  }
+
+  onRoute(link) {
+    this.result = [];
+    if (link != null || link != undefined) {
+      let data = link.split(".com").pop();
+
+      this.router.navigateByUrl(data);
+    }
   }
 
   loadMoreContent(infiniteScroll) {
