@@ -11,7 +11,7 @@ const GET_WALLET = 200;
   styleUrls: ["./wallet.page.scss"],
 })
 export class WalletPage implements OnInit {
-  data: any;
+  walletDetails: any;
   constructor(
     public router: Router,
     private loadingController: LoadingController,
@@ -39,9 +39,10 @@ export class WalletPage implements OnInit {
   }
 
   handleResponse(data, type) {
-    this.loadingController.dismiss();
+   
     console.log(data);
-    this.data = data;
+    this.walletDetails = data.client_details; 
+    this.loadingController.dismiss();
   }
   handleError(error) {
     this.loadingController.dismiss();
