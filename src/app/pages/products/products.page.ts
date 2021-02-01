@@ -76,6 +76,7 @@ export class ProductsPage implements OnInit {
   }
 
   getData(infiniteScroll?) {
+    this.infiniteScroll.disabled = false;
     this.presentLoading().then(() => {
       this.authService.isAuthenticated().then((res) => {
         if (res) {
@@ -114,6 +115,8 @@ export class ProductsPage implements OnInit {
         this.cart_count = data.cart_count;
         this.authService.setCartCount(data.cart_count);
         this.cartCountService.setCartCount(data.cart_count);
+        this.infiniteScroll.disabled = true;
+
       });
     } else if (type == POST_DATA) {
       this.loadingController.dismiss().then(() => {
@@ -179,7 +182,7 @@ export class ProductsPage implements OnInit {
     }
   }
 
-  async presentActionSheet() {
+  async openSortMobile() {
     const actionSheet = await this.actionSheetController.create({
       header: "SORT BY",
       mode: "md",
@@ -188,28 +191,27 @@ export class ProductsPage implements OnInit {
         {
           text: "Price - high to low",
           handler: () => {
-            this.infiniteScroll.disabled = true;
             this.page_count = 1;
             this.products = [];
             this.sortType = "DESC";
             this.getData();
+            this.content.scrollToTop();
           },
         },
         {
           text: "Price - low to high",
           handler: () => {
-            this.infiniteScroll.disabled = true;
             this.page_count = 1;
             this.products = [];
             this.sortType = "ASC";
             this.getData();
+            this.content.scrollToTop();
           },
         },
       ],
     });
     await actionSheet.present();
   }
-
   async presentLogin() {
     const alert = await this.alertController.create({
       cssClass: "my-custom-class",
@@ -282,9 +284,7 @@ export class ProductsPage implements OnInit {
     }, 1000);
   }
 
-  opensortMobile() {
-    this.presentActionSheet();
-  }
+
 
   async presentAlert(msg: string) {
     const alert = await this.alertController.create({

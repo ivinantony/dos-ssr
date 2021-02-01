@@ -98,25 +98,25 @@ export class BrandProductsPage implements OnInit {
     private popOverCtrl: PopoverController,
     private toastController: ToastController,
     private cartCountService: CartcountService,
-    private authGuard:AuthGuard
+    private authGuard: AuthGuard
   ) {
     this.brand_id = activatedRoute.snapshot.params.brand_id;
     this.s3url = utils.getS3url();
   }
 
   ionViewWillEnter() {
-    
     this.authService.getCartCount().then((count) => {
       if (count) {
         this.cart_count = count;
       }
     });
-    this.getData();
   }
 
   ngOnInit() {}
 
   getData(infiniteScroll?) {
+    this.infiniteScroll.disabled = true;
+
     this.presentLoading().then(() => {
       this.authService.isAuthenticated().then((token) => {
         if (token) {
@@ -149,7 +149,6 @@ export class BrandProductsPage implements OnInit {
   }
 
   handleResponse(data, type, infiniteScroll?) {
-
     if (type == GET_DATA) {
       this.loadingController.dismiss();
       this.page_limit = data.page_count;
@@ -160,6 +159,7 @@ export class BrandProductsPage implements OnInit {
       });
       this.authService.setCartCount(data.cart_count);
       this.cartCountService.setCartCount(data.cart_count);
+      this.infiniteScroll.disabled = true;
     } else if (type == POST_DATA) {
       this.loadingController.dismiss();
       this.products[this.currentIndex].cart_count++;
@@ -173,9 +173,6 @@ export class BrandProductsPage implements OnInit {
     if (infiniteScroll) {
       infiniteScroll.target.complete();
     }
-
-
-    
   }
   handleError(error) {
     this.loadingController.dismiss();
@@ -201,7 +198,7 @@ export class BrandProductsPage implements OnInit {
     this.router.navigate(["product", id, { catId }]);
   }
 
-  async presentActionSheet() {
+  async openSortMobile() {
     const actionSheet = await this.actionSheetController.create({
       header: "SORT BY",
       mode: "md",
@@ -210,28 +207,27 @@ export class BrandProductsPage implements OnInit {
         {
           text: "Price - high to low",
           handler: () => {
-            this.infiniteScroll.disabled = true;
             this.page_count = 1;
             this.products = [];
             this.sortType = "DESC";
             this.getData();
+            this.content.scrollToTop();
           },
         },
         {
           text: "Price - low to high",
           handler: () => {
-            this.infiniteScroll.disabled = true;
             this.page_count = 1;
             this.products = [];
             this.sortType = "ASC";
             this.getData();
+            this.content.scrollToTop();
           },
         },
       ],
     });
     await actionSheet.present();
   }
-
   async presentLogin() {
     const alert = await this.alertController.create({
       cssClass: "my-custom-class",
@@ -265,7 +261,7 @@ export class BrandProductsPage implements OnInit {
           );
         });
       } else {
-        this.authGuard.presentModal()
+        this.authGuard.presentModal();
       }
     });
   }
@@ -319,11 +315,6 @@ export class BrandProductsPage implements OnInit {
       }
     });
     await popover.present();
-  }
-
-
-  opensortMobile() {
-    this.presentActionSheet();
   }
 
   async presentToastSuccess(msg) {

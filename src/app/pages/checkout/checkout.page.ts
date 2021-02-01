@@ -58,7 +58,6 @@ export class CheckoutPage implements OnInit {
   }
 
   ngOnInit() {
-    console.log("ionViewWillEnter");
 
     this.getData();
   }
@@ -105,10 +104,10 @@ export class CheckoutPage implements OnInit {
 
   handleError(error, type) {
     this.loadingController.dismiss();
-    // console.log(error);
+    console.log(error.error.wallet_status);
     if (type == WALLET_RESPONSE) {
       if (error.status == 400) {
-        if (error.wallet_status) {
+        if (error.error.wallet_status) {
           this.presentAlertConfirmWallet();
         } else {
           let msg = "Wallet recharge currently not available.";

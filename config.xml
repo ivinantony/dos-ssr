@@ -3,7 +3,7 @@
     <name>Deal On Store</name>
     <description>Deal On Store Online Shop.</description>
     <author email="support@mermerapps.com" href="https://mermerapps.com/">Mermer Technologies</author>
-    <content original-src="index.html" src="http://192.168.1.7:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
