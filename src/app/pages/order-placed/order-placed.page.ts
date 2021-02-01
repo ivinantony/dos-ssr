@@ -14,7 +14,7 @@ import { AlertController, LoadingController, Platform } from "@ionic/angular";
 export class OrderPlacedPage implements OnInit {
 
   status: boolean;
-  isPWA:boolean;
+  isPWA:boolean=false;
   constructor(
     public router: Router,
     private cartCountService: CartcountService,
@@ -25,14 +25,16 @@ export class OrderPlacedPage implements OnInit {
     private platform:Platform
   ) {
     // window.location.href = "mycoolapp://";
-    if(this.platform.is('pwa'))
-    {
-      this.isPWA=true
-    }
+    
 
   }
 
   ngOnInit() {
+    if(this.platform.is('pwa'))
+    {
+      this.isPWA=true
+      console.log('is platform pwa',this.isPWA)
+    }
     let data = JSON.parse(localStorage.getItem('tran_data'))
     let tran_ref = data.tran_ref;
     let client_id = data.client_id;
