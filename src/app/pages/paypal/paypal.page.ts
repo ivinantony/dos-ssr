@@ -35,11 +35,6 @@ export class PaypalPage implements OnInit {
     private storage: Storage,
     private authservice: AuthenticationService
   ) {
-    // this.platform.resume.subscribe(() => {
-    //   alert('platfor resumed')
-    //   this.router.navigate(['/tabs/home'], { replaceUrl: true })
-    // })
-
     this.storage.get("total_amount").then((val) => {
       if (val) {
         console.log(val);
@@ -47,7 +42,6 @@ export class PaypalPage implements OnInit {
       }
     });
 
-    // this.paypal()
   }
 
   ngOnInit() {}

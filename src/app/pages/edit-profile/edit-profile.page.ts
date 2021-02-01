@@ -22,6 +22,7 @@ export class EditProfilePage implements OnInit {
   phone:any
   email:any
   type:any
+  client_id:any
 
 
   constructor(private modalController:ModalController,private toastController:ToastController,
@@ -29,7 +30,14 @@ export class EditProfilePage implements OnInit {
     private profileService:ProfileService,
     private router:Router,
     private authservice:AuthenticationService) {
+
     this.getData()
+    this.authservice.isAuthenticated().then(val=>{
+      if(val)
+      {
+        this.client_id = val
+      }
+    })
    }
   
   ngOnInit() {
@@ -65,11 +73,8 @@ export class EditProfilePage implements OnInit {
     }
     else
     {
-      this.authservice.isAuthenticated().then(val=>{
-        if(val)
-        {
           let data={
-            client_id:val,
+            client_id:this.client_id,
             name:this.name
           }
           this.profileService.updateName(data).subscribe(
@@ -77,8 +82,6 @@ export class EditProfilePage implements OnInit {
             (error) => this.handleResponseError(error)
           )
           this.getData()
-        }
-      })     
     }
    
     

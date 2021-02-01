@@ -224,7 +224,7 @@ export class ProductPage implements OnInit {
           (error) => this.handleError(error)
         );
       } else {
-        this.presentLogin();
+        this.authGuard.presentModal()
       }
     });
   }

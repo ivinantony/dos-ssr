@@ -221,15 +221,18 @@ export class AppComponent implements OnInit {
   }
 
   logout() {
-    this.badge.clear();
-    this.presentLoading().then(() => {
-      this.authService.logout().then(() => {
+  
+    this.presentLoading().then(() => { 
+       this.badge.clear().then(()=>{
+       this.authService.logout().then(() => {
         this.presentToast().finally(() => {
           // this.loggedIn = false;
           this.authService.loginStatus(false)
           this.menuController.close();
         });
       });
+    })
+     
     });
   }
 

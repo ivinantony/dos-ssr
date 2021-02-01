@@ -25,7 +25,7 @@ export class OrderPlacedPage implements OnInit {
     private platform:Platform
   ) {
     // window.location.href = "mycoolapp://";
-    console.log('before is platform pwa check',this.isPWA)
+
 
     if (!this.platform.is("cordova")) {
       this.isPWA=true

@@ -73,7 +73,6 @@ export class CartPage implements OnInit {
 
   ionViewWillEnter() {
     let current_url = window.location.href.includes("/tabs");
-    console.log("current_url", window.location.href);
     if (current_url) {
       this.current_url = true;
       console.log("tabs");
@@ -82,7 +81,6 @@ export class CartPage implements OnInit {
       this.current_url = false;
     }
     this.getData();
-    console.log(this.selectedAddress);
   }
 
   ngOnInit() {}
@@ -92,11 +90,6 @@ export class CartPage implements OnInit {
       this.authService.isAuthenticated().then((val) => {
         if (val) {
           this.cartService.getCart(val).subscribe(
-            (data) => this.handleResponse(data, GET_CART),
-            (error) => this.handleError(error)
-          );
-        } else {
-          this.cartService.getCart(null).subscribe(
             (data) => this.handleResponse(data, GET_CART),
             (error) => this.handleError(error)
           );
