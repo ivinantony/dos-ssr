@@ -27,12 +27,15 @@ export class RechargePage implements OnInit {
     private authservice:AuthenticationService
   ) {
 
+      this.rechargeForm = this.formBuilder.group({
+      client_id: [""],
+      amount: [ "", Validators.compose([Validators.required, Validators.pattern("[0-9]*")]),],
+    });
+
     authservice.isAuthenticated().then(val=>{
       if(val){
-        this.rechargeForm = this.formBuilder.group({
-          client_id: [val],
-          amount: [ "", Validators.compose([Validators.required, Validators.pattern("[0-9]*")]),],
-        });
+        let client_id = JSON.stringify(val)
+        this.rechargeForm.controls['client_id'].setValue(client_id)
       }
     })
   
