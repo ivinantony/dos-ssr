@@ -1,16 +1,10 @@
 <desktop-header></desktop-header>
 <ion-header class="ion-no-border ion-hide-md-up">
   <ion-toolbar color="secondary">
-    <ion-buttons
-      slot="start"
-      [ngStyle]="{'display':  current_url?.includes('/tabs/cart') ? '':'none'}"
-    >
+    <ion-buttons slot="start" [ngStyle]="{'display':current_url ? '':'none'}">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-buttons
-      slot="start"
-      [ngStyle]="{'display':  current_url?.includes('/tabs/cart') ? 'none':''}"
-    >
+    <ion-buttons slot="start" [ngStyle]="{'display':current_url ? 'none':''}">
       <ion-back-button defaultHref="/tabs/home"></ion-back-button>
     </ion-buttons>
     <ion-title>Cart</ion-title>
@@ -65,7 +59,7 @@
         <ion-list *ngFor="let item of cart; let i=index">
           <ion-item lines="none">
             <ion-label>
-              <h5>{{item.name}}</h5>
+              <h5>{{item?.name}}</h5>
             </ion-label>
           </ion-item>
 
@@ -197,7 +191,7 @@
 </ion-content>
 <ion-footer class="ion-no-border" *ngIf="cartLength > 0">
   <ion-toolbar class="ion-no-padding" style="padding-bottom: 0px !important">
-    <ion-button slot="end" color="primary" (click)="continue()">
+    <ion-button slot="end" shape="round" color="primary" (click)="continue()">
       <ion-icon slot="end" name="chevron-forward"></ion-icon>
       CONTINUE
     </ion-button>
