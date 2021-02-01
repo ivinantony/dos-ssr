@@ -150,7 +150,7 @@ export class OfferPage implements OnInit {
   }
 
   goToCart() {
-    this.router.navigate(["/tabs/cart"]);
+    this.router.navigate(["/cart"]);
   }
 
   async openSort(ev: any) {

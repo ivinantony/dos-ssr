@@ -258,7 +258,7 @@ currentIndex:number
   }
 
   goToCart() {
-    this.router.navigate(["/tabs/cart"]);
+    this.router.navigate(["/cart"]);
   }
 
 

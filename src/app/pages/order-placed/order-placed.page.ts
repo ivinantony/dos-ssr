@@ -25,16 +25,18 @@ export class OrderPlacedPage implements OnInit {
     private platform:Platform
   ) {
     // window.location.href = "mycoolapp://";
-    
+    console.log('before is platform pwa check',this.isPWA)
 
-  }
-
-  ngOnInit() {
     if(this.platform.is('pwa'))
     {
       this.isPWA=true
       console.log('is platform pwa',this.isPWA)
     }
+
+  }
+
+  ngOnInit() {
+    
     let data = JSON.parse(localStorage.getItem('tran_data'))
     let tran_ref = data.tran_ref;
     let client_id = data.client_id;

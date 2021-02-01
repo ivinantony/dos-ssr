@@ -272,7 +272,7 @@ export class BrandProductsPage implements OnInit {
   }
 
   goToCart() {
-    this.router.navigate(["/tabs/cart"]);
+    this.router.navigate(["/cart"]);
   }
 
   async presentLoading() {
