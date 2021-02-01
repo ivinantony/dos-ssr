@@ -36,7 +36,6 @@ export class OrderPlacedPage implements OnInit {
   }
 
   ngOnInit() {
-    
     let data = JSON.parse(localStorage.getItem('tran_data'))
     let tran_ref = data.tran_ref;
     let client_id = data.client_id;

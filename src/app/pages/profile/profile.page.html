@@ -1,5 +1,3 @@
-
-
 <desktop-header></desktop-header>
 <ion-header class="ion-hide-md-up">
   <ion-toolbar color="secondary">
@@ -10,49 +8,62 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content >
-<div class="wrapper">
- <!-- <section class="profile" class="ion-text-center">
+<ion-content>
+  <div class="wrapper">
+    <!-- <section class="profile" class="ion-text-center">
   <img src="../../../assets/imgs/undraw_male_avatar_323b.svg" alt="" class="profileImg">
  </section> -->
 
-   <ion-card class="card">
-    <ion-col size="3" class="profileImg">
-      <img src="../../../assets/imgs/user.png" alt="">
-     </ion-col>
-     <ion-col size="7" class="name">
-       <h5>{{user?.name}}</h5>
-       <h6>{{user?.phone}}</h6>
-     </ion-col>
-     <ion-col size="2"  class="ion-text-center settings" >
-      <ion-icon name="settings-outline" (click)="goToSettings()"></ion-icon>
-     </ion-col>
-   </ion-card>
+    <ion-card class="card">
+      <ion-col size="3" class="profileImg">
+        <img src="../../../assets/imgs/user.png" alt="" />
+      </ion-col>
+      <ion-col size="7" class="name">
+        <h5>{{user?.name}}</h5>
+        <h6>{{user?.phone}}</h6>
+      </ion-col>
+      <ion-col size="2" class="ion-text-center settings">
+        <ion-icon name="settings-outline" (click)="goToSettings()"></ion-icon>
+      </ion-col>
+    </ion-card>
 
-
-
- <section class="details">
-<ion-item lines="none" detail="true" (click)="goToOrders()">
-    <ion-label><ion-icon name="cube-outline"></ion-icon>My Orders</ion-label>
-</ion-item>
-<ion-item lines="none" detail="true" (click)="goToWallet()">
-    <ion-label><ion-icon name="wallet-outline"></ion-icon>My Wallet</ion-label>
-</ion-item>
-<ion-item lines="none" detail="true" (click)="goToAddresses()">
-    <ion-label><ion-icon name="compass-outline"></ion-icon>My Addresses</ion-label>
-</ion-item>
-<ion-item lines="none" detail="true" (click)="notification()">
-    <ion-label><ion-icon name="notifications-outline"></ion-icon>Notifications</ion-label>
-</ion-item>
-<ion-item lines="none" detail="true" (click)="help()">
-    <ion-label><ion-icon name="help-outline"></ion-icon>Help</ion-label>
-</ion-item>
-<ion-item lines="none" detail="true" (click)="logout()">
-    <ion-label><ion-icon name="log-out-outline"></ion-icon>Sign Out</ion-label>
-</ion-item>
- </section>
- 
-</div>
+    <section class="details">
+      <ion-item lines="none" detail="true" (click)="goToOrders()">
+        <ion-label
+          ><ion-icon name="cube-outline"></ion-icon>My Orders</ion-label
+        >
+      </ion-item>
+      <ion-item
+        lines="none"
+        detail="true"
+        (click)="goToWallet()"
+        [ngStyle]="{'display': user?.wallet_status ? '':'none'}"
+      >
+        <ion-label
+          ><ion-icon name="wallet-outline"></ion-icon>My Wallet</ion-label
+        >
+      </ion-item>
+      <ion-item lines="none" detail="true" (click)="goToAddresses()">
+        <ion-label
+          ><ion-icon name="compass-outline"></ion-icon>My Addresses</ion-label
+        >
+      </ion-item>
+      <ion-item lines="none" detail="true" (click)="notification()">
+        <ion-label
+          ><ion-icon name="notifications-outline"></ion-icon
+          >Notifications</ion-label
+        >
+      </ion-item>
+      <ion-item lines="none" detail="true" (click)="help()">
+        <ion-label><ion-icon name="help-outline"></ion-icon>Help</ion-label>
+      </ion-item>
+      <ion-item lines="none" detail="true" (click)="logout()">
+        <ion-label
+          ><ion-icon name="log-out-outline"></ion-icon>Sign Out</ion-label
+        >
+      </ion-item>
+    </section>
+  </div>
 </ion-content>
 
 <!-- <ion-footer>
@@ -68,7 +79,6 @@
     </ion-button>
   </ion-toolbar>
 </ion-footer> -->
-
 
 <!-- <ion-content class="ion-padding">
   <ion-grid>

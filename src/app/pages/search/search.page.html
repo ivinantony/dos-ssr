@@ -3,10 +3,9 @@
   <ion-toolbar color="secondary" class="ion-hide-md-up">
     <ion-title>Search</ion-title>
     <ion-buttons slot="start">
-      <ion-menu-button ></ion-menu-button>
+      <ion-menu-button></ion-menu-button>
     </ion-buttons>
   </ion-toolbar>
-
 </ion-header>
 
 <ion-content>
@@ -26,26 +25,24 @@
     <ng-container
       *ngIf="result.length > 0; then thenTemplate; else elseTemplate"
     ></ng-container>
-  
+
     <ng-template #thenTemplate>
       <ion-item
-      *ngFor="let item of result ; let i=index"
-      (click)="viewSearchProduct(i)"
-      detail
-    >
-      <ion-row size="12" class="searchResult">
-        {{ item.name }} {{item.brand_name}} {{item.category_name}}
-      </ion-row>
-    </ion-item>
+        *ngFor="let item of result ; let i=index"
+        (click)="viewSearchProduct(i)"
+        detail
+      >
+     <ion-label>
+      <h3>{{ item?.name }} {{item?.brand_name}} {{item?.category_name}}</h3>
+      <p>{{item?.part_number}}</p>
+     </ion-label>
+      </ion-item>
     </ng-template>
-  
-    <ng-template #elseTemplate > 
+
+    <ng-template #elseTemplate>
       <ion-item lines="none" class="ion-text-center" *ngIf="isSearchResult">
         <ion-label>No results found.</ion-label>
       </ion-item>
     </ng-template>
   </ion-grid>
-  
-
-
 </ion-content>

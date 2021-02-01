@@ -87,7 +87,8 @@ export class CheckoutPage implements OnInit {
       console.log(data);
       this.data = data;
     } else if (type == GET_PAY) {
-    } else if (type == ORDER_RESPONSE) {
+    } else if (type == ORDER_RESPONSE) { 
+      this.loadingController.dismiss();
       console.log( "pay response",data);
       let storable_data = {
         payable_order_id: data.payable_order_id,
@@ -100,8 +101,9 @@ export class CheckoutPage implements OnInit {
           this.router.navigate(["successful"]);
         }
       });
+     
     } else if (type == WALLET_RESPONSE) {
-      // console.log(data)
+      this.loadingController.dismiss();
       this.router.navigate(["order-placed"]);
     } else {
       // console.log(data);
@@ -164,8 +166,8 @@ export class CheckoutPage implements OnInit {
     });
     modal.onDidDismiss().then((data) => {
       const paymentDetails = data["data"];
-      console.log(paymentDetails);
       if (paymentDetails) {
+      this.presentLoading().then(()=>{
         this.payment_id = paymentDetails.modeOfPayment_Id;
         if (this.payment_id == 7) {
           this.authservice.isAuthenticated().then((val) => {
@@ -205,7 +207,9 @@ export class CheckoutPage implements OnInit {
             }
           });
         }
+      })
       }
+
     });
     return await modal.present();
   }

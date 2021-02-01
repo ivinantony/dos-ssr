@@ -81,6 +81,7 @@
             (click)="item?.cart_count > 0 ? goToCart() : addToCart(i)"
             [color]="item?.cart_count > 0 ? 'secondary' : 'primary'"
             expand="full"
+            shape="round"
             [disabled]="item?.in_stock == 0"
             class="tocart"
             >

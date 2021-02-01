@@ -340,7 +340,8 @@ export class CartPage implements OnInit {
     await alert.present();
   }
 
-  async presentAddressModal() {
+
+  async changeAddress() {
     const modal = await this.modalController.create({
       component: AddressModalPage,
       cssClass: "cartmodal",
@@ -362,10 +363,6 @@ export class CartPage implements OnInit {
         this.address_selected.longitude
       );
     });
-  }
-
-  changeAddress() {
-    this.presentAddressModal()
   }
 
 
