@@ -297,12 +297,12 @@ export class HomePage implements OnInit {
 
   handleResponse(data) {
     this.loadingController.dismiss();
-    this.authService.setCartCount(data.cart_count);
-    this.authService.setNotificationCount(data.notification_count);
+    this.authService.setCartCount(data.cart_count)
+    this.authService.setNotificationCount(data.notification_count)
     this.cart_count = data.cart_count;
     this.notf_count = data.notification_count;
     this.cartCountService.setCartCount(data.cart_count);
-    this.notCountService.setNotCount(data.notification_count);
+    this.notCountService.setNotCount(data.notification_count)
     this.badge.set(this.notf_count);
 
     this.data = data;
@@ -328,7 +328,7 @@ export class HomePage implements OnInit {
     this.router.navigate(["manufacturers"]);
   }
   onNotification() {
-    this.router.navigate(["notification"]);
+    this.router.navigate(['notification'])
   }
   doRefresh(event) {
     this.result = [];
@@ -348,10 +348,7 @@ export class HomePage implements OnInit {
     await loading.present();
   }
   facebook() {
-    window.open(
-      "https://www.facebook.com/deal-on-store-103110191641253",
-      "_self"
-    );
+    window.open("https://www.facebook.com/deal-on-store-103110191641253", "_self");
   }
   twitter() {
     window.open("https://twitter.com/dealonstore", "_self");

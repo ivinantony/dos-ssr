@@ -24,6 +24,8 @@ import { FilterComponent } from './pages/filter/filter.component';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireMessagingModule } from '@angular/fire/messaging';
 import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
+import { enterAnimation } from './animation/nav-animation';
+import { modalEnterAnimation, modalLeaveAnimation } from './animation/modal-animation';
 
 
 @NgModule({
@@ -34,8 +36,11 @@ import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireMessagingModule,
     IonicModule.forRoot({
-      mode: 'ios',
-      swipeBackEnabled: true,
+      mode:'ios',
+      swipeBackEnabled:true,
+      navAnimation:enterAnimation,
+      // modalEnter:modalEnterAnimation,
+      // modalLeave:modalLeaveAnimation,
     }),
     IonicStorageModule.forRoot(),
     AppRoutingModule,
