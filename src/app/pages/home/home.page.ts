@@ -186,13 +186,13 @@ export class HomePage implements OnInit {
     private searchService: SearchService,
     private cartCountService: CartcountService,
     private notCountService: NotcountService,
-    private storage:Storage
+    private storage: Storage
   ) {
     this.s3url = utils.getS3url();
     // this.badge.set(10);
     this.searchTerm = new FormControl();
 
-    
+
 
   }
 
@@ -291,12 +291,12 @@ export class HomePage implements OnInit {
   }
 
   getData() {
-    this.authService.isAuthenticated().then((val)=>{
-      if(val){
+    this.authService.isAuthenticated().then((val) => {
+      if (val) {
         this.client_id = val;
-      }else {
+      } else {
         this.client_id = null;
-      } 
+      }
 
     })
 
@@ -312,10 +312,10 @@ export class HomePage implements OnInit {
     this.loadingController.dismiss();
     this.authService.setCartCount(data.cart_count)
     this.authService.setNotificationCount(data.notification_count)
-    this.cart_count =data.cart_count;
+    this.cart_count = data.cart_count;
     this.notf_count = data.notification_count;
     this.cartCountService.setCartCount(data.cart_count);
-    this.notCountService.setNotCount( data.notification_count)
+    this.notCountService.setNotCount(data.notification_count)
     this.badge.set(this.notf_count);
 
     this.data = data;
@@ -344,9 +344,9 @@ export class HomePage implements OnInit {
     this.result = [];
     this.router.navigate(["manufacturers"]);
   }
-onNotification(){
-  this.router.navigate(['notification'])
-}
+  onNotification() {
+    this.router.navigate(['notification'])
+  }
   doRefresh(event) {
     this.result = [];
     this.getData();
@@ -365,13 +365,13 @@ onNotification(){
     await loading.present();
   }
   facebook() {
-    window.open("https://www.facebook.com/deal-on-store-103110191641253","_self");
+    window.open("https://www.facebook.com/deal-on-store-103110191641253", "_self");
   }
   twitter() {
-    window.open("https://twitter.com/dealonstore","_self");
+    window.open("https://twitter.com/dealonstore", "_self");
   }
   insta() {
-    window.open("https://www.instagram.com/deal_on_store/","_self");
+    window.open("https://www.instagram.com/deal_on_store/", "_self");
   }
 
   handleResponseSearch(data) {
@@ -384,4 +384,5 @@ onNotification(){
   handleErrorSearch(error) {
     console.log(error)
   }
+
 }
