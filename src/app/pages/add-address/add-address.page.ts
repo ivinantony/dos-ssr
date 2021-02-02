@@ -109,7 +109,7 @@ export class AddAddressPage implements OnInit {
         this.loadMap().finally(() => {
           this.dismiss();
           // console.log("handle permisasions next");
-          // this.handlePermission();
+          this.handlePermission();
         });
       });
     });

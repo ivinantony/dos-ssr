@@ -26,12 +26,12 @@ data:any
 
   handleResponse(data)
   {
-    // console.log(data)
+
     this.data=data
   }
   handleError(error)
   {
-    // console.log(error)
+
   }
 
 }

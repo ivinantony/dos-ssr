@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 import {
   AlertController,
-  IonRouterOutlet,
   LoadingController,
   ModalController,
   ToastController,
@@ -58,7 +57,6 @@ export class CartPage implements OnInit {
   current_url: boolean = false;
   constructor(
     public modalController: ModalController,
-    private routerOutlet: IonRouterOutlet,
     private toastController: ToastController,
     private cartService: CartService,
     private utils: UtilsService,
@@ -75,9 +73,7 @@ export class CartPage implements OnInit {
     let current_url = window.location.href.includes("/tabs");
     if (current_url) {
       this.current_url = true;
-      console.log("tabs");
     } else {
-      console.log("back");
       this.current_url = false;
     }
     this.getData();
@@ -161,7 +157,6 @@ export class CartPage implements OnInit {
     } else {
       let address_id = this.address_id;
       this.router.navigate(["/checkout", address_id]);
-      // console.log(this.selectedAddress);
     }
   }
 
@@ -173,7 +168,7 @@ export class CartPage implements OnInit {
     for (let i = 0; i < this.cart.length; i++) {
       if (this.cart[i].in_stock == 0 || this.cart[i].stock_quantity <= 0) {
         this.isOut = true;
-        // console.log(i, "value of index");
+
         break;
       } else {
         this.isOut = false;
@@ -247,7 +242,6 @@ export class CartPage implements OnInit {
   handleResponse(data, type) {
     if (type == GET_CART) {
       this.loadingController.dismiss();
-      console.log(data);
       this.data = data;
       this.cart = data.cart;
       this.amountDetails = data;
@@ -335,17 +329,14 @@ export class CartPage implements OnInit {
       cssClass: "cartmodal",
       componentProps: { value: 123 },
       swipeToClose: true,
-      // presentingElement: this.routerOutlet.nativeEl
     });
 
     await modal.present();
 
     await modal.onDidDismiss().then((data) => {
-      console.log("data", data);
       if (data.data) {
         this.address_selected = data.data;
         this.current_selection = data.role;
-        console.log(this.address_selected);
         this.getDistance(
           this.address_selected.latitude,
           this.address_selected.longitude

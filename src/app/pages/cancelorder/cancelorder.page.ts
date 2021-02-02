@@ -60,7 +60,7 @@ export class CancelorderPage implements OnInit {
   handleResponse(data) {
     this.loadingController.dismiss();
     this.modalController.dismiss();
-    // console.log(data)
+    
   }
 
   handleError(error) {

@@ -109,7 +109,6 @@ export class AppComponent implements OnInit {
         e.preventDefault();
         this.deferredPrompt = e;
         this.showInstallPromotion();
-        console.log("show banne");
       });
 
       this.swUpdate.available.subscribe(async (res) => {
@@ -134,7 +133,6 @@ export class AppComponent implements OnInit {
       });
     });
     this.authService.getLoggedStatus().subscribe((data) => {
-      console.log("event", data);
       this.islogged = data;
     });
   }
@@ -143,12 +141,17 @@ export class AppComponent implements OnInit {
     this.autocloseOverlaysService.trigger();
   }
   async ngOnInit() {
+    // console.log(this.islogged,'logged status-')
     this.authService.isAuthenticated().then((data) => {
-      console.log(data);
+     
       if (data) {
         this.loggedIn = true;
+        this.authService.loginStatus(true);
+
       } else {
         this.loggedIn = false;
+        this.authService.loginStatus(false);
+
       }
     });
     this.authService.getCartCount().then((count) => {
@@ -168,7 +171,7 @@ export class AppComponent implements OnInit {
         pairwise()
       )
       .subscribe((e: any) => {
-        console.log("prev", e[0].urlAfterRedirects);
+        // console.log("prev", e[0].urlAfterRedirects);
         if (
           e[0].urlAfterRedirects.startsWith("/login") ||
           e[0].urlAfterRedirects.startsWith("/otp") ||
@@ -195,7 +198,6 @@ export class AppComponent implements OnInit {
   }
 
   viewSearchProduct(index: number) {
-    console.log("type", this.searchItems[index].type);
     let id = this.searchItems[index].id;
     let catId = this.searchItems[index].category_id;
     let type = this.searchItems[index].type;
@@ -236,7 +238,6 @@ export class AppComponent implements OnInit {
       this.presentLoading().then(() => {
         this.authService.logout().then(() => {
           this.presentToast().finally(() => {
-            // this.loggedIn = false;
             this.authService.loginStatus(false);
             this.menuController.close();
           });
@@ -272,14 +273,14 @@ export class AppComponent implements OnInit {
       cssClass: "install",
     });
     modal.onDidDismiss().then((data) => {
-      console.log(data);
+
       if (data.data) {
         this.deferredPrompt.prompt();
         this.deferredPrompt.userChoice.then((choiceResult) => {
           if (choiceResult.outcome === "accepted") {
-            console.log("User accepted the install prompt");
+    
           } else {
-            console.log("User dismissed the install prompt");
+            
           }
         });
       }
@@ -304,7 +305,7 @@ export class AppComponent implements OnInit {
 
     if (!this.platform.is("cordova")) {
       await this.afMessaging.messages.subscribe(async (msg: any) => {
-        console.log("msgafMessaging", msg);
+     
         this.authService.getNotificationCount().then((count) => {
           if (count) {
             this.authService.setNotificationCount(count + 1);
@@ -324,20 +325,20 @@ export class AppComponent implements OnInit {
       if (payload.wasTapped) {
         this.badge.set(payload.badge);
         this.router.navigate(["notification"]);
-        console.log("Received in background");
+       
       } else {
         this.badge.set(payload.badge);
-        console.log("Received in foreground");
+      
         this.presentToastWithOptions(payload);
       }
-      console.log("onNotification received event with: ", payload);
+      
     });
 
     this.hasPermission = await this.fcm.requestPushPermission();
-    console.log("requestPushPermission result: ", this.hasPermission);
+    
 
     this.pushPayload = await this.fcm.getInitialPushPayload();
-    console.log("getInitialPushPayload result: ", this.pushPayload);
+    
   }
 
   async presentToastWithOptions(payload) {
@@ -353,7 +354,7 @@ export class AppComponent implements OnInit {
           text: "View",
           handler: () => {
             this.router.navigate(["/notification"]);
-            console.log("Cancel clicked");
+           
           },
         },
       ],

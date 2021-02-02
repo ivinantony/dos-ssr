@@ -110,6 +110,8 @@ export class BrandProductsPage implements OnInit {
         this.cart_count = count;
       }
     });
+    this.getData();
+
   }
 
   ngOnInit() {}
@@ -174,9 +176,10 @@ export class BrandProductsPage implements OnInit {
       infiniteScroll.target.complete();
     }
   }
+
   handleError(error) {
     this.loadingController.dismiss();
-    // console.log(error);
+
     if (error.status == 400) {
       this.presentAlert(error.error.message);
     }
@@ -187,7 +190,7 @@ export class BrandProductsPage implements OnInit {
       infiniteScroll.target.disabled = true;
     } else {
       this.page_count += 1;
-      // console.log(this.page_count)
+
       this.getData(infiniteScroll);
     }
   }
@@ -228,6 +231,35 @@ export class BrandProductsPage implements OnInit {
     });
     await actionSheet.present();
   }
+
+  async openSort(ev: any) {
+    const popover = await this.popOverCtrl.create({
+      component: FilterComponent,
+      event: ev,
+      animated: true,
+      showBackdrop: true,
+      cssClass: "popover",
+    });
+    popover.onDidDismiss().then((data) => {
+      if (data.data) {
+        if (data.data == 2) {
+          this.sortType = "ASC";
+          this.page_count = 1;
+          this.products = [];
+
+          this.getData();
+        } else if (data.data == 1) {
+          this.sortType = "DESC";
+          this.page_count = 1;
+          this.products = [];
+
+          this.getData();
+        }
+      }
+    });
+    await popover.present();
+  }
+
   async presentLogin() {
     const alert = await this.alertController.create({
       cssClass: "my-custom-class",
@@ -287,34 +319,6 @@ export class BrandProductsPage implements OnInit {
     setTimeout(() => {
       event.target.complete();
     }, 1000);
-  }
-
-  async openSort(ev: any) {
-    const popover = await this.popOverCtrl.create({
-      component: FilterComponent,
-      event: ev,
-      animated: true,
-      showBackdrop: true,
-      cssClass: "popover",
-    });
-    popover.onDidDismiss().then((data) => {
-      if (data.data) {
-        if (data.data == 2) {
-          this.sortType = "ASC";
-          this.page_count = 1;
-          this.products = [];
-
-          this.getData();
-        } else if (data.data == 1) {
-          this.sortType = "DESC";
-          this.page_count = 1;
-          this.products = [];
-
-          this.getData();
-        }
-      }
-    });
-    await popover.present();
   }
 
   async presentToastSuccess(msg) {
