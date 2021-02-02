@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
   notf_count: any;
   deferredPrompt: any;
   loggedIn: boolean = false;
-  islogged: boolean ;
+  islogged: boolean;
   categories: Array<any> = [
     { id: 1, name: "Home", url: "/tabs/home", icon: "home-outline" },
     { id: 1, name: "Offers", url: "/offers", icon: "flash-outline" },
@@ -133,11 +133,10 @@ export class AppComponent implements OnInit {
           .then(() => window.location.reload());
       });
     });
-    this.authService.getLoggedStatus().subscribe((data)=>{
-      console.log('event',data)
-      this.islogged = data
-    }
-    )
+    this.authService.getLoggedStatus().subscribe((data) => {
+      console.log("event", data);
+      this.islogged = data;
+    });
   }
   @HostListener("window:popstate")
   onPopState(): void {
@@ -169,7 +168,7 @@ export class AppComponent implements OnInit {
         pairwise()
       )
       .subscribe((e: any) => {
-        console.log('prev',e[0].urlAfterRedirects)
+        console.log("prev", e[0].urlAfterRedirects);
         if (
           e[0].urlAfterRedirects.startsWith("/login") ||
           e[0].urlAfterRedirects.startsWith("/otp") ||
@@ -221,19 +220,29 @@ export class AppComponent implements OnInit {
   }
 
   logout() {
-  
-    this.presentLoading().then(() => { 
-       this.badge.clear().then(()=>{
-       this.authService.logout().then(() => {
-        this.presentToast().finally(() => {
-          // this.loggedIn = false;
-          this.authService.loginStatus(false)
-          this.menuController.close();
+    if (this.platform.is("cordova")) {
+      this.presentLoading().then(() => {
+        this.badge.clear().then(() => {
+          this.authService.logout().then(() => {
+            this.presentToast().finally(() => {
+              // this.loggedIn = false;
+              this.authService.loginStatus(false);
+              this.menuController.close();
+            });
+          });
         });
       });
-    })
-     
-    });
+    } else {
+      this.presentLoading().then(() => {
+        this.authService.logout().then(() => {
+          this.presentToast().finally(() => {
+            // this.loggedIn = false;
+            this.authService.loginStatus(false);
+            this.menuController.close();
+          });
+        });
+      });
+    }
   }
 
   login() {
