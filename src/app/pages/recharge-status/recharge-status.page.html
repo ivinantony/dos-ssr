@@ -2,7 +2,7 @@
   <div class="ion-text-center wrapper" *ngIf="status">
     <img src="../../../assets/imgs/check-mark.svg" alt="" />
     <h2>Recharge Successfull</h2>
-    <div class="button" *ngIf="!isPWA">
+    <div class="button" *ngIf="isPWA">
       <ion-button
         class="btn"
         (click)="continue()"

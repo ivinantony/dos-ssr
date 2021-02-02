@@ -72,6 +72,8 @@ export class OfferPage implements OnInit {
   ngOnInit() {}
 
   getData(infiniteScroll?) {
+    this.infiniteScroll.disabled = true;
+
     console.log("infiniteScroll", this.page_count);
     this.presentLoading().then(() => {
       this.authService.isAuthenticated().then((val) => {
@@ -95,6 +97,7 @@ export class OfferPage implements OnInit {
   }
 
   handleResponse(data, type, infiniteScroll?) {
+
     if (type == GET_DATA) {
       this.loadingController.dismiss();
       this.page_limit = data.page_count;
@@ -104,6 +107,8 @@ export class OfferPage implements OnInit {
       });
       this.cartCountService.setCartCount(data.cart_count);
       this.authService.setCartCount(data.cart_count);
+      this.infiniteScroll.disabled = false;
+
     } else if (type == POST_DATA) {
       this.loadingController.dismiss().then(() => {
         this.cart_count = data.cart_count;
@@ -213,11 +218,9 @@ export class OfferPage implements OnInit {
     }, 1000);
   }
 
-  openSortMobile() {
-    this.presentActionSheet();
-  }
 
-  async presentActionSheet() {
+
+  async openSortMobile() {
     const actionSheet = await this.actionSheetController.create({
       header: "SORT BY",
       mode: "md",
@@ -226,24 +229,23 @@ export class OfferPage implements OnInit {
         {
           text: "Price - high to low",
           handler: () => {
-            this.infiniteScroll.disabled = true;
+            
             this.page_count = 1;
             this.products = [];
             this.sortType = "DESC";
             this.getData();
-            this.content.scrollToTop(1500);
+            this.content.scrollToTop();
           },
         },
         {
           text: "Price - low to high",
           handler: () => {
-            this.infiniteScroll.disabled = true;
+            
             this.page_count = 1;
             this.products = [];
             this.sortType = "ASC";
             this.getData();
-            // console.log(this.scroll, "sort");
-            this.content.scrollToTop(1500);
+            this.content.scrollToTop();
           },
         },
       ],
