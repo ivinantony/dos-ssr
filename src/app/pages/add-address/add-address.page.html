@@ -1,8 +1,11 @@
 
 <ion-content class="ion-padding">
-  <!-- <div *ngIf="!is_granted" class="msg">
-    <P>Permission for getting your location is denied. Inorder to reset the permission, access <img src="../../../assets/imgs/locdenied.PNG" alt=""> this icon on top right of your browser window and click allow access. Refresh to reflect changes.</P>
-</div> -->
+  <div *ngIf="isPwa">
+    <div *ngIf="!is_granted" class="msg">
+      <P>Permission for getting your location is denied. Inorder to reset the permission, access <img src="../../../assets/imgs/locdenied.PNG" alt=""> this icon on top right of your browser window and click allow access. Refresh to reflect changes.</P>
+  </div>
+  </div>
+ 
   <div>
     <div id="main" >
       <div >
@@ -33,21 +36,7 @@
                 CHANGE
               </ion-button>
             </ion-item>
-            <!-- <ion-item class="area" lines="none">
-              <ion-input
-                required
-                placeholder="House no./ Flat no./Floor/ Building"
-              ></ion-input>
-            </ion-item>
-            <ion-item class="area" lines="none">
-              <ion-input
-                required
-                placeholder="Landmark"
-              ></ion-input>
-            </ion-item>
-            <ion-item class="area" lines="none">
-              <ion-input required placeholder="Alternate number"></ion-input>
-            </ion-item> -->
+          
 
 
             <form [formGroup]="addressForm" class="form">

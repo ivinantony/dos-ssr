@@ -4,7 +4,6 @@ import {
   ActionSheetController,
   AlertController,
   LoadingController,
-  Platform,
   PopoverController,
   ToastController,
   IonInfiniteScroll,
@@ -86,7 +85,6 @@ export class BrandProductsPage implements OnInit {
   currentIndex: number;
   constructor(
     private brandProductService: BrandProductService,
-    private platform: Platform,
     private utils: UtilsService,
     private activatedRoute: ActivatedRoute,
     private actionSheetController: ActionSheetController,
@@ -100,8 +98,8 @@ export class BrandProductsPage implements OnInit {
     private cartCountService: CartcountService,
     private authGuard: AuthGuard
   ) {
-    this.brand_id = activatedRoute.snapshot.params.brand_id;
-    this.s3url = utils.getS3url();
+    this.brand_id = this.activatedRoute.snapshot.params.brand_id;
+    this.s3url = this.utils.getS3url();
   }
 
   ionViewWillEnter() {

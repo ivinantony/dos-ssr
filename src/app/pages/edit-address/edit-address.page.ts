@@ -489,7 +489,7 @@ export class EditAddressPage implements OnInit {
   getEditAddress() {
     
     this.presentLoading().then(()=>{  
-      console.log(this.address_id) 
+      // console.log(this.address_id) 
       this.addressForm.controls["address_id"].setValue(this.address_id);
         this.addressService.getEditAddress(this.address_id).subscribe(
           (data)=>this.handleResponse(data,GET_EDIT_ADDRESS),

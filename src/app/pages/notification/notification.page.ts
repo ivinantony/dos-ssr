@@ -35,10 +35,10 @@ export class NotificationPage implements OnInit {
     private notcountService: NotcountService,
     private actionSheetController: ActionSheetController,
     private badge: Badge,
-    private storage:Storage,
-    private authservice:AuthenticationService
+    private storage: Storage,
+    private authservice: AuthenticationService
   ) {
-    this.s3url = utils.getS3url();
+    this.s3url = this.utils.getS3url();
     notcountService.getNotCount().subscribe((res) => {
       this.notf_count = res;
     });
@@ -47,11 +47,29 @@ export class NotificationPage implements OnInit {
 
   ngOnInit() {}
 
+  getData() {
+    this.presentLoading().then(() => {
+      this.authservice.isAuthenticated().then((val) => {
+        if (val) {
+          this.notifications.getNotifications(val).subscribe(
+            (data) => this.handleResponse(data, GET_DATA),
+            (error) => this.handleError(error)
+          );
+        } else {
+          this.notifications.getNotifications(null).subscribe(
+            (data) => this.handleResponse(data, GET_DATA),
+            (error) => this.handleError(error)
+          );
+        }
+      });
+    });
+  }
+
   viewNotification(index: any) {
     if (this.notf_count > 0) {
-      this.notf_count = this.notf_count-1;
+      this.notf_count = this.notf_count - 1;
       this.notcountService.setNotCount(this.notf_count);
-      this.storage.set("notf_count",this.notf_count)
+      this.storage.set("notf_count", this.notf_count);
       this.badge.set(this.notf_count);
     }
     let notification_id = this.data[index].notification_id;
@@ -66,29 +84,6 @@ export class NotificationPage implements OnInit {
     this.presentModal(id);
   }
 
-  getData() {
-    this.presentLoading().then(() => {
-      this.authservice.isAuthenticated().then(val=>{
-        if(val)
-        {
-          this.notifications.getNotifications(val).subscribe(
-            (data) => this.handleResponse(data, GET_DATA),
-            (error) => this.handleError(error)
-          );
-        }
-        else{
-          this.notifications.getNotifications(null).subscribe(
-            (data) => this.handleResponse(data, GET_DATA),
-            (error) => this.handleError(error)
-          );
-        }
-        
-      })
-  
-     
-    });
-  }
-
   handleResponse(data, type) {
     if (type == GET_DATA) {
       this.data = data.data;
@@ -97,10 +92,9 @@ export class NotificationPage implements OnInit {
       if (this.data[this.currentIndex].push_notification_read_status) {
         this.badge.set(this.notf_count);
       } else {
-        this.notf_count =this.notf_count-1;
-        console.log(this.notf_count)
+        this.notf_count = this.notf_count - 1;
         this.notcountService.setNotCount(this.notf_count);
-        this.storage.set("notf_count", this.notf_count)
+        this.storage.set("notf_count", this.notf_count);
         this.badge.set(this.notf_count);
       }
       this.data.splice(this.currentIndex, 1);
@@ -109,16 +103,9 @@ export class NotificationPage implements OnInit {
       // console.log(data)
     }
   }
+
   handleError(error) {
     this.loadingController.dismiss();
-    // console.log(error)
-  }
-
-  doRefresh(event) {
-    this.getData();
-    setTimeout(() => {
-      event.target.complete();
-    }, 1000);
   }
 
   async presentModal(id) {
@@ -136,15 +123,6 @@ export class NotificationPage implements OnInit {
       this.getData();
     });
   }
-  async presentLoading() {
-    const loading = await this.loadingController.create({
-      spinner: "crescent",
-      cssClass: "custom-spinner",
-      message: "Please wait...",
-      showBackdrop: true,
-    });
-    await loading.present();
-  }
 
   async prsentOptions(index: number) {
     this.currentIndex = index;
@@ -156,19 +134,36 @@ export class NotificationPage implements OnInit {
           icon: "trash-outline",
           handler: () => {
             this.presentLoading().then(() => {
-              this.authservice.isAuthenticated().then(val=>{
+              this.authservice.isAuthenticated().then((val) => {
                 this.notifications
-                .deleteNotification(val,this.data[index].notification_id)
-                .subscribe(
-                  (data) => this.handleResponse(data, DEL_DATA),
-                  (error) => this.handleError(error)
-                );
-              })
+                  .deleteNotification(val, this.data[index].notification_id)
+                  .subscribe(
+                    (data) => this.handleResponse(data, DEL_DATA),
+                    (error) => this.handleError(error)
+                  );
+              });
             });
           },
         },
       ],
     });
     await actionSheet.present();
+  }
+
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      spinner: "crescent",
+      cssClass: "custom-spinner",
+      message: "Please wait...",
+      showBackdrop: true,
+    });
+    await loading.present();
+  }
+
+  doRefresh(event) {
+    this.getData();
+    setTimeout(() => {
+      event.target.complete();
+    }, 1000);
   }
 }

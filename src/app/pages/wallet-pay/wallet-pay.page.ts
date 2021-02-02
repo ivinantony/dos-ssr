@@ -13,8 +13,6 @@ export class WalletPayPage implements OnInit {
     const data = urlParams.get("data");
 
     this.orderData = JSON.parse(data);
-
-    console.log(JSON.parse(data));
   }
 
   ngOnInit() {}

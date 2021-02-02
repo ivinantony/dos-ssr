@@ -42,13 +42,13 @@ selectedAddress: any;
   handleResponse(data)
   {
     this.loadingController.dismiss()
-    console.log(data)
+    // console.log(data)
     this.addresses = data.addresses
   }
   handleError(error)
   {
     this.loadingController.dismiss()
-    console.log(error)
+    // console.log(error)
   }
 
   async addAddress() {
