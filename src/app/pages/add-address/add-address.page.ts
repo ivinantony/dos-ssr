@@ -314,9 +314,9 @@ export class AddAddressPage implements OnInit {
           }
           address = address.slice(0, -2);
           console.log("addresss from init", address);
-          this.zone.run(()=>{
             this.addressForm.controls["address"].setValue(address);
-          })
+            this.selectedAddress = address
+          
         })
         .catch((error: any) => {});
     } else {
