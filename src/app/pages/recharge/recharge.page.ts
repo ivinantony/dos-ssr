@@ -6,6 +6,7 @@ import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 import { Storage } from "@ionic/storage";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AuthenticationService } from "src/app/services/authentication.service";
+import { UtilsService } from "src/app/services/utils.service";
 const CONFIRM = 345;
 const GET_DATA = 600;
 @Component({
@@ -17,6 +18,7 @@ export class RechargePage implements OnInit {
   public rechargeForm: FormGroup;
   client_id: any;
   subscription: any;
+  appUrl: string;
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -24,12 +26,14 @@ export class RechargePage implements OnInit {
     private storage: Storage,
     private platform: Platform,
     private iab: InAppBrowser,
+    private utils: UtilsService,
     private pay: PaymentService,
     private toastController: ToastController,
     private formBuilder: FormBuilder,
     private authservice: AuthenticationService,
     private paymentService: PaymentService
   ) {
+    this.appUrl = this.utils.getAppUrl()
     this.rechargeForm = this.formBuilder.group({
       client_id: [""],
       amount: [
@@ -38,7 +42,7 @@ export class RechargePage implements OnInit {
       ],
     });
 
-    authservice.isAuthenticated().then((val) => {
+    this.authservice.isAuthenticated().then((val) => {
       if (val) {
         this.client_id = JSON.stringify(val);
         this.rechargeForm.controls["client_id"].setValue(this.client_id);
@@ -51,7 +55,7 @@ export class RechargePage implements OnInit {
     }
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   recharge() {
     this.presentLoading().then(() => {
@@ -77,10 +81,10 @@ export class RechargePage implements OnInit {
           total_amount: this.rechargeForm.value.amount,
         };
 
-        var url = `https://arba.mermerapps.com/wallet-pay?data=${JSON.stringify(
+        var url = `${this.appUrl}wallet-pay?data=${JSON.stringify(
           encodedData
         )}`;
-        
+
         window.open(url, "_self");
 
         if (this.platform.is("cordova")) {

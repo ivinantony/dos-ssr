@@ -365,13 +365,13 @@ onNotification(){
     await loading.present();
   }
   facebook() {
-    window.open("https://www.facebook.com/deal-on-store-103110191641253");
+    window.open("https://www.facebook.com/deal-on-store-103110191641253","_self");
   }
   twitter() {
-    window.open("https://twitter.com/dealonstore");
+    window.open("https://twitter.com/dealonstore","_self");
   }
   insta() {
-    window.open("https://www.instagram.com/deal_on_store/");
+    window.open("https://www.instagram.com/deal_on_store/","_self");
   }
 
   handleResponseSearch(data) {

@@ -113,11 +113,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/manufacturers/manufacturers.module').then(m => m.ManufacturersPageModule)
   },
   {
-    path: 'paytabs/:id',
-    loadChildren: () => import('./pages/paytabs/paytabs.module').then(m => m.PaytabsPageModule)
-  },
-
-  {
     path: 'checkout/:address_id',
     loadChildren: () => import('./pages/checkout/checkout.module').then(m => m.CheckoutPageModule)
   },
@@ -207,7 +202,8 @@ const routes: Routes = [
   {
     path: 'iframe/:id',
     loadChildren: () => import('./pages/iframe/iframe.module').then( m => m.IframePageModule)
-  },  {
+  },
+  {
     path: 'wallet-pay',
     loadChildren: () => import('./pages/wallet-pay/wallet-pay.module').then( m => m.WalletPayPageModule)
   }

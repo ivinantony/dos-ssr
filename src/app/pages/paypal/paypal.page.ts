@@ -8,6 +8,7 @@ import {
 } from "@ionic-native/in-app-browser/ngx";
 import { Storage } from "@ionic/storage";
 import { AuthenticationService } from "src/app/services/authentication.service";
+import { UtilsService } from "src/app/services/utils.service";
 
 const POST_DATA = 200;
 const CONFIRM = 777;
@@ -24,6 +25,7 @@ export class PaypalPage implements OnInit {
   address_id: any;
   client_id: any;
   tran_ref: any;
+  appUrl: string
   private subscription: any;
   constructor(
     private pay: PaymentService,
@@ -31,10 +33,12 @@ export class PaypalPage implements OnInit {
     private toastController: ToastController,
     private loadingController: LoadingController,
     private platform: Platform,
+    private utils: UtilsService,
     private paymentService: PaymentService,
     private storage: Storage,
     private authservice: AuthenticationService
   ) {
+    this.appUrl = this.utils.getAppUrl()
     this.storage.get("total_amount").then((val) => {
       if (val) {
         console.log(val);
@@ -44,10 +48,10 @@ export class PaypalPage implements OnInit {
 
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
   ngOnDestroy(): void {
     if (this.platform.is("cordova")) {
-    this.subscription.unsubscribe();
+      this.subscription.unsubscribe();
     }
   }
   hostedSubmit() {
@@ -84,7 +88,7 @@ export class PaypalPage implements OnInit {
           client_id: this.client_id,
         };
 
-        var url = `https://arba.mermerapps.com/iframe?data=${JSON.stringify(
+        var url = `${this.appUrl}iframe?data=${JSON.stringify(
           encodedData
         )}`;
         window.open(url, "_self");
