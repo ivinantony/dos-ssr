@@ -3,9 +3,8 @@
   <ion-toolbar color="secondary" class="ion-hide-md-up">
     <ion-title>Categories</ion-title>
     <ion-buttons slot="start">
-      <ion-menu-button ></ion-menu-button>
+      <ion-menu-button></ion-menu-button>
     </ion-buttons>
-   
   </ion-toolbar>
 </ion-header>
 
@@ -19,12 +18,10 @@
     ></ion-refresher-content>
   </ion-refresher>
 
-
-
   <section>
     <ion-slides [options]="bannerSlideOpts" pager="ios">
       <ion-slide
-        *ngFor="let item of data?.banner?.desktop_images; let i=index"
+        *ngFor="let item of banners?.desktop_images; let i=index"
         (click)="onRoute(item.application_url)"
       >
         <img [src]="s3url + item?.path" alt="" />
@@ -50,15 +47,7 @@
               <div
                 class="ion-text-center round"
                 [ngStyle]="{'background-image': 'url( '+ s3url + item?.path +' )'}"
-              >
-                <!-- style="position: relative; overflow: hidden" -->
-                <!-- <img [src]="s3url+item?.path" alt="" /> -->
-              </div>
-              <!-- <ion-label class="ion-text-center cat">
-                <ion-text color="dark">
-                  <h3><b>{{item.category_name}}</b></h3>
-                </ion-text>
-              </ion-label> -->
+              ></div>
 
               <ion-item class="text" lines="none">
                 <h1>{{item.category_name}}</h1>

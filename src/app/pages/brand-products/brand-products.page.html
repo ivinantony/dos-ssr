@@ -6,7 +6,10 @@
     </ion-buttons>
     <ion-title>{{brand_name}}</ion-title>
     <ion-buttons slot="end">
-      <ion-button class="ion-hide-md-up" (click)="router.navigate(['/tabs/cart'])">
+      <ion-button
+        class="ion-hide-md-up"
+        (click)="router.navigate(['/tabs/cart'])"
+      >
         <ion-icon src="../assets/imgs/icons/cart.svg"></ion-icon>
         <ion-badge id="cart-badge" color="primary" *ngIf="cart_count > 0"
           >{{cart_count}}</ion-badge
@@ -77,7 +80,7 @@
             </div>
 
             <ion-button
-            shape="round"
+              shape="round"
               (click)="item?.cart_count > 0 ? goToCart() : addToCart(i)"
               [color]="item?.cart_count > 0 ? 'secondary' : 'primary'"
               expand="full"
@@ -92,7 +95,12 @@
     </ion-col>
   </ion-row>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="ion-hide-md-down" >
+  <ion-fab
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed"
+    class="ion-hide-md-down"
+  >
     <ion-fab-button color="secondary" (click)="openSort($event)">
       <ion-icon name="funnel-outline"></ion-icon>
     </ion-fab-button>

@@ -79,8 +79,11 @@ export class CheckoutPage implements OnInit {
       this.loadingController.dismiss();
 
       this.data = data;
-    } else if (type == GET_PAY) {
-    } else if (type == ORDER_RESPONSE) {
+    }
+     else if (type == GET_PAY) {
+
+    } 
+    else if (type == ORDER_RESPONSE) {
       this.loadingController.dismiss();
       let storable_data = {
         payable_order_id: data.payable_order_id,
@@ -93,9 +96,11 @@ export class CheckoutPage implements OnInit {
           this.router.navigate(["successful"]);
         }
       });
-    } else if (type == WALLET_RESPONSE) {
+    } 
+    else if (type == WALLET_RESPONSE) {
+      console.log("Payment complete")
       this.loadingController.dismiss();
-      this.router.navigate(["order-placed"]);
+      this.router.navigate(["successful"]);
     } else {
     }
   }

@@ -6,11 +6,8 @@ import {
   ModalController,
   ToastController,
 } from "@ionic/angular";
-
 import { CartService } from "src/app/services/cart/cart.service";
-
 import { UtilsService } from "src/app/services/utils.service";
-
 import { Inject } from "@angular/core";
 import { DOCUMENT } from "@angular/common";
 import { CartcountService } from "src/app/cartcount.service";
@@ -18,7 +15,6 @@ import { AddressModalPage } from "../address-modal/address-modal.page";
 import { AuthenticationService } from "src/app/services/authentication.service";
 
 declare var google;
-
 const GET_CART = 200;
 const ADD = 210;
 const DEL_DATA = 220;
