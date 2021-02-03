@@ -76,4 +76,10 @@ export class SearchPage implements OnInit {
     this.isSearchResult = false;
     this.result = [];
   }
+
+  ionViewDidLeave() {
+    this.isSearchResult = false;
+    this.result = [];
+    this.searchTerm.setValue(null);
+  }
 }
