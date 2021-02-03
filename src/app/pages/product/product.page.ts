@@ -87,6 +87,8 @@ export class ProductPage implements OnInit {
   myThumbnail: any;
   myFullresImage: any;
   appUrl: any;
+  cart_count:any;
+
   constructor(
     private modalController: ModalController,
     public authencationservice: AuthenticationService,
@@ -110,12 +112,17 @@ export class ProductPage implements OnInit {
   }
 
   ngOnInit() {
-    this.appUrl = window.location.hostname + this.router.url;
+    this.appUrl = window.location.hostname + this.router.url;  
   }
 
   ionViewWillEnter() {
+    this.cartCountService.getCartCount().subscribe((val) => {
+      this.cart_count = val;
+    });
     this.getData();
   }
+
+ 
 
   getData() {
     this.presentLoading().then(() => {
