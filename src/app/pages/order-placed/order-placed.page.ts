@@ -36,6 +36,13 @@ export class OrderPlacedPage implements OnInit {
       );
     });
   }
+  continue(){
+    if(!this.platform.is('cordova')){
+      this.router.navigate(['/tabs/home'],{ replaceUrl: true })
+    }else{
+      window.open('dos://dealonstore.com','_blank');
+    }
+  }
 
   handleResponse(data) {
     this.loadingController.dismiss();
@@ -66,7 +73,12 @@ export class OrderPlacedPage implements OnInit {
         {
           text: "OK",
           handler: () => {
-            this.router.navigate(["/tabs/home"], { replaceUrl: true });
+            if(!this.platform.is('cordova')){
+              this.router.navigate(['/tabs/home'],{ replaceUrl: true })
+            }else{
+              window.open('dos://dealonstore.com','_blank');
+            }
+            
           },
         },
       ],

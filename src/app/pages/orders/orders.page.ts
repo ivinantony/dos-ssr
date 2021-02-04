@@ -56,7 +56,7 @@ export class OrdersPage implements OnInit {
   }
   details(index: number) {
     let order_id = this.data.orders[index].id;
-    this.router.navigate(["order-details", { order_id }]);
+    this.router.navigate(["/tabs/order-details", { order_id }]);
   }
 
   doRefresh(event) {

@@ -77,7 +77,11 @@ export class RechargeStatusPage implements OnInit {
         {
           text: "OK",
           handler: () => {
-            this.router.navigate(["wallet"], { replaceUrl: true });
+            if(!this.platform.is('cordova')){
+              this.router.navigate(["wallet"], { replaceUrl: true });
+            }else{
+              window.open('dos://dealonstore.com','_blank');
+            }
           },
         },
       ],
@@ -87,12 +91,16 @@ export class RechargeStatusPage implements OnInit {
   }
 
   continue() {
-    this.storage.get("prev_url").then((val) => {
-      // console.log(val,"prev url")
-      this.ngZone.run(() => {
-        this.router.navigate([val] || ["/wallet"], { replaceUrl: true });
+    if(!this.platform.is('cordova')){
+      this.storage.get("prev_url").then((val) => {
+        // console.log(val,"prev url")
+        this.ngZone.run(() => {
+          this.router.navigate([val] || ["/wallet"], { replaceUrl: true });
+        });
       });
-    });
+    }else{
+      window.open('dos://dealonstore.com','_blank');
+    }
   }
 
   async presentLoading() {

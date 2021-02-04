@@ -68,7 +68,7 @@ export class OrderDetailsPage implements OnInit {
     });
   
     await modal.present();
-    await modal.onDidDismiss().then(()=>{this.router.navigate(['orders'])})
+    await modal.onDidDismiss().then(()=>{this.router.navigate(['/tabs/order-details'])})
     
   }
 

@@ -28,7 +28,7 @@
       </ion-slide> -->
 
       <ion-slide
-      *ngFor="let item of banners[0]?.desktop_images; let i=index"
+      *ngFor="let item of banners?.desktop_images; let i=index"
       class="dsk"
       (click)="onRoute(item.application_url)"
     >
@@ -36,7 +36,7 @@
     </ion-slide>
 
     <ion-slide
-      *ngFor="let item of banners[0]?.mobile_images; let i=index"
+      *ngFor="let item of banners?.mobile_images; let i=index"
       class="mob"
       (click)="onRoute(item.application_url)"
     >
