@@ -1,5 +1,58 @@
-<ion-tabs>
-  <ion-tab-bar slot="bottom">
+<ion-tabs class="ion-no-border">
+  <ion-header [ngStyle]="{'display': isMobile() ? 'none':''}">
+    <desktop-header></desktop-header>
+  </ion-header>
+  <ion-tab-bar
+    style="--background: var(--ion-color-light)"
+    slot="top"
+    [ngStyle]="{'display': isMobile() ? 'none':''}"
+  >
+    <ion-tab-button tab="home" layout="icon-start">
+      <ion-icon name="home"></ion-icon>
+      <ion-label class="ion-padding-horizontal" style="margin: auto 0"
+        >Home</ion-label
+      >
+    </ion-tab-button>
+    <ion-tab-button tab="offers" layout="icon-start">
+      <ion-icon src="../assets/imgs/icons/tag.svg"></ion-icon>
+      <ion-label class="ion-padding-horizontal" style="margin: auto 0"
+        >Offers</ion-label
+      >
+    </ion-tab-button>
+
+    <ion-tab-button tab="categories" layout="icon-start">
+      <ion-icon name="grid"></ion-icon>
+      <ion-label class="ion-padding-horizontal" style="margin: auto 0"
+        >Categories</ion-label
+      >
+    </ion-tab-button>
+
+    <ion-tab-button tab="cart" layout="icon-start">
+      <ion-icon src="../assets/imgs/icons/cart.svg"></ion-icon>
+      <ion-label class="ion-padding-horizontal" style="margin: auto 0"
+        >Cart</ion-label
+      >
+      <ion-badge [ngStyle]="{'opacity': cart_count > 0 ? '1' :'0'}"
+        >{{cart_count}}</ion-badge
+      >
+    </ion-tab-button>
+    <ion-tab-button tab="notifications" layout="icon-start">
+      <ion-icon src="../assets/imgs/icons/notifications-outline.svg"></ion-icon>
+      <ion-label class="ion-padding-horizontal" style="margin: auto 0"
+        >Notifications</ion-label
+      >
+      <!-- <ion-badge [ngStyle]="{'opacity': cart_count > 0 ? '1' :'0'}"
+        >{{cart_count}}</ion-badge
+      > -->
+    </ion-tab-button>
+    <ion-tab-button tab="profile" layout="icon-start">
+      <ion-icon src="../assets/imgs/icons/profile.svg"></ion-icon>
+      <ion-label class="ion-padding-horizontal" style="margin: auto 0"
+        >Profile</ion-label
+      >
+    </ion-tab-button>
+  </ion-tab-bar>
+  <ion-tab-bar [ngStyle]="{'display': isMobile() ? '':'none'}">
     <ion-tab-button tab="home">
       <ion-icon name="home"></ion-icon>
       <ion-label>Home</ion-label>
@@ -18,7 +71,9 @@
     <ion-tab-button tab="cart">
       <ion-icon src="../assets/imgs/icons/cart.svg"></ion-icon>
       <ion-label>Cart</ion-label>
-      <ion-badge [ngStyle]="{'opacity': cart_count > 0 ? '1' :'0'}">{{cart_count}}</ion-badge>
+      <ion-badge [ngStyle]="{'opacity': cart_count > 0 ? '1' :'0'}"
+        >{{cart_count}}</ion-badge
+      >
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>
