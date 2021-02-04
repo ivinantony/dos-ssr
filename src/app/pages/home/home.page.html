@@ -28,13 +28,31 @@
   ></ng-container>
   <ng-template #thenTemplate>
     <section>
-      <ion-slides [options]="bannerSlideOpts" pager="ios">
-        <ion-slide
+      <ion-slides [options]="bannerSlideOpts" pager="ios" class="slider">
+        <!-- <ion-slide
           *ngFor="let item of data?.banner[0]?.desktop_images; let i=index"
           (click)="onRoute(item.application_url)"
         >
           <img [src]="s3url + item?.path" alt="" />
+        </ion-slide> -->
+
+
+        <ion-slide
+          *ngFor="let item of data?.banner[0]?.desktop_images; let i=index"
+          class="dsk"
+          (click)="onRoute(item.application_url)"
+        >
+          <img [src]="s3url + item?.path" alt="" />
         </ion-slide>
+
+        <ion-slide
+          *ngFor="let item of data?.banner[0]?.mobile_images; let i=index"
+          class="mob"
+          (click)="onRoute(item.application_url)"
+        >
+          <img [src]="s3url + item?.path" alt="" />
+        </ion-slide>
+     
       </ion-slides>
     </section>
 

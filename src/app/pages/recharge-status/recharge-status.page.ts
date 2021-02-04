@@ -77,7 +77,7 @@ export class RechargeStatusPage implements OnInit {
         {
           text: "OK",
           handler: () => {
-            this.router.navigate(["wallet"]);
+            this.router.navigate(["wallet"], { replaceUrl: true });
           },
         },
       ],

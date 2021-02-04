@@ -66,7 +66,7 @@ export class OrderPlacedPage implements OnInit {
         {
           text: "OK",
           handler: () => {
-            this.router.navigate(["/tabs/home"]);
+            this.router.navigate(["/tabs/home"], { replaceUrl: true });
           },
         },
       ],
