@@ -26,7 +26,7 @@ export class RechargeStatusPage implements OnInit {
   ) {
     if (!this.platform.is("cordova")) {
       this.isPWA = true;
-      console.log("is platform pwa", this.isPWA);
+      // console.log("is platform pwa", this.isPWA);
     }
   }
 
@@ -50,7 +50,6 @@ export class RechargeStatusPage implements OnInit {
 
   handleResponse(data) {
     this.loadingController.dismiss();
-    console.log(data);
 
     if (data.details == null) {
       this.status = false;
@@ -66,7 +65,6 @@ export class RechargeStatusPage implements OnInit {
 
   handleError(error) {
     this.loadingController.dismiss();
-    console.log(error);
   }
 
   async presentAlert(msg: string) {

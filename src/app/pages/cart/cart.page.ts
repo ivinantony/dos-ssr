@@ -327,7 +327,6 @@ export class CartPage implements OnInit {
     const modal = await this.modalController.create({
       component: AddressModalPage,
       cssClass: "cartmodal",
-      componentProps: { value: 123 },
       swipeToClose: true,
     });
 

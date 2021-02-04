@@ -1,17 +1,13 @@
-import { Component, NgZone, OnInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import {
   AlertController,
   LoadingController,
   ModalController,
-  Platform,
   ToastController,
 } from "@ionic/angular";
-
 import { CartService } from "src/app/services/cart/cart.service";
-
 import { UtilsService } from "src/app/services/utils.service";
-
 import { Inject } from "@angular/core";
 import { DOCUMENT } from "@angular/common";
 import { CartcountService } from "src/app/cartcount.service";
@@ -19,7 +15,6 @@ import { AddressModalPage } from "../address-modal/address-modal.page";
 import { AuthenticationService } from "src/app/services/authentication.service";
 
 declare var google;
-
 const GET_CART = 200;
 const ADD = 210;
 const DEL_DATA = 220;
@@ -36,11 +31,9 @@ export class CartmodalPage implements OnInit {
   selectedPayment: any;
   cart: any[];
   s3url: string;
-  count: number = 1;
   cartLength: number;
   amountDetails: any;
   addresses: any;
-  discount_amount: number = 0;
   promo_id: any;
   payment_id: any;
   address_id: any;
@@ -63,7 +56,6 @@ export class CartmodalPage implements OnInit {
     private loadingController: LoadingController,
     private alertController: AlertController,
     private authservice: AuthenticationService,
-
     @Inject(DOCUMENT) private _document: Document
   ) {
     this.s3url = this.utils.getS3url();
@@ -71,40 +63,12 @@ export class CartmodalPage implements OnInit {
 
   ionViewWillEnter() {
     this.getData();
-    console.log(this.selectedAddress);
   }
 
   ngOnInit() {
     if (!window.history.state.modal) {
       const modalState = { modal: true };
       history.pushState(modalState, null);
-    }
-  }
-
-  continue() {
-    this.checkOutofStock();
-    if (this.isOut) {
-      this.presentToastDanger(
-        "Some items in your cart is currently out of stock."
-      );
-    } else if (!this.valid_address) {
-      this.presentToastDanger("Please select a serviceable delivery Location.");
-    } else {
-      let address_id = this.address_id;
-      this.modalController.dismiss();
-      this.router.navigate(["checkout", address_id]);
-    }
-  }
-
-  checkOutofStock() {
-    for (let i = 0; i < this.cart.length; i++) {
-      if (this.cart[i].in_stock == 0 || this.cart[i].stock_quantity <= 0) {
-        this.isOut = true;
-        // console.log(i, "value of index");
-        break;
-      } else {
-        this.isOut = false;
-      }
     }
   }
 
@@ -126,9 +90,34 @@ export class CartmodalPage implements OnInit {
     });
   }
 
+  continue() {
+    this.checkOutofStock();
+    if (this.isOut) {
+      this.presentToastDanger(
+        "Some items in your cart is currently out of stock."
+      );
+    } else if (!this.valid_address) {
+      this.presentToastDanger("Please select a serviceable delivery Location.");
+    } else {
+      let address_id = this.address_id;
+      this.modalController.dismiss();
+      this.router.navigate(["checkout", address_id]);
+    }
+  }
+
+  checkOutofStock() {
+    for (let i = 0; i < this.cart.length; i++) {
+      if (this.cart[i].in_stock == 0 || this.cart[i].stock_quantity <= 0) {
+        this.isOut = true;
+        break;
+      } else {
+        this.isOut = false;
+      }
+    }
+  }
+
   handleResponse(data, type) {
     if (type == GET_CART) {
-      console.log(data);
       this.data = data;
       this.cart = data.cart;
       this.amountDetails = data;
@@ -164,7 +153,7 @@ export class CartmodalPage implements OnInit {
 
   handleError(error) {
     this.loadingController.dismiss();
-    // console.log(error);
+
     if (error.status == 400) {
       this.presentAlert(error.error.message);
     }
@@ -297,6 +286,29 @@ export class CartmodalPage implements OnInit {
     });
   }
 
+  async changeAddress() {
+    const modal = await this.modalController.create({
+      component: AddressModalPage,
+      cssClass: "cartmodal",
+      componentProps: { value: 123 },
+      swipeToClose: true,
+      presentingElement: await this.modalController.getTop(),
+    });
+
+    await modal.present();
+
+    await modal.onDidDismiss().then((data) => {
+      if (data.data) {
+        this.address_selected = data.data;
+        this.current_selection = data.role;
+        this.getDistance(
+          this.address_selected.latitude,
+          this.address_selected.longitude
+        );
+      }
+    });
+  }
+
   async remove(index: number, id: number) {
     this.name = this.cart[index].name;
     const alert = await this.alertController.create({
@@ -406,31 +418,6 @@ export class CartmodalPage implements OnInit {
       duration: 2000,
     });
     toast.present();
-  }
-
-  async changeAddress() {
-    const modal = await this.modalController.create({
-      component: AddressModalPage,
-      cssClass: "cartmodal",
-      componentProps: { value: 123 },
-      swipeToClose: true,
-      presentingElement: await this.modalController.getTop(),
-    });
-
-    await modal.present();
-
-    await modal.onDidDismiss().then((data) => {
-      if (data.data) {
-        console.log("data", data);
-        this.address_selected = data.data;
-        this.current_selection = data.role;
-        console.log(this.address_selected);
-        this.getDistance(
-          this.address_selected.latitude,
-          this.address_selected.longitude
-        );
-      }
-    });
   }
 
   async presentToastSuccessQtyChange(msg) {

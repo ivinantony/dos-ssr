@@ -1,8 +1,6 @@
-import { CompileShallowModuleMetadata } from "@angular/compiler";
-import { Route } from "@angular/compiler/src/core";
-import { Content } from "@angular/compiler/src/render3/r3_ast";
+
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { Data, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import {
   ActionSheetController,
   AlertController,
@@ -73,8 +71,6 @@ export class OfferPage implements OnInit {
 
   getData(infiniteScroll?) {
     this.infiniteScroll.disabled = true;
-
-    console.log("infiniteScroll", this.page_count);
     this.presentLoading().then(() => {
       this.authService.isAuthenticated().then((val) => {
         if (val) {
@@ -97,7 +93,6 @@ export class OfferPage implements OnInit {
   }
 
   handleResponse(data, type, infiniteScroll?) {
-
     if (type == GET_DATA) {
       this.loadingController.dismiss();
       this.page_limit = data.page_count;
@@ -108,7 +103,6 @@ export class OfferPage implements OnInit {
       this.cartCountService.setCartCount(data.cart_count);
       this.authService.setCartCount(data.cart_count);
       this.infiniteScroll.disabled = false;
-
     } else if (type == POST_DATA) {
       this.loadingController.dismiss().then(() => {
         this.cart_count = data.cart_count;
@@ -193,7 +187,6 @@ export class OfferPage implements OnInit {
   }
 
   async presentLoading() {
-    console.log("1");
     const loading = await this.loadingController.create({
       spinner: "crescent",
       cssClass: "custom-spinner",
@@ -218,8 +211,6 @@ export class OfferPage implements OnInit {
     }, 1000);
   }
 
-
-
   async openSortMobile() {
     const actionSheet = await this.actionSheetController.create({
       header: "SORT BY",
@@ -229,7 +220,6 @@ export class OfferPage implements OnInit {
         {
           text: "Price - high to low",
           handler: () => {
-            
             this.page_count = 1;
             this.products = [];
             this.sortType = "DESC";
@@ -240,7 +230,6 @@ export class OfferPage implements OnInit {
         {
           text: "Price - low to high",
           handler: () => {
-            
             this.page_count = 1;
             this.products = [];
             this.sortType = "ASC";
@@ -299,6 +288,5 @@ export class OfferPage implements OnInit {
   ngOnDestroy(): void {
     this.page_count = 1;
     this.products = [];
-    // this.infiniteScroll.disabled = true;
   }
 }

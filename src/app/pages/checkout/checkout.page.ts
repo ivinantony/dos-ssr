@@ -58,7 +58,6 @@ export class CheckoutPage implements OnInit {
   }
 
   ngOnInit() {
-
     this.getData();
   }
 
@@ -66,7 +65,6 @@ export class CheckoutPage implements OnInit {
     this.presentLoading().then(() => {
       this.authservice.isAuthenticated().then((val) => {
         if (val) {
-          console.log(val);
           this.checkoutService.getAmountDetails(val, this.address_id).subscribe(
             (data) => this.handleResponse(data, GET_AMOUNTDETAILS),
             (error) => this.handleError(error, GET_AMOUNTDETAILS)
@@ -79,10 +77,13 @@ export class CheckoutPage implements OnInit {
   handleResponse(data, type) {
     if (type == GET_AMOUNTDETAILS) {
       this.loadingController.dismiss();
-      console.log(data);
+
       this.data = data;
-    } else if (type == GET_PAY) {
-    } else if (type == ORDER_RESPONSE) {
+    }
+     else if (type == GET_PAY) {
+
+    } 
+    else if (type == ORDER_RESPONSE) {
       this.loadingController.dismiss();
       let storable_data = {
         payable_order_id: data.payable_order_id,
@@ -95,16 +96,18 @@ export class CheckoutPage implements OnInit {
           this.router.navigate(["successful"]);
         }
       });
-    } else if (type == WALLET_RESPONSE) {
+    } 
+    else if (type == WALLET_RESPONSE) {
+      console.log("Payment complete")
       this.loadingController.dismiss();
-      this.router.navigate(["order-placed"]);
+      this.router.navigate(["successful"]);
     } else {
     }
   }
 
   handleError(error, type) {
     this.loadingController.dismiss();
-    console.log(error.error.wallet_status);
+
     if (type == WALLET_RESPONSE) {
       if (error.status == 400) {
         if (error.error.wallet_status) {
@@ -135,7 +138,6 @@ export class CheckoutPage implements OnInit {
     modal.onDidDismiss().then((data) => {
       const promo_Details = data["data"];
       if (promo_Details) {
-        // console.log(promo_Details);
         this.data.payable_amount -= promo_Details.discount_amount;
         this.discount_amount = promo_Details.discount_amount;
         this.promo_id = promo_Details.promo_Id;

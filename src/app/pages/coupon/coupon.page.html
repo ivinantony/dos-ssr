@@ -7,12 +7,18 @@
       </ion-button>
     </ion-item>
   </ion-list>
-  <!-- <ion-item class="input" lines="none">
-    <ion-input placeholder="Coupon Code"></ion-input>
-    <ion-button expand="block" color="danger" shape="round">
-      APPLY COUPON
-    </ion-button>
-  </ion-item> -->
+
+  <ng-container
+  *ngIf="data?.promo_codes.length == 0; then thenTemplate; else elseTemplate"
+></ng-container>
+<ng-template #thenTemplate>
+  <div class="ion-text-center nocoupon">
+    <img src="../../../assets/imgs/nocoupons.svg" alt="" style="width: 38%;">
+    <p>No coupons available.</p>
+
+  </div>
+</ng-template>
+<ng-template #elseTemplate>
   <ion-list *ngIf="data?.promo_codes">
     <ion-list-header>
       <ion-label>Applicable Coupons</ion-label>
@@ -68,8 +74,6 @@
   </div>
   </ion-list>
 
-
-
   <ion-list *ngIf="coupons.length>0">
     <ion-list-header>
       <ion-label>Available Coupons</ion-label>
@@ -119,10 +123,16 @@
       </ion-item>
     </ion-list>
   </div>
-  <div *ngIf="!data?.promo_codes" class="ion-text-center">
-    <p>No coupons available.</p>
-
-  </div>
+  
   
   </ion-list>
+
+</ng-template>
+  
+  
+ 
+
+
+
+  
 </ion-content>

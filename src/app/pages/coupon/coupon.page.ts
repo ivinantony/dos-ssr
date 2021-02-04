@@ -78,6 +78,7 @@ export class CouponPage implements OnInit {
 
   handleError(error) {
     // console.log(error)
+    this.loadingController.dismiss()
   }
 
   async showToastSuccess(message) {

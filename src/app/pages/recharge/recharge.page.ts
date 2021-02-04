@@ -33,7 +33,7 @@ export class RechargePage implements OnInit {
     private authservice: AuthenticationService,
     private paymentService: PaymentService
   ) {
-    this.appUrl = this.utils.getAppUrl()
+    this.appUrl = this.utils.getAppUrl();
     this.rechargeForm = this.formBuilder.group({
       client_id: [""],
       amount: [
@@ -55,12 +55,10 @@ export class RechargePage implements OnInit {
     }
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   recharge() {
     this.presentLoading().then(() => {
-      console.log(this.rechargeForm.value);
-      console.log("form value", this.rechargeForm.value);
       this.pay.wallet_hostedPay(this.rechargeForm.value).subscribe(
         (data) => this.handleResponse(data, GET_DATA),
         (error) => this.handleError(error)
@@ -70,7 +68,6 @@ export class RechargePage implements OnInit {
 
   handleResponse(data, type: number) {
     this.loadingController.dismiss();
-    console.log("data n Tab3", data);
 
     if (type == GET_DATA) {
       this.storage.set("tran_ref", JSON.stringify(data.tran_ref)).then(() => {

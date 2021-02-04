@@ -39,15 +39,12 @@ export class WalletPage implements OnInit {
   }
 
   handleResponse(data, type) {
-   
-    console.log(data);
     this.walletDetails = data.client_details; 
     this.loadingController.dismiss();
   }
+  
   handleError(error) {
     this.loadingController.dismiss();
-
-    console.log(error);
   }
 
   async presentLoading() {

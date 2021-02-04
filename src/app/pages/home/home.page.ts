@@ -35,7 +35,6 @@ export class HomePage implements OnInit {
     this.slides1.slidePrev();
   }
 
-  ;
   bannerSlideOpts4 = {
     slidesPerView: 1,
     initialSlide: 0,
@@ -83,7 +82,7 @@ export class HomePage implements OnInit {
       delay: 3500,
       disableOnInteraction: false,
     },
-  }
+  };
   categoryOpts = {
     updateOnWindowResize: true,
     breakpoints: {
@@ -115,21 +114,20 @@ export class HomePage implements OnInit {
           disableOnInteraction: false,
         },
         speed: 400,
-      }
-    }
-  }
-
+      },
+    },
+  };
 
   productSlides = window.matchMedia("(max-width: 320px)").matches
     ? {
-      slidesPerView: 1.5,
+        slidesPerView: 1.5,
 
-      spaceBetween: 2,
-      autoplay: true,
-      speed: 900,
-    }
+        spaceBetween: 2,
+        autoplay: true,
+        speed: 900,
+      }
     : window.matchMedia("(max-width: 576px)").matches
-      ? {
+    ? {
         slidesPerView: 1.5,
         spaceBetween: 5,
         autoplay: true,
@@ -137,26 +135,26 @@ export class HomePage implements OnInit {
 
         //spaceBetween: 2
       }
-      : window.matchMedia(" (max-width: 768px)").matches
-        ? {
-          slidesPerView: 4,
-          spaceBetween: 8,
-          autoplay: true,
-          speed: 900,
-        }
-        : window.matchMedia(" (max-width: 992px)").matches
-          ? {
-            slidesPerView: 4,
-            spaceBetween: 10,
-            autoplay: true,
-            speed: 900,
-          }
-          : {
-            slidesPerView: 5.9,
-            spaceBetween: 10,
-            autoplay: true,
-            speed: 900,
-          };
+    : window.matchMedia(" (max-width: 768px)").matches
+    ? {
+        slidesPerView: 4,
+        spaceBetween: 8,
+        autoplay: true,
+        speed: 900,
+      }
+    : window.matchMedia(" (max-width: 992px)").matches
+    ? {
+        slidesPerView: 4,
+        spaceBetween: 10,
+        autoplay: true,
+        speed: 900,
+      }
+    : {
+        slidesPerView: 5.9,
+        spaceBetween: 10,
+        autoplay: true,
+        speed: 900,
+      };
 
   selectedIndex = 0;
   banners: any;
@@ -171,7 +169,7 @@ export class HomePage implements OnInit {
   public searchTerm: FormControl;
   public searchItems;
   searching: any = false;
-  result: Array<any> = []
+  result: Array<any> = [];
 
   myDate: String = new Date().toISOString();
   banner_image: any;
@@ -191,9 +189,6 @@ export class HomePage implements OnInit {
     this.s3url = utils.getS3url();
     // this.badge.set(10);
     this.searchTerm = new FormControl();
-
-
-
   }
 
   ionViewWillEnter() {
@@ -202,17 +197,19 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
-    this.searchTerm.valueChanges.pipe(debounceTime(700)).subscribe((searchTerm) => {
-      this.searching = false;
-      console.log(searchTerm)
-      if (searchTerm) {
-        this.result = []
-        this.searchService.getSearchResult(searchTerm).subscribe(
-          (data) => this.handleResponseSearch(data),
-          (error) => this.handleErrorSearch(error)
-        )
-      }
-    });
+    this.searchTerm.valueChanges
+      .pipe(debounceTime(700))
+      .subscribe((searchTerm) => {
+        this.searching = false;
+
+        if (searchTerm) {
+          this.result = [];
+          this.searchService.getSearchResult(searchTerm).subscribe(
+            (data) => this.handleResponseSearch(data),
+            (error) => this.handleErrorSearch(error)
+          );
+        }
+      });
   }
 
   onSearchInputMobile() {
@@ -222,8 +219,6 @@ export class HomePage implements OnInit {
   onCancel() {
     this.result = [];
   }
-
-
 
   navigateToProducts(index: number) {
     this.result = [];
@@ -248,38 +243,31 @@ export class HomePage implements OnInit {
   }
 
   viewSearchProduct(index: number) {
-    console.log("type", this.result[index].type)
-    let id = this.result[index].id
-    let catId = this.result[index].category_id
-    let type = this.result[index].type
+    let id = this.result[index].id;
+    let catId = this.result[index].category_id;
+    let type = this.result[index].type;
 
     if (type == "P") {
-      this.router.navigate(['product', id, { catId }])
-    }
-    else if (type == "B") {
-      let brand_id = id
-      let brand_name = this.result[index].brand_name
-      this.router.navigate(['brand-products', brand_id, { brand_name }])
-    }
-    else if (type == "C") {
-      let catId = id
-      let category_name = this.result[index].category_name
+      this.router.navigate(["product", id, { catId }]);
+    } else if (type == "B") {
+      let brand_id = id;
+      let brand_name = this.result[index].brand_name;
+      this.router.navigate(["brand-products", brand_id, { brand_name }]);
+    } else if (type == "C") {
+      let catId = id;
+      let category_name = this.result[index].category_name;
 
-      this.router.navigate(['products', catId, { category_name }])
-
+      this.router.navigate(["products", catId, { category_name }]);
     }
 
     this.searchItems = [];
   }
-
 
   filterItems(searchTerm) {
     return this.products.filter((item) => {
       return item.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
     });
   }
-
-
 
   onRoute(link) {
     this.result = [];
@@ -297,8 +285,7 @@ export class HomePage implements OnInit {
       } else {
         this.client_id = null;
       }
-
-    })
+    });
 
     this.presentLoading().then(() => {
       this.homeService.getHomeDetails(this.client_id).subscribe(
@@ -323,14 +310,10 @@ export class HomePage implements OnInit {
     this.categories = data.categories;
     this.products = data.products;
     this.banners = data.banner;
-
   }
 
   handleError(error) {
     this.loadingController.dismiss();
-
-    // console.log(error);
-    // this.dismiss()
   }
 
   navigateToBrandProducts(index: number) {
@@ -375,14 +358,9 @@ export class HomePage implements OnInit {
   }
 
   handleResponseSearch(data) {
-    console.log(data)
-    data.data.filter(item => {
-      this.result.push(item)
-    })
-    console.log(this.result, "result")
+    data.data.filter((item) => {
+      this.result.push(item);
+    });
   }
-  handleErrorSearch(error) {
-    console.log(error)
-  }
-
+  handleErrorSearch(error) {}
 }

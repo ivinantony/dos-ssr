@@ -16,4 +16,10 @@ ion-card {
     -moz-transition: 0.4s all !important;
     -o-transition: 0.4s all !important;
   }
+
+
+  .item{
+    display: flex;
+    justify-content: space-between;
+  }
   

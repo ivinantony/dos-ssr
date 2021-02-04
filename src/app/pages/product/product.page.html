@@ -5,11 +5,19 @@
       <ion-back-button defaultHref="/tabs/home"></ion-back-button>
     </ion-buttons>
     <ion-title>{{productDetails?.name}}</ion-title>
-    <ion-buttons slot="end" class="ion-hide-md-up" id="cart-btn">
+    <!-- <ion-buttons slot="end" class="ion-hide-md-up" id="cart-btn">
       <ion-button (click)="router.navigate(['/tabs/cart'])">
         <ion-icon name="cart-outline" class="ion-padding"></ion-icon>
         <ion-badge id="cart-badge" color="danger" *ngIf="data?.cart_count>0"
           >{{data?.cart_count}}</ion-badge
+        >
+      </ion-button>
+    </ion-buttons> -->
+    <ion-buttons slot="end">
+      <ion-button class="ion-hide-md-up" (click)="router.navigate(['/tabs/cart'])">
+        <ion-icon src="../assets/imgs/icons/cart.svg"></ion-icon>
+        <ion-badge id="cart-badge" color="primary" *ngIf="cart_count > 0"
+          >{{cart_count}}</ion-badge
         >
       </ion-button>
     </ion-buttons>

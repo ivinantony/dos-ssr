@@ -1,9 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { CartcountService } from "src/app/cartcount.service";
 import { defineCustomElements } from "@teamhive/lottie-player/loader";
 import { PaymentService } from "src/app/services/payment/payment.service";
-import { Storage } from "@ionic/storage";
 import { AlertController, LoadingController, Platform } from "@ionic/angular";
 
 @Component({
@@ -12,31 +10,23 @@ import { AlertController, LoadingController, Platform } from "@ionic/angular";
   styleUrls: ["./order-placed.page.scss"],
 })
 export class OrderPlacedPage implements OnInit {
-
   status: boolean;
-  isPWA:boolean=false;
+  isPWA: boolean = false;
   constructor(
     public router: Router,
-    private cartCountService: CartcountService,
     private paymentService: PaymentService,
-    private storage: Storage,
     private alertController: AlertController,
     private loadingController: LoadingController,
-    private platform:Platform
+    private platform: Platform
   ) {
-    // window.location.href = "mycoolapp://";
-
-
     if (!this.platform.is("cordova")) {
-      this.isPWA=true
-      console.log('is platform pwa',this.isPWA)
+      this.isPWA = true;
     }
-
-
+    defineCustomElements(window);
   }
 
   ngOnInit() {
-    let data = JSON.parse(localStorage.getItem('tran_data'))
+    let data = JSON.parse(localStorage.getItem("tran_data"));
     let tran_ref = data.tran_ref;
     let client_id = data.client_id;
     this.presentLoading().then(() => {
@@ -45,15 +35,10 @@ export class OrderPlacedPage implements OnInit {
         (error) => this.handleError(error)
       );
     });
-
-
-
   }
 
   handleResponse(data) {
     this.loadingController.dismiss();
-    console.log(data);
-
     if (data.details == null) {
       this.status = false;
       let msg = "Unknown Error";
@@ -68,7 +53,7 @@ export class OrderPlacedPage implements OnInit {
 
   handleError(error) {
     this.loadingController.dismiss();
-    console.log(error);
+  
   }
 
   async presentAlert(msg: string) {
@@ -81,7 +66,7 @@ export class OrderPlacedPage implements OnInit {
         {
           text: "OK",
           handler: () => {
-            this.router.navigate(['/tabs/home'])
+            this.router.navigate(["/tabs/home"]);
           },
         },
       ],

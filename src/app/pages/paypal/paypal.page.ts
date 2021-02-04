@@ -41,7 +41,7 @@ export class PaypalPage implements OnInit {
     this.appUrl = this.utils.getAppUrl()
     this.storage.get("total_amount").then((val) => {
       if (val) {
-        console.log(val);
+       
         this.paymentAmount = val;
       }
     });
@@ -67,7 +67,7 @@ export class PaypalPage implements OnInit {
               payable_amount: JSON.stringify(localValues.payable_amount),
               address_id: JSON.stringify(this.address_id),
             };
-            console.log("data_store", localValues);
+        
             this.pay.hostedPay(data).subscribe(
               (data) => this.handleResponse(data, POST_DATA),
               (error) => this.handleError(error)

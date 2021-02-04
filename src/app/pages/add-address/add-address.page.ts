@@ -1,4 +1,4 @@
-import { HttpErrorResponse } from "@angular/common/http";
+
 import {
   Component,
   ElementRef,
@@ -12,7 +12,6 @@ import {
   FormGroup,
   Validators,
 } from "@angular/forms";
-import { Router } from "@angular/router";
 import { Geolocation } from "@ionic-native/geolocation/ngx";
 import {
   NativeGeocoder,
@@ -20,7 +19,6 @@ import {
   NativeGeocoderResult,
 } from "@ionic-native/native-geocoder/ngx";
 import {
-  ActionSheetController,
   LoadingController,
   ModalController,
   Platform,
@@ -29,7 +27,6 @@ import {
 import { AreaSearchPage } from "src/app/pages/area-search/area-search.page";
 import { AddressService } from "src/app/services/address/address.service";
 import { AuthenticationService } from "src/app/services/authentication.service";
-import { UtilsService } from "src/app/services/utils.service";
 const GET_DELIVERY_LOC = 200;
 const POST_ADDRESS = 210;
 declare var google;
@@ -45,9 +42,10 @@ export class AddAddressPage implements OnInit {
   latitude: number;
   longitude: number;
   is_valid: boolean = false;
+  isPwa:boolean=false
   public addressForm: FormGroup;
 
-  //Geocoder configuration
+
   geoencoderOptions: NativeGeocoderOptions = {
     useLocale: true,
     maxResults: 5,
@@ -69,9 +67,8 @@ export class AddAddressPage implements OnInit {
     private formBuilder: FormBuilder,
     private authservice: AuthenticationService,
     private addressService: AddressService,
-    private actionSheetController: ActionSheetController
   ) {
-    this.getData();
+    
     this.addressForm = this.formBuilder.group({
       client_id: [""],
       name: [
@@ -103,24 +100,29 @@ export class AddAddressPage implements OnInit {
       ],
       delivery_location_id: [""],
     });
+    this.getData();
     this.platform.ready().then(() => {
       this.presentLoading().then(() => {
-        // console.log("presented");
+    
         this.loadMap().finally(() => {
           this.dismiss();
-          // console.log("handle permisasions next");
+          
           this.handlePermission();
         });
       });
     });
+    if(!this.platform.is('cordova'))
+    {
+      this.isPwa=true
+     
+    }
   }
   ngOnInit() {
     if (!window.history.state.modal) {
       const modalState = { modal: true };
       history.pushState(modalState, null);
-      }
+    }
   }
-
 
   getData() {
     this.addressService.getDeliveryLocations().subscribe(
@@ -172,16 +174,16 @@ export class AddAddressPage implements OnInit {
   };
 
   async loadMap() {
-    console.log("load map started");
 
-    this.authservice.isAuthenticated().then(token=>{
-      if(token){
+
+    this.authservice.isAuthenticated().then((token) => {
+      if (token) {
         this.addressForm.patchValue({ client_id: token });
       }
-    })
+    });
 
     if (this.platform.is("cordova")) {
-      console.log("cordova location fetch");
+
       await this.geolocation
         .getCurrentPosition()
         .then((resp) => {
@@ -189,14 +191,14 @@ export class AddAddressPage implements OnInit {
           this.addressForm.controls["longitude"].setValue(
             resp.coords.longitude
           );
-          // this.getDistance();
+   
           this.inItMap(resp.coords.latitude, resp.coords.longitude);
         })
         .catch((error) => {
           // console.log("Error getting location", error);
         });
     } else {
-      // console.log("cordova not supported");
+   
       var accuracyOptions = {
         enableHighAccuracy: true,
         timeout: 27000,
@@ -214,7 +216,7 @@ export class AddAddressPage implements OnInit {
             );
             this.latitude = resp.coords.latitude;
             this.longitude = resp.coords.longitude;
-            // console.log(this.latitude, "from load map");
+        
             this.getDistance();
             this.inItMap(resp.coords.latitude, resp.coords.longitude);
           },
@@ -224,18 +226,18 @@ export class AddAddressPage implements OnInit {
                 var msg =
                   "User denied the request for Geolocation. In order to access your location reset the permission in settings.";
                 this.showToastDangerDenied(msg);
-                // console.log(msg);
+            
 
                 break;
               case error.POSITION_UNAVAILABLE:
                 var msg = "Location information is unavailable.";
                 this.showToastDanger(msg);
-                // console.log(msg);
+          
                 break;
               case error.TIMEOUT:
                 var msg = "The request to get user location timed out.";
                 this.showToastDanger(msg);
-                // console.log(msg);
+              
                 break;
             }
           },
@@ -245,7 +247,7 @@ export class AddAddressPage implements OnInit {
     }
   }
   inItMap(lat, lng) {
-    console.log("initmap");
+    
     let latLng = new google.maps.LatLng(lat, lng);
     let mapOptions = {
       center: latLng,
@@ -291,7 +293,7 @@ export class AddAddressPage implements OnInit {
 
   getAddressFromCoords(latitude, longitude) {
     if (this.platform.is("cordova")) {
-      console.log("cordova  available");
+    
       let options: NativeGeocoderOptions = {
         useLocale: true,
         maxResults: 5,
@@ -299,7 +301,7 @@ export class AddAddressPage implements OnInit {
       this.nativeGeocoder
         .reverseGeocode(latitude, longitude, options)
         .then((result: NativeGeocoderResult[]) => {
-          console.log(result, "mobile");
+        
 
           this.addressForm.controls["address"].setValue(null);
           let responseAddress = [];
@@ -307,20 +309,19 @@ export class AddAddressPage implements OnInit {
             if (value.length > 0) responseAddress.push(value);
           }
           responseAddress.reverse();
-          console.log(responseAddress);
+          
           let address = "";
           for (let value of responseAddress) {
             address += value + ", ";
           }
           address = address.slice(0, -2);
-          console.log("addresss from init", address);
-            this.addressForm.controls["address"].setValue(address);
-            this.selectedAddress = address
           
+          this.addressForm.controls["address"].setValue(address);
+          this.selectedAddress = address;
         })
         .catch((error: any) => {});
     } else {
-      // console.log("cordova not available");
+   
       var latlng = new google.maps.LatLng(latitude, longitude);
       var geocoder = new google.maps.Geocoder();
       this.zone.run(() => {
@@ -329,7 +330,7 @@ export class AddAddressPage implements OnInit {
             alert(status);
           }
           if (status == google.maps.GeocoderStatus.OK) {
-            // console.log(results);
+    
             this.selectedAddress = results[0].formatted_address;
             this.addressForm.controls["address"].setValue(
               results[0].formatted_address
@@ -342,10 +343,10 @@ export class AddAddressPage implements OnInit {
   }
 
   getDistance() {
-    // console.log("GEt Distance started", this.latitude, this.longitude);
+    
     const service = new google.maps.DistanceMatrixService();
     var current_coords = new google.maps.LatLng(this.latitude, this.longitude);
-    // console.log("current coords getdistance", current_coords);
+   
     var lat: string = this.latitude.toString();
     var long: string = this.longitude.toString();
     var destination = lat + "," + long;
@@ -356,17 +357,16 @@ export class AddAddressPage implements OnInit {
     this.delivery_locations?.forEach((element) => {
       shop_coords.push(element.location);
     });
-    // console.log("shop", shop_coords);
-    // console.log("current_coords", this.latitude, this.longitude);
+   
     const matrixOptions = {
       origins: shop_coords, // shop coords
       destinations: [destination], // customer coords
       travelMode: "DRIVING",
       unitSystem: google.maps.UnitSystem.IMPERIAL,
     };
-    // console.log("matrix", matrixOptions);
+
     service.getDistanceMatrix(matrixOptions, (response, status) => {
-      // console.log("GET DISTANCE MATRIX");
+   
       if (status !== "OK") {
         var msg = "Error with distance matrix";
         this.locationAvailability = false;
@@ -377,7 +377,7 @@ export class AddAddressPage implements OnInit {
         let shortest_distance;
         let shop_index: number;
         response_data = response.rows;
-        // console.log("responsee data", response_data);
+        
         response_data.forEach((ele) => {
           if (ele.elements[0].status == "ZERO_RESULTS") {
             this.locationAvailability = false;
@@ -414,10 +414,7 @@ export class AddAddressPage implements OnInit {
     });
   }
 
-  saveAddress() {
-    // console.log("this.addressForm.value", this.addressForm.value);
-    // console.log("this.addressForm.value", this.addressForm.value.name);
-  }
+
 
   async presentToast() {
     const toast = await this.toastController.create({
@@ -433,6 +430,7 @@ export class AddAddressPage implements OnInit {
   }
 
   onSearchChange($event) {}
+
   async areaSearch() {
     const modal = await this.modalController.create({
       component: AreaSearchPage,
@@ -445,13 +443,13 @@ export class AddAddressPage implements OnInit {
         let resp = data.data;
         this.inItMap(resp.lat, resp.lng);
       }
-      // console.log("data", data.data);
+   
       this.latitude = data.data.lat;
       this.longitude = data.data.lng;
       this.addressForm.patchValue({ latitude: data.data.lat });
       this.addressForm.patchValue({ longitude: data.data.lng });
 
-      // console.log("lat lon from modalsearch", this.latitude, this.longitude);
+   
       this.getDistance();
     });
     return await modal.present();
@@ -462,7 +460,7 @@ export class AddAddressPage implements OnInit {
   }
 
   onSubmit() {
-    this.saveAddress();
+   
 
     if (this.locationAvailability == false) {
       this.showToast(
@@ -475,7 +473,7 @@ export class AddAddressPage implements OnInit {
     } else if (!this.addressForm.value.phone) {
       this.showToast("Please enter a valid phone number");
     } else if (this.addressForm.valid && this.locationAvailability == true) {
-      // console.log(this.addressForm.value);
+      
       this.addressService.addAddress(this.addressForm.value).subscribe(
         (data) => this.handleResponse(data, POST_ADDRESS),
         (error) => this.handleError(error)
@@ -486,10 +484,8 @@ export class AddAddressPage implements OnInit {
     }
   }
 
-  
-
   handleResponse(data, type) {
-    // console.log(data, "Delivery loc");
+
     this.delivery_locations = data.delivery_locations;
   }
   handleError(error) {
@@ -539,16 +535,16 @@ export class AddAddressPage implements OnInit {
     navigator.permissions.query({ name: "geolocation" }).then((result) => {
       if (result.state == "granted") {
         this.report(result.state);
-        console.log("access granted");
+
         this.is_granted = true;
       } else if (result.state == "prompt") {
         this.report(result.state);
-        console.log("access not known");
+
         this.is_granted = true;
         // navigator.geolocation.getCurrentPosition();
       } else if (result.state == "denied") {
         this.report(result.state);
-        console.log("access denied");
+
         this.is_granted = false;
       }
       result.onchange = () => {

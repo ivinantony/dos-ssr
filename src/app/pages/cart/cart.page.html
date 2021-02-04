@@ -25,9 +25,7 @@
     <ion-item lines="none">
       <ion-label>
         <ion-text color="primary">
-          <h3>
-            {{address_selected?.name ? 'Deliver to' :''}}
-          </h3>
+          <h3>{{address_selected?.name ? 'Deliver to' :''}}</h3>
         </ion-text>
         <p>{{address_selected?.full_address}}</p>
       </ion-label>
@@ -180,18 +178,9 @@
 </ion-content>
 <ion-footer class="ion-no-border" *ngIf="cartLength > 0">
   <ion-toolbar class="ion-no-padding" style="padding-bottom: 0px !important">
-    <ion-button slot="end" shape="round" color="primary" (click)="continue()">
+    <ion-button slot="end" color="primary" (click)="continue()">
       <ion-icon slot="end" name="chevron-forward"></ion-icon>
       CONTINUE
     </ion-button>
   </ion-toolbar>
 </ion-footer>
-<!--<ion-footer *ngIf="cartLength > 0">
-  <ion-toolbar>
-  
-   <ion-button slot="end"  color="primary" (click)="continue()">
-      <ion-icon slot="end" name="chevron-forward"></ion-icon>
-      CONTINUE
-    </ion-button>
-  </ion-toolbar>
-</ion-footer> -->
