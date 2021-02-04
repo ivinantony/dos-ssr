@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CartcountService } from 'src/app/cartcount.service';
 import { NotcountService } from 'src/app/notcount.service';
 
 
@@ -27,9 +28,13 @@ export class DesktopHeaderComponent implements OnInit {
   ];
   selectedCategoryIndex: number = 0;
   notf_count:any;
-  constructor(private router: Router,private notificationCountService:NotcountService) {
+  cart_count:any;
+  constructor(public router: Router,private notificationCountService:NotcountService,private cartCountService:CartcountService) {
   this.notificationCountService.getNotCount().subscribe((res)=>{
       this.notf_count = res
+    })
+    this.cartCountService.getCartCount().subscribe((res)=>{
+      this.cart_count = res
     })
    }
 

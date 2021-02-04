@@ -64,7 +64,7 @@
           >
         </ion-col>
         <ion-col size="6" offset="1" class="ion-no-padding">
-          <ion-searchbar
+          <!-- <ion-searchbar
             animated
             showCancelButton="focus"
             placeholder="Filter Pizza"
@@ -72,7 +72,7 @@
             type="decimal"
             (ionChange)="onSearchChange($event)"
             [debounce]="250"
-          ></ion-searchbar
+          ></ion-searchbar -->
         ></ion-col>
       </ion-row>
     </ion-grid>
@@ -86,9 +86,9 @@
         fill="clear"
         (click)="navigateByUrl(i)"
       >
-      
-      <ion-icon class="ion-padding-horizontal" color="primary" name="{{item.icon}}"></ion-icon>
-      <!-- <ion-icon class="ion-padding-horizontal" color="primary" src=""></ion-icon> -->
+      <!-- <ion-icon class="ion-padding-horizontal" src="../assets/imgs/icons/tag.svg"></ion-icon>
+
+      <ion-icon class="ion-padding-horizontal" src="{{item.icon}}"></ion-icon> -->
         {{ item?.name }}
       </ion-button>
     <!-- </ion-buttons> -->
