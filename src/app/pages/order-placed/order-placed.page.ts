@@ -37,11 +37,20 @@ export class OrderPlacedPage implements OnInit {
     });
   }
   continue(){
-    if(!this.platform.is('cordova')){
-      this.router.navigate(['/tabs/home'],{ replaceUrl: true })
-    }else{
-      window.open('dos://dealonstore.com','_blank');
-    }
+    // if(!this.platform.is('cordova')){
+    //   console.log("not cordova activated,redirecting to app")
+    //   window.open('dos://dealonstore.com','_blank');
+      
+    // }else{
+    //   this.router.navigate(['/tabs/home'],{ replaceUrl: true })
+    // }
+    
+   
+  window.open('dos://dealonstore.com','_blank');
+  setTimeout(() => {
+    this.router.navigate(['/tabs/home'],{ replaceUrl: true })
+  }, 1000);
+    
   }
 
   handleResponse(data) {
@@ -73,11 +82,11 @@ export class OrderPlacedPage implements OnInit {
         {
           text: "OK",
           handler: () => {
-            if(!this.platform.is('cordova')){
+            window.open('dos://dealonstore.com','_blank');
+            setTimeout(() => {
               this.router.navigate(['/tabs/home'],{ replaceUrl: true })
-            }else{
-              window.open('dos://dealonstore.com','_blank');
-            }
+            }, 1000);
+            
             
           },
         },

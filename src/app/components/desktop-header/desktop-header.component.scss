@@ -15,3 +15,10 @@ ion-title{
     font-family: 'Lemonada', cursive !important;
     // font-family: 'Poiret One', cursive !important;
   }
+
+.search{
+  position: absolute; 
+  z-index: 2; 
+  left: 0; 
+  right: 0;
+}
