@@ -1,10 +1,17 @@
-#cart-badge{
-    position: absolute;
-    top: 0px;
-    right: -5px;
-    padding: 3px;
-    font-size: 10px;
+#cart-badge {
+  position: absolute;
+  top: 0px;
+  right: -5px;
+  padding: 3px;
+  font-size: 10px;
 }
-ion-badge{
-    transition:all 2s;
+ion-badge {
+  transition: all 2s;
 }
+ion-searchbar {
+  padding: 0 !important;
+}
+*{
+    font-family: 'Lemonada', cursive !important;
+    // font-family: 'Poiret One', cursive !important;
+  }

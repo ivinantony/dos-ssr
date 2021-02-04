@@ -31,6 +31,20 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         loadChildren: () => import('../cart/cart.module').then(m => m.CartPageModule)
       },
+      {
+        path: 'offers',
+        loadChildren: () => import('../offer/offer.module').then(m => m.OfferPageModule)
+      },
+      {
+        path: 'notifications',
+        canActivate: [AuthGuard],
+        loadChildren: () => import('../notification/notification.module').then(m => m.NotificationPageModule)
+      },
+      {
+        path: 'profile',
+        canActivate: [AuthGuard],
+        loadChildren: () => import('../profile/profile.module').then(m => m.ProfilePageModule)
+      },
 
     ]
   },
