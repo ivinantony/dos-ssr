@@ -8,14 +8,12 @@ import {
 } from "@ionic/angular";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
-import { HttpClient } from "@angular/common/http";
 import { NavigationEnd, Router, RoutesRecognized } from "@angular/router";
 import { AuthenticationService } from "./services/authentication.service";
 import { SwUpdate } from "@angular/service-worker";
 import { FormControl } from "@angular/forms";
 import { debounceTime, filter, pairwise } from "rxjs/operators";
 import { ProductSearchService } from "./services/product-search.service";
-import { ProfileService } from "./services/profile/profile.service";
 import { Storage } from "@ionic/storage";
 import { CartcountService } from "./cartcount.service";
 import { NotcountService } from "./notcount.service";
@@ -26,6 +24,7 @@ import { AutocloseOverlayService } from "./services/autoclose-overlay.service";
 import { AuthGuard } from "./guards/auth.guard";
 import { INotificationPayload } from "cordova-plugin-fcm-with-dependecy-updated/typings/INotificationPayload";
 import { Badge } from "@ionic-native/badge/ngx";
+import { Deeplinks } from '@ionic-native/deeplinks/ngx';
 
 @Component({
   selector: "app-root",
@@ -83,7 +82,9 @@ export class AppComponent implements OnInit {
     private autocloseOverlaysService: AutocloseOverlayService,
     private modalController: ModalController,
     private authguard: AuthGuard,
-    private badge: Badge
+    private badge: Badge,
+    private deeplinks: Deeplinks,
+    private ngzone: NgZone
   ) {
     this.initializeApp();
     this.searchTerm = new FormControl();
@@ -96,7 +97,7 @@ export class AppComponent implements OnInit {
       this.statusBar.overlaysWebView(false);
       this.statusBar.backgroundColorByHexString("#565656");
       this.setupFCM();
-
+      this.setDeepLink()
       this.searchService.searchResult.subscribe((data) => {
         if (data) {
           this.searchItems = data;
@@ -143,7 +144,7 @@ export class AppComponent implements OnInit {
   async ngOnInit() {
     // console.log(this.islogged,'logged status-')
     this.authService.isAuthenticated().then((data) => {
-     
+
       if (data) {
         this.loggedIn = true;
         this.authService.loginStatus(true);
@@ -188,7 +189,21 @@ export class AppComponent implements OnInit {
       this.setFilteredItems(search);
     });
   }
+  setDeepLink() {
+    this.deeplinks.route({
+      '/:slug': 'post'
+    }).subscribe(match => {
+      console.log('Successfully matched route', match);
+      const internalPath = `/${match.$route}/${match.$args['slug']}`;
+      this.ngzone.run(() => {
+        this.router.navigateByUrl(internalPath);
+      })
 
+    }, nomatch => {
+      // nomatch.$link - the full link data
+      console.warn('Got a deeplink that didn\'t match', nomatch)
+    })
+  }
   setFilteredItems(search) {
     this.searchService.filterItems(search);
   }
@@ -278,9 +293,9 @@ export class AppComponent implements OnInit {
         this.deferredPrompt.prompt();
         this.deferredPrompt.userChoice.then((choiceResult) => {
           if (choiceResult.outcome === "accepted") {
-    
+
           } else {
-            
+
           }
         });
       }
@@ -305,7 +320,7 @@ export class AppComponent implements OnInit {
 
     if (!this.platform.is("cordova")) {
       await this.afMessaging.messages.subscribe(async (msg: any) => {
-     
+
         this.authService.getNotificationCount().then((count) => {
           if (count) {
             this.authService.setNotificationCount(count + 1);
@@ -325,20 +340,20 @@ export class AppComponent implements OnInit {
       if (payload.wasTapped) {
         this.badge.set(payload.badge);
         this.router.navigate(["notification"]);
-       
+
       } else {
         this.badge.set(payload.badge);
-      
+
         this.presentToastWithOptions(payload);
       }
-      
+
     });
 
     this.hasPermission = await this.fcm.requestPushPermission();
-    
+
 
     this.pushPayload = await this.fcm.getInitialPushPayload();
-    
+
   }
 
   async presentToastWithOptions(payload) {
@@ -354,7 +369,7 @@ export class AppComponent implements OnInit {
           text: "View",
           handler: () => {
             this.router.navigate(["/notification"]);
-           
+
           },
         },
       ],
