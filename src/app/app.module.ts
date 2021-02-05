@@ -25,8 +25,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireMessagingModule } from '@angular/fire/messaging';
 import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
 import { enterAnimation } from './animation/nav-animation';
-import { modalEnterAnimation, modalLeaveAnimation } from './animation/modal-animation';
-
+import { Deeplinks } from '@ionic-native/deeplinks/ngx';
 
 @NgModule({
   declarations: [AppComponent, FilterComponent],
@@ -54,6 +53,7 @@ import { modalEnterAnimation, modalLeaveAnimation } from './animation/modal-anim
     SplashScreen,
     Badge,
     Geolocation,
+    Deeplinks,
     FCM,
     NativeGeocoder,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

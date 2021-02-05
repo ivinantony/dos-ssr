@@ -1,0 +1,5 @@
+[{
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target" : { "namespace": "android_app", "package_name": "com.mermerapps.dealonstore",
+                 "sha256_cert_fingerprints": ["F2:05:0D:59:F5:30:5E:F5:C4:86:A1:B3:8B:C0:1E:4E:EA:FB:15:29:78:94:39:A8:05:8E:4F:4C:54:07:26:DD"] }
+  }]
