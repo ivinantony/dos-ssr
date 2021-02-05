@@ -100,10 +100,10 @@ export class AddAddressPage implements OnInit {
       ],
       delivery_location_id: [""],
     });
-    this.getData();
+    
     this.platform.ready().then(() => {
       this.presentLoading().then(() => {
-    
+      this.getData();
         this.loadMap().finally(() => {
           this.dismiss();
           
@@ -287,8 +287,10 @@ export class AddAddressPage implements OnInit {
         marker.getPosition().lat(),
         marker.getPosition().lng()
       );
-      this.getDistance();
+      
     });
+    console.log("get distance")
+    this.getDistance();
   }
 
   getAddressFromCoords(latitude, longitude) {
