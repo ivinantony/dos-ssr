@@ -102,8 +102,11 @@ export class AddAddressPage implements OnInit {
       this.presentLoading().then(() => {
         this.loadMap().finally(() => {
           this.dismiss();
+          if(!this.platform.is('cordova'))
+          {
+            this.handlePermission();
+          }
 
-          this.handlePermission();
         });
       });
     });
@@ -310,6 +313,8 @@ export class AddAddressPage implements OnInit {
           
 
           this.selectedAddress = address;
+          console.log(this.addressForm.value, "get address from coords");
+
         })
         .catch((error: any) => {});
     } else {

@@ -26,3 +26,7 @@ ion-title{
 ion-item.selected {
   --color: var(--ion-color-primary);
 }
+.spinner{
+  display: flex;
+  justify-content: center;
+}
