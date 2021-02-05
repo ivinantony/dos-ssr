@@ -300,9 +300,9 @@ export class ProductsPage implements OnInit {
     await alert.present();
   }
 
-  ngOnDestroy(): void {
+ 
+  ionViewWillLeave() {
     this.page_count = 1;
     this.products = [];
-    // this.infiniteScroll.disabled = true;
   }
 }

@@ -156,4 +156,10 @@ export class RechargePage implements OnInit {
       this.subscription.unsubscribe();
     }
   }
+
+  // ionViewWillLeave() {
+  //   if (this.platform.is("cordova")) {
+  //     this.subscription.unsubscribe();
+  //   }
+  // }
 }

@@ -190,19 +190,25 @@ export class AppComponent implements OnInit {
     });
   }
   setDeepLink() {
-    this.deeplinks.route({
-      '/:slug': 'post'
-    }).subscribe(match => {
-      console.log('Successfully matched route', match);
-      const internalPath = `/${match.$route}/${match.$args['slug']}`;
-      this.ngzone.run(() => {
-        this.router.navigateByUrl(internalPath);
-      })
+    this.deeplinks.route({ '/:slug': 'posts' }).subscribe(
+      match => {
+        console.log('Successfully matched route', match);
 
-    }, nomatch => {
-      // nomatch.$link - the full link data
-      console.warn('Got a deeplink that didn\'t match', nomatch)
-    })
+        // Create our internal Router path by hand
+        const internalPath = `/${match.$route}/${match.$args['slug']}`;
+
+        // Run the navigation in the Angular zone
+        this.ngzone.run(() => {
+          this.router.navigateByUrl(internalPath);
+        });
+      },
+      error => {
+        // nomatch.$link - the full link data
+        console.error("Got a deeplink that didn't match", error);
+      }
+    );
+
+    
   }
   setFilteredItems(search) {
     this.searchService.filterItems(search);

@@ -55,6 +55,7 @@ export class OfferPage implements OnInit {
     private authGuard: AuthGuard
   ) {
     this.s3url = utils.getS3url();
+    console.log('constructor')
   }
 
   ionViewWillEnter() {
@@ -67,7 +68,7 @@ export class OfferPage implements OnInit {
     this.getData();
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   getData(infiniteScroll?) {
     this.infiniteScroll.disabled = true;
@@ -199,7 +200,7 @@ export class OfferPage implements OnInit {
   navigateToProduct(index) {
     let id = this.products[index].id;
     let catId = this.products[index].category_id;
-    this.router.navigate(["product", id, { catId }]);
+    this.router.navigate(["product", id, { catId },]);
   }
 
   doRefresh(event) {
@@ -285,7 +286,7 @@ export class OfferPage implements OnInit {
     await alert.present();
   }
 
-  ngOnDestroy(): void {
+  ionViewWillLeave() {
     this.page_count = 1;
     this.products = [];
   }

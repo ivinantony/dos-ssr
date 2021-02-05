@@ -112,7 +112,7 @@ export class BrandProductsPage implements OnInit {
 
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   getData(infiniteScroll?) {
     this.infiniteScroll.disabled = true;
@@ -344,9 +344,9 @@ export class BrandProductsPage implements OnInit {
     await alert.present();
   }
 
-  ngOnDestroy(): void {
+  ionViewWillLeave() {
     this.page_count = 1;
     this.products = [];
-    // this.infiniteScroll.disabled = true;
   }
+
 }
