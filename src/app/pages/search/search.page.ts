@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { Router } from "@angular/router";
 import { debounceTime } from "rxjs/operators";
@@ -8,6 +8,7 @@ import { SearchService } from "src/app/services/search/search.service";
   selector: "app-search",
   templateUrl: "./search.page.html",
   styleUrls: ["./search.page.scss"],
+  encapsulation: ViewEncapsulation.None
 })
 export class SearchPage implements OnInit {
   searching: any = false;
@@ -52,8 +53,7 @@ export class SearchPage implements OnInit {
   handleErrorSearch(error) {
     // console.log(error)
   }
-
-  viewSearchProduct(index: number) {
+ viewSearchProduct(index: number) {
     let id = this.result[index].id;
     let catId = this.result[index].category_id;
     let type = this.result[index].type;
@@ -71,6 +71,7 @@ export class SearchPage implements OnInit {
       this.router.navigate(["products", catId, { category_name }]);
     }
   }
+ 
 
   onCancel() {
     this.isSearchResult = false;

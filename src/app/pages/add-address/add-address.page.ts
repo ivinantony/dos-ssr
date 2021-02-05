@@ -1,4 +1,3 @@
-
 import {
   Component,
   ElementRef,
@@ -42,9 +41,8 @@ export class AddAddressPage implements OnInit {
   latitude: number;
   longitude: number;
   is_valid: boolean = false;
-  isPwa:boolean=false
+  isPwa: boolean = false;
   public addressForm: FormGroup;
-
 
   geoencoderOptions: NativeGeocoderOptions = {
     useLocale: true,
@@ -66,9 +64,8 @@ export class AddAddressPage implements OnInit {
     private modalController: ModalController,
     private formBuilder: FormBuilder,
     private authservice: AuthenticationService,
-    private addressService: AddressService,
+    private addressService: AddressService
   ) {
-    
     this.addressForm = this.formBuilder.group({
       client_id: [""],
       name: [
@@ -100,21 +97,22 @@ export class AddAddressPage implements OnInit {
       ],
       delivery_location_id: [""],
     });
-    
+    this.getData();
     this.platform.ready().then(() => {
       this.presentLoading().then(() => {
-      this.getData();
         this.loadMap().finally(() => {
           this.dismiss();
-          
-          this.handlePermission();
+          if(!this.platform.is('cordova'))
+          {
+            this.handlePermission();
+          }
+
         });
       });
     });
-    if(!this.platform.is('cordova'))
-    {
-      this.isPwa=true
-     
+
+    if (!this.platform.is("cordova")) {
+      this.isPwa = true;
     }
   }
   ngOnInit() {
@@ -174,8 +172,6 @@ export class AddAddressPage implements OnInit {
   };
 
   async loadMap() {
-
-
     this.authservice.isAuthenticated().then((token) => {
       if (token) {
         this.addressForm.patchValue({ client_id: token });
@@ -183,7 +179,6 @@ export class AddAddressPage implements OnInit {
     });
 
     if (this.platform.is("cordova")) {
-
       await this.geolocation
         .getCurrentPosition()
         .then((resp) => {
@@ -191,14 +186,15 @@ export class AddAddressPage implements OnInit {
           this.addressForm.controls["longitude"].setValue(
             resp.coords.longitude
           );
-   
+
           this.inItMap(resp.coords.latitude, resp.coords.longitude);
+          this.latitude = resp.coords.latitude;
+          this.longitude = resp.coords.longitude;
         })
         .catch((error) => {
           // console.log("Error getting location", error);
         });
     } else {
-   
       var accuracyOptions = {
         enableHighAccuracy: true,
         timeout: 27000,
@@ -216,8 +212,8 @@ export class AddAddressPage implements OnInit {
             );
             this.latitude = resp.coords.latitude;
             this.longitude = resp.coords.longitude;
-        
-            this.getDistance();
+
+            // this.getDistance();
             this.inItMap(resp.coords.latitude, resp.coords.longitude);
           },
           (error) => {
@@ -226,18 +222,17 @@ export class AddAddressPage implements OnInit {
                 var msg =
                   "User denied the request for Geolocation. In order to access your location reset the permission in settings.";
                 this.showToastDangerDenied(msg);
-            
 
                 break;
               case error.POSITION_UNAVAILABLE:
                 var msg = "Location information is unavailable.";
                 this.showToastDanger(msg);
-          
+
                 break;
               case error.TIMEOUT:
                 var msg = "The request to get user location timed out.";
                 this.showToastDanger(msg);
-              
+
                 break;
             }
           },
@@ -247,7 +242,6 @@ export class AddAddressPage implements OnInit {
     }
   }
   inItMap(lat, lng) {
-    
     let latLng = new google.maps.LatLng(lat, lng);
     let mapOptions = {
       center: latLng,
@@ -287,15 +281,14 @@ export class AddAddressPage implements OnInit {
         marker.getPosition().lat(),
         marker.getPosition().lng()
       );
-      
     });
-    console.log("get distance")
+
+    console.log("get distance");
     this.getDistance();
   }
 
   getAddressFromCoords(latitude, longitude) {
     if (this.platform.is("cordova")) {
-    
       let options: NativeGeocoderOptions = {
         useLocale: true,
         maxResults: 5,
@@ -303,41 +296,48 @@ export class AddAddressPage implements OnInit {
       this.nativeGeocoder
         .reverseGeocode(latitude, longitude, options)
         .then((result: NativeGeocoderResult[]) => {
-        
-
           this.addressForm.controls["address"].setValue(null);
           let responseAddress = [];
           for (let [key, value] of Object.entries(result[0])) {
             if (value.length > 0) responseAddress.push(value);
           }
           responseAddress.reverse();
-          
+
           let address = "";
           for (let value of responseAddress) {
             address += value + ", ";
           }
           address = address.slice(0, -2);
-          
+
           this.addressForm.controls["address"].setValue(address);
+          this.addressForm.controls["latitude"].setValue(latitude);
+          this.addressForm.controls["longitude"].setValue(longitude);
+          
+
           this.selectedAddress = address;
+          console.log(this.addressForm.value, "get address from coords");
+
         })
         .catch((error: any) => {});
     } else {
-   
       var latlng = new google.maps.LatLng(latitude, longitude);
       var geocoder = new google.maps.Geocoder();
       this.zone.run(() => {
         geocoder.geocode({ latLng: latlng }, (results, status) => {
+          console.log(results);
           if (status !== google.maps.GeocoderStatus.OK) {
             alert(status);
           }
           if (status == google.maps.GeocoderStatus.OK) {
-    
-            this.selectedAddress = results[0].formatted_address;
             this.addressForm.controls["address"].setValue(
               results[0].formatted_address
             );
             this.addressForm.controls["place_id"].setValue(results[0].place_id);
+            this.addressForm.controls["latitude"].setValue(latitude);
+            this.addressForm.controls["longitude"].setValue(longitude);
+
+            this.selectedAddress = results[0].formatted_address;
+            console.log(this.addressForm.value, "get address from load map");
           }
         });
       });
@@ -345,10 +345,9 @@ export class AddAddressPage implements OnInit {
   }
 
   getDistance() {
-    
     const service = new google.maps.DistanceMatrixService();
     var current_coords = new google.maps.LatLng(this.latitude, this.longitude);
-   
+
     var lat: string = this.latitude.toString();
     var long: string = this.longitude.toString();
     var destination = lat + "," + long;
@@ -359,7 +358,7 @@ export class AddAddressPage implements OnInit {
     this.delivery_locations?.forEach((element) => {
       shop_coords.push(element.location);
     });
-   
+
     const matrixOptions = {
       origins: shop_coords, // shop coords
       destinations: [destination], // customer coords
@@ -368,7 +367,7 @@ export class AddAddressPage implements OnInit {
     };
 
     service.getDistanceMatrix(matrixOptions, (response, status) => {
-   
+      console.log(response);
       if (status !== "OK") {
         var msg = "Error with distance matrix";
         this.locationAvailability = false;
@@ -379,7 +378,7 @@ export class AddAddressPage implements OnInit {
         let shortest_distance;
         let shop_index: number;
         response_data = response.rows;
-        
+
         response_data.forEach((ele) => {
           if (ele.elements[0].status == "ZERO_RESULTS") {
             this.locationAvailability = false;
@@ -395,7 +394,7 @@ export class AddAddressPage implements OnInit {
         );
         if (
           shortest_distance <
-          this.delivery_locations[shop_index].radius * 1000
+          this.delivery_locations[shop_index]?.radius * 1000
         ) {
           var msg =
             "Delivery available from " +
@@ -415,8 +414,6 @@ export class AddAddressPage implements OnInit {
       }
     });
   }
-
-
 
   async presentToast() {
     const toast = await this.toastController.create({
@@ -445,13 +442,21 @@ export class AddAddressPage implements OnInit {
         let resp = data.data;
         this.inItMap(resp.lat, resp.lng);
       }
-   
+
       this.latitude = data.data.lat;
       this.longitude = data.data.lng;
-      this.addressForm.patchValue({ latitude: data.data.lat });
-      this.addressForm.patchValue({ longitude: data.data.lng });
+      console.log(this.latitude, this.longitude);
 
-   
+      this.zone.run(() => {
+        this.addressForm.controls["latitude"].setValue(this.latitude);
+        this.addressForm.controls["longitude"].setValue(this.longitude);
+      });
+      console.log(this.addressForm.value);
+
+      // this.addressForm.patchValue({ latitude: data.data.lat });
+      // this.addressForm.patchValue({ longitude: data.data.lng });
+
+      console.log("onsearch change");
       this.getDistance();
     });
     return await modal.present();
@@ -462,7 +467,7 @@ export class AddAddressPage implements OnInit {
   }
 
   onSubmit() {
-   
+    console.log(this.addressForm.value);
 
     if (this.locationAvailability == false) {
       this.showToast(
@@ -475,7 +480,6 @@ export class AddAddressPage implements OnInit {
     } else if (!this.addressForm.value.phone) {
       this.showToast("Please enter a valid phone number");
     } else if (this.addressForm.valid && this.locationAvailability == true) {
-      
       this.addressService.addAddress(this.addressForm.value).subscribe(
         (data) => this.handleResponse(data, POST_ADDRESS),
         (error) => this.handleError(error)
@@ -487,7 +491,6 @@ export class AddAddressPage implements OnInit {
   }
 
   handleResponse(data, type) {
-
     this.delivery_locations = data.delivery_locations;
   }
   handleError(error) {

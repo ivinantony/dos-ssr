@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, NgZone, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { defineCustomElements } from "@teamhive/lottie-player/loader";
 import { PaymentService } from "src/app/services/payment/payment.service";
@@ -17,7 +17,8 @@ export class OrderPlacedPage implements OnInit {
     private paymentService: PaymentService,
     private alertController: AlertController,
     private loadingController: LoadingController,
-    private platform: Platform
+    private platform: Platform,
+    private ngzone: NgZone
   ) {
     if (!this.platform.is("cordova")) {
       this.isPWA = true;
@@ -36,21 +37,18 @@ export class OrderPlacedPage implements OnInit {
       );
     });
   }
-  continue(){
-    // if(!this.platform.is('cordova')){
-    //   console.log("not cordova activated,redirecting to app")
-    //   window.open('dos://dealonstore.com','_blank');
-      
-    // }else{
+  continue() {
+    localStorage.clear();
+    setTimeout(() => {
+      this.ngzone.run(() => {
+        this.router.navigate(["/tabs/home"], { replaceUrl: true });
+      });
+    }, 25);
+    window.open("dos://dealonstore.com", "_blank");
+    // window.open('dos://dealonstore.com','_blank');
+    // setTimeout(() => {
     //   this.router.navigate(['/tabs/home'],{ replaceUrl: true })
-    // }
-    
-   
-  window.open('dos://dealonstore.com','_blank');
-  setTimeout(() => {
-    this.router.navigate(['/tabs/home'],{ replaceUrl: true })
-  }, 1000);
-    
+    // }, 1000);
   }
 
   handleResponse(data) {
@@ -69,7 +67,6 @@ export class OrderPlacedPage implements OnInit {
 
   handleError(error) {
     this.loadingController.dismiss();
-  
   }
 
   async presentAlert(msg: string) {
@@ -82,12 +79,13 @@ export class OrderPlacedPage implements OnInit {
         {
           text: "OK",
           handler: () => {
-            window.open('dos://dealonstore.com','_blank');
+            localStorage.clear();
             setTimeout(() => {
-              this.router.navigate(['/tabs/home'],{ replaceUrl: true })
-            }, 1000);
-            
-            
+              this.ngzone.run(() => {
+                this.router.navigate(["/tabs/home"], { replaceUrl: true });
+              });
+            }, 25);
+            window.open("dos://dealonstore.com", "_blank");
           },
         },
       ],
