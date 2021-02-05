@@ -1,11 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.mermerapps.dealonstore" version="0.0.1"
-    xmlns="http://www.w3.org/ns/widgets"
-    xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.mermerapps.dealonstore" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Deal On Store</name>
     <description>Deal On Store Online Shop.</description>
     <author email="support@mermerapps.com" href="https://mermerapps.com/">Mermer Technologies</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://localhost:8101" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -27,8 +25,7 @@
     <preference name="SplashScreenDelay" value="3000" />
     <platform name="android">
         <preference name="AndroidLaunchMode" value="singleTask" />
-        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application"
-            xmlns:android="http://schemas.android.com/apk/res/android">
+        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">
             <application android:networkSecurityConfig="@xml/network_security_config" />
         </edit-config>
         <resource-file src="resources/android/xml/network_security_config.xml" target="app/src/main/res/xml/network_security_config.xml" />
@@ -53,17 +50,18 @@
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
     </platform>
     <platform name="ios">
-
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
         <config-file parent="com.apple.developer.associated-domains" target="*-Debug.plist">
             <array>
                 <string>applinks:dealonstore.com</string>
+                <string>applinks:pay.mermerapps.com</string>
             </array>
         </config-file>
         <config-file parent="com.apple.developer.associated-domains" target="*-Release.plist">
             <array>
                 <string>applinks:dealonstore.com</string>
+                <string>applinks:pay.mermerapps.com</string>
             </array>
         </config-file>
         <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
@@ -135,4 +133,5 @@
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
     <allow-navigation href="http://192.168.1.7:8101" sessionid="8d0aaf21" />
     <allow-navigation href="http://localhost:8102" sessionid="de63e882" />
+    <allow-navigation href="http://localhost:8101" sessionid="2d25cc5e" />
 </widget>
