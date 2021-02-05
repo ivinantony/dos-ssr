@@ -41,7 +41,7 @@ export class PaypalPage implements OnInit {
     this.appUrl = this.utils.getAppUrl()
     this.storage.get("total_amount").then((val) => {
       if (val) {
-       
+
         this.paymentAmount = val;
       }
     });
@@ -49,11 +49,7 @@ export class PaypalPage implements OnInit {
   }
 
   ngOnInit() { }
-  ngOnDestroy(): void {
-    if (this.platform.is("cordova")) {
-      this.subscription.unsubscribe();
-    }
-  }
+
   hostedSubmit() {
     this.presentLoading().then(() => {
       this.authservice.isAuthenticated().then((id) => {
@@ -67,7 +63,7 @@ export class PaypalPage implements OnInit {
               payable_amount: JSON.stringify(localValues.payable_amount),
               address_id: JSON.stringify(this.address_id),
             };
-        
+
             this.pay.hostedPay(data).subscribe(
               (data) => this.handleResponse(data, POST_DATA),
               (error) => this.handleError(error)
@@ -145,4 +141,15 @@ export class PaypalPage implements OnInit {
     });
     await loading.present();
   }
+  ngOnDestroy(): void {
+    if (this.platform.is("cordova")) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+  // ionViewWillLeave() {
+  //   if (this.platform.is("cordova")) {
+  //     this.subscription.unsubscribe();
+  //   }
+  // }
 }
