@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CartcountService } from 'src/app/cartcount.service';
 import { NotcountService } from 'src/app/notcount.service';
+import { FormControl } from "@angular/forms";
+import { SearchService } from 'src/app/services/search/search.service';
+import { debounceTime } from "rxjs/operators";
 
 
 @Component({
@@ -11,15 +15,15 @@ import { NotcountService } from 'src/app/notcount.service';
 export class DesktopHeaderComponent implements OnInit {
   categories: Array<any> = [
     { id: 1, name: "Home", url: "/tabs/home", icon: "home-outline" },
-    { id: 1, name: "Offers", url: "/offers", icon: "flash-outline" },
+    { id: 2, name: "Offers", url: "/offers", icon: "flash-outline" },
     {
-      id: 1,
+      id: 3,
       name: "Shop by Category",
       url: "/categories",
       icon: "grid-outline",
     },
     {
-      id: 1,
+      id: 4,
       name: "Shop by Brand",
       url: "/manufacturers",
       icon: "construct-outline",
@@ -27,16 +31,48 @@ export class DesktopHeaderComponent implements OnInit {
   ];
   selectedCategoryIndex: number = 0;
   notf_count:any;
-  constructor(private router: Router,private notificationCountService:NotcountService) {
+  cart_count:any;
+  searching: any = false;
+  public searchTerm: FormControl;
+  result: Array<any> = [];
+  isSearchResult: boolean = false;
+
+  constructor(public router: Router,
+    private notificationCountService:NotcountService,
+    private cartCountService:CartcountService,
+    private searchService: SearchService) {
+      this.searchTerm = new FormControl();
   this.notificationCountService.getNotCount().subscribe((res)=>{
       this.notf_count = res
     })
+    this.cartCountService.getCartCount().subscribe((res)=>{
+      this.cart_count = res
+    })
    }
 
-  ngOnInit() { }
+  ngOnInit() {
+
+    this.searchTerm.valueChanges
+      .pipe(debounceTime(700))
+      .subscribe((searchTerm) => {
+        this.searching = false;
+
+        if (searchTerm) {
+          this.isSearchResult = false;
+          this.result = [];
+          this.searchService.getSearchResult(searchTerm).subscribe(
+            (data) => this.handleResponseSearch(data),
+            (error) => this.handleErrorSearch(error)
+          );
+        } else {
+          this.result = [];
+        }
+      });
+
+   }
 
   navigateByUrl(index: number) {
-    this.selectedCategoryIndex = index;
+    // this.selectedCategoryIndex = index;
 
     this.router.navigate([this.categories[index].url]);
 
@@ -45,5 +81,40 @@ export class DesktopHeaderComponent implements OnInit {
 
     this.router.navigate([url]);
 
+  }
+
+  onSearchChange()
+  {
+    this.searching = true;
+  }
+  handleResponseSearch(data) {
+    data.data.filter((item) => {
+      this.result.push(item);
+      console.log(this.result)
+    });
+
+    this.isSearchResult = true;
+  }
+  handleErrorSearch(error) {
+    // console.log(error)
+  }
+
+  viewSearchProduct(index: number) {
+    let id = this.result[index].id;
+    let catId = this.result[index].category_id;
+    let type = this.result[index].type;
+
+    if (type == "P") {
+      this.router.navigate(["product", id, { catId }]);
+    } else if (type == "B") {
+      let brand_id = id;
+      let brand_name = this.result[index].brand_name;
+      this.router.navigate(["brand-products", brand_id, { brand_name }]);
+    } else if (type == "C") {
+      let catId = id;
+      let category_name = this.result[index].category_name;
+
+      this.router.navigate(["products", catId, { category_name }]);
+    }
   }
 }

@@ -251,7 +251,7 @@ export class ProductsPage implements OnInit {
   }
 
   goToCart() {
-    this.router.navigate(["/cart"]);
+    this.router.navigate(["tabs/cart"]);
   }
 
   async presentLoading() {

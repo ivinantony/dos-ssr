@@ -252,7 +252,7 @@ export class HomePage implements OnInit {
     } else if (type == "B") {
       let brand_id = id;
       let brand_name = this.result[index].brand_name;
-      this.router.navigate(["brand-products", brand_id, { brand_name }]);
+      this.router.navigate(["/tabs/rand-products", brand_id, { brand_name }]);
     } else if (type == "C") {
       let catId = id;
       let category_name = this.result[index].category_name;
