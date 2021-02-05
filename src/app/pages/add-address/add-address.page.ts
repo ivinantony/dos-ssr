@@ -188,6 +188,8 @@ export class AddAddressPage implements OnInit {
           );
 
           this.inItMap(resp.coords.latitude, resp.coords.longitude);
+          this.latitude = resp.coords.latitude;
+          this.longitude = resp.coords.longitude;
         })
         .catch((error) => {
           // console.log("Error getting location", error);
