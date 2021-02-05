@@ -61,15 +61,15 @@
     <ion-button
       *ngFor="let item of categories; let i = index"
       class="ion-padding-horizontal"
-      [color]="selectedCategoryIndex == i ? 'primary' : 'secondary'"
+      [class.selected]="selectedCategoryIndex == i"
       fill="clear"
       (click)="navigateByUrl(i)"
     >
-      <!-- <ion-icon class="ion-padding-horizontal" src="../assets/imgs/icons/tag.svg"></ion-icon> -->
-      <ion-icon
+      <ion-icon class="ion-padding-horizontal" src="{{item.icon}}"></ion-icon>
+      <!-- <ion-icon
         name="{{ item.icon }}"
         class="ion-padding-horizontal"
-      ></ion-icon>
+      ></ion-icon> -->
       {{ item?.name }}
     </ion-button>
     <!-- </ion-buttons> -->

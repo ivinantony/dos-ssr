@@ -14,19 +14,19 @@ import { debounceTime } from "rxjs/operators";
 })
 export class DesktopHeaderComponent implements OnInit {
   categories: Array<any> = [
-    { id: 1, name: "Home", url: "/tabs/home", icon: "home-outline" },
-    { id: 2, name: "Offers", url: "/offers", icon: "flash-outline" },
+    { id: 1, name: "Home", url: "/tabs/home", icon: "../assets/imgs/icons/home.svg" },
+    { id: 2, name: "Offers", url: "/offers", icon: "../assets/imgs/icons/tag.svg" },
     {
       id: 3,
       name: "Shop by Category",
       url: "/categories",
-      icon: "grid-outline",
+      icon: "../assets/imgs/icons/categories.svg",
     },
     {
       id: 4,
       name: "Shop by Brand",
       url: "/manufacturers",
-      icon: "construct-outline",
+      icon: "../assets/imgs/icons/brand.svg",
     },
   ];
   selectedCategoryIndex: number = 0;
@@ -72,7 +72,7 @@ export class DesktopHeaderComponent implements OnInit {
    }
 
   navigateByUrl(index: number) {
-    // this.selectedCategoryIndex = index;
+    this.selectedCategoryIndex = index;
 
     this.router.navigate([this.categories[index].url]);
 

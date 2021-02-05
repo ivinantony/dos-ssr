@@ -47,19 +47,31 @@ export class AppComponent implements OnInit {
   loggedIn: boolean = false;
   islogged: boolean;
   categories: Array<any> = [
-    { id: 1, name: "Home", url: "/tabs/home", icon: "home-outline" },
-    { id: 1, name: "Offers", url: "/offers", icon: "flash-outline" },
+    { id: 1, name: "Home", url: "/tabs/home", icon: "../assets/imgs/icons/home.svg" },
+    { id: 2, name: "Offers", url: "/offers", icon: "../assets/imgs/icons/tag.svg" },
     {
-      id: 1,
+      id: 3,
       name: "Shop by Category",
-      url: "/tabs/categories",
-      icon: "grid-outline",
+      url: "/categories",
+      icon: "../assets/imgs/icons/categories.svg",
     },
     {
-      id: 1,
+      id: 4,
       name: "Shop by Brand",
       url: "/manufacturers",
-      icon: "construct-outline",
+      icon: "../assets/imgs/icons/brand.svg",
+    },
+    {
+      id: 5,
+      name: "Cart",
+      url: "/tabs/cart",
+      icon: "../assets/imgs/icons/cart.svg",
+    },
+    {
+      id: 6,
+      name: "Profile",
+      url: "/profile",
+      icon: "../assets/imgs/icons/user.svg",
     },
   ];
   selectedCategoryIndex: number = 0;

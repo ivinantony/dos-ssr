@@ -16,14 +16,19 @@
             [class.selected]="selectedCategoryIndex == i"
             (click)="navigateByUrl(i)"
           >
-            <ion-icon
+          <ion-icon src="{{item.icon}}"
+          color="primary"
+             
+              slot="start"
+              ></ion-icon>
+            <!-- <ion-icon
               color="primary"
               slot="start"
               [name]="item?.icon"
-            ></ion-icon>
+            ></ion-icon> -->
             <ion-label>{{ item?.name }}</ion-label>
           </ion-item>
-          <ion-item
+          <!-- <ion-item
             (click)="router.navigate(['/tabs/cart'])"
             routerDirection="root"
             lines="none"
@@ -34,8 +39,8 @@
               slot="start"
             ></ion-icon>
             <ion-label>Cart</ion-label>
-          </ion-item>
-          <ion-item
+          </ion-item> -->
+          <!-- <ion-item
             (click)="router.navigate(['/profile'])"
             routerDirection="root"
             lines="none"
@@ -46,7 +51,7 @@
               slot="start"
             ></ion-icon>
             <ion-label>Profile</ion-label>
-          </ion-item>
+          </ion-item> -->
         </ion-menu-toggle>
       </ion-list>
     </ion-content>
