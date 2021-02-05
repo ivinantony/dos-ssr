@@ -284,6 +284,8 @@ export class AddAddressPage implements OnInit {
     });
 
     console.log("get distance");
+    this.latitude = lat
+    this.longitude = lng
     this.getDistance();
   }
 
