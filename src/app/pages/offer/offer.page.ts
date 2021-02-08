@@ -19,10 +19,13 @@ import { OfferService } from "src/app/services/offer/offer.service";
 import { UtilsService } from "src/app/services/utils.service";
 import { FilterComponent } from "../filter/filter.component";
 import { CartmodalPage } from "../cartmodal/cartmodal.page";
+import { WishlistService } from "src/app/services/wishlist/wishlist.service";
+
 
 const GET_DATA = 200;
 const POST_DATA = 210;
 const BUY_NOW = 220;
+const WISHLIST = 230;
 @Component({
   selector: "app-offer",
   templateUrl: "./offer.page.html",
@@ -34,6 +37,7 @@ export class OfferPage implements OnInit {
 
   products: Array<any> = [];
 
+  wishlistIndex:any;
   s3url: any;
   page_limit: number;
   page_count: number = 1;
@@ -57,7 +61,8 @@ export class OfferPage implements OnInit {
     private cartCountService: CartcountService,
     private authGuard: AuthGuard,
     private modalController: ModalController,
-    private routerOutlet:IonRouterOutlet
+    private routerOutlet:IonRouterOutlet,
+    private wishlistService:WishlistService
   ) {
     this.s3url = utils.getS3url();
     console.log("constructor");
@@ -120,6 +125,21 @@ export class OfferPage implements OnInit {
         // this.productDetails.cart_count++;
         this.presentModal();
       });
+    }else if (type == WISHLIST) {
+      this.loadingController.dismiss().then(()=>{
+        let name = this.products[this.wishlistIndex].name
+        if(this.products[this.wishlistIndex].wishlist==true)
+        {
+          this.presentToastSuccess(name + "  removed from wishlist.");
+          this.products[this.wishlistIndex].wishlist=!this.products[this.wishlistIndex].wishlist
+
+        }
+        else{
+          this.presentToastSuccess(name + "  added to wishlist.");
+         
+           this.products[this.wishlistIndex].wishlist=!this.products[this.wishlistIndex].wishlist
+        }
+      })
     }
 
     if (infiniteScroll) {
@@ -176,6 +196,27 @@ export class OfferPage implements OnInit {
             );
           });
         }
+      } else {
+        this.authGuard.presentModal();
+      }
+    });
+  }
+
+  addToWishlist(index:number)
+  {
+    this.wishlistIndex = index
+    this.authService.isAuthenticated().then((token) => {
+      if (token) {
+        this.presentLoading().then(() => {
+          let data = {
+            product_id: this.products[index].id,
+            client_id: token,
+          };
+          this.wishlistService.wishlist(data).subscribe(
+            (data) => this.handleResponse(data, WISHLIST),
+            (error) => this.handleError(error)
+          );
+        });
       } else {
         this.authGuard.presentModal();
       }

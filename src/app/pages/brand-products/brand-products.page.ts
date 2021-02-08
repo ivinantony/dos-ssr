@@ -20,12 +20,14 @@ import { UtilsService } from "src/app/services/utils.service";
 
 import { FilterComponent } from "../filter/filter.component";
 import { CartmodalPage } from "../cartmodal/cartmodal.page";
+import { WishlistService } from "src/app/services/wishlist/wishlist.service";
 
 
 const GET_DATA = 200;
 const POST_DATA = 210;
 const DEL_DATA = 220;
 const BUY_NOW = 230;
+const WISHLIST = 240;
 @Component({
   selector: "app-brand-products",
   templateUrl: "./brand-products.page.html",
@@ -88,6 +90,7 @@ export class BrandProductsPage implements OnInit {
   sortType: any = null;
   name: any;
   currentIndex: number;
+  wishlistIndex:any;
   constructor(
     private brandProductService: BrandProductService,
     private utils: UtilsService,
@@ -103,7 +106,8 @@ export class BrandProductsPage implements OnInit {
     private cartCountService: CartcountService,
     private authGuard: AuthGuard,
     private modalController:ModalController,
-    private routerOutlet: IonRouterOutlet
+    private routerOutlet: IonRouterOutlet,
+    private wishlistService:WishlistService
   ) {
     this.brand_id = this.activatedRoute.snapshot.params.brand_id;
     this.s3url = this.utils.getS3url();
@@ -179,6 +183,24 @@ export class BrandProductsPage implements OnInit {
         // this.productDetails.cart_count++;
         this.presentModal();
       });
+    }else if(type == WISHLIST)
+    {
+      console.log(data)
+      this.loadingController.dismiss().then(()=>{
+        let name = this.products[this.wishlistIndex].name
+        if(this.products[this.wishlistIndex].wishlist==true)
+        {
+          this.presentToastSuccess(name + "  removed from wishlist.");
+          this.products[this.wishlistIndex].wishlist=!this.products[this.wishlistIndex].wishlist
+
+        }
+        else{
+          this.presentToastSuccess(name + "  added to wishlist.");
+         
+           this.products[this.wishlistIndex].wishlist=!this.products[this.wishlistIndex].wishlist
+        }
+      })
+
     }
 
     if (infiniteScroll) {
@@ -301,6 +323,27 @@ export class BrandProductsPage implements OnInit {
           };
           this.cartService.addToCart(data).subscribe(
             (data) => this.handleResponse(data, POST_DATA),
+            (error) => this.handleError(error)
+          );
+        });
+      } else {
+        this.authGuard.presentModal();
+      }
+    });
+  }
+
+  addToWishlist(index:number)
+  {
+    this.wishlistIndex = index
+    this.authService.isAuthenticated().then((token) => {
+      if (token) {
+        this.presentLoading().then(() => {
+          let data = {
+            product_id: this.products[index].id,
+            client_id: token,
+          };
+          this.wishlistService.wishlist(data).subscribe(
+            (data) => this.handleResponse(data, WISHLIST),
             (error) => this.handleError(error)
           );
         });

@@ -78,6 +78,18 @@
 
       <ion-button
         class="ion-padding-horizontal"
+        (click)="onNavigate('/wishlist')"
+      >
+        <ion-icon
+          color="secondary"
+          slot="icon-only"
+          src="../assets/imgs/icons/heart-outline.svg"
+        ></ion-icon>
+       
+      </ion-button>
+
+      <ion-button
+        class="ion-padding-horizontal"
         (click)="router.navigate(['/cart'])"
       >
         <ion-icon

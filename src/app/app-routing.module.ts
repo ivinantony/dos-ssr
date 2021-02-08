@@ -210,7 +210,11 @@ const routes: Routes = [
   {
     path: 'wallet-pay',
     loadChildren: () => import('./pages/wallet-pay/wallet-pay.module').then( m => m.WalletPayPageModule)
+  },  {
+    path: 'wishlist',
+    loadChildren: () => import('./pages/wishlist/wishlist.module').then( m => m.WishlistPageModule)
   },
+
 
 
 

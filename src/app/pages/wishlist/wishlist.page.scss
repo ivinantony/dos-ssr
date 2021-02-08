@@ -1,0 +1,20 @@
+ion-thumbnail {
+    width: 65px;
+    height: 65px;
+    
+  }
+
+
+  .whenEmpty{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    p{
+        color: #6CB4EE;
+    }
+    img{
+      width: 35%;
+    }
+  }

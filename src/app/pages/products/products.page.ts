@@ -23,10 +23,12 @@ import { AuthenticationService } from "src/app/services/authentication.service";
 import { IonContent } from "@ionic/angular";
 import { CartcountService } from "src/app/cartcount.service";
 import { AuthGuard } from "src/app/guards/auth.guard";
+import { WishlistService } from "src/app/services/wishlist/wishlist.service";
 const GET_DATA = 200;
 const POST_DATA = 210;
 const DEL_DATA = 220;
 const BUY_NOW = 230;
+const WISHLIST = 240;
 @Component({
   selector: "app-products",
   templateUrl: "./products.page.html",
@@ -49,6 +51,7 @@ export class ProductsPage implements OnInit {
   cart_count: any;
   name: any;
   currentIndex: number;
+  wishlistIndex:any;
   constructor(
     private activatedRoute: ActivatedRoute,
     public router: Router,
@@ -64,7 +67,8 @@ export class ProductsPage implements OnInit {
     private cartCountService: CartcountService,
     private authGuard: AuthGuard,
     private modalController: ModalController,
-    private routerOutlet: IonRouterOutlet
+    private routerOutlet: IonRouterOutlet,
+    private wishlistService:WishlistService
   ) {
     this.page_count = 1;
     this.s3url = this.utils.getS3url();
@@ -137,6 +141,21 @@ export class ProductsPage implements OnInit {
         // this.productDetails.cart_count++;
         this.presentModal();
       });
+    } else if (type == WISHLIST) {
+      this.loadingController.dismiss().then(()=>{
+        let name = this.products[this.wishlistIndex].name
+        if(this.products[this.wishlistIndex].wishlist==true)
+        {
+          this.presentToastSuccess(name + "  removed from wishlist.");
+          this.products[this.wishlistIndex].wishlist=!this.products[this.wishlistIndex].wishlist
+
+        }
+        else{
+          this.presentToastSuccess(name + "  added to wishlist.");
+         
+           this.products[this.wishlistIndex].wishlist=!this.products[this.wishlistIndex].wishlist
+        }
+      })
     }
 
     if (infiniteScroll) {
@@ -257,6 +276,27 @@ export class ProductsPage implements OnInit {
           };
           this.cartService.addToCart(data).subscribe(
             (data) => this.handleResponse(data, POST_DATA),
+            (error) => this.handleError(error)
+          );
+        });
+      } else {
+        this.authGuard.presentModal();
+      }
+    });
+  }
+
+  addToWishlist(index:number)
+  {
+    this.wishlistIndex = index
+    this.authService.isAuthenticated().then((token) => {
+      if (token) {
+        this.presentLoading().then(() => {
+          let data = {
+            product_id: this.products[index].id,
+            client_id: token,
+          };
+          this.wishlistService.wishlist(data).subscribe(
+            (data) => this.handleResponse(data, WISHLIST),
             (error) => this.handleError(error)
           );
         });

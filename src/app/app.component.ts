@@ -68,6 +68,12 @@ export class AppComponent implements OnInit {
     },
     {
       id: 6,
+      name: "Wishlist",
+      url: "/wishlist",
+      icon: "../assets/imgs/icons/heart-outline.svg",
+    },
+    {
+      id: 7,
       name: "Profile",
       url: "/profile",
       icon: "../assets/imgs/icons/user.svg",

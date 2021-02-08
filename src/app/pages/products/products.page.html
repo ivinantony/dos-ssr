@@ -91,6 +91,10 @@
             <ion-button (click)="buyNow(i)" expand="full" color="primary" shape="round" class="tocart">
               Buy Now
             </ion-button>
+            <ion-button fill="clear" (click)="addToWishlist(i)" class="wish">
+              
+              <ion-icon slot="icon-only" [name]="item.wishlist==true? 'heart' : 'heart-outline'" ></ion-icon>
+            </ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>
