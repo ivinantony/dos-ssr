@@ -25,6 +25,7 @@ import { FilterComponent} from './pages/filter/filter.component';
 import { AngularFireModule } from '@angular/fire';  
 import { AngularFireMessagingModule } from '@angular/fire/messaging';
 import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
+import { RouterModule, Routes } from '@angular/router';
 // import { IonicImageZoomer } from 'ionic-image-zoomer';
 
 
@@ -40,7 +41,7 @@ import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
       swipeBackEnabled: true,
     }),
     IonicStorageModule.forRoot(),
-   
+    RouterModule.forRoot([]),
     AppRoutingModule,
     FontAwesomeModule,
     HttpClientModule,
