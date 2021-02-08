@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoadingController, ModalController, ToastController } from '@ionic/angular';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
 const GET_DATA=200;
 const POST_PHONE=210;
@@ -23,10 +24,20 @@ export class EditProfilePage implements OnInit {
   type:any
   client_id:any
 
-  constructor(private modalController:ModalController,private toastController:ToastController,private loadingController:LoadingController,
-    private profileService:ProfileService,private router:Router) {
-    this.client_id = localStorage.getItem('client_id')
+
+  constructor(private modalController:ModalController,private toastController:ToastController,
+    private loadingController:LoadingController,
+    private profileService:ProfileService,
+    private router:Router,
+    private authservice:AuthenticationService) {
+
     this.getData()
+    this.authservice.isAuthenticated().then(val=>{
+      if(val)
+      {
+        this.client_id = val
+      }
+    })
    }
   
   ngOnInit() {
@@ -34,10 +45,22 @@ export class EditProfilePage implements OnInit {
  
   getData() {
     this.presentLoading().then(()=>{
-      this.profileService.getProfileDetails(this.client_id).subscribe(
-        (data) => this.handleResponseData(data,GET_DATA),
-        (error) => this.handleResponseError(error)
-      )
+    this.authservice.isAuthenticated().then(val=>{
+      if(val)
+      {
+        this.profileService.getProfileDetails(val).subscribe(
+          (data) => this.handleResponseData(data,GET_DATA),
+          (error) => this.handleResponseError(error)
+        )
+      }
+      else{
+        this.profileService.getProfileDetails(null).subscribe(
+          (data) => this.handleResponseData(data,GET_DATA),
+          (error) => this.handleResponseError(error)
+        )
+      }
+    })
+      
     }
     )
   }
@@ -50,16 +73,15 @@ export class EditProfilePage implements OnInit {
     }
     else
     {
-      // console.log(this.name)
-      let data={
-        client_id:Number(localStorage.getItem('client_id')),
-        name:this.name
-      }
-      this.profileService.updateName(data).subscribe(
-        (data)=>this.handleResponseData(data,POST_NAME),
-        (error) => this.handleResponseError(error)
-      )
-      this.getData()
+          let data={
+            client_id:this.client_id,
+            name:this.name
+          }
+          this.profileService.updateName(data).subscribe(
+            (data)=>this.handleResponseData(data,POST_NAME),
+            (error) => this.handleResponseError(error)
+          )
+          this.getData()
     }
    
     
@@ -73,17 +95,24 @@ export class EditProfilePage implements OnInit {
     }
     else if(this.validatePhone(this.phone))
     {
-      let data={
-        client_id:Number(localStorage.getItem('client_id')),
-        phone:this.phone
-      }
-      this.profileService.updatePhone(data).subscribe(
-        (data)=>this.handleResponseData(data,POST_PHONE),
-        (error) => this.handleResponseError(error)
-      )
-      this.type = "phone"
-      let phoneNo = this.phone
-      this.router.navigate(['profile-otp',{phoneNo}])
+      this.authservice.isAuthenticated().then(val=>{
+        if(val)
+        {
+          let data={
+            client_id:val,
+            phone:this.phone
+          }
+          this.profileService.updatePhone(data).subscribe(
+            (data)=>this.handleResponseData(data,POST_PHONE),
+            (error) => this.handleResponseError(error)
+          )
+          this.getData()
+        }
+      })
+
+      // this.type = "phone"
+      // let phoneNo = this.phone
+      // this.router.navigate(['profile-otp',{phoneNo}])
     }
     else
     {
@@ -99,83 +128,27 @@ export class EditProfilePage implements OnInit {
     }
     else if(this.validateEmail(this.email))
     {
-      let data={
-        client_id:Number(localStorage.getItem('client_id')),
-        email:this.email
-      }
-      this.profileService.updateEmail(data).subscribe(
-        (data)=>this.handleResponseData(data,POST_EMAIL),
-        (error) => this.handleResponseError(error)
-      )
-      this.type = "mail"
-        let Email = this.email
-      this.router.navigate(['profile-otp',{Email}])
-      // this.presentModal(this.type)
+      this.authservice.isAuthenticated().then(val=>{
+        if(val)
+        {
+          let data={
+            client_id:val,
+            email:this.email
+          }
+          this.profileService.updateEmail(data).subscribe(
+            (data)=>this.handleResponseData(data,POST_EMAIL),
+            (error) => this.handleResponseError(error)
+          )
+          this.type = "mail"
+            let Email = this.email
+          this.router.navigate(['profile-otp',{Email}])
+        }
+      })
     }
     else{
       this.toastError("Invalid Email Address")
     }
 
-  }
-
-  handleResponseData(data,type)
-  {
-    this.loadingController.dismiss()
-    if(type==GET_DATA)
-    {
-      // console.log(data)
-      this.profile = data.client_Details
-      this.name = this.profile?.name
-      this.phone = this.profile?.phone
-      this.email = this.profile?.email
-      this.currentPhone = this.profile?.phone
-      this.currentEmail = this.profile?.email
-      this.currentName = this.profile?.name
-     
-    }
-    else if(type == POST_NAME){
-      // console.log(data)
-      this.getData()
-    }
-    else{
-      // console.log(data)
-    }
-  }
-  handleResponseError(error)
-  {
-    this.loadingController.dismiss()
-    // console.log(error)
-  }
-
-
-  // async presentModal(type) {
-  //   const modal = await this.modalController.create({
-  //     component: "he",
-  //     cssClass: 'modal-class',
-  //     componentProps: {
-  //       type : type,
-        
-  //     }
-  //   });
-  //    modal.onDidDismiss().finally(()=>{
-  //     this.getData()
-  //   })
-  //   return await modal.present();
-   
-  // }
-
- 
-  async toastError(msg) {
-    const toast = await this.toastController.create({
-      color: "danger",
-
-      message: msg,
-      duration: 1000,
-      mode: "ios",
-      cssClass: "my-custom-toast",
-      position: "middle",
-    });
-    toast.present();
   }
 
   validatePhone(phone:any)
@@ -190,6 +163,7 @@ export class EditProfilePage implements OnInit {
     }
 
   }
+
   validateEmail(email:any)
   {
     var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
@@ -201,6 +175,46 @@ export class EditProfilePage implements OnInit {
     else{
       return true
     }
+  }
+
+  handleResponseData(data,type)
+  {
+    if(type==GET_DATA)
+    {
+      this.loadingController.dismiss().then(()=>{
+        this.profile = data.client_Details
+        this.name = this.profile?.name
+        this.phone = this.profile?.phone
+        this.email = this.profile?.email
+        this.currentPhone = this.profile?.phone
+        this.currentEmail = this.profile?.email
+        this.currentName = this.profile?.name
+      })  
+    }
+    else if(type == POST_NAME){
+      this.getData()
+    }
+    else{
+      // console.log(data)
+    }
+  }
+
+  handleResponseError(error)
+  {
+    this.loadingController.dismiss()
+  }
+
+  async toastError(msg) {
+    const toast = await this.toastController.create({
+      color: "danger",
+
+      message: msg,
+      duration: 1000,
+      mode: "ios",
+      cssClass: "my-custom-toast",
+      position: "top",
+    });
+    toast.present();
   }
 
   async presentLoading() {

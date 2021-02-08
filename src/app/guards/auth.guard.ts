@@ -3,7 +3,7 @@ import { CanActivate } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { LoginmodalPage } from '../pages/loginmodal/loginmodal.page';
-import { AuthenticationService, TOKEN_KEY } from '../services/authentication.service';
+import { AuthenticationService } from '../services/authentication.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,19 +11,23 @@ import { AuthenticationService, TOKEN_KEY } from '../services/authentication.ser
 export class AuthGuard implements CanActivate {
   constructor(
     public ModalController: ModalController,
-    public authservice: AuthenticationService
+    public authservice: AuthenticationService,
   ) {
   }
 
-  canActivate(): boolean | Observable<boolean> | Promise<boolean> {
-    console.log('this.authservice.isAuthenticated()', this.authservice.isAuthenticated())
-    if (this.authservice.isAuthenticated()) {
-      return true;
-    } else {
-      this.presentModal();
-      return false;
-    }
 
+
+  canActivate():Promise<boolean>  {
+    return this.authservice.isAuthenticated().then(res => {
+      if (res) {
+        return true;
+      }
+      this.presentModal();
+    
+      return false;
+      
+
+    });
   }
 
   async presentModal() {

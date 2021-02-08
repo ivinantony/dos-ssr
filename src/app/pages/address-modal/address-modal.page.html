@@ -1,7 +1,7 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="secondary">
     <ion-buttons slot="end">
-      <ion-button (click)="close()">
+      <ion-button (click)="close()" color="light">
         <ion-icon name="close-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -11,40 +11,41 @@
 
 <ion-content>
   <ion-toolbar>
-    <ion-buttons slot="end">
-      <ion-button color="danger" (click)="addAddress()">
-        <ion-icon slot="start" color="danger" name="add"></ion-icon>
-        Add Address
-      </ion-button>
-    </ion-buttons>
+    <ion-chip slot="end" outline color="primary" (click)="addAddress()">
+      <ion-label>Add Address</ion-label>
+      <ion-icon name="add-circle-outline"></ion-icon>
+    </ion-chip>
   </ion-toolbar>
 
-  <ion-list>
+  <ion-content>
+    <ng-container
+      *ngIf="addresses?.length > 0; then thenTemplate; else elseTemplate"
+    ></ng-container>
 
-      <ion-radio-group
-      [(ngModel)]="selectedAddress"
-      mode="md"
-      (ionChange)="onChangeAddress($event)"
-    >
-      <ion-item
-        *ngFor="let item of addresses; let i=index"
-        lines="none"
-      >
-        <ion-label>
-          <ion-text color="primary">
-            <h3>{{item.name}}</h3>
-          </ion-text>
-          <p>{{item.full_address}}</p>
-          <p>{{item.landmark}}</p>
-        </ion-label>
-        <ion-radio slot="start" value="{{i}}"></ion-radio>
+    <ng-template #thenTemplate>
+      <ion-list>
+        <ion-item *ngFor="let item of addresses; let i=index" lines="none">
+          <ion-label (click)="onChangeAddress(i)">
+            <ion-text color="primary">
+              <h3>{{item.name}}</h3>
+            </ion-text>
+            <p>{{item.full_address}}</p>
+            <p>{{item.landmark}}</p>
+          </ion-label>
+          <ion-radio slot="start" value="{{i}}"></ion-radio>
+          <ion-buttons slot="end">
+            <ion-button (click)="options(i)" color="secondary">
+              <ion-icon name="ellipsis-horizontal-sharp"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-item>
+      </ion-list>
+    </ng-template>
+
+    <ng-template #elseTemplate>
+      <ion-item lines="none" class="ion-text-center ion-margin">
+        <ion-label>No Addresses Added</ion-label>
       </ion-item>
-    </ion-radio-group>
-
-   
-
-  </ion-list>
-
+    </ng-template>
+  </ion-content>
 </ion-content>
-
-

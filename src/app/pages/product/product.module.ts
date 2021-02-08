@@ -10,6 +10,7 @@ import { ProductPage } from './product.page';
 import { NgxImageZoomModule } from 'ngx-image-zoom';
 
 import { QuillModule } from 'ngx-quill'
+import { SharedComponentsModule } from 'src/app/components/shared-components.module';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { QuillModule } from 'ngx-quill'
     ReactiveFormsModule,
     NgxImageZoomModule,
     QuillModule.forRoot(),
+    SharedComponentsModule
   ],
   declarations: [ProductPage]
 })

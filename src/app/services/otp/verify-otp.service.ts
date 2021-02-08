@@ -22,4 +22,11 @@ export class VerifyOtpService {
     return this.httpClient
     .post(this.url+"verify-otp",data,{headers}).pipe(map(res=>{return res}));
   }
+
+  resendOtp(data:any)
+  {
+    const headers = this.headerService.getHttpHeaders()
+    return this.httpClient
+    .post(this.url+"resend-otp",data,{headers}).pipe(map(res=>{return res}));
+  }
 }

@@ -4,7 +4,7 @@
 
 #cart-btn {
   position: relative;
-  ion-icon{
+  ion-icon {
     font-size: 22px;
   }
 }
@@ -12,7 +12,9 @@
 #cart-badge {
   position: absolute;
   top: 0px;
-  right: 0px;
+  right: -5px;
+  padding: 3px;
+  font-size: 10px;
 }
 
 .banner {
@@ -55,34 +57,30 @@ hr {
   text-decoration: line-through;
 }
 
-.details{
+.details {
   // margin-bottom: 60px;
-  h1{
+  h1 {
     font-size: 16px;
     color: #777;
     text-align: center;
     padding-bottom: 5px;
   }
-  h2{
-    font-size: .9rem;
+  h2 {
+    font-size: 0.9rem;
     text-align: center;
     color: #444;
     font-weight: bold;
   }
-  p{
-    text-align: center;
-  }
-  h3{
 
+  h3 {
+    margin-top: 2px;
     font-size: 0.9rem;
     font-weight: 700;
     color: #444;
     margin-bottom: 0px;
-    
   }
 }
-.text
-{
+.text {
   margin: 0px;
 }
 
@@ -109,16 +107,14 @@ hr {
     color: #444;
   }
 }
-.tocart{
+.tocart {
   position: absolute;
   bottom: 10px;
   z-index: 1;
-  width: 148px;
   left: 50%;
   -ms-transform: translateX(-50%);
   transform: translateX(-50%);
   margin: 0px;
-
 }
 
 .btn {
@@ -172,9 +168,8 @@ hr {
   }
 }
 
-.img_wrapper{
+.img_wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-

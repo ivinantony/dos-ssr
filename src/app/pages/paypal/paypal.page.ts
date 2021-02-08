@@ -1,154 +1,155 @@
-import { Component, NgZone, OnInit, ɵConsole } from '@angular/core';
-import { Router } from '@angular/router';
-import { LoadingController, Platform, ToastController } from '@ionic/angular';
-import { PaymentService } from 'src/app/services/payment/payment.service';
-import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
-import { Storage } from '@ionic/storage';
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { LoadingController, Platform, ToastController } from "@ionic/angular";
+import { PaymentService } from "src/app/services/payment/payment.service";
+import {
+  InAppBrowser,
+  InAppBrowserEvent,
+} from "@ionic-native/in-app-browser/ngx";
+import { Storage } from "@ionic/storage";
+import { AuthenticationService } from "src/app/services/authentication.service";
+import { UtilsService } from "src/app/services/utils.service";
 
-const POST_DATA=200;
+const POST_DATA = 200;
+const CONFIRM = 777;
 @Component({
-  selector: 'app-paypal',
-  templateUrl: './paypal.page.html',
-  styleUrls: ['./paypal.page.scss'],
+  selector: "app-paypal",
+  templateUrl: "./paypal.page.html",
+  styleUrls: ["./paypal.page.scss"],
 })
 export class PaypalPage implements OnInit {
   paymentAmount: string;
-  currency: string = 'USD';
-  currencyIcon: string = '$';
-  order_id:any
-  details:any
-  constructor(private pay:PaymentService,public router:Router,private toastController:ToastController,
-    private zone:NgZone,private loadingController:LoadingController,
-    private platform:Platform,private iab:InAppBrowser,
-    private storage: Storage,) 
-  { 
-    this.paymentAmount = localStorage.getItem('total_amount')
-    
-    this.paypal()
+  details: any;
+  response: any;
+  url: any;
+  address_id: any;
+  client_id: any;
+  tran_ref: any;
+  appUrl: string
+  private subscription: any;
+  constructor(
+    private pay: PaymentService,
+    public router: Router,
+    private toastController: ToastController,
+    private loadingController: LoadingController,
+    private platform: Platform,
+    private utils: UtilsService,
+    private paymentService: PaymentService,
+    private storage: Storage,
+    private authservice: AuthenticationService
+  ) {
+    this.appUrl = this.utils.getAppUrl()
+    this.storage.get("total_amount").then((val) => {
+      if (val) {
+
+        this.paymentAmount = val;
+      }
+    });
+
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   hostedSubmit() {
     this.presentLoading().then(() => {
+      this.authservice.isAuthenticated().then((id) => {
+        this.client_id = id;
+        if (id) {
+          this.storage.get("data_store").then((val) => {
+            let localValues = JSON.parse(val);
+            let data = {
+              client_id: JSON.stringify(id),
+              payable_order_id: JSON.stringify(localValues.payable_order_id),
+              payable_amount: JSON.stringify(localValues.payable_amount),
+              address_id: JSON.stringify(this.address_id),
+            };
 
-      let data = {
-        client_id:Number(localStorage.getItem('client_id')),
-        payable_order_id:localStorage.getItem('order_id'),
-        payable_amount:localStorage.getItem('total_amount'),
-        address_id:localStorage.getItem('address_id')
-      }
-      this.pay.hostedPay(data)
-        .subscribe(
-          data => this.handleResponse(data),
-          error => this.handleError(error))
-
-    })
+            this.pay.hostedPay(data).subscribe(
+              (data) => this.handleResponse(data, POST_DATA),
+              (error) => this.handleError(error)
+            );
+          });
+        }
+      });
+    });
   }
 
+  handleResponse(data, type: any) {
+    if (type == POST_DATA) {
+      this.response = data;
+      this.storage.set("tran_ref", data.tran_ref).then(() => {
+        let encodedData = {
+          redirect_url: encodeURIComponent(data.redirect_url),
+          tran_ref: data.tran_ref,
+          client_id: this.client_id,
+        };
 
-  handleResponse(data) {
-    this.loadingController.dismiss()
-    console.log('data n Tab3', data)
-    this.storage.set("tran_ref",data.tran_ref).then(()=>{
-    this.openUrl(data.redirect_url)
-    })
-    }
-    handleError(error) {
-    // console.log('error in Tab3', error)
-    this.loadingController.dismiss()
-    }
-    openUrl(url) {
-    if (!this.platform.is('cordova')) {
-    window.open(url, '_self')
-    return;
-    }
-    const browser = this.iab.create(url, '_self');
-    
-    browser.on('loadstop').subscribe(event => {
-    browser.insertCSS({ code: "body{color: red;" });
-    });
-    
-    // browser.close();
-    }
-
-paypal()
-{
-  let _this = this;
-  setTimeout(() => {
-    // Render the PayPal button into #paypal-button-container
-    <any>window['paypal'].Buttons({
-
-      // Set up the transaction
-      createOrder: function (data, actions) {
-        
-        return actions.order.create({
-          purchase_units: [{
-            amount: {
-              value: _this.paymentAmount
-            }
-          }]
-        });
-      },
-
-      // Finalize the transaction
-      onApprove: function (data, actions) {
-        _this.presentLoading()
-        return actions.order.capture()
-          .then(function (details) {
-            
-            // console.log(details)
-            // Show a success message to the buyer
-            if(details.status == "COMPLETED")
-            {
-              let data={
-                payable_order_id:localStorage.getItem("order_id"),
-                client_id:localStorage.getItem("client_id")
+        var url = `${this.appUrl}iframe?data=${JSON.stringify(
+          encodedData
+        )}`;
+        window.open(url, "_self");
+        if (this.platform.is("cordova")) {
+          this.subscription = this.platform.resume.subscribe(async () => {
+            this.storage.get("tran_ref").then((ref) => {
+              if (ref) {
+                this.paymentService
+                  .confirmPayment(ref, this.client_id)
+                  .subscribe(
+                    (data) => this.handleResponse(data, CONFIRM),
+                    (error) => this.handleError(error)
+                  );
               }
-              
-              _this.pay.capturePayment(data).subscribe(
-                (data)=>console.log(data),
-                (error)=>console.log(error)    
-              )
-              _this.loadingController.dismiss()
-              _this.zone.run(() => {
-               _this.router.navigate(['order-placed'])
-              })
-            }
-            // alert('Transaction completed by ' + details.payer.name.given_name + '!');
-
-          })
-          .catch(err => {
-            console.log(err);
-            console.log("payment failed")
-            _this.presentToast("Payment Failed")
-            _this.router.navigate(['cart'])
-          })
+            });
+          });
+        }
+      });
+      this.loadingController.dismiss();
+    } else if (type == CONFIRM) {
+      if (data.details) {
+        if (data.details.response_status == "A") {
+          this.router.navigate(["/tabs/home"], { replaceUrl: true });
+        } else {
+          this.router.navigate(["/tabs/cart"], { replaceUrl: true });
+        }
+      } else {
+        alert("Payment Cancelled.");
       }
-    }).render('#paypal-button-container');
-  }, 500)
-}
+    }
+  }
 
+  handleError(error) {
+    this.loadingController.dismiss();
+  }
 
   async presentToast(msg) {
     const toast = await this.toastController.create({
       message: msg,
-      cssClass: 'custom-toast',
-      position: 'middle',
-      color:'danger',
-      duration: 2000
+      cssClass: "custom-toast",
+      position: "top",
+      color: "dark",
+      duration: 2000,
     });
     toast.present();
   }
 
   async presentLoading() {
     const loading = await this.loadingController.create({
-      spinner: 'crescent',
-      cssClass:'custom-spinner',
-      message: 'Please wait...',
-      showBackdrop: true
+      spinner: "crescent",
+      cssClass: "custom-spinner",
+      message: "Please wait...",
+      showBackdrop: true,
     });
     await loading.present();
   }
+  ngOnDestroy(): void {
+    if (this.platform.is("cordova")) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+  // ionViewWillLeave() {
+  //   if (this.platform.is("cordova")) {
+  //     this.subscription.unsubscribe();
+  //   }
+  // }
 }

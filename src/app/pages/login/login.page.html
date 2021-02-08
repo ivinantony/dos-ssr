@@ -1,9 +1,10 @@
-<ion-header class="ion-no-border">
-  <ion-toolbar >
+<desktop-header></desktop-header>
+<ion-header class="ion-no-border ion-hide-md-up">
+  <ion-toolbar color="secondary">
     <ion-buttons slot="start">
       <ion-back-button
-        color="dark"
-        defaultHref="/home"
+        color="light"
+        defaultHref="/tabs/home"
         
       ></ion-back-button>
     </ion-buttons>
@@ -11,92 +12,88 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-grid >
-    <ion-row >
+  <ion-grid>
+    <ion-row>
       <!-- <ion-col class="ion-hide-lg-down" size-sm="12" size-md="12"  size-lg="6" size-xl="12"></ion-col> -->
       <ion-col
         class="ion-padding"
         size-sm="12"
         size-md="4"
-        
         size-lg="4"
         size-xl="4"
         class="wrapper"
         style="border: 1px solid rgba(var(--b6a, 219, 219, 219), 1)"
       >
-     
-      <form [formGroup]="loginGroup" (ngSubmit)="login(loginGroup.value)">
-        <ion-list>
-          <ion-list-header>
-            <ion-label class="ion-text-center">
-              <ion-text color="magenta">Deal </ion-text>
-              <ion-text color="dark">On Store </ion-text></ion-label
-            >
-          </ion-list-header>
-          <ion-item color="light" class="ion-text-center input" lines="none">
-            <ion-input  required placeholder="Name" formControlName="name"></ion-input>
-          </ion-item>
-            <ng-container  *ngFor="let validation of validation_messages.name">
-              <div class="err_msg" *ngIf="loginGroup.get('name').hasError(validation.type) &&
+        <form [formGroup]="loginGroup" (ngSubmit)="login()">
+          <ion-list>
+            <ion-list-header>
+              <ion-label class="ion-text-center">
+                <ion-text color="primary">Deal </ion-text>
+                <ion-text color="dark">On Store </ion-text></ion-label
+              >
+            </ion-list-header>
+            <ion-item color="light" class="ion-text-center input" lines="none">
+              <ion-input
+                required
+                placeholder="Name"
+                formControlName="name"
+              ></ion-input>
+            </ion-item>
+            <ng-container *ngFor="let validation of validation_messages.name">
+              <div
+                class="err_msg"
+                *ngIf="loginGroup.get('name').hasError(validation.type) &&
               loginGroup.get('name').dirty &&
-              loginGroup.get('name').touched">
+              loginGroup.get('name').touched"
+              >
                 <ion-icon name="information-circle-outline"></ion-icon>
                 {{ validation.message}}
               </div>
             </ng-container>
-    
-            <!-- <div class="container">
-              <div class="drpdwn">
-                <select name="cars" id="cars">
-                  <option value="volvo" class="opt">+971</option>
-                  <option value="saab">+973</option>
-                  <option value="opel">+978</option>
-                  <option value="audi">+978</option>
-                </select>
-              </div>
-              <ion-item color="light" class="ion-text-center input" lines="none">
-                <p>+971</p>
-                <ion-input required placeholder="Phone number" formControlName="phone"></ion-input>
-              </ion-item>
-            </div> -->
-
             <ion-item color="light" class="ion-text-center input" lines="none">
               +971
-              <ion-input required placeholder="Phone number" formControlName="phone" type="tel"></ion-input>
+              <ion-input
+                required
+                placeholder="Phone number"
+                formControlName="phone"
+                type="tel"
+              ></ion-input>
             </ion-item>
-     
-    
-            
-          <!-- <ion-item color="light" class="ion-text-center input" lines="none">
-            <ion-input required placeholder="Phone number" formControlName="phone"></ion-input>
-          </ion-item> -->
-          <ng-container  *ngFor="let validation of validation_messages.phone">
-            <div class="err_msg" *ngIf="loginGroup.get('phone').hasError(validation.type) &&
+            <ng-container *ngFor="let validation of validation_messages.phone">
+              <div
+                class="err_msg"
+                *ngIf="loginGroup.get('phone').hasError(validation.type) &&
             loginGroup.get('phone').dirty &&
-            loginGroup.get('phone').touched">
-              <ion-icon name="information-circle-outline"></ion-icon>
-              {{ validation.message}}
-            </div>
-          </ng-container>
-          <ion-item color="light" class="ion-text-center input" lines="none">
-            <ion-input placeholder="Email" formControlName="email" type="email" ></ion-input>
-          </ion-item>
-          <ng-container  *ngFor="let validation of validation_messages.email">
-            <div class="err_msg" *ngIf="loginGroup.get('email').hasError(validation.type) &&
+            loginGroup.get('phone').touched"
+              >
+                <ion-icon name="information-circle-outline"></ion-icon>
+                {{ validation.message}}
+              </div>
+            </ng-container>
+            <ion-item color="light" class="ion-text-center input" lines="none">
+              <ion-input
+                placeholder="Email"
+                formControlName="email"
+                type="email"
+              ></ion-input>
+            </ion-item>
+            <ng-container *ngFor="let validation of validation_messages.email">
+              <div
+                class="err_msg"
+                *ngIf="loginGroup.get('email').hasError(validation.type) &&
             loginGroup.get('email').dirty &&
-            loginGroup.get('email').touched">
-              <ion-icon name="information-circle-outline"></ion-icon>
-              {{ validation.message}}
-            </div>
-          </ng-container>
-        </ion-list>
-        <ion-button color="dark" type="submit"  expand="block"
-          >Login</ion-button
-        >
+            loginGroup.get('email').touched"
+              >
+                <ion-icon name="information-circle-outline"></ion-icon>
+                {{ validation.message}}
+              </div>
+            </ng-container>
+          </ion-list>
+          <ion-button color="primary" type="submit" shape="round" expand="block" [disabled]="!loginGroup.valid"
+            >Login</ion-button
+          >
         </form>
       </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
-
-<!-- [disabled]="!loginGroup.valid"  -->

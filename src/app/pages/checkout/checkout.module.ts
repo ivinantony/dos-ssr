@@ -8,13 +8,15 @@ import { CheckoutPageRoutingModule } from './checkout-routing.module';
 
 import { CheckoutPage } from './checkout.page';
 import { PayPal } from '@ionic-native/paypal/ngx';
+import { SharedComponentsModule } from 'src/app/components/shared-components.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    CheckoutPageRoutingModule
+    CheckoutPageRoutingModule,
+    SharedComponentsModule
   ],
   providers:[
     PayPal

@@ -1,21 +1,27 @@
-<ion-header class="ion-no-border">
-  <ion-toolbar>
-    <!-- <ion-title>Successful</ion-title> -->
-  </ion-toolbar>
-</ion-header>
+
 
 <ion-content>
-<div class="ion-text-center wrapper">
+<div class="ion-text-center wrapper" *ngIf="status">
   <!-- <img src="../../../assets/imgs/check-mark.svg" alt=""> -->
   <h2>Order placed Successfully</h2>
   <lottie-player class="player" autoplay  src="../../../assets/imgs/orderplaced.json"  style="width: 300px; height: 300px">
   </lottie-player>
-  
-  <div class='button'>
-    <ion-button class="btn" (click)="router.navigate(['home'])" expand="full" fill="solid" shape="round" color="primary"  >
+  <div class='button' *ngIf="isPWA">
+    <ion-button class="btn"  (click)="continue()" expand="full" fill="solid" shape="round" color="primary"  >
       CONTINUE
     </ion-button>
   </div>
+
+  <ion-button (click)="onClick()">
+    <ion-icon slot="start" name="add"></ion-icon>
+Hrtef
+  </ion-button>
+  <div *ngIf="!isPWA">
+ <ion-text color="primary">
+   <p>Visit Deal On Store App for more details on this transaction ot to make another purchase. Thank you for shopping from DOS!</p>
+ </ion-text>
+  </div>
+
   
 </div>
 </ion-content>

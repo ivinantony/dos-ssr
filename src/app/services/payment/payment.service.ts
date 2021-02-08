@@ -46,6 +46,24 @@ export class PaymentService {
       )
     }
 
+   wallet_hostedPay(data:any) {
+    //  let url = "http://127.0.0.1:8000/api/mobile/"
+    let headers = new HttpHeaders()
+    .set('Accept', 'application/json')
+    return this.httpclient.post(this.url + 'wallet-pay', data, { headers: headers })
+      .pipe(
+        retry(3),
+        tap( // Log the result or error
+          data => {
+            return data
+          },
+          error => {
+            return error
+          }
+        ),
+      )
+    }
+
 
     public confirmPayment(trans_ref:any,client_id:any)
    {

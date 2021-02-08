@@ -14,7 +14,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
     CommonModule,
     FormsModule,
     IonicModule,
-    PaypalPageRoutingModule
+    PaypalPageRoutingModule,
   ],
   declarations: [PaypalPage],
   providers:[InAppBrowser]

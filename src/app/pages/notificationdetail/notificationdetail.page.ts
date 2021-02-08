@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { LoadingController, ModalController } from '@ionic/angular';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { UtilsService } from 'src/app/services/utils.service';
 
@@ -16,23 +17,30 @@ export class NotificationdetailPage implements OnInit {
   constructor(private notifications:NotificationService,
     private utils:UtilsService,
     private loadingController:LoadingController,
-    private modalController:ModalController) 
+    private modalController:ModalController,
+    private authservice:AuthenticationService) 
     { 
       this.s3url = this.utils.getS3url()
       this.getData()
     }
 
   ngOnInit() {
+    if (!window.history.state.modal) {
+      const modalState = { modal: true };
+      history.pushState(modalState, null);
+      }
   }
 
   getData()
   {
     this.presentLoading().then( ()=>{
-      let client_id = Number(localStorage.getItem('client_id'))
-      this.notifications.getNotificationDetails(this.id,client_id).subscribe(
-        (data)=>this.handleResponse(data),
-        (error)=>this.handleError(error)
-      )
+      this.authservice.isAuthenticated().then(val=>{
+        this.notifications.getNotificationDetails(this.id,val).subscribe(
+          (data)=>this.handleResponse(data),
+          (error)=>this.handleError(error)
+        )
+      })
+      
     })
     
   }

@@ -62,3 +62,11 @@ ion-item {
     border-radius: 0.8rem 0px 0px 0.8rem;
     right: 0px;
 }
+
+.nocoupon{
+    margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}

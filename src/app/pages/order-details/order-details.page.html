@@ -1,8 +1,10 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>ORDER DETAILS</ion-title>
+<desktop-header></desktop-header>
+
+<ion-header class="ion-hide-md-up">
+  <ion-toolbar color="secondary">
+    <ion-title>Order Details</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="orders"  color="dark"></ion-back-button>
+      <ion-back-button defaultHref="orders"  color="light"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -68,7 +70,7 @@
 </ion-content>
 <ion-footer *ngIf="data?.order_status?.id!=5">
   
-  <ion-toolbar color="danger">
+  <ion-toolbar color="primary">
     <ion-button
       class="btn"
       color="light"

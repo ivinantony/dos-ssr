@@ -1,46 +1,60 @@
-import { Platform } from '@ionic/angular';
-import { Injectable } from '@angular/core';
+import { Platform } from "@ionic/angular";
+import { Injectable } from "@angular/core";
+import { CartcountService } from "../cartcount.service";
+import { NotcountService } from "../notcount.service";
+import { Storage } from "@ionic/storage";
+import { BehaviorSubject } from "rxjs";
 
-export const TOKEN_KEY = 'auth-token';
-
+const TOKEN_KEY = "client_id";
+const CART_COUNT = "cart_count";
+const NOTIFICATION_COUNT = "notf_count";
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
+
 export class AuthenticationService {
+  islogged = new BehaviorSubject(false)
+  constructor(
+    private storage: Storage,
+    private cartCountService: CartcountService,
+    private notfCountSertvice: NotcountService
+  ) {}
 
-  constructor(private plt: Platform) {
-   
-  }
 
-  getToken() {
-    var token = localStorage.getItem(TOKEN_KEY);
-    // console.log('token')
-    if (token) {
-      return token
-    }
-  }
-
-  async login(token) {
-    await localStorage.setItem(TOKEN_KEY, token)
-    // console.log(token,"this is token")
-    // console.log('token saved')
+  async setClientId(key) {
+    await this.storage.set(TOKEN_KEY, key);
   }
 
   async logout() {
-    await localStorage.removeItem(TOKEN_KEY)
-    await localStorage.removeItem('client_id')
-    // console.log('token cleared')
+    this.cartCountService.setCartCount(0);
+    this.notfCountSertvice.setNotCount(0); 
+    localStorage.clear();
+    await this.storage.clear()
   }
 
-  
   isAuthenticated() {
-    const token = this.getToken();
-    // console.log('token', token)
-    if (token != null) {
-      return true;
-    } else {
-      return false;
-    }
+    return this.storage.get(TOKEN_KEY)
   }
 
+  async setCartCount(count) {
+    return this.storage.set(CART_COUNT, count);
+  }
+  async getCartCount() {
+    return this.storage.get(CART_COUNT);
+  }
+  async setNotificationCount(count) {
+    return this.storage.set(NOTIFICATION_COUNT, count);
+  }
+  async getNotificationCount() {
+    return this.storage.get(NOTIFICATION_COUNT);
+  }
+
+  getLoggedStatus(){
+    return this.islogged.asObservable()
+  }
+
+  loginStatus(value){
+    this.islogged.next(value)
+  }
+ 
 }

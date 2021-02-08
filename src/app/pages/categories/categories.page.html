@@ -1,33 +1,48 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>CATEGORIES</ion-title>
+<desktop-header></desktop-header>
+<ion-header class="ion-hide-md-up">
+  <ion-toolbar color="secondary" class="ion-hide-md-up">
+    <ion-title>Categories</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button
-        defaultHref="home"
-      
-        color="dark"
-      ></ion-back-button>
+      <ion-menu-button></ion-menu-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content pullingIcon="refresh" pullingText="Pull to refresh" refreshingSpinner="crescent"
-      refreshingText="Refreshing..."></ion-refresher-content>
+    <ion-refresher-content
+      pullingIcon="refresh"
+      pullingText="Pull to refresh"
+      refreshingSpinner="crescent"
+      refreshingText="Refreshing..."
+    ></ion-refresher-content>
   </ion-refresher>
-  
 
-  <section id="banr">
-    <ion-slides class="banner">
-      <ion-slide *ngFor="let item of data?.banner?.desktop_images; let i=index" class="dsk" >
-      <img src="{{s3url+item.path}}" alt="" >
-      </ion-slide> 
+  <section>
+    <ion-slides [options]="bannerSlideOpts" pager="ios">
+      <!-- <ion-slide
+        *ngFor="let item of banners?.desktop_images; let i=index"
+        (click)="onRoute(item.application_url)"
+      >
+        <img [src]="s3url + item?.path" alt="" />
+      </ion-slide> -->
 
-      <ion-slide *ngFor="let item of data?.banner?.mobile_images; let i=index" class="mob" >
-      <img src="{{s3url + item.path}}" alt="">
-      </ion-slide>     
+      <ion-slide
+      *ngFor="let item of banners?.desktop_images; let i=index"
+      class="dsk"
+      (click)="onRoute(item.application_url)"
+    >
+      <img [src]="s3url + item?.path" alt="" />
+    </ion-slide>
+
+    <ion-slide
+      *ngFor="let item of banners?.mobile_images; let i=index"
+      class="mob"
+      (click)="onRoute(item.application_url)"
+    >
+      <img [src]="s3url + item?.path" alt="" />
+    </ion-slide>
+      
     </ion-slides>
   </section>
 
@@ -36,7 +51,6 @@
       <ion-col size="12" size-sm="12" size-md="12" size-xl="12" size-lg="12">
         <ion-grid>
           <ion-row class="row">
-            
             <ion-col
               size="6"
               size-sm="6"
@@ -49,44 +63,24 @@
             >
               <div
                 class="ion-text-center round"
-                
                 [ngStyle]="{'background-image': 'url( '+ s3url + item?.path +' )'}"
-              >
-              <!-- style="position: relative; overflow: hidden" -->
-                <!-- <img [src]="s3url+item?.path" alt="" /> -->
-                
-              </div>
-              <!-- <ion-label class="ion-text-center cat">
-                <ion-text color="dark">
-                  <h3><b>{{item.category_name}}</b></h3>
-                </ion-text>
-              </ion-label> -->
-          
-                <ion-item class="text" lines="none">
-                  <h1>{{item.category_name}}</h1>
-                </ion-item>
-               
-                
+              ></div>
+
+              <ion-item class="text" lines="none">
+                <h1>{{item.category_name}}</h1>
+              </ion-item>
             </ion-col>
           </ion-row>
-          
         </ion-grid>
-        
       </ion-col>
-      
     </ion-row>
-
   </ion-grid>
- 
 
-  <ion-infinite-scroll
-  threshold="15%"
-  (ionInfinite)="loadMoreContent($event)"
->
-  <ion-infinite-scroll-content
-    loadingSpinner="bubbles"
-    loadingText="Loading more data..."
-  >
-  </ion-infinite-scroll-content>
-</ion-infinite-scroll>
+  <ion-infinite-scroll threshold="15%" (ionInfinite)="loadMoreContent($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

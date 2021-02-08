@@ -15,13 +15,19 @@ export class ProfileOTPPage implements OnInit {
   phone:number
   email:any
   data:any
+  client_id:any
   constructor(private otpService:VerifyOtpService,private activatedRoute:ActivatedRoute,private alertController:AlertController,
-    private authService:AuthenticationService,private router:Router,private profileService:ProfileService,private navController:NavController) 
+    private authService:AuthenticationService,private router:Router,private profileService:ProfileService,private navController:NavController,
+    private authservice:AuthenticationService) 
   { 
     this.phone = this.activatedRoute.snapshot.params.phoneNo
     this.email = this.activatedRoute.snapshot.params.Email
-    // console.log(this.phone)
-    // console.log(this.email)
+    this.authService.isAuthenticated().then(val=>{
+      if(val){
+        this.client_id = val
+      }
+    })
+    
   }
 
   ngOnInit() {
@@ -32,7 +38,7 @@ export class ProfileOTPPage implements OnInit {
     if(this.phone == null)
     {
       this.data={
-        client_id:localStorage.getItem('client_id'),
+        client_id:this.client_id,
         email:this.email,
         otp:this.inputOtp ,
       }  
@@ -44,7 +50,7 @@ export class ProfileOTPPage implements OnInit {
     else if(this.email == null)
     {
      this.data={
-        client_id:localStorage.getItem('client_id'),
+        client_id:this.client_id,
         otp:this.inputOtp ,
         phone:this.phone,
       } 
@@ -61,16 +67,12 @@ export class ProfileOTPPage implements OnInit {
 
   handleResponseData(data,type)
   {
-    // console.log(data)
-    // this.authService.login(data.data)
-    // localStorage.setItem('client_id',data.client_id)
     this.router.navigate(['profile'])
   }
 
   handleError(error)
   {
     this.presentAlert("plaease check your OTP.")
-    // console.log(error)
   }
 
   async presentAlert(msg:string) {

@@ -12,9 +12,9 @@
     
   // }
 
-  ion-content{
-    --background: #f7fafe;
-  }
+  // ion-content{
+   
+  // }
 
   .details{
     ion-item{
@@ -38,6 +38,7 @@
   }
 
   .card{
+    box-shadow: none;
     display: flex;
     flex-direction: row;
     justify-content: space-between;

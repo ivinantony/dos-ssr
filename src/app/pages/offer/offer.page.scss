@@ -12,7 +12,9 @@
 #cart-badge {
   position: absolute;
   top: 0px;
-  right: 0px;
+  right: -5px;
+  padding: 3px;
+  font-size: 10px;
 }
 
 .banner {
@@ -75,6 +77,7 @@
   }
   h3{
 
+    margin-top: 2px;
     font-size: 0.9rem;
     font-weight: 700;
     color: #444;

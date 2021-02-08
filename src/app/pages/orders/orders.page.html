@@ -1,8 +1,10 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>ORDERS</ion-title>
+<desktop-header></desktop-header>
+
+<ion-header class="ion-hide-md-up">
+  <ion-toolbar color="secondary">
+    <ion-title>Orders</ion-title>
     <ion-buttons slot="start"> 
-      <ion-back-button defaultHref="profile"  color="dark"></ion-back-button>
+      <ion-back-button defaultHref="/tabs/profile"  color="light"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -15,7 +17,7 @@
   </ion-refresher>
 
   <div class="ion-text-center whenEmpty" *ngIf="data?.orders.length == 0 " alt="">
-    <img src="../../../assets/icon/orders.png">
+    <img src="../../../assets/imgs/icons/orders.png">
     <p>No orders yet.</p>
     <ion-button (click)="continueShopping()" fill="outline" shape="round">
       <ion-icon slot="start" name="add"></ion-icon>

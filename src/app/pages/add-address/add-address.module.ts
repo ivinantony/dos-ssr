@@ -14,7 +14,7 @@ import { AddAddressPage } from './add-address.page';
     FormsModule,
     IonicModule,
     AddAddressPageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   declarations: [AddAddressPage]
 })

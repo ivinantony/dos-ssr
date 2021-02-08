@@ -1,248 +1,79 @@
 <ion-app>
-  <ion-header class="ion-hide-md-down">
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-menu-button color="dark"></ion-menu-button>
-      </ion-buttons>
-      <ion-buttons slot="start" class="ion-margin-horizontal">
-        
-        <ion-button (click)="goToHome()">
-        <img src="../assets/icon/dos logo png.png" width="50px" style="display:inline-block" height="40px"/>
-
-          <!-- <ion-text color="magenta"><b>DEAL </b> </ion-text>
-          <ion-text color="dark"> <b>ON STORE</b> </ion-text> -->
-        </ion-button>
-      </ion-buttons>
-      <ion-buttons slot="start" class="nav-btns ion-margin-horizontal hdrlinks">
-        
-        <ion-button class="links" (click)="goToHome()"> Home </ion-button>
-        <!-- <ion-button (click)="menuController.toggle()"> Categories </ion-button> -->
-        <ion-button class="links" (click)="goToOffer()"> Offers </ion-button>
-        <ion-button class="links" (click)="goToCategories()"> Categories </ion-button>
-        <ion-button class="links" (click)="goToManufacturers()"> Manufacturers </ion-button>
-      </ion-buttons>
-      <ion-buttons slot="end"  class="ion-padding-horizontal">
-
-        <ion-button color="dark"  class="ion-padding-horizontal"  (click)="goToProfile()">
-          <ion-icon slot="icon-only"  src="../assets/icon/profile.svg" ></ion-icon>
-        </ion-button>
-        <ion-button color="dark"  class="ion-padding-horizontal"  (click)="goToNotification()">
-          <ion-icon slot="icon-only"  src="../assets/icon/notifications-outline.svg" ></ion-icon>
-          <ion-badge id="cart-badge" color="danger" *ngIf="notf_count > 0">{{notf_count}}</ion-badge>  
-        </ion-button>
-        <ion-button  class="ion-padding-horizontal"  color="dark"  (click)="goToCart()">
-          <ion-icon slot="icon-only"  src="../assets/icon/cart.svg" ></ion-icon>
-          <ion-badge id="cart-badge" color="danger" *ngIf="cart_count > 0">{{cart_count}}</ion-badge>
-        </ion-button>
-        
-        <!-- <ion-button
-          color="dark"
-          style="height: 100%"
-          [routerLink]="['/profile']"
-        >
-          <div>
-            <ion-icon slot="icon-only"  src="../assets/icon/profile.svg" ></ion-icon><br />
-            <span style="font-size: 10px; font-weight: bold"> Account</span>
-          </div>
-        </ion-button>
-
-        <ion-button
-        id="cart-btn"
-          color="dark"
-          style="height: 100%; min-width: 100px"
-          [routerLink]="['/cart']"
-        >
-          <div>
-            <ion-icon slot="icon-only" src="../assets/icon/cart.svg" ></ion-icon> <br />
-            <span style="font-size: 10px; font-weight: bold"> Cart</span>
-              <ion-badge id="cart-badge" color="danger" *ngIf="cart_count > 0">{{cart_count}}</ion-badge>
-          </div>
-        
-        </ion-button> -->
-
-       
-
-      </ion-buttons>
-
-
-     
-   
- 
-    
-
-      <ion-grid fixed>
-        <ion-row>
-          <ion-col size="12" >
-            <ion-searchbar
-              style="
-                padding: 0 !important;
-                --border-radius: 5px;
-                text-align: center;
-              "
-              [formControl]="searchTerm"
-              showCancelButton="focus"
-              (ionCancel)="onCancel()"
-              (ionChange)="onSearchInput()"
-              placeholder="Search for products, brands and more"
-              showCancelButton="focus"
-            ></ion-searchbar
-          ></ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-toolbar>
-
-  </ion-header>
-
-  <ion-content>
-    <ion-grid fixed>
-      <ion-row>
-        <ion-col
-          size="12"
-          size-sm="12"
-          size-md="12"
-          push-lg="6"
-          size-lg="6"
-          push-xl="6"
-          size-xl="6"
-        >
-          <ion-content
-            [ngStyle]="{ height: searchItems?.length ? '40vh' : '0' }"
-            style="position: absolute; z-index: 2; left: 0; right: 0"
+  <ion-menu contentId="main-content" type="overlay">
+    <ion-content>
+      <div class="menu-header-bg"></div>
+      <ion-menu-toggle>
+        <div class="header-content user" [routerLink]="['/tabs/home']">
+          <img src="../assets/imgs/icons/dos logo png.png" alt="" />
+        </div>
+      </ion-menu-toggle>
+      <ion-list>
+        <ion-menu-toggle auto-hide="false">
+          <ion-item
+            routerDirection="root"
+            lines="none"
+            *ngFor="let item of categories; let i = index"
+            [class.selected]="selectedCategoryIndex == i"
+            (click)="navigateByUrl(i)"
           >
-            <ion-list>
-              <ion-item
-                button
-                *ngFor="let item of searchItems; let i = index"
-                (click)="viewSearchProduct(i)"
-              >
-                {{ item.data.city.raw }} {{item.brand_name}} {{item.category_name}}
-              </ion-item>
-            </ion-list>
-          </ion-content>
-
-         
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-
-    
-    <ion-menu contentId="main-content" type="overlay">
-      <ion-content>
-        <div class="menu-header-bg"></div>
-        <ion-menu-toggle>
-          <div class="header-content user" [routerLink]="['/home']">
-            <img src="../assets/icon/dos logo png.png" alt="" />
-          </div>
+          <ion-icon src="{{item.icon}}"
+          color="primary"
+             
+              slot="start"
+              ></ion-icon>
+            <!-- <ion-icon
+              color="primary"
+              slot="start"
+              [name]="item?.icon"
+            ></ion-icon> -->
+            <ion-label>{{ item?.name }}</ion-label>
+          </ion-item>
+          <!-- <ion-item
+            (click)="router.navigate(['/tabs/cart'])"
+            routerDirection="root"
+            lines="none"
+          >
+            <ion-icon
+              color="primary"
+              src="../assets/imgs/icons/cart.svg"
+              slot="start"
+            ></ion-icon>
+            <ion-label>Cart</ion-label>
+          </ion-item> -->
+          <!-- <ion-item
+            (click)="router.navigate(['/profile'])"
+            routerDirection="root"
+            lines="none"
+          >
+            <ion-icon
+              name="person-circle-outline"
+              color="primary"
+              slot="start"
+            ></ion-icon>
+            <ion-label>Profile</ion-label>
+          </ion-item> -->
         </ion-menu-toggle>
-        <ion-list id="inbox-list">
-
-          <ion-menu-toggle auto-hide="false">
-            <ion-item
-              (click)="router.navigate(['/home'])"
-              routerDirection="root"
-              lines="none"
-              detail="false"
-              class="links"
-            >
-            
-              <ion-icon name="home-outline" class="icon"color="magenta"> </ion-icon>
-              <ion-label>Home</ion-label>
-            </ion-item>
-
-            <ion-item
-              (click)="router.navigate(['/categories'])"
-              routerDirection="root"
-              lines="none"
-              detail="false"
-              class="links"
-            >
-              <ion-icon
-                class="icon"
-                name="grid-outline"
-                color="magenta"
-              ></ion-icon>
-              <ion-label>Categories</ion-label>
-            </ion-item>
-
-            <ion-item
-              (click)="router.navigate(['/offer'])"
-              routerDirection="root"
-              lines="none"
-              detail="false"
-              class="links"
-            >
-              <ion-icon
-                name="flash-outline"
-                class="icon"
-                color="magenta"
-              ></ion-icon>
-              <ion-label>Offers</ion-label>
-            </ion-item>
-
-            <ion-item
-              (click)="router.navigate(['/manufacturers'])"
-              routerDirection="root"
-              lines="none"
-              detail="false"
-              class="links"
-            >
-            <ion-icon 
-            name="construct-outline" 
-            class="icon"
-            color="magenta"></ion-icon>
-              <ion-label>Manufacturers</ion-label>
-            </ion-item>
-
-            <ion-item
-              (click)="router.navigate(['/cart'])"
-              routerDirection="root"
-              lines="none"
-              detail="false"
-              class="links"
-            >
-              <ion-icon
-                class="icon"
-                name="cart-outline"
-                color="magenta"
-              ></ion-icon>
-              <ion-label>Cart</ion-label>
-            </ion-item>
-
-            <ion-item
-              (click)="router.navigate(['/profile'])"
-              routerDirection="root"
-              lines="none"
-              detail="false"
-              class="links"
-            >
-              <ion-icon
-                class="icon"
-                name="person-circle-outline"
-                color="magenta"
-              ></ion-icon>
-              <ion-label>Profile</ion-label>
-            </ion-item>
-          </ion-menu-toggle>
-        </ion-list>
-      </ion-content>
-      <ion-footer *ngIf="client_id != null">
-        <ion-toolbar class="ftrtlbr">
+      </ion-list>
+    </ion-content>
+    <ion-footer>
+      <ion-toolbar>
+        <ion-menu-toggle>
           <ion-button
-            (click)="logout()"
-            expand="block"
             fill="clear"
-            color="dark"
-            shape="round"
-            class="footer"
+            expand="full"
+            (click)="islogged ? logout() : login()"
           >
-            <img src="../assets/imgs/logout.svg" alt="" />
-            Sign Out
+            <ion-icon
+              color="primary"
+              slot="start"
+              src="../assets/imgs/logout.svg"
+            ></ion-icon>
+            {{ islogged ? "Sign out" : "Sign in" }}
           </ion-button>
-        </ion-toolbar>
-      </ion-footer>
-    </ion-menu>
+        </ion-menu-toggle>
+      </ion-toolbar>
+    </ion-footer>
+  </ion-menu>
 
-    <ion-router-outlet id="main-content"></ion-router-outlet>
-    <!-- </ion-split-pane> -->
-  </ion-content>
+  <ion-router-outlet id="main-content"></ion-router-outlet>
 </ion-app>

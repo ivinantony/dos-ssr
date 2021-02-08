@@ -1,98 +1,114 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { LoadingController } from '@ionic/angular';
-import { CategoryService } from 'src/app/services/category/category.service';
-import { UtilsService } from 'src/app/services/utils.service';
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { LoadingController } from "@ionic/angular";
+import { CategoryService } from "src/app/services/category/category.service";
+import { UtilsService } from "src/app/services/utils.service";
 @Component({
-  selector: 'app-categories',
-  templateUrl: './categories.page.html',
-  styleUrls: ['./categories.page.scss'],
+  selector: "app-categories",
+  templateUrl: "./categories.page.html",
+  styleUrls: ["./categories.page.scss"],
 })
 export class CategoriesPage implements OnInit {
-
   data: any;
-  s3url: any
-  page_count: number = 1
-  page_limit: number
-  categories: Array<any> = []
+  banners:any;
+  s3url: any;
+  page_count: number = 1;
+  page_limit: number;
+  result: any;
+  categories: Array<any> = [];
 
   bannerSlideOpts = {
     slidesPerView: 1,
-    initialSlide: 0,
     spaceBetween: 20,
     loop: true,
     centeredSlides: true,
+    updateOnWindowResize: true,
     autoplay: {
-      delay: 3000,
-      disableOnInteraction: false
+      delay: 3500,
+      disableOnInteraction: false,
     },
-    speed: 400
+  };
+
+  constructor(
+    public router: Router,
+    private categoryService: CategoryService,
+    private utils: UtilsService,
+    private loadingController: LoadingController
+  ) {
+    this.s3url = utils.getS3url();
+    this.getData();
   }
 
-  constructor(public router: Router, private categoryService: CategoryService, private utils: UtilsService,private loadingController:LoadingController) {
-    this.s3url = utils.getS3url()
-    this.getData()
-  }
-
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   getData(infiniteScroll?) {
-    this.presentLoading().then(()=>{
+    this.presentLoading().then(() => {
       this.categoryService.getCategories(this.page_count).subscribe(
         (data) => this.handleResponse(data, infiniteScroll),
         (error) => this.handleError(error)
-      )
-    }
-    )
+      );
+    });
   }
 
-
   navigateToProducts(index: number) {
-    this.router.navigate(['products', this.categories[index].id, { name: this.categories[index].category_name }])
+    this.router.navigate([
+      "products",
+      this.categories[index].id,
+      { name: this.categories[index].category_name },
+    ]);
+  }
+
+  onRoute(link) {
+    this.result = [];
+    if (link != null || link != undefined) {
+      let data = link.split(".com").pop();
+
+      this.router.navigateByUrl(data);
+    }
   }
 
   loadMoreContent(infiniteScroll) {
     if (this.page_count == this.page_limit) {
       infiniteScroll.target.disabled = true;
-    }
-    else {
+    } else {
       this.page_count++;
-      this.getData(infiniteScroll)
+      this.getData(infiniteScroll);
     }
   }
-  
+
   handleResponse(data, infiniteScroll) {
-    this.loadingController.dismiss()
-    // console.log(data)
-    this.data = data;
-    this.data.categories.forEach(element => { this.categories.push(element) });
+    this.loadingController.dismiss();
+
+    
+    this.banners = data.banner
+    data.categories.forEach((element) => {
+      this.categories.push(element);
+    });
     this.page_limit = data.page_count;
     if (infiniteScroll) {
       infiniteScroll.target.complete();
     }
   }
   handleError(error) {
-    this.loadingController.dismiss()
-    // console.log(error)
+    this.loadingController.dismiss();
   }
 
   async presentLoading() {
-        const loading = await this.loadingController.create({
-          spinner: 'crescent',
-          cssClass:'custom-spinner',
-          message: 'Please wait...',
-          showBackdrop: true
-        });
-        await loading.present();
-      }
+    const loading = await this.loadingController.create({
+      spinner: "crescent",
+      cssClass: "custom-spinner",
+      message: "Please wait...",
+      showBackdrop: true,
+    });
+    await loading.present();
+  }
 
-      doRefresh(event) {
-        this.page_count=1
-        this.categories= []
-        this.getData();
-        setTimeout(() => {
-          event.target.complete();
-        }, 1000);
-      }
+  doRefresh(event) {
+    this.page_count = 1;
+    this.categories = [];
+    this.getData();
+    setTimeout(() => {
+      event.target.complete();
+    }, 1000);
+  }
 }

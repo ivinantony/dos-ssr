@@ -42,12 +42,10 @@ export class OrderDetailsPage implements OnInit {
   {
     this.loadingController.dismiss()
     this.data = data
-    // console.log(data)
   }
   handleError(error)
   {
     this.loadingController.dismiss()
-    // console.log(error)
   }
   navigateToProduct(index) 
   {

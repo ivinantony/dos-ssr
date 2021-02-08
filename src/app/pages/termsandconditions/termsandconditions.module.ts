@@ -8,6 +8,7 @@ import { TermsandconditionsPageRoutingModule } from './termsandconditions-routin
 
 import { TermsandconditionsPage } from './termsandconditions.page';
 import { QuillModule } from 'ngx-quill'
+import { SharedComponentsModule } from 'src/app/components/shared-components.module';
 
 
 
@@ -18,6 +19,7 @@ import { QuillModule } from 'ngx-quill'
     IonicModule,
     TermsandconditionsPageRoutingModule,
     QuillModule.forRoot(),
+    SharedComponentsModule
   ],
   declarations: [TermsandconditionsPage]
 })

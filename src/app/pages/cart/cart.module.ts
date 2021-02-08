@@ -8,6 +8,7 @@ import { CartPageRoutingModule } from './cart-routing.module';
 
 import { CartPage } from './cart.page';
 import { PayPal } from '@ionic-native/paypal/ngx';
+import { SharedComponentsModule } from 'src/app/components/shared-components.module';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { PayPal } from '@ionic-native/paypal/ngx';
     FormsModule,
     IonicModule,
     CartPageRoutingModule, 
+    SharedComponentsModule
   ],
 
   providers:[

@@ -1,88 +1,48 @@
-<ion-header transclusent class="ion-no-border" class="ion-hide-md-up">
-  <ion-toolbar #toolbar>
+<desktop-header></desktop-header>
+<ion-header class="ion-no-border ion-hide-md-up">
+  <ion-toolbar color="secondary" class="ion-hide-md-up">
     <ion-buttons slot="start">
-      <ion-menu-button color="magenta"></ion-menu-button>
+      <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title
-      ><ion-text color="magenta"><b>DEAL </b> </ion-text>
-      <ion-text color="dark"><b>ON STORE</b> </ion-text></ion-title
-    >
+    <ion-title color="light" class="ion-text-left">Deal on Store</ion-title>
 
-    <!-- <ion-buttons slot="end">
-      <ion-icon name="cart-outline"class="ion-padding" (click)="router.navigate(['/cart'])" color="magenta"></ion-icon>
-    </ion-buttons> -->
-    <ion-buttons slot="end" class="ion-hide-md-up" id="cart-btn">
-      <ion-icon
-        name="cart-outline"
-        class="ion-padding"
-        (click)="router.navigate(['/cart'])"
-        color="magenta"
-      ></ion-icon>
-      <ion-badge id="cart-badge" color="danger" *ngIf="cart_count > 0"
-        >{{cart_count}}</ion-badge
-      >
+    <ion-buttons slot="end">
+      <ion-button (click)="onNotification()">
+        <ion-icon
+          color="light"
+          slot="icon-only"
+          src="../assets/imgs/icons/notifications-outline.svg"
+        ></ion-icon>
+        <ion-badge id="cart-badge" color="primary" *ngIf="notf_count > 0"
+          >{{ notf_count > 9 ? '9+':notf_count }}</ion-badge
+        >
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)"> </ion-refresher>
 
-<ion-content
-  fullscreen
-  #content
-  [scrollEvents]="true"
-  [appFadeHeader]="toolbar"
->
-  <div *ngIf="data">
-    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-      <ion-refresher-content
-        pullingIcon="refresh"
-        pullingText="Pull to refresh"
-        refreshingSpinner="crescent"
-        refreshingText="Refreshing..."
-      ></ion-refresher-content>
-    </ion-refresher>
+  <ng-container
+    *ngIf="data; then thenTemplate; else elseTemplate"
+  ></ng-container>
+  <ng-template #thenTemplate>
+    <section>
+      <ion-slides [options]="bannerSlideOpts" pager="ios" class="slider">
+        <!-- <ion-slide
+          *ngFor="let item of data?.banner[0]?.desktop_images; let i=index"
+          (click)="onRoute(item.application_url)"
+        >
+          <img [src]="s3url + item?.path" alt="" />
+        </ion-slide> -->
 
-    <ion-grid fixed>
-      <ion-row>
-        <ion-col size="12" size-lg="8" push-lg="4" size-xl="8" push-xl="4">
-          <ion-searchbar
-            class="ion-hide-md-up"
-            [formControl]="searchTerm"
-            showCancelButton="focus"
-            (ionChange)="onSearchInput()"
-            (ionCancel)="onCancel()"
-          ></ion-searchbar>
-          <div *ngIf="searching" class="spinner-container">
-            <ion-spinner></ion-spinner>
-          </div>
 
-          <ion-content
-            [ngStyle]="{'height': searchItems?.length ? '40vh':'0'}"
-            style="position: absolute; z-index: 2; left: 0; right: 0"
-          >
-            <ion-list>
-              <ion-item
-                *ngFor="let item of searchItems ; let i=index"
-                (click)="viewSearchProduct(i)"
-              >
-                {{ item.name }} {{item.brand_name}}
-              </ion-item>
-            </ion-list>
-          </ion-content>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-
-    <!-- Banner -1 start -->
-    <!-- [ngStyle]="{'background-image': 'url( '+ item.path +' )'}"
-  [ngStyle]="{'background-image': 'url( '+ item.path +' )'}" -->
-    <section id="banr">
-      <ion-slides class="banner" [options]="bannerSlideOpts1">
         <ion-slide
           *ngFor="let item of data?.banner[0]?.desktop_images; let i=index"
           class="dsk"
           (click)="onRoute(item.application_url)"
         >
-          <img src="{{item.path}}" alt="" />
+          <img [src]="s3url + item?.path" alt="" />
         </ion-slide>
 
         <ion-slide
@@ -90,170 +50,15 @@
           class="mob"
           (click)="onRoute(item.application_url)"
         >
-          <img src="{{item.path}}" alt="" />
+          <img [src]="s3url + item?.path" alt="" />
         </ion-slide>
+     
       </ion-slides>
     </section>
-    <!-- <picture *ngIf="item.type == 0">
-    <source media="(min-width: 1024px)" srcset="{{item.desktopImg}}" >
-    <img src="{{item.path}}" />
-  </picture> -->
-    <!-- Banner -1 end -->
-
-    <section class="catSection">
-      <ion-item lines="none" class="ion-text-center">
-        <ion-label class="title" color="magenta">All Categories</ion-label>
-      </ion-item>
-      <ion-grid fixed>
-        <ion-row>
-          <ion-col
-            class="category"
-            size="6"
-            size-sm="6"
-            size-md="6"
-            size-lg="4"
-            size-xl="2"
-            *ngFor="let item of categories; let i=index"
-            (click)="navigateToProducts(i)"
-          >
-            <ion-card
-              [class.selected]="selectedIndex == i"
-              class="roundCard"
-              [ngStyle]="{'background-image': 'url( '+ item.path +' )'}"
-            >
-              <!-- <ion-card [class.selected]="selectedIndex == i" class="roundCard" [ngStyle]="{'background-image': 'url( '+ item.path +' )'}" > -->
-              <!-- <ion-item lines="none">
-              <ion-icon slot="start" color="light" name="car"></ion-icon>
-            </ion-item> -->
-              <!-- <ion-label class="ion-text-center ovr">
-              <ion-text color="light">
-                <h3><b>{{item.category_name}}</b></h3>
-              </ion-text>
-            </ion-label> -->
-            </ion-card>
-            <ion-label class="ion-text-center cat">
-              <ion-text color="dark">
-                <h3><b>{{item.category_name}}</b></h3>
-              </ion-text>
-            </ion-label>
-          </ion-col>
-        </ion-row>
-        <div class="ion-text-center morebtn">
-          <ion-button
-            (click)="viewAll()"
-            shape="round"
-            fill="solid"
-            color="dark"
-          >
-            <ion-icon slot="start" name="chevron-down-outline"></ion-icon>
-            VIEW ALL
-          </ion-button>
-        </div>
-      </ion-grid>
-      <!-- <ion-slides [options]="categorySlides" class="category">
-      <ion-slide
-        *ngFor="let item of categories; let i=index"
-        (click)="navigateToProducts(i)"
-      >
-        <ion-card [class.selected]="selectedIndex == i">
-          <ion-item lines="none">
-            <ion-icon slot="start" color="light" name="car"></ion-icon>
-          </ion-item>
-          <ion-label class="ion-text-left">
-            <ion-text color="light">
-              <h3><b>{{item.name}}</b></h3>
-            </ion-text>
-          </ion-label>
-        </ion-card>
-      </ion-slide>
-    </ion-slides> -->
-    </section>
-
-    <!-- Banner -2 start -->
-    <section id="banr">
-      <ion-slides class="banner" [options]="bannerSlideOpts2">
-        <ion-slide
-          *ngFor="let item of data?.banner[1]?.desktop_images; let i=index"
-          class="dsk"
-          (click)="onRoute(item.application_url)"
-        >
-          <img src="{{item.path}}" alt="" />
-        </ion-slide>
-
-        <ion-slide
-          *ngFor="let item of data?.banner[1]?.mobile_images; let i=index"
-          class="mob"
-          (click)="onRoute(item.application_url)"
-        >
-          <img src="{{item.path}}" alt="" />
-        </ion-slide>
-      </ion-slides>
-    </section>
-    <!-- Banner -2 end -->
-
-    <div id="top">
-      <ion-item lines="none" class="ion-text-center">
-        <ion-label class="title" color="magenta">Top Deals</ion-label>
-      </ion-item>
-      <div class="sliderWrapper">
-        <ion-slides [options]="productSlides" class="top-search" #mySlider>
-          <ion-slide
-            *ngFor="let item of data?.offer_products; let i=index"
-            (click)="viewOfferProduct(i)"
-          >
-            <!-- <ion-card
-            (click)="viewProduct(i)"
-            [ngStyle]="{'background-image': 'url( '+ s3url + item.images[0]?.path +' )'}">
-          </ion-card> -->
-            <ion-card>
-              <img src="{{s3url+item.images[0]?.path}}" alt="" />
-              <ion-card-content>
-                <p>{{item.name}}</p>
-              </ion-card-content>
-            </ion-card>
-          </ion-slide>
-
-          <!-- <ion-button (click)="swipeNext()">Next</ion-button>
-        <ion-button (click)="swipeNext()">Next</ion-button> -->
-        </ion-slides>
-        <ion-button
-          (click)="swipeNext()"
-          expand="block"
-          fill="clear"
-          shape="round"
-          class="btnslide ion-no-padding"
-        >
-          <ion-icon name="chevron-forward-outline"></ion-icon>
-        </ion-button>
-        <ion-button
-          (click)="swipePrev()"
-          expand="block"
-          fill="clear"
-          shape="round"
-          class="btnslideleft ion-no-padding"
-        >
-          <ion-icon name="chevron-back-outline"></ion-icon>
-        </ion-button>
-      </div>
-
-      <div class="ion-text-center morebtn">
-        <ion-button
-          (click)="router.navigate(['/offer'])"
-          shape="round"
-          fill="solid"
-          color="dark"
-        >
-          <ion-icon slot="start" name="chevron-down-outline"></ion-icon>
-          VIEW ALL
-        </ion-button>
-      </div>
-    </div>
 
     <section id="searchByManufactures">
-      <ion-item lines="none" class="ion-text-center">
-        <ion-label class="title" color="magenta"
-          >Search by Manufacturers</ion-label
-        >
+      <ion-item lines="none" class="ion-text-left">
+        <ion-label class="title" color="dark">Categories</ion-label>
       </ion-item>
       <ion-grid>
         <ion-row>
@@ -264,13 +69,14 @@
             size-md="4"
             size-lg="4"
             size-xl="2"
-            *ngFor="let item of brands; let i=index"
+            *ngFor="let item of categories; let i=index"
           >
             <ion-card
               class="ion-no-margin"
-              (click)="navigateToBrandProducts(i)"
+              (click)="navigateToProducts(i)"
+              style="min-height: 167px"
             >
-              <ion-card-content class="ion-text-center">
+              <ion-card-content class="ion-text-center ion-no-padding">
                 <img
                   style="
                     height: 120px;
@@ -278,27 +84,134 @@
                     object-fit: contain;
                     object-position: center;
                   "
-                  [src]="item.path"
+                  [src]="s3url + item?.path"
                   alt=""
                 />
               </ion-card-content>
               <ion-card-header class="ion-text-center logoHdr">
-                <ion-card-title>{{item.brand_name}}</ion-card-title>
+                <ion-card-title>{{item.category_name}}</ion-card-title>
               </ion-card-header>
             </ion-card>
           </ion-col>
         </ion-row>
         <div class="ion-text-center morebtn">
           <ion-button
-            (click)="router.navigate(['/manufacturers'])"
+            (click)="router.navigate(['/categories'])"
             shape="round"
-            fill="solid"
-            color="dark"
+            fill="outline"
+            color="primary"
           >
-            <ion-icon slot="start" name="chevron-down-outline"></ion-icon>
+            <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
             VIEW ALL
           </ion-button>
         </div>
+      </ion-grid>
+    </section>
+
+    <section id="banr">
+      <ion-slides class="banner" [options]="bannerSlideOpts2">
+        <ion-slide
+          *ngFor="let item of data?.banner[1]?.desktop_images; let i=index"
+          class="dsk"
+          (click)="onRoute(item.application_url)"
+        >
+          <img [src]="s3url + item?.path" alt="" />
+        </ion-slide>
+
+        <ion-slide
+          *ngFor="let item of data?.banner[1]?.mobile_images; let i=index"
+          class="mob"
+          (click)="onRoute(item.application_url)"
+        >
+          <img [src]="s3url + item?.path" alt="" />
+        </ion-slide>
+      </ion-slides>
+    </section>
+
+    <section>
+      <div id="top">
+        <ion-item lines="none" class="ion-text-center">
+          <ion-label class="title" color="primary">Top Deals</ion-label>
+        </ion-item>
+        <div class="sliderWrapper">
+          <ion-slides [options]="productSlides" class="top-search" #mySlider>
+            <ion-slide
+              *ngFor="let item of data?.offer_products; let i=index"
+              (click)="viewOfferProduct(i)"
+            >
+              <ion-card>
+                <img src="{{s3url+item.images[0]?.path}}" alt="" />
+                <ion-card-content>
+                  <p>{{item.name}}</p>
+                </ion-card-content>
+              </ion-card>
+            </ion-slide>
+          </ion-slides>
+          <ion-button
+            (click)="swipeNext()"
+            expand="block"
+            fill="clear"
+            shape="round"
+            class="btnslide ion-no-padding"
+          >
+            <ion-icon name="chevron-forward-outline"></ion-icon>
+          </ion-button>
+          <ion-button
+            (click)="swipePrev()"
+            expand="block"
+            fill="clear"
+            shape="round"
+            class="btnslideleft ion-no-padding"
+          >
+            <ion-icon name="chevron-back-outline"></ion-icon>
+          </ion-button>
+        </div>
+
+        <div class="ion-text-center morebtn">
+          <ion-button
+            (click)="router.navigate(['/offers'])"
+            shape="round"
+            fill="outline"
+            color="primary"
+          >
+            <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+            VIEW ALL
+          </ion-button>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <ion-grid fixed class="ion-margin-top">
+        <ion-row>
+          <ion-col style="background: #fff" size="12">
+            <ion-list-header>
+              <ion-label>Shop By Brand</ion-label>
+              <ion-button (click)="viewAll()">See All</ion-button>
+            </ion-list-header>
+            <ion-slides [options]="categoryOpts" class="ion-padding">
+              <ion-slide
+                style="
+                  background: #f2f2f2;
+                  min-height: 200px;
+                  max-height: 200px;
+                "
+                *ngFor="let item of brands; let i=index"
+                (click)="navigateToBrandProducts(i)"
+              >
+                <ion-card class="img-card">
+                  <div class="img-wrapper">
+                    <img [src]="s3url + item?.path" alt="" />
+                  </div>
+
+                  <p class="ion-padding-horizontal">
+                    {{item.brand_name | titlecase}}
+                  </p>
+                </ion-card>
+              </ion-slide>
+            </ion-slides>
+          </ion-col>
+        </ion-row>
       </ion-grid>
     </section>
 
@@ -308,7 +221,7 @@
           <div class="main">
             <img
               class="imge"
-              [src]="data?.banner[2]?.desktop_images[0]?.path"
+              [src]="s3url + data?.banner[2]?.desktop_images[0]?.path"
               alt=""
               (click)="onRoute(data?.banner[2]?.desktop_images[0]?.application_url)"
             />
@@ -318,14 +231,14 @@
           <ion-row>
             <ion-col size="6" class="col">
               <img
-                [src]="data?.banner[2]?.desktop_images[1]?.path"
+                [src]="s3url + data?.banner[2]?.desktop_images[1]?.path"
                 alt=""
                 (click)="onRoute(data?.banner[2]?.desktop_images[1]?.application_url)"
               />
             </ion-col>
             <ion-col size="6" class="col">
               <img
-                [src]="data?.banner[2]?.desktop_images[2]?.path"
+                [src]="s3url + data?.banner[2]?.desktop_images[2]?.path"
                 alt=""
                 (click)="onRoute(data?.banner[2]?.desktop_images[2]?.application_url)"
               />
@@ -334,14 +247,14 @@
           <ion-row>
             <ion-col size="6" class="col">
               <img
-                [src]="data?.banner[2]?.desktop_images[3]?.path"
+                [src]="s3url + data?.banner[2]?.desktop_images[3]?.path"
                 alt=""
                 (click)="onRoute(data?.banner[2]?.desktop_images[3]?.application_url)"
               />
             </ion-col>
             <ion-col size="6" class="col">
               <img
-                [src]="data?.banner[2]?.desktop_images[4]?.path"
+                [src]="s3url + data?.banner[2]?.desktop_images[4]?.path"
                 alt=""
                 (click)="onRoute(data?.banner[2]?.desktop_images[4]?.application_url)"
               />
@@ -351,58 +264,52 @@
       </ion-row>
     </section>
 
-    <div id="top">
-      <ion-item lines="none" class="ion-text-center">
-        <ion-label class="title" color="magenta">Recommended</ion-label>
-        <!-- <ion-button expand="block" fill="clear" shape="round" slot="end">
-        View all
-      </ion-button> -->
-      </ion-item>
-      <div class="sliderWrapper">
-        <ion-slides [options]="productSlides" class="top-search" #recommended>
-          <ion-slide *ngFor="let item of data?.products; let i=index">
-            <!-- <ion-card
-            (click)="viewProduct(i)"
-            [ngStyle]="{'background-image': 'url( '+ s3url + item.images[0]?.path +' )'}">
-          </ion-card> -->
-            <ion-card (click)="viewProduct(i)">
-              <img src="{{s3url+item.images[0]?.path}}" alt="" />
-              <ion-card-content>
-                <p>{{item.name}}</p>
-              </ion-card-content>
-            </ion-card>
-          </ion-slide>
-        </ion-slides>
-        <ion-button
-          (click)="swipeNextRec()"
-          expand="block"
-          fill="clear"
-          shape="round"
-          class="btnslide ion-no-padding"
-        >
-          <ion-icon name="chevron-forward-outline"></ion-icon>
-        </ion-button>
-        <ion-button
-          (click)="swipePrevRec()"
-          expand="block"
-          fill="clear"
-          shape="round"
-          class="btnslideleft ion-no-padding"
-        >
-          <ion-icon name="chevron-back-outline"></ion-icon>
-        </ion-button>
+    <section>
+      <div id="top">
+        <ion-item lines="none" class="ion-text-center">
+          <ion-label class="title" color="primary">Recommended</ion-label>
+        </ion-item>
+        <div class="sliderWrapper">
+          <ion-slides [options]="productSlides" class="top-search" #recommended>
+            <ion-slide *ngFor="let item of data?.products; let i=index">
+              <ion-card (click)="viewProduct(i)">
+                <img src="{{s3url+item.images[0]?.path}}" alt="" />
+                <ion-card-content>
+                  <p>{{item.name}}</p>
+                </ion-card-content>
+              </ion-card>
+            </ion-slide>
+          </ion-slides>
+          <ion-button
+            (click)="swipeNextRec()"
+            expand="block"
+            fill="clear"
+            shape="round"
+            class="btnslide ion-no-padding"
+          >
+            <ion-icon name="chevron-forward-outline"></ion-icon>
+          </ion-button>
+          <ion-button
+            (click)="swipePrevRec()"
+            expand="block"
+            fill="clear"
+            shape="round"
+            class="btnslideleft ion-no-padding"
+          >
+            <ion-icon name="chevron-back-outline"></ion-icon>
+          </ion-button>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Banner -4 start -->
     <section id="banr">
-      <ion-slides class="banner" [options]="bannerSlideOpts1">
+      <ion-slides class="banner" [options]="bannerSlideOpts4">
         <ion-slide
           *ngFor="let item of data?.banner[3]?.desktop_images; let i=index"
           class="dsk"
           (click)="onRoute(item.application_url)"
         >
-          <img src="{{item.path}}" alt="" />
+          <img [src]="s3url + item?.path" alt="" />
         </ion-slide>
 
         <ion-slide
@@ -410,7 +317,7 @@
           class="mob"
           (click)="onRoute(item.application_url)"
         >
-          <img src="{{item.path}}" alt="" />
+          <img [src]="s3url + item?.path" alt="" />
         </ion-slide>
       </ion-slides>
     </section>
@@ -439,7 +346,6 @@
         </ion-col>
         <ion-col size="12" size-sm="6" size-md="6" size-lg="6" size-xl="3">
           <ion-card class="ion-text-center kard">
-            <!-- <ion-icon name="swap-horizontal"  class="icons"></ion-icon> -->
             <ion-icon name="search-outline" class="icons"></ion-icon>
             <h1>Multiple Search Criteria</h1>
             <p>
@@ -462,70 +368,93 @@
         </ion-col>
       </ion-row>
     </section>
-    <!-- Banner -4 end -->
+    <section>
+      <ion-footer>
+        <ion-row class="footer">
+          <ion-col size="10" class="footerWrapper">
+            <ion-row>
+              <ion-col size="12" size-md="3">
+                <h5>Keep In Touch</h5>
+                <ul class="social">
+                  <li>
+                    <ion-icon
+                      name="logo-facebook"
+                      (click)="facebook()"
+                    ></ion-icon>
+                  </li>
+                  <li>
+                    <ion-icon
+                      name="logo-twitter"
+                      (click)="twitter()"
+                    ></ion-icon>
+                  </li>
+                  <li>
+                    <ion-icon
+                      name="logo-instagram"
+                      (click)="insta()"
+                    ></ion-icon>
+                  </li>
+                </ul>
+              </ion-col>
 
-    <ion-row class="footer">
-      <ion-col size="10" class="footerWrapper">
-        <ion-row>
-          <ion-col size="12" size-md="3">
-            <h5>KEEP IN TOUCH</h5>
-            <ul class="social">
-              <li>
-                <ion-icon name="logo-facebook" (click)="facebook()"></ion-icon>
-              </li>
-              <li>
-                <ion-icon name="logo-twitter" (click)="twitter()"></ion-icon>
-              </li>
-              <li>
-                <ion-icon name="logo-instagram" (click)="insta()"></ion-icon>
-              </li>
-            </ul>
-          </ion-col>
+              <ion-col size="12" size-md="3" class="usefulLinks">
+                <h5>Useful Links</h5>
+                <ul class="links">
+                  <li (click)="router.navigate(['about'])"><p>About Us</p></li>
+                  <li (click)="router.navigate(['/tabs/categories'])">
+                    <p>Categories</p>
+                  </li>
+                  <li (click)="router.navigate(['offers'])"><p>Offers</p></li>
+                </ul>
+              </ion-col>
 
-          <ion-col size="12" size-md="3" class="usefulLinks">
-            <h5>USEFUL LINKS</h5>
-            <ul class="links">
-              <!-- <li (click)="router.navigate(['home'])"><p>Home</p></li> -->
-              <li (click)="router.navigate(['about'])"><p>About Us</p></li>
-              <li (click)="router.navigate(['categories'])">
-                <p>Categories</p>
-              </li>
-              <li (click)="router.navigate(['offer'])"><p>Offers</p></li>
-            </ul>
-          </ion-col>
+              <ion-col size="12" class="address" size-md="3">
+                <h5>Address</h5>
+                <p>Ras Al Khor,Industrial Area 1,Dubai, UAE</p>
+                <h5 class="accept">We Accept</h5>
+                <div class="logosPayment">
+                  <img
+                    src="../../../assets/imgs/icons/mastercard.svg"
+                    alt=""
+                    class="payLogo"
+                  />
+                  <img
+                    src="../../../assets/imgs/icons/visa.svg"
+                    alt=""
+                    class="payLogo"
+                  />
+                </div>
+              </ion-col>
 
-          <ion-col size="12" class="address" size-md="3">
-            <h5>OUR MIDDLE EAST STORE</h5>
-            <p>Dubai, UAE</p>
-            <h5 class="accept">WE ACCEPT</h5>
-            <ion-icon name="logo-paypal" class="payIcon"></ion-icon>
-          </ion-col>
+              <ion-col size="12" size-md="3" class="policies">
+                <p (click)="router.navigate(['returnandrefund'])">
+                  Return & Refund Policy
+                </p>
+                <p (click)="router.navigate(['privacypolicy'])">
+                  Privacy Policy
+                </p>
+                <p (click)="router.navigate(['termsandconditions'])">
+                  Terms and Conditions
+                </p>
+                <p (click)="router.navigate(['shippingpolicy'])">
+                  Shipping Policy
+                </p>
+                <p (click)="router.navigate(['contact-us'])">Contact Us</p>
+              </ion-col>
 
-          <ion-col size="12" size-md="3" class="policies">
-            <p (click)="router.navigate(['returnandrefund'])">
-              Return & Refund Policy
-            </p>
-            <p (click)="router.navigate(['privacypolicy'])">Privacy Policy</p>
-            <p (click)="router.navigate(['termsandconditions'])">
-              Terms and Conditions
-            </p>
-            <!-- <p>Shipping Policy</p>
-      <p>Customer Support</p> -->
-          </ion-col>
-
-          <ion-col size="12">
-            <p class="ion-text-center">
-              © 2020 Deal on Store. All rights reserved. Designed by Mermer
-              Technologies.
-            </p>
+              <ion-col size="12">
+                <p class="ion-text-center">
+                  © 2021 Deal on Store. All rights reserved. Designed by Mermer
+                  Technologies.
+                </p>
+              </ion-col>
+            </ion-row>
           </ion-col>
         </ion-row>
-      </ion-col>
-    </ion-row>
-  </div>
-  <!--       skeleton        -->
-
-  <div *ngIf="!data">
+      </ion-footer>
+    </section>
+  </ng-template>
+  <ng-template #elseTemplate>
     <div class="ion-padding custom-skeleton">
       <ion-skeleton-text
         animated
@@ -584,7 +513,5 @@
         ></ion-col>
       </ion-row>
     </ion-grid>
-
-    <div class="ion-padding"></div>
-  </div>
+  </ng-template>
 </ion-content>

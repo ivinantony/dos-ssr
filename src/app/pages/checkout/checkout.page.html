@@ -1,8 +1,9 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>CHECKOUT</ion-title>
+
+<ion-header class="ion-hide-md-up">
+  <ion-toolbar color="secondary">
+    <ion-title>Checkout</ion-title>
     <ion-buttons slot="start" mode="ios">
-      <ion-back-button defaultHref="cart"  color="dark"></ion-back-button>
+      <ion-back-button defaultHref="/tabs/cart"  color="light"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -73,25 +74,48 @@
             fill="clear"
             size="small"
           >
-          {{ data?.saved_amount | currency:'AED  ' }}
+          {{ discount_amount| currency:'AED  ' }}
           </ion-button>
         </ion-item>
 
-        <ion-item class="total" lines="none">
+        <ion-item class="total" lines="none" >
           <ion-button
             size="small"
             color="dark"
             slot="start"
             expand="block"
             fill="clear"
-            (click)="openPromo()"
+            *ngIf="!promo_id"
           >
           <ion-icon
          slot="start"
          color="danger"
         src="assets/imgs/discount.svg">
         </ion-icon>
-            Apply Promo Code
+            APPLY PROMO CODE
+          </ion-button>
+
+          <ion-button
+            size="small"
+            color="dark"
+            slot="start"
+            expand="block"
+            fill="clear"
+            *ngIf="promo_id"
+          >
+          <ion-icon
+         slot="start"
+         color="danger"
+        src="assets/imgs/discount.svg">
+        </ion-icon>
+           APPLIED
+          </ion-button>
+
+          <ion-button (click)="openPromo()" color="primary" slot="end" *ngIf="!promo_id" fill="outline"  >
+            Select
+          </ion-button>
+          <ion-button (click)="removePromo()" color="primary" slot="end" *ngIf="promo_id" fill="outline">
+            Remove
           </ion-button>
         </ion-item>
         
@@ -119,7 +143,7 @@
         
      
           <ion-col size="5">
-            <ion-button (click)="checkOut()" expand="full" fill="solid" shape="round" color="tertiary"  >
+            <ion-button (click)="checkOut()" expand="full"  shape="round" color="tertiary"  >
               CHECKOUT
             </ion-button>
           </ion-col>

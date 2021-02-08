@@ -1,59 +1,58 @@
-<ion-header>
-  <ion-toolbar>
+<desktop-header></desktop-header>
+<ion-header class="ion-hide-md-up">
+  <ion-toolbar color="secondary">
     <ion-buttons slot="start">
-      <ion-back-button color="dark" defaultHref="/profile" ></ion-back-button>
+      <ion-back-button color="light" defaultHref="/profile"></ion-back-button>
     </ion-buttons>
     <ion-title>Notifications</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content pullingIcon="refresh" pullingText="Pull to refresh" refreshingSpinner="crescent"
-      refreshingText="Refreshing..."></ion-refresher-content>
+    <ion-refresher-content
+      pullingIcon="refresh"
+      pullingText="Pull to refresh"
+      refreshingSpinner="crescent"
+      refreshingText="Refreshing..."
+    ></ion-refresher-content>
   </ion-refresher>
 
-<ion-grid fixed>
-
-    <div class="wrapper">
-      
-
-      <ion-card  *ngFor="let item of data; let i=index" [ngClass]="item.push_notification_read_status == 1 ?'read':'notread'" (click)="viewNotification(i)"> 
-        <ion-item lines="none" >
-          <ion-thumbnail slot="start">
-            <img src="{{s3url + item.image}}" *ngIf="item.image != null">
-            <img src="../../../assets/imgs/chat.svg">
-          </ion-thumbnail>
-          <ion-label>
-            <h3>{{item.title}}</h3>
-            <p> {{item.description}}</p>
-          </ion-label>
+  <ion-grid fixed>
+    <ion-list>
+      <ion-item
+        *ngFor="let item of data; let i=index"
+        class="ion-no-margin"
+        lines="none"
+        [ngClass]="{read: item.push_notification_read_status==1}"
+      >
      
+      <ion-row style="width: 100%;">
+        <ion-col size="11" style="display: flex; justify-content: space-between;" (click)="viewNotification(i)">
+          <ion-item lines="none" class="ion-no-margin ion-no-padding" [ngClass]="{read: item.push_notification_read_status==1}">
+            <ion-thumbnail>
+              <img src="{{s3url + item.image}}" *ngIf="item.image != null" />
+              <img src="../../../assets/imgs/chat.svg" />
+            </ion-thumbnail>
+            <ion-label style="margin-left: 7px;">
+              <h3>{{item.title}}</h3>
+              <p>{{item.description}}</p>
+            </ion-label>
           </ion-item>
-          <ion-icon name="checkmark-done-outline" *ngIf="item.push_notification_read_status == 1" class="read_icon" color="success"></ion-icon>
-      </ion-card> 
-    
-    </div>
-
-</ion-grid>
-<div class="ion-text-center whenEmpty" *ngIf="!data">
-  <!-- <img src="../../../assets/icon/orders.png"> -->
-  <p>All caught up.</p>
-  <!-- <ion-button (click)="continueShopping()" fill="outline" shape="round">
-    <ion-icon slot="start" name="add"></ion-icon>
-    Continue Shopping
-  </ion-button> -->
-</div>
-
-
-
-<ion-fab vertical="bottom" horizontal="end" slot="fixed">
-  <ion-fab-button color="danger" (click)="delete()">
-    <ion-icon name="trash-outline"></ion-icon>
-  </ion-fab-button>
-</ion-fab>
+          
+        </ion-col>
+        <ion-col size="1">
+          <ion-buttons >
+            <ion-button (click)="prsentOptions(i)">
+              <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-col>
+      </ion-row>
+      </ion-item>
+    </ion-list>
+  </ion-grid>
+  <div class="ion-text-center whenEmpty" *ngIf="data?.length == 0">
+    <p>No new notifications.</p>
+  </div>
 </ion-content>
-
-
-

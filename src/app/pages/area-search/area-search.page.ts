@@ -1,28 +1,25 @@
-import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { Component, NgZone, OnInit, ViewChild } from "@angular/core";
+import { ModalController } from "@ionic/angular";
 declare var google: any;
 @Component({
-  selector: 'app-area-search',
-  templateUrl: './area-search.page.html',
-  styleUrls: ['./area-search.page.scss'],
+  selector: "app-area-search",
+  templateUrl: "./area-search.page.html",
+  styleUrls: ["./area-search.page.scss"],
 })
 export class AreaSearchPage implements OnInit {
-  @ViewChild('search', { static: true }) search: any;
-  todo = { title: "" };
+  @ViewChild("search", { static: true }) search: any;
   public search_places: any = [];
-  query: string = "";
-  location_data:any={
-
-  }
-  constructor(private modalController: ModalController, public zone: NgZone) { }
+  location_data: any = {};
+  constructor(private modalController: ModalController, public zone: NgZone) {}
 
   ngOnInit() {
+    if (!window.history.state.modal) {
+      const modalState = { modal: true };
+      history.pushState(modalState, null);
+    }
   }
-  dismissModal() {
-    this.modalController.dismiss()
-  }
+  
   onSearchChange(event) {
-    // console.log('evn',event)
     let config = {
       types: ["geocode"],
       input: event.detail.value,
@@ -47,16 +44,17 @@ export class AreaSearchPage implements OnInit {
 
     placesService.getDetails({ placeId: place.place_id }, (details) => {
       this.zone.run(() => {
-        // console.log(details)
         this.location_data.name = details.name;
         this.location_data.lat = details.geometry.location.lat();
         this.location_data.lng = details.geometry.location.lng();
-        // console.log(this.location_data)
+
         if (this.location_data.lat && this.location_data.lng) {
           this.modalController.dismiss(this.location_data);
         }
       });
     });
   }
-
+  dismissModal() {
+    this.modalController.dismiss();
   }
+}

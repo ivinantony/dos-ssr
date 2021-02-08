@@ -1,46 +1,46 @@
 .input {
-    border: 1px solid rgba(var(--ca6, 219, 219, 219), 1);
-    // border-radius: 3px;
-    // font-size: 14px;
-    margin: 10px;
-  }
-  ion-toolbar,
-  ion-content {
-    --background: #fff;
-  }
-  .invalid {
-    border: 1px solid #ea6153;
+  border: 1px solid rgba(var(--ca6, 219, 219, 219), 1);
+  border-radius: 10px;
+  font-size: 14px;
+  margin: 10px;
+}
+ion-toolbar,
+ion-content {
+  --background: #fff;
+}
+.invalid {
+  border: 1px solid #ea6153;
 }
 
-.err_msg{
+.err_msg {
   padding: 15px;
   color: #ea6153;
 }
 
-.container{
+.container {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
 }
 
-.drpdwn{
-  select{
+.drpdwn {
+  select {
     height: 46px;
     border: 1px solid rgba(var(--ca6, 219, 219, 219), 1);
     font-size: 16px;
   }
-  .opt{
+  .opt {
     font-size: 16px;
     border: none;
   }
 }
 
 .select-css option {
-  font-weight:normal;
+  font-weight: normal;
   font-size: 10px;
 }
 
-.wrapper{
+.wrapper {
   margin-left: auto;
   margin-right: auto;
 }

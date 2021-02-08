@@ -1,0 +1,26 @@
+<desktop-header></desktop-header>
+<ion-header class="ion-hide-md-up">
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home"  color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Contact Us</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid fixed>
+    <ion-row>
+    
+      <ion-col size="11" class="content ion-text-justify">
+     
+          <quill-view
+        [content]="data?.contactus_content"
+        format="text"
+        theme="snow"
+        ></quill-view>
+        
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

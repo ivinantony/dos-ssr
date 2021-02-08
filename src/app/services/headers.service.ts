@@ -6,10 +6,10 @@ import { Injectable } from '@angular/core';
 })
 export class HeadersService {
 
-  constructor() { }
-  getHttpHeaders() {
-    // const tokenService = new TokenService();
+  constructor() {
 
+  }
+  getHttpHeaders() {
     var headers = new HttpHeaders()
       .set("Accept", "application/json")
       .set("client-id", "1")
