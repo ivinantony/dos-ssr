@@ -1,4 +1,3 @@
-
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 import {
@@ -8,6 +7,8 @@ import {
   PopoverController,
   ToastController,
   IonInfiniteScroll,
+  ModalController,
+  IonRouterOutlet,
 } from "@ionic/angular";
 import { IonContent } from "@ionic/angular";
 import { CartcountService } from "src/app/cartcount.service";
@@ -17,9 +18,11 @@ import { CartService } from "src/app/services/cart/cart.service";
 import { OfferService } from "src/app/services/offer/offer.service";
 import { UtilsService } from "src/app/services/utils.service";
 import { FilterComponent } from "../filter/filter.component";
+import { CartmodalPage } from "../cartmodal/cartmodal.page";
 
 const GET_DATA = 200;
 const POST_DATA = 210;
+const BUY_NOW = 220;
 @Component({
   selector: "app-offer",
   templateUrl: "./offer.page.html",
@@ -52,10 +55,12 @@ export class OfferPage implements OnInit {
     private popOverCtrl: PopoverController,
     private toastController: ToastController,
     private cartCountService: CartcountService,
-    private authGuard: AuthGuard
+    private authGuard: AuthGuard,
+    private modalController: ModalController,
+    private routerOutlet:IonRouterOutlet
   ) {
     this.s3url = utils.getS3url();
-    console.log('constructor')
+    console.log("constructor");
   }
 
   ionViewWillEnter() {
@@ -68,10 +73,9 @@ export class OfferPage implements OnInit {
     this.getData();
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   getData(infiniteScroll?) {
-    this.infiniteScroll.disabled = true;
     this.presentLoading().then(() => {
       this.authService.isAuthenticated().then((val) => {
         if (val) {
@@ -111,6 +115,11 @@ export class OfferPage implements OnInit {
         this.cartCountService.setCartCount(data.cart_count);
         this.presentToastSuccess("One ' " + this.name + " ' added to cart.");
       });
+    } else if (type == BUY_NOW) {
+      this.loadingController.dismiss().then(() => {
+        // this.productDetails.cart_count++;
+        this.presentModal();
+      });
     }
 
     if (infiniteScroll) {
@@ -147,6 +156,32 @@ export class OfferPage implements OnInit {
     });
   }
 
+  buyNow(index: number) {
+    this.authService.isAuthenticated().then((val) => {
+      if (val) {
+        if (this.products[index].cart_count > 0) {
+          this.presentModal();
+        } else {
+          this.presentLoading().then(() => {
+            this.products[index].cart_count =
+              this.products[index].cart_count + 1;
+            let data = {
+              product_id: this.products[index].id,
+              client_id: val,
+              qty: 1,
+            };
+            this.cartService.addToCartQty(data).subscribe(
+              (data) => this.handleResponse(data, BUY_NOW),
+              (error) => this.handleError(error)
+            );
+          });
+        }
+      } else {
+        this.authGuard.presentModal();
+      }
+    });
+  }
+
   goToCart() {
     this.router.navigate(["/cart"]);
   }
@@ -161,6 +196,8 @@ export class OfferPage implements OnInit {
     });
     popover.onDidDismiss().then((data) => {
       if (data.data) {
+        this.infiniteScroll.disabled = true;
+
         if (data.data == 2) {
           this.sortType = "ASC";
           this.page_count = 1;
@@ -200,7 +237,7 @@ export class OfferPage implements OnInit {
   navigateToProduct(index) {
     let id = this.products[index].id;
     let catId = this.products[index].category_id;
-    this.router.navigate(["product", id, { catId },]);
+    this.router.navigate(["product", id, { catId }]);
   }
 
   doRefresh(event) {
@@ -221,6 +258,8 @@ export class OfferPage implements OnInit {
         {
           text: "Price - high to low",
           handler: () => {
+            this.infiniteScroll.disabled = true;
+
             this.page_count = 1;
             this.products = [];
             this.sortType = "DESC";
@@ -231,6 +270,8 @@ export class OfferPage implements OnInit {
         {
           text: "Price - low to high",
           handler: () => {
+            this.infiniteScroll.disabled = true;
+
             this.page_count = 1;
             this.products = [];
             this.sortType = "ASC";
@@ -284,6 +325,26 @@ export class OfferPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: CartmodalPage,
+      cssClass: "cartmodal",
+      componentProps: { value: 123 },
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl,
+    });
+
+    await modal.present();
+
+    await modal.onDidDismiss().then((data) => {
+      if ((data.data = 1)) {
+        this.page_count = 1;
+        this.products = [];
+        this.getData();
+      }
+    });
   }
 
   ionViewWillLeave() {

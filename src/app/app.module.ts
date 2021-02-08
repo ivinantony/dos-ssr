@@ -24,14 +24,8 @@ import { FilterComponent } from './pages/filter/filter.component';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireMessagingModule } from '@angular/fire/messaging';
 import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
-<<<<<<< HEAD
-import { RouterModule, Routes } from '@angular/router';
-// import { IonicImageZoomer } from 'ionic-image-zoomer';
-
-=======
 import { enterAnimation } from './animation/nav-animation';
 import { Deeplinks } from '@ionic-native/deeplinks/ngx';
->>>>>>> 82e2df53aa1e36f089ca057d5c7a6518c97f7823
 
 @NgModule({
   declarations: [AppComponent, FilterComponent],
@@ -48,10 +42,6 @@ import { Deeplinks } from '@ionic-native/deeplinks/ngx';
       // modalLeave:modalLeaveAnimation,
     }),
     IonicStorageModule.forRoot(),
-<<<<<<< HEAD
-    RouterModule.forRoot([]),
-=======
->>>>>>> 82e2df53aa1e36f089ca057d5c7a6518c97f7823
     AppRoutingModule,
     FontAwesomeModule,
     HttpClientModule,

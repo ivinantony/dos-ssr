@@ -7,6 +7,8 @@ import {
   PopoverController,
   ToastController,
   IonInfiniteScroll,
+  ModalController,
+  IonRouterOutlet,
 } from "@ionic/angular";
 import { IonContent } from "@ionic/angular";
 import { CartcountService } from "src/app/cartcount.service";
@@ -17,10 +19,13 @@ import { CartService } from "src/app/services/cart/cart.service";
 import { UtilsService } from "src/app/services/utils.service";
 
 import { FilterComponent } from "../filter/filter.component";
+import { CartmodalPage } from "../cartmodal/cartmodal.page";
+
 
 const GET_DATA = 200;
 const POST_DATA = 210;
 const DEL_DATA = 220;
+const BUY_NOW = 230;
 @Component({
   selector: "app-brand-products",
   templateUrl: "./brand-products.page.html",
@@ -96,7 +101,9 @@ export class BrandProductsPage implements OnInit {
     private popOverCtrl: PopoverController,
     private toastController: ToastController,
     private cartCountService: CartcountService,
-    private authGuard: AuthGuard
+    private authGuard: AuthGuard,
+    private modalController:ModalController,
+    private routerOutlet: IonRouterOutlet
   ) {
     this.brand_id = this.activatedRoute.snapshot.params.brand_id;
     this.s3url = this.utils.getS3url();
@@ -115,7 +122,6 @@ export class BrandProductsPage implements OnInit {
   ngOnInit() { }
 
   getData(infiniteScroll?) {
-    this.infiniteScroll.disabled = true;
 
     this.presentLoading().then(() => {
       this.authService.isAuthenticated().then((token) => {
@@ -159,7 +165,7 @@ export class BrandProductsPage implements OnInit {
       });
       this.authService.setCartCount(data.cart_count);
       this.cartCountService.setCartCount(data.cart_count);
-      this.infiniteScroll.disabled = true;
+      this.infiniteScroll.disabled = false;
     } else if (type == POST_DATA) {
       this.loadingController.dismiss();
       this.products[this.currentIndex].cart_count++;
@@ -168,6 +174,11 @@ export class BrandProductsPage implements OnInit {
       this.authService.setCartCount(data.cart_count);
       this.cartCountService.setCartCount(data.cart_count);
       this.presentToastSuccess("One ' " + this.name + " ' added to cart.");
+    }else if (type == BUY_NOW) {
+      this.loadingController.dismiss().then(() => {
+        // this.productDetails.cart_count++;
+        this.presentModal();
+      });
     }
 
     if (infiniteScroll) {
@@ -208,6 +219,7 @@ export class BrandProductsPage implements OnInit {
         {
           text: "Price - high to low",
           handler: () => {
+            this.infiniteScroll.disabled = true;
             this.page_count = 1;
             this.products = [];
             this.sortType = "DESC";
@@ -218,6 +230,7 @@ export class BrandProductsPage implements OnInit {
         {
           text: "Price - low to high",
           handler: () => {
+            this.infiniteScroll.disabled = true;
             this.page_count = 1;
             this.products = [];
             this.sortType = "ASC";
@@ -240,6 +253,7 @@ export class BrandProductsPage implements OnInit {
     });
     popover.onDidDismiss().then((data) => {
       if (data.data) {
+        this.infiniteScroll.disabled = true;
         if (data.data == 2) {
           this.sortType = "ASC";
           this.page_count = 1;
@@ -296,6 +310,33 @@ export class BrandProductsPage implements OnInit {
     });
   }
 
+  buyNow(index: number) {
+    this.authService.isAuthenticated().then((val) => {
+      if (val) {
+        if(this.products[index].cart_count>0){
+        this.presentModal();
+        }
+        else{
+          this.presentLoading().then(() => {
+            this.products[index].cart_count=this.products[index].cart_count+1 
+            let data = {
+              product_id: this.products[index].id,
+              client_id: val,
+              qty: 1,
+            };
+            this.cartService.addToCartQty(data).subscribe(
+              (data) => this.handleResponse(data, BUY_NOW),
+              (error) => this.handleError(error)
+            );
+          });
+        }
+        
+      } else {
+        this.authGuard.presentModal();
+      }
+    });
+  }
+
   goToCart() {
     this.router.navigate(["/cart"]);
   }
@@ -343,6 +384,27 @@ export class BrandProductsPage implements OnInit {
 
     await alert.present();
   }
+
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: CartmodalPage,
+      cssClass: "cartmodal",
+      componentProps: { value: 123 },
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl,
+    });
+
+    await modal.present();
+
+    await modal.onDidDismiss().then((data) => {
+      if ((data.data = 1)) {
+        this.page_count = 1;
+        this.products = [];
+        this.getData();
+      }
+    });
+  }
+
 
   ionViewWillLeave() {
     this.page_count = 1;

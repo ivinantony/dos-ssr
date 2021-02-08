@@ -9,12 +9,14 @@ import {
   Platform,
   PopoverController,
   ToastController,
+  IonRouterOutlet,
 } from "@ionic/angular";
 import { utils } from "protractor";
 import { SubcatProductsService } from "src/app/services/subcatProducts/subcat-products.service";
 import { UtilsService } from "src/app/services/utils.service";
 
 import { FilterComponent } from "../filter/filter.component";
+import { CartmodalPage } from "../cartmodal/cartmodal.page";
 
 import { CartService } from "src/app/services/cart/cart.service";
 import { AuthenticationService } from "src/app/services/authentication.service";
@@ -24,6 +26,7 @@ import { AuthGuard } from "src/app/guards/auth.guard";
 const GET_DATA = 200;
 const POST_DATA = 210;
 const DEL_DATA = 220;
+const BUY_NOW = 230;
 @Component({
   selector: "app-products",
   templateUrl: "./products.page.html",
@@ -59,24 +62,27 @@ export class ProductsPage implements OnInit {
     private popOverCtrl: PopoverController,
     private toastController: ToastController,
     private cartCountService: CartcountService,
-    private authGuard: AuthGuard
+    private authGuard: AuthGuard,
+    private modalController: ModalController,
+    private routerOutlet: IonRouterOutlet
   ) {
     this.page_count = 1;
     this.s3url = this.utils.getS3url();
     this.catId = parseInt(this.activatedRoute.snapshot.paramMap.get("id"));
     this.category_name = this.activatedRoute.snapshot.paramMap.get("name");
+    
   }
 
   ngOnInit() {}
   ionViewWillEnter() {
     this.cartCountService.getCartCount().subscribe((val) => {
       this.cart_count = val;
+      
     });
     this.getData();
   }
 
   getData(infiniteScroll?) {
-    this.infiniteScroll.disabled = false;
     this.presentLoading().then(() => {
       this.authService.isAuthenticated().then((res) => {
         if (res) {
@@ -115,8 +121,7 @@ export class ProductsPage implements OnInit {
         this.cart_count = data.cart_count;
         this.authService.setCartCount(data.cart_count);
         this.cartCountService.setCartCount(data.cart_count);
-        this.infiniteScroll.disabled = true;
-
+        this.infiniteScroll.disabled = false;
       });
     } else if (type == POST_DATA) {
       this.loadingController.dismiss().then(() => {
@@ -126,6 +131,11 @@ export class ProductsPage implements OnInit {
         this.authService.setCartCount(data.cart_count);
         this.cartCountService.setCartCount(data.cart_count);
         this.presentToastSuccess("One ' " + this.name + " ' added to cart.");
+      });
+    } else if (type == BUY_NOW) {
+      this.loadingController.dismiss().then(() => {
+        // this.productDetails.cart_count++;
+        this.presentModal();
       });
     }
 
@@ -155,6 +165,8 @@ export class ProductsPage implements OnInit {
     });
     popover.onDidDismiss().then((data) => {
       if (data.data) {
+        this.infiniteScroll.disabled = true;
+
         if (data.data == 2) {
           this.sortType = "ASC";
           this.page_count = 1;
@@ -191,6 +203,8 @@ export class ProductsPage implements OnInit {
         {
           text: "Price - high to low",
           handler: () => {
+            this.infiniteScroll.disabled = true;
+
             this.page_count = 1;
             this.products = [];
             this.sortType = "DESC";
@@ -201,6 +215,8 @@ export class ProductsPage implements OnInit {
         {
           text: "Price - low to high",
           handler: () => {
+            this.infiniteScroll.disabled = true;
+
             this.page_count = 1;
             this.products = [];
             this.sortType = "ASC";
@@ -250,6 +266,33 @@ export class ProductsPage implements OnInit {
     });
   }
 
+  buyNow(index: number) {
+    this.authService.isAuthenticated().then((val) => {
+      if (val) {
+        if(this.products[index].cart_count>0){
+        this.presentModal();
+        }
+        else{
+          this.presentLoading().then(() => {
+            this.products[index].cart_count=this.products[index].cart_count+1 
+            let data = {
+              product_id: this.products[index].id,
+              client_id: val,
+              qty: 1,
+            };
+            this.cartService.addToCartQty(data).subscribe(
+              (data) => this.handleResponse(data, BUY_NOW),
+              (error) => this.handleError(error)
+            );
+          });
+        }
+        
+      } else {
+        this.authGuard.presentModal();
+      }
+    });
+  }
+
   goToCart() {
     this.router.navigate(["tabs/cart"]);
   }
@@ -284,8 +327,6 @@ export class ProductsPage implements OnInit {
     }, 1000);
   }
 
-
-
   async presentAlert(msg: string) {
     const alert = await this.alertController.create({
       cssClass: "my-custom-class",
@@ -300,7 +341,26 @@ export class ProductsPage implements OnInit {
     await alert.present();
   }
 
- 
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: CartmodalPage,
+      cssClass: "cartmodal",
+      componentProps: { value: 123 },
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl,
+    });
+
+    await modal.present();
+
+    await modal.onDidDismiss().then((data) => {
+      if ((data.data = 1)) {
+        this.page_count = 1;
+        this.products = [];
+        this.getData();
+      }
+    });
+  }
+
   ionViewWillLeave() {
     this.page_count = 1;
     this.products = [];
