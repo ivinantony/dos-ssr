@@ -1,12 +1,15 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { AlertController, LoadingController } from "@ionic/angular";
+import { AlertController, LoadingController, ToastController } from "@ionic/angular";
 import { CartcountService } from "src/app/cartcount.service";
+import { AuthGuard } from "src/app/guards/auth.guard";
 import { AuthenticationService } from "src/app/services/authentication.service";
+import { CartService } from "src/app/services/cart/cart.service";
 import { UtilsService } from "src/app/services/utils.service";
 import { WishlistService } from "src/app/services/wishlist/wishlist.service";
 const REMOVE = 200;
 const GET_DATA = 210;
+const ADD_TO_CART = 220;
 @Component({
   selector: "app-wishlist",
   templateUrl: "./wishlist.page.html",
@@ -18,6 +21,7 @@ export class WishlistPage implements OnInit {
   client_id: any;
   removedIndex:any;
   cart_count: any;
+  currentIndex:any;
   constructor(
     private loadingController: LoadingController,
     private authService: AuthenticationService,
@@ -25,7 +29,10 @@ export class WishlistPage implements OnInit {
     private utils: UtilsService,
     public router: Router,
     private alertController: AlertController,
-    private cartCountService:CartcountService
+    private cartCountService:CartcountService,
+    private cartService:CartService,
+    private authGuard:AuthGuard,
+    private toastController:ToastController
   ) {
     this.s3url = this.utils.getS3url();
 
@@ -64,6 +71,15 @@ export class WishlistPage implements OnInit {
       this.wishlist.splice(this.removedIndex,1)
       this.loadingController.dismiss();
       console.log(data);
+    } else if (type == ADD_TO_CART) {
+      this.loadingController.dismiss().then(() => {
+        
+       let name = this.wishlist[this.currentIndex].name;
+        
+        this.authService.setCartCount(data.cart_count);
+        this.cartCountService.setCartCount(data.cart_count);
+        this.presentToastSuccess(name + " added to cart.");
+      });
     }
   }
 
@@ -127,7 +143,36 @@ export class WishlistPage implements OnInit {
     this.router.navigate(["product", id]);
   }
 
-  moveToCart() {}
+  moveToCart(index: number) {
+    this.currentIndex = index;
+    this.authService.isAuthenticated().then((token) => {
+      if (token) {
+        this.presentLoading().then(() => {
+          let data = {
+            product_id: this.wishlist[index].id,
+            client_id: token
+          };
+          this.cartService.addToCart(data).subscribe(
+            (data) => this.handleResponse(data, ADD_TO_CART),
+            (error) => this.handleError(error)
+          );
+        });
+      } else {
+        this.authGuard.presentModal();
+      }
+    });
+  }
+
+  async presentToastSuccess(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast-success",
+      position: "bottom",
+      color: "dark",
+      duration: 1500,
+    });
+    toast.present();
+  }
 
   doRefresh(event) {
     this.getData();
