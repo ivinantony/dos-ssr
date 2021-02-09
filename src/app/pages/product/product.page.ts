@@ -237,7 +237,7 @@ export class ProductPage implements OnInit {
     });
   }
 
-  addToWishlist(index:number)
+  addToWishlist()
   {
     
     this.authService.isAuthenticated().then((token) => {
