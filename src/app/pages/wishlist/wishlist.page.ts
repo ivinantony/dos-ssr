@@ -1,15 +1,24 @@
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
-import { AlertController, LoadingController, ToastController } from "@ionic/angular";
+import { Router, RouterOutlet } from "@angular/router";
+import {
+  AlertController,
+  IonRouterOutlet,
+  LoadingController,
+  ModalController,
+  ToastController,
+} from "@ionic/angular";
 import { CartcountService } from "src/app/cartcount.service";
 import { AuthGuard } from "src/app/guards/auth.guard";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { CartService } from "src/app/services/cart/cart.service";
 import { UtilsService } from "src/app/services/utils.service";
 import { WishlistService } from "src/app/services/wishlist/wishlist.service";
+import { CartmodalPage } from "../cartmodal/cartmodal.page";
+
 const REMOVE = 200;
 const GET_DATA = 210;
 const ADD_TO_CART = 220;
+const BUY_NOW = 230;
 @Component({
   selector: "app-wishlist",
   templateUrl: "./wishlist.page.html",
@@ -19,9 +28,9 @@ export class WishlistPage implements OnInit {
   s3url: any;
   wishlist: Array<any> = [];
   client_id: any;
-  removedIndex:any;
+  removedIndex: any;
   cart_count: any;
-  currentIndex:any;
+  currentIndex: any;
   constructor(
     private loadingController: LoadingController,
     private authService: AuthenticationService,
@@ -29,10 +38,12 @@ export class WishlistPage implements OnInit {
     private utils: UtilsService,
     public router: Router,
     private alertController: AlertController,
-    private cartCountService:CartcountService,
-    private cartService:CartService,
-    private authGuard:AuthGuard,
-    private toastController:ToastController
+    private cartCountService: CartcountService,
+    private cartService: CartService,
+    private authGuard: AuthGuard,
+    private toastController: ToastController,
+    private modalController: ModalController,
+    private routerOutlet: IonRouterOutlet
   ) {
     this.s3url = this.utils.getS3url();
 
@@ -43,9 +54,7 @@ export class WishlistPage implements OnInit {
   ionViewWillEnter() {
     this.cartCountService.getCartCount().subscribe((val) => {
       this.cart_count = val;
-      
     });
-   
   }
 
   getData() {
@@ -68,24 +77,30 @@ export class WishlistPage implements OnInit {
       console.log(data);
       this.wishlist = data.wishlist;
     } else if (type == REMOVE) {
-      this.wishlist.splice(this.removedIndex,1)
+      this.wishlist.splice(this.removedIndex, 1);
       this.loadingController.dismiss();
       console.log(data);
     } else if (type == ADD_TO_CART) {
       this.loadingController.dismiss().then(() => {
-        
-       let name = this.wishlist[this.currentIndex].name;
-        
+        let name = this.wishlist[this.currentIndex].name;
+
         this.authService.setCartCount(data.cart_count);
         this.cartCountService.setCartCount(data.cart_count);
         this.presentToastSuccess(name + " added to cart.");
+      });
+    } else if (type == BUY_NOW) {
+      this.loadingController.dismiss().then(() => {
+        // this.productDetails.cart_count++;
+        this.presentModal();
       });
     }
   }
 
   handleError(error) {
     this.loadingController.dismiss();
-    console.log(error);
+    if (error.status == 400) {
+      this.presentAlert(error.error.message);
+    }
   }
 
   async presentLoading() {
@@ -103,7 +118,7 @@ export class WishlistPage implements OnInit {
   }
 
   async remove(index: number) {
-    this.removedIndex = index
+    this.removedIndex = index;
     let name = this.wishlist[index].name;
     let id = this.wishlist[index].id;
     const alert = await this.alertController.create({
@@ -150,13 +165,39 @@ export class WishlistPage implements OnInit {
         this.presentLoading().then(() => {
           let data = {
             product_id: this.wishlist[index].id,
-            client_id: token
+            client_id: token,
           };
           this.cartService.addToCart(data).subscribe(
             (data) => this.handleResponse(data, ADD_TO_CART),
             (error) => this.handleError(error)
           );
         });
+      } else {
+        this.authGuard.presentModal();
+      }
+    });
+  }
+
+  buyNow(index: number) {
+    this.authService.isAuthenticated().then((val) => {
+      if (val) {
+        if (this.wishlist[index].cart_count > 0) {
+          this.presentModal();
+        } else {
+          this.presentLoading().then(() => {
+            this.wishlist[index].cart_count =
+              this.wishlist[index].cart_count + 1;
+            let data = {
+              product_id: this.wishlist[index].id,
+              client_id: val,
+              qty: 1,
+            };
+            this.cartService.addToCartQty(data).subscribe(
+              (data) => this.handleResponse(data, BUY_NOW),
+              (error) => this.handleError(error)
+            );
+          });
+        }
       } else {
         this.authGuard.presentModal();
       }
@@ -172,6 +213,40 @@ export class WishlistPage implements OnInit {
       duration: 1500,
     });
     toast.present();
+  }
+
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: CartmodalPage,
+      cssClass: "cartmodal",
+      componentProps: { value: 123 },
+      swipeToClose: true,
+      presentingElement: this.routerOutlet.nativeEl,
+    });
+
+    await modal.present();
+
+    // await modal.onDidDismiss().then((data) => {
+    //   if ((data.data = 1)) {
+    //     this.page_count = 1;
+    //     this.products = [];
+    //     this.getData();
+    //   }
+    // });
+  }
+
+  async presentAlert(msg: string) {
+    const alert = await this.alertController.create({
+      cssClass: "my-custom-class",
+      header: "Low Stock Alert",
+
+      message:
+        msg +
+        " For ordering large quantities contact us through email or whatsapp.",
+      buttons: ["OK"],
+    });
+
+    await alert.present();
   }
 
   doRefresh(event) {
