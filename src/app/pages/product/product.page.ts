@@ -15,10 +15,13 @@ import { ProductDetailsService } from "src/app/services/productDetails/product-d
 import { UtilsService } from "src/app/services/utils.service";
 import { CartmodalPage } from "../cartmodal/cartmodal.page";
 import { CartcountService } from "src/app/cartcount.service";
+import { WishlistService } from "src/app/services/wishlist/wishlist.service";
 
 const GET_DATA = 200;
 const POST_DATA = 210;
 const BUY_NOW = 240;
+const WISHLIST = 250;
+
 @Component({
   selector: "app-product",
   templateUrl: "./product.page.html",
@@ -104,7 +107,8 @@ export class ProductPage implements OnInit {
     private loadingController: LoadingController,
     private routerOutlet: IonRouterOutlet,
     private cartCountService: CartcountService,
-    private authGuard:AuthGuard
+    private authGuard:AuthGuard,
+    private wishlistService:WishlistService
   ) {
     this.productId = parseInt(this.activatedRoute.snapshot.paramMap.get("id"));
     this.catId = parseInt(this.activatedRoute.snapshot.paramMap.get("catId"));
@@ -165,6 +169,21 @@ export class ProductPage implements OnInit {
     } else if (type == BUY_NOW) {
       this.productDetails.cart_count++;
       this.presentModal();
+    } else if (type == WISHLIST) {
+      this.loadingController.dismiss().then(()=>{
+        
+        if(this.productDetails.wishlist==true)
+        {
+          this.presentToastSuccess(this.productDetails.name + "  removed from wishlist.");
+          this.productDetails.wishlist=!this.productDetails.wishlist
+
+        }
+        else{
+          this.presentToastSuccess(this.productDetails.name + "  added to wishlist.");
+         
+           this.productDetails.wishlist=!this.productDetails.wishlist
+        }
+      })
     }
   }
 
@@ -214,6 +233,27 @@ export class ProductPage implements OnInit {
         );
       } else {
         this.authGuard.presentModal()
+      }
+    });
+  }
+
+  addToWishlist(index:number)
+  {
+    
+    this.authService.isAuthenticated().then((token) => {
+      if (token) {
+        this.presentLoading().then(() => {
+          let data = {
+            product_id: this.productDetails.id,
+            client_id: token,
+          };
+          this.wishlistService.wishlist(data).subscribe(
+            (data) => this.handleResponse(data, WISHLIST),
+            (error) => this.handleError(error)
+          );
+        });
+      } else {
+        this.authGuard.presentModal();
       }
     });
   }

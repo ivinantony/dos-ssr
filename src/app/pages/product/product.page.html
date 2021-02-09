@@ -57,6 +57,10 @@
           </div>
 
         </div>
+        <ion-button fill="solid" (click)="addToWishlist()" class="wish" color="light">
+              
+          <ion-icon slot="icon-only" [name]="productDetails?.wishlist==true? 'heart' : 'heart-outline'" color="primary" ></ion-icon>
+        </ion-button>
       </div>
 
       <div class="rightSec">
@@ -270,6 +274,7 @@
           ></quill-view>
         </div>
       </div>
+     
     </div>
   </div>
 

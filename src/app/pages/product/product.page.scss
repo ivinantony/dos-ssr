@@ -19,6 +19,15 @@
   font-size: 10px;
 }
 
+.wish{
+  --border-radius:25px;
+  position: absolute;
+  top: 10px;
+  z-index: 1;
+  right: 0px;
+  margin: 0px; 
+}
+
 .thumbnailWrapper {
   display: flex;
   width: 75%;
@@ -327,9 +336,11 @@ li {
   }
   .main {
     display: flex;
+    position: relative;
   }
 
   .leftSec {
+    position: relative;
     width: 40%;
   }
 
