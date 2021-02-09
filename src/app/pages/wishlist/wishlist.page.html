@@ -63,7 +63,7 @@
                 >
                   <ion-icon name="trash-outline"></ion-icon>
                 </ion-button>
-                <ion-button (click)="buyNow(i)" fill="outline">
+                <ion-button (click)="buyNow(i)" fill="outline" [disabled]="item.in_stock == 0 || item.stock_quantity <= 0">
                   <!-- <ion-icon slot="start" name="add"></ion-icon> -->
                   Buy Now
                 </ion-button>
@@ -82,7 +82,17 @@
                 class="ion-padding-start"
                 ><p>{{ item.price | currency:'AED ' }}</p></ion-label
               >
+              <ion-item 
+              *ngIf="item.in_stock == 0 || item.stock_quantity <= 0"
+              class="outofstock"
+              lines="none"
+            >
+              <ion-icon name="ban" color="primary"></ion-icon>
+              <h3>This item is currently out of stock.</h3>
             </ion-item>
+            </ion-item>
+      
+            
             <hr />
           </ion-list>
         </ion-col>
