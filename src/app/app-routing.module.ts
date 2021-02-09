@@ -216,15 +216,6 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     loadChildren: () => import('./pages/wishlist/wishlist.module').then( m => m.WishlistPageModule)
   },
-
-
-
-
-
-
-
-
-
 ];
 
 @NgModule({
