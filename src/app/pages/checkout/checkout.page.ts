@@ -16,11 +16,15 @@ import { PaytabsService } from "src/app/services/paytabs.service";
 import { WalletService } from "src/app/services/wallet/wallet.service";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { Storage } from "@ionic/storage";
+import { PaymentService } from "src/app/services/payment/payment.service";
+import { UtilsService } from "src/app/services/utils.service";
 
 const GET_AMOUNTDETAILS = 200;
 const ORDER_RESPONSE = 210;
 const GET_PAY = 220;
 const WALLET_RESPONSE = 230;
+const POST_DATA = 240;
+const CONFIRM = 250;
 
 @Component({
   selector: "app-checkout",
@@ -34,6 +38,12 @@ export class CheckoutPage implements OnInit {
   payment_id: any;
   discount_amount: number = 0;
   delivery_location_id:any
+  client_id:any
+  response:any
+  appUrl: string
+  payable_order_id:any
+  private subscription: any;
+
   constructor(
     private checkoutService: CheckoutService,
     private activatedRoute: ActivatedRoute,
@@ -48,8 +58,12 @@ export class CheckoutPage implements OnInit {
     private walletService: WalletService,
     private alertController: AlertController,
     private authservice: AuthenticationService,
-    private storage: Storage
+    private storage: Storage,
+    private pay:PaymentService,
+    private utils:UtilsService,
+    private paymentService:PaymentService
   ) {
+    this.appUrl = this.utils.getAppUrl()
     this.address_id = this.activatedRoute.snapshot.params.address_id;
     this.delivery_location_id = this.activatedRoute.snapshot.params.delivery_location_id;
     console.log(this.delivery_location_id)
@@ -68,6 +82,7 @@ export class CheckoutPage implements OnInit {
     this.presentLoading().then(() => {
       this.authservice.isAuthenticated().then((val) => {
         if (val) {
+          this.client_id=val
           this.checkoutService.getAmountDetails(val, this.address_id,this.delivery_location_id).subscribe(
             (data) => this.handleResponse(data, GET_AMOUNTDETAILS),
             (error) => this.handleError(error, GET_AMOUNTDETAILS)
@@ -88,23 +103,64 @@ export class CheckoutPage implements OnInit {
     } 
     else if (type == ORDER_RESPONSE) {
       this.loadingController.dismiss();
-      let storable_data = {
-        payable_order_id: data.payable_order_id,
-        payable_amount: this.data.payable_amount,
-      };
-      this.storage.set("data_store", JSON.stringify(storable_data)).then(() => {
+      this.payable_order_id= data.payable_order_id
+      // let storable_data = {
+      //   payable_order_id: data.payable_order_id,
+      //   payable_amount: this.data.payable_amount,
+      // };
+      // this.storage.set("data_store", JSON.stringify(storable_data)).then(() => { });
         if (this.payment_id == 4) {
-          this.router.navigate(["paypal"]);
+          // this.router.navigate(["paypal"]);
+          this.hostedSubmit()
         } else if (this.payment_id == 2) {
           this.router.navigate(["/successful"], {replaceUrl:true});
         }
-      });
+     
     } 
     else if (type == WALLET_RESPONSE) {
       console.log("Payment complete")
       this.loadingController.dismiss();
       this.router.navigate(["/successful"], {replaceUrl:true});
-    } else {
+    } 
+    else if (type == POST_DATA) {
+      this.response = data;
+      this.storage.set("tran_ref", data.tran_ref).then(() => {
+        let encodedData = {
+          redirect_url: encodeURIComponent(data.redirect_url),
+          tran_ref: data.tran_ref,
+          client_id: this.client_id,
+        };
+
+        var url = `${this.appUrl}iframe?data=${JSON.stringify(
+          encodedData
+        )}`;
+        window.open(url, "_self");
+        if (this.platform.is("cordova")) {
+          this.subscription = this.platform.resume.subscribe(async () => {
+            this.storage.get("tran_ref").then((ref) => {
+              if (ref) {
+                this.paymentService
+                  .confirmPayment(ref, this.client_id)
+                  .subscribe(
+                    (data) => this.handleResponse(data, CONFIRM),
+                    (error) => this.handleError(error,CONFIRM)
+                  );
+              }
+            });
+          });
+        }
+      });
+      this.loadingController.dismiss();
+    } else if (type == CONFIRM) {
+      if (data.details) {
+        if (data.details.response_status == "A") {
+          this.router.navigate(["/tabs/home"], { replaceUrl: true });
+        } else {
+          this.router.navigate(["/tabs/cart"], { replaceUrl: true });
+        }
+      } else {
+        alert("Payment Cancelled.");
+      }
     }
   }
 
@@ -128,6 +184,27 @@ export class CheckoutPage implements OnInit {
 
   checkOut() {
     this.openPaymentModes();
+  }
+
+  hostedSubmit() {
+    this.presentLoading().then(() => {
+     
+          this.storage.get("data_store").then((val) => {
+            let data = {
+              client_id:  JSON.stringify(this.client_id),
+              payable_order_id:  JSON.stringify(this.payable_order_id),
+              payable_amount:  JSON.stringify(this.data.payable_amount),
+              address_id:this.address_id,
+            };
+
+            this.pay.hostedPay(data).subscribe(
+              (data) => this.handleResponse(data, POST_DATA),
+              (error) => this.handleError(error, POST_DATA)
+            );
+          });
+        
+      
+    });
   }
 
   async openPromo() {
@@ -277,4 +354,11 @@ export class CheckoutPage implements OnInit {
     });
     await loading.present();
   }
+
+  ngOnDestroy(): void {
+    if (this.platform.is("cordova")) {
+      this.subscription.unsubscribe();
+    }
+  }
+
 }

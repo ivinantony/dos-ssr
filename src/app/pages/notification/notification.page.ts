@@ -22,10 +22,12 @@ const DEL_DATA = 220;
   styleUrls: ["./notification.page.scss"],
 })
 export class NotificationPage implements OnInit {
-  data: Array<any>;
+  notificationMsgs: Array<any>=[];
   s3url: any;
   notf_count: any;
   currentIndex: number;
+  page_limit: number;
+  page_count: number = 1;
   constructor(
     private notifications: NotificationService,
     private utils: UtilsService,
@@ -47,17 +49,17 @@ export class NotificationPage implements OnInit {
 
   ngOnInit() {}
 
-  getData() {
+  getData(infiniteScroll?) {
     this.presentLoading().then(() => {
       this.authservice.isAuthenticated().then((val) => {
         if (val) {
-          this.notifications.getNotifications(val).subscribe(
-            (data) => this.handleResponse(data, GET_DATA),
+          this.notifications.getNotifications(val,this.page_count,).subscribe(
+            (data) => this.handleResponse(data, GET_DATA, infiniteScroll),
             (error) => this.handleError(error)
           );
         } else {
-          this.notifications.getNotifications(null).subscribe(
-            (data) => this.handleResponse(data, GET_DATA),
+          this.notifications.getNotifications(null,this.page_count).subscribe(
+            (data) => this.handleResponse(data, GET_DATA, infiniteScroll),
             (error) => this.handleError(error)
           );
         }
@@ -72,7 +74,7 @@ export class NotificationPage implements OnInit {
       this.storage.set("notf_count", this.notf_count);
       this.badge.set(this.notf_count);
     }
-    let notification_id = this.data[index].notification_id;
+    let notification_id = this.notificationMsgs[index].notification_id;
     let data = {
       notification_id: notification_id,
     };
@@ -80,16 +82,20 @@ export class NotificationPage implements OnInit {
       (data) => this.handleResponse(data, VIEW_NOTIFICATION),
       (error) => this.handleError(error)
     );
-    let id = this.data[index].id;
+    let id = this.notificationMsgs[index].id;
     this.presentModal(id);
   }
 
-  handleResponse(data, type) {
+  handleResponse(data, type, infiniteScroll?) {
     if (type == GET_DATA) {
-      this.data = data.data;
+      data.data.filter((msg)=>{
+        this.notificationMsgs.push(msg)
+      })
+      // this.notificationMsgs = data.data;
+      this.page_limit = data.page_count
       this.loadingController.dismiss();
     } else if (type == DEL_DATA) {
-      if (this.data[this.currentIndex].push_notification_read_status) {
+      if (this.notificationMsgs[this.currentIndex].push_notification_read_status) {
         this.badge.set(this.notf_count);
       } else {
         this.notf_count = this.notf_count - 1;
@@ -97,10 +103,14 @@ export class NotificationPage implements OnInit {
         this.storage.set("notf_count", this.notf_count);
         this.badge.set(this.notf_count);
       }
-      this.data.splice(this.currentIndex, 1);
+      this.notificationMsgs.splice(this.currentIndex, 1);
       this.loadingController.dismiss();
     } else {
       // console.log(data)
+    }
+
+    if (infiniteScroll) {
+      infiniteScroll.target.complete();
     }
   }
 
@@ -136,7 +146,7 @@ export class NotificationPage implements OnInit {
             this.presentLoading().then(() => {
               this.authservice.isAuthenticated().then((val) => {
                 this.notifications
-                  .deleteNotification(val, this.data[index].notification_id)
+                  .deleteNotification(val, this.notificationMsgs[index].notification_id)
                   .subscribe(
                     (data) => this.handleResponse(data, DEL_DATA),
                     (error) => this.handleError(error)
@@ -160,7 +170,20 @@ export class NotificationPage implements OnInit {
     await loading.present();
   }
 
+  loadMoreContent(infiniteScroll) {
+    if (this.page_count == this.page_limit) {
+      infiniteScroll.target.disabled = true;
+    } else {
+      this.page_count += 1;
+
+      this.getData(infiniteScroll);
+    }
+  }
+
+
   doRefresh(event) {
+    this.page_count=1;
+    this.notificationMsgs=[]
     this.getData();
     setTimeout(() => {
       event.target.complete();
