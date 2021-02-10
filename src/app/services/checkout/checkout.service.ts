@@ -20,10 +20,10 @@ export class CheckoutService {
      return this.httpclient.post(
       this.url + "addressDetails",data,{ headers }).pipe(map(res=>{return res}));
    }
-   public getAmountDetails (client_id:any,address_id)
+   public getAmountDetails (client_id:any,address_id,delivery_location_id:any)
    {
      const headers = this.headerservice.getHttpHeaders()
      return this.httpclient.get(
-      this.url + "checkout?client_id="+client_id+"&address_id="+address_id,{ headers }).pipe(map(res=>{return res}));
+      this.url + "checkout?client_id="+client_id+"&address_id="+address_id+"&delivery_location_id="+delivery_location_id,{ headers }).pipe(map(res=>{return res}));
    }
 }

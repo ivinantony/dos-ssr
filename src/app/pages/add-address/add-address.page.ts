@@ -276,11 +276,14 @@ export class AddAddressPage implements OnInit {
       this.addressForm.controls["longitude"].setValue(
         marker.getPosition().lng()
       );
+      this.latitude = marker.getPosition().lat()
+      this.longitude = marker.getPosition().lng()
 
       this.getAddressFromCoords(
         marker.getPosition().lat(),
         marker.getPosition().lng()
       );
+      this.getDistance()
     });
 
     console.log("get distance");

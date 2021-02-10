@@ -220,7 +220,8 @@ export class EditAddressPage implements OnInit {
     marker.addListener('dragend', () => {
       this.addressForm.controls['latitude'].setValue(marker.getPosition().lat());
       this.addressForm.controls['longitude'].setValue(marker.getPosition().lng());
-      
+      this.latitude = marker.getPosition().lat()
+      this.longitude = marker.getPosition().lng()
 
       this.getAddressFromCoords(marker.getPosition().lat(), marker.getPosition().lng())
       this.getDistance()

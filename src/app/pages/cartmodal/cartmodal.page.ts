@@ -45,6 +45,7 @@ export class CartmodalPage implements OnInit {
   isOut: boolean = false;
   name: any;
   qty: any;
+  delivery_location_id:any;
   constructor(
     public modalController: ModalController,
     private toastController: ToastController,
@@ -101,7 +102,7 @@ export class CartmodalPage implements OnInit {
     } else {
       let address_id = this.address_id;
       this.modalController.dismiss();
-      this.router.navigate(["checkout", address_id]);
+      this.router.navigate(["checkout", address_id,this.delivery_location_id]);
     }
   }
 
@@ -268,9 +269,9 @@ export class CartmodalPage implements OnInit {
           shortest_distance <
           this.data.delivery_location[shop_index].radius * 1000
         ) {
-          var msg =
-            "Delivery available from " +
-            this.data.delivery_location[shop_index].location;
+          var msg ="Delivery available from " +this.data.delivery_location[shop_index].location;
+          this.delivery_location_id = this.data.delivery_location[shop_index].id
+
           this.showToastSuccess(msg);
           this.selectedAddress = this.current_selection;
 

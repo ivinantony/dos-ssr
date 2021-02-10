@@ -120,6 +120,7 @@ export class BrandProductsPage implements OnInit {
       }
     });
     this.getData();
+    this.infiniteScroll.disabled = false;
 
   }
 
@@ -180,7 +181,8 @@ export class BrandProductsPage implements OnInit {
       this.presentToastSuccess("One ' " + this.name + " ' added to cart.");
     }else if (type == BUY_NOW) {
       this.loadingController.dismiss().then(() => {
-        // this.productDetails.cart_count++;
+        this.authService.setCartCount(data.cart_count);
+        this.cartCountService.setCartCount(data.cart_count);
         this.presentModal();
       });
     }else if(type == WISHLIST)
@@ -356,12 +358,7 @@ export class BrandProductsPage implements OnInit {
   buyNow(index: number) {
     this.authService.isAuthenticated().then((val) => {
       if (val) {
-        if(this.products[index].cart_count>0){
-        this.presentModal();
-        }
-        else{
           this.presentLoading().then(() => {
-            this.products[index].cart_count=this.products[index].cart_count+1 
             let data = {
               product_id: this.products[index].id,
               client_id: val,
@@ -372,7 +369,6 @@ export class BrandProductsPage implements OnInit {
               (error) => this.handleError(error)
             );
           });
-        }
         
       } else {
         this.authGuard.presentModal();
@@ -439,19 +435,21 @@ export class BrandProductsPage implements OnInit {
 
     await modal.present();
 
-    await modal.onDidDismiss().then((data) => {
-      if ((data.data = 1)) {
-        this.page_count = 1;
-        this.products = [];
-        this.getData();
-      }
-    });
+    // await modal.onDidDismiss().then((data) => {
+    //   if ((data.data = 1)) {
+    //     this.page_count = 1;
+    //     this.products = [];
+    //     this.getData();
+    //   }
+    // });
   }
 
 
   ionViewWillLeave() {
     this.page_count = 1;
     this.products = [];
+    this.infiniteScroll.disabled = true;
+
   }
 
 }

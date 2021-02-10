@@ -12,6 +12,7 @@ const GET_WALLET = 200;
 })
 export class WalletPage implements OnInit {
   walletDetails: any;
+  transaction_details:any
   constructor(
     public router: Router,
     private loadingController: LoadingController,
@@ -40,6 +41,7 @@ export class WalletPage implements OnInit {
 
   handleResponse(data, type) {
     this.walletDetails = data.client_details; 
+    this.transaction_details = data.transaction_details; 
     this.loadingController.dismiss();
   }
   

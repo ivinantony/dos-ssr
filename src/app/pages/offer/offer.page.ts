@@ -21,7 +21,6 @@ import { FilterComponent } from "../filter/filter.component";
 import { CartmodalPage } from "../cartmodal/cartmodal.page";
 import { WishlistService } from "src/app/services/wishlist/wishlist.service";
 
-
 const GET_DATA = 200;
 const POST_DATA = 210;
 const BUY_NOW = 220;
@@ -37,7 +36,7 @@ export class OfferPage implements OnInit {
 
   products: Array<any> = [];
 
-  wishlistIndex:any;
+  wishlistIndex: any;
   s3url: any;
   page_limit: number;
   page_count: number = 1;
@@ -61,8 +60,8 @@ export class OfferPage implements OnInit {
     private cartCountService: CartcountService,
     private authGuard: AuthGuard,
     private modalController: ModalController,
-    private routerOutlet:IonRouterOutlet,
-    private wishlistService:WishlistService
+    private routerOutlet: IonRouterOutlet,
+    private wishlistService: WishlistService
   ) {
     this.s3url = utils.getS3url();
     console.log("constructor");
@@ -76,6 +75,7 @@ export class OfferPage implements OnInit {
     });
 
     this.getData();
+    this.infiniteScroll.disabled = false;
   }
 
   ngOnInit() {}
@@ -122,24 +122,26 @@ export class OfferPage implements OnInit {
       });
     } else if (type == BUY_NOW) {
       this.loadingController.dismiss().then(() => {
-        // this.productDetails.cart_count++;
+        this.authService.setCartCount(data.cart_count);
+        this.cartCountService.setCartCount(data.cart_count);
         this.presentModal();
       });
-    }else if (type == WISHLIST) {
-      this.loadingController.dismiss().then(()=>{
-        let name = this.products[this.wishlistIndex].name
-        if(this.products[this.wishlistIndex].wishlist==true)
-        {
+    } else if (type == WISHLIST) {
+      this.loadingController.dismiss().then(() => {
+        let name = this.products[this.wishlistIndex].name;
+        if (this.products[this.wishlistIndex].wishlist == true) {
           this.presentToastSuccess(name + "  removed from wishlist.");
-          this.products[this.wishlistIndex].wishlist=!this.products[this.wishlistIndex].wishlist
-
-        }
-        else{
+          this.products[this.wishlistIndex].wishlist = !this.products[
+            this.wishlistIndex
+          ].wishlist;
+        } else {
           this.presentToastSuccess(name + "  added to wishlist.");
-         
-           this.products[this.wishlistIndex].wishlist=!this.products[this.wishlistIndex].wishlist
+
+          this.products[this.wishlistIndex].wishlist = !this.products[
+            this.wishlistIndex
+          ].wishlist;
         }
-      })
+      });
     }
 
     if (infiniteScroll) {
@@ -179,32 +181,25 @@ export class OfferPage implements OnInit {
   buyNow(index: number) {
     this.authService.isAuthenticated().then((val) => {
       if (val) {
-        if (this.products[index].cart_count > 0) {
-          this.presentModal();
-        } else {
-          this.presentLoading().then(() => {
-            this.products[index].cart_count =
-              this.products[index].cart_count + 1;
-            let data = {
-              product_id: this.products[index].id,
-              client_id: val,
-              qty: 1,
-            };
-            this.cartService.addToCartQty(data).subscribe(
-              (data) => this.handleResponse(data, BUY_NOW),
-              (error) => this.handleError(error)
-            );
-          });
-        }
+        this.presentLoading().then(() => {
+          let data = {
+            product_id: this.products[index].id,
+            client_id: val,
+            qty: 1,
+          };
+          this.cartService.addToCartQty(data).subscribe(
+            (data) => this.handleResponse(data, BUY_NOW),
+            (error) => this.handleError(error)
+          );
+        });
       } else {
         this.authGuard.presentModal();
       }
     });
   }
 
-  addToWishlist(index:number)
-  {
-    this.wishlistIndex = index
+  addToWishlist(index: number) {
+    this.wishlistIndex = index;
     this.authService.isAuthenticated().then((token) => {
       if (token) {
         this.presentLoading().then(() => {
@@ -379,17 +374,18 @@ export class OfferPage implements OnInit {
 
     await modal.present();
 
-    await modal.onDidDismiss().then((data) => {
-      if ((data.data = 1)) {
-        this.page_count = 1;
-        this.products = [];
-        this.getData();
-      }
-    });
+    // await modal.onDidDismiss().then((data) => {
+    //   if ((data.data = 1)) {
+    //     this.page_count = 1;
+    //     this.products = [];
+    //     this.getData();
+    //   }
+    // });
   }
 
   ionViewWillLeave() {
     this.page_count = 1;
     this.products = [];
+    this.infiniteScroll.disabled = true;
   }
 }

@@ -90,7 +90,8 @@ export class WishlistPage implements OnInit {
       });
     } else if (type == BUY_NOW) {
       this.loadingController.dismiss().then(() => {
-        // this.productDetails.cart_count++;
+        this.authService.setCartCount(data.cart_count);
+        this.cartCountService.setCartCount(data.cart_count);
         this.presentModal();
       });
     }

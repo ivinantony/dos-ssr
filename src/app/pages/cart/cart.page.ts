@@ -46,7 +46,7 @@ export class CartPage implements OnInit {
   payment_id: any;
   address_id: any;
   url: any;
-
+  delivery_location_id:any
   delivery_locations: Array<any>;
   current_selection: any;
   data: any;
@@ -156,7 +156,7 @@ export class CartPage implements OnInit {
       this.presentToast("Please select a serviceable delivery Location.");
     } else {
       let address_id = this.address_id;
-      this.router.navigate(["/checkout", address_id]);
+      this.router.navigate(["/checkout", address_id,this.delivery_location_id]);
     }
   }
 
@@ -222,6 +222,7 @@ export class CartPage implements OnInit {
           var msg =
             "Delivery available from " +
             this.data.delivery_location[shop_index].location;
+          this.delivery_location_id = this.data.delivery_location[shop_index].id
           this.presentToast(msg);
           this.selectedAddress = this.current_selection;
           this.address_id = this.address_selected.id;

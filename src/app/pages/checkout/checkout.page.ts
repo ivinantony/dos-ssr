@@ -33,6 +33,7 @@ export class CheckoutPage implements OnInit {
   promo_id: any;
   payment_id: any;
   discount_amount: number = 0;
+  delivery_location_id:any
   constructor(
     private checkoutService: CheckoutService,
     private activatedRoute: ActivatedRoute,
@@ -50,6 +51,8 @@ export class CheckoutPage implements OnInit {
     private storage: Storage
   ) {
     this.address_id = this.activatedRoute.snapshot.params.address_id;
+    this.delivery_location_id = this.activatedRoute.snapshot.params.delivery_location_id;
+    console.log(this.delivery_location_id)
   }
 
   ionViewWillEnter() {
@@ -65,7 +68,7 @@ export class CheckoutPage implements OnInit {
     this.presentLoading().then(() => {
       this.authservice.isAuthenticated().then((val) => {
         if (val) {
-          this.checkoutService.getAmountDetails(val, this.address_id).subscribe(
+          this.checkoutService.getAmountDetails(val, this.address_id,this.delivery_location_id).subscribe(
             (data) => this.handleResponse(data, GET_AMOUNTDETAILS),
             (error) => this.handleError(error, GET_AMOUNTDETAILS)
           );
@@ -93,14 +96,14 @@ export class CheckoutPage implements OnInit {
         if (this.payment_id == 4) {
           this.router.navigate(["paypal"]);
         } else if (this.payment_id == 2) {
-          this.router.navigate(["successful"]);
+          this.router.navigate(["/successful"], {replaceUrl:true});
         }
       });
     } 
     else if (type == WALLET_RESPONSE) {
       console.log("Payment complete")
       this.loadingController.dismiss();
-      this.router.navigate(["successful"]);
+      this.router.navigate(["/successful"], {replaceUrl:true});
     } else {
     }
   }

@@ -113,7 +113,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/manufacturers/manufacturers.module').then(m => m.ManufacturersPageModule)
   },
   {
-    path: 'checkout/:address_id',
+    path: 'checkout/:address_id/:delivery_location_id',
     loadChildren: () => import('./pages/checkout/checkout.module').then(m => m.CheckoutPageModule)
   },
   {

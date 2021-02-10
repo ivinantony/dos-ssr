@@ -50,12 +50,12 @@
       <ion-col size="12">
         <div
           class="ion-text-center"
-          [ngStyle]="{'display':  walletDetails?.transaction_details ? '':'none'}"
+          [ngStyle]="{'display': transaction_details ? '':'none'}"
         >
           <h3 class="transactions">Recent Transactions:</h3>
         </div>
         <ion-list>
-          <ion-item *ngFor="let item of walletDetails?.transaction_details">
+          <ion-item *ngFor="let item of transaction_details">
             <div class="content">
               <div>
                 <h3>{{item.option}}</h3>

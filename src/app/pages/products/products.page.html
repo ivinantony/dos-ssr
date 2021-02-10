@@ -107,7 +107,7 @@
     </ion-fab-button>
   </ion-fab>
 
-  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreContent($event)">
+  <ion-infinite-scroll threshold="15%" (ionInfinite)="loadMoreContent($event)">
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
       loadingText="Loading more data..."
