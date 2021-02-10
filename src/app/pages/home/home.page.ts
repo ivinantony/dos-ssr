@@ -184,11 +184,15 @@ export class HomePage implements OnInit {
     private searchService: SearchService,
     private cartCountService: CartcountService,
     private notCountService: NotcountService,
-    private storage: Storage
+    private storage: Storage,
+    private notificationCountService:NotcountService
   ) {
     this.s3url = utils.getS3url();
     // this.badge.set(10);
     this.searchTerm = new FormControl();
+    this.notificationCountService.getNotCount().subscribe((res) => {
+      this.notf_count = res;
+    });
   }
 
   ionViewWillEnter() {
