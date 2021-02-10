@@ -15,11 +15,11 @@ export class NotificationService {
   {
     this.url = utils.getApiPath()
    }
-   public getNotifications(client_id:any)
+   public getNotifications(client_id:any,page_no:any)
    {
      const headers = this.headerservice.getHttpHeaders()
      return this.httpclient.get(
-      this.url + "notification?client_id="+client_id,
+      this.url + "notification?client_id="+client_id+"&page="+page_no,
       { headers }
      ).pipe(map(res=>{
        return res}));
