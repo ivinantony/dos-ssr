@@ -8,7 +8,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { UtilsService } from "src/app/services/utils.service";
 const CONFIRM = 345;
-const GET_DATA = 600;
+const POST_DATA = 600;
 @Component({
   selector: "app-recharge",
   templateUrl: "./recharge.page.html",
@@ -20,6 +20,7 @@ export class RechargePage implements OnInit {
   subscription: any;
   appUrl: string;
   current_platform:any
+  is_walletRecharge:boolean=false
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -68,7 +69,7 @@ export class RechargePage implements OnInit {
   recharge() {
     this.presentLoading().then(() => {
       this.pay.wallet_hostedPay(this.rechargeForm.value).subscribe(
-        (data) => this.handleResponse(data, GET_DATA),
+        (data) => this.handleResponse(data, POST_DATA),
         (error) => this.handleError(error)
       );
     });
@@ -77,7 +78,8 @@ export class RechargePage implements OnInit {
   handleResponse(data, type: number) {
     this.loadingController.dismiss();
 
-    if (type == GET_DATA) {
+    if (type == POST_DATA) {
+      this.is_walletRecharge = true
       this.storage.set("tran_ref", JSON.stringify(data.tran_ref)).then(() => {
         let encodedData = {
           redirect_url: encodeURIComponent(data.redirect_url),
@@ -111,7 +113,10 @@ export class RechargePage implements OnInit {
         // this.router.navigate(["wallet-pay"], { replaceUrl: true });
       });
     } else if (type == CONFIRM) {
+      console.log(data.details)
+      
       if (data.details) {
+        console.log(data.details)
         if (data.details.response_status == "A") {
           this.router.navigate(["/tabs/home"], { replaceUrl: true });
         } else {
@@ -162,8 +167,12 @@ export class RechargePage implements OnInit {
   }
 
   ngOnDestroy(): void {
-    if (this.platform.is("cordova")) {
+    if ((this.platform.is("cordova"))&& this.is_walletRecharge) {
       this.subscription.unsubscribe();
+    }
+    else{
+      console.log("not recharge")
+
     }
   }
 
