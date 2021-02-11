@@ -80,7 +80,7 @@ export class RechargePage implements OnInit {
 
     if (type == POST_DATA) {
       this.is_walletRecharge = true
-      this.storage.set("tran_ref", JSON.stringify(data.tran_ref)).then(() => {
+      this.storage.set("tran_ref", data.tran_ref).then(() => {
         let encodedData = {
           redirect_url: encodeURIComponent(data.redirect_url),
           tran_ref: data.tran_ref,
