@@ -407,7 +407,7 @@ export class ProductsPage implements OnInit {
   }
 
   ionViewWillLeave() {
-    console.log("leave")
+  
     this.page_count = 1;
     this.products = [];
     this.infiniteScroll.disabled = true;

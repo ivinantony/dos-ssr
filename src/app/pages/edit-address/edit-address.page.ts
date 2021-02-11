@@ -56,7 +56,7 @@ export class EditAddressPage implements OnInit {
     private addressService: AddressService,
     private storage:Storage,
   ) {
-    console.log(this.address_id,"address_id")
+  
     this.addressForm = this.formBuilder.group({
       client_id: [''],
       name:['',Validators.compose([Validators.required,Validators.minLength(3)])],

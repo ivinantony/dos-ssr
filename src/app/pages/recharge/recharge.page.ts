@@ -113,10 +113,10 @@ export class RechargePage implements OnInit {
         // this.router.navigate(["wallet-pay"], { replaceUrl: true });
       });
     } else if (type == CONFIRM) {
-      console.log(data.details)
+  
       
       if (data.details) {
-        console.log(data.details)
+       
         if (data.details.response_status == "A") {
           this.router.navigate(["/tabs/home"], { replaceUrl: true });
         } else {
@@ -170,10 +170,7 @@ export class RechargePage implements OnInit {
     if ((this.platform.is("cordova"))&& this.is_walletRecharge) {
       this.subscription.unsubscribe();
     }
-    else{
-      console.log("not recharge")
-
-    }
+   
   }
 
   // ionViewWillLeave() {
