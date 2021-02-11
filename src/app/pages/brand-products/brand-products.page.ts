@@ -187,7 +187,7 @@ export class BrandProductsPage implements OnInit {
       });
     }else if(type == WISHLIST)
     {
-      console.log(data)
+     
       this.loadingController.dismiss().then(()=>{
         let name = this.products[this.wishlistIndex].name
         if(this.products[this.wishlistIndex].wishlist==true)
@@ -434,14 +434,6 @@ export class BrandProductsPage implements OnInit {
     });
 
     await modal.present();
-
-    // await modal.onDidDismiss().then((data) => {
-    //   if ((data.data = 1)) {
-    //     this.page_count = 1;
-    //     this.products = [];
-    //     this.getData();
-    //   }
-    // });
   }
 
 

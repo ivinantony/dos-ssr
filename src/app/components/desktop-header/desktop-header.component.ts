@@ -53,7 +53,7 @@ export class DesktopHeaderComponent implements OnInit {
     private searchService: SearchService
   ) {
     this.searchTerm = new FormControl();
-    console.log("selectedCategoryIndex", this.selectedCategoryIndex);
+    
     this.notificationCountService.getNotCount().subscribe((res) => {
       this.notf_count = res;
     });
@@ -65,7 +65,7 @@ export class DesktopHeaderComponent implements OnInit {
   ngOnInit() {
     // const path = window.location.pathname.split('folder/')[1];
     const path = window.location.pathname;
-    console.log("path", path);
+    
     if (path !== undefined) {
       this.selectedCategoryIndex = this.categories.findIndex(
         (page) => page.url.toLowerCase() === path.toLowerCase()
@@ -88,9 +88,7 @@ export class DesktopHeaderComponent implements OnInit {
         }
       });
   }
-ionViewWillEnter(){
-  console.log('ionViewWillEnter')
-}
+
   navigateByUrl(index: number) {
     this.selectedCategoryIndex = index;
 
@@ -106,7 +104,7 @@ ionViewWillEnter(){
   handleResponseSearch(data) {
     data.data.filter((item) => {
       this.result.push(item);
-      console.log(this.result);
+     
     });
 
     this.isSearchResult = true;

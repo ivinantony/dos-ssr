@@ -13,6 +13,7 @@ import { PaymentService } from "src/app/services/payment/payment.service";
 export class RechargeStatusPage implements OnInit {
   status: boolean;
   isPWA: boolean = false;
+  incoming_platform:any
 
   constructor(
     private storage: Storage,
@@ -34,18 +35,13 @@ export class RechargeStatusPage implements OnInit {
     let data = JSON.parse(localStorage.getItem("tran_data"));
     let tran_ref = data.tran_ref;
     let client_id = data.client_id;
+    this.incoming_platform = data.incoming_platform
     this.presentLoading().then(() => {
       this.paymentService.confirmPayment(tran_ref, client_id).subscribe(
         (data) => this.handleResponse(data),
         (error) => this.handleError(error)
       );
     });
-    // this.presentLoading().then(() => {
-    //   this.paymentService.confirmPayment(tran_ref, client_id).subscribe(
-    //     (data) => this.handleResponse(data),
-    //     (error) => this.handleError(error)
-    //   );
-    // });
   }
 
   handleResponse(data) {
@@ -78,14 +74,12 @@ export class RechargeStatusPage implements OnInit {
           text: "OK",
           handler: () => {
             localStorage.clear();
-            setTimeout(() => {
-              this.storage.get("prev_url").then((val) => {
-                this.ngZone.run(() => {
-                  this.router.navigate([val] || ["/wallet"], { replaceUrl: true });
-                });
-              });
-            }, 25);
-            window.open("dos://dealonstore.com", "_blank");
+            if(this.incoming_platform == 'cordova'){
+              window.open("dos://dealonstore.com", "_blank");
+            }
+            else{
+              this.router.navigate(["/tabs/home"], { replaceUrl: true });
+            }
           },
         },
       ],
@@ -96,14 +90,12 @@ export class RechargeStatusPage implements OnInit {
 
   continue() {
     localStorage.clear();
-    setTimeout(() => {
-      this.storage.get("prev_url").then((val) => {
-        this.ngZone.run(() => {
-          this.router.navigate([val] || ["/wallet"], { replaceUrl: true });
-        });
-      });
-    }, 25);
-    window.open("dos://dealonstore.com", "_blank");
+    if(this.incoming_platform == 'cordova'){
+      window.open("dos://dealonstore.com", "_blank");
+    }
+    else{
+      this.router.navigate(["/tabs/home"], { replaceUrl: true });
+    }
   }
 
   async presentLoading() {

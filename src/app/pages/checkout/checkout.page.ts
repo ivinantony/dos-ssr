@@ -37,11 +37,12 @@ export class CheckoutPage implements OnInit {
   promo_id: any;
   payment_id: any;
   discount_amount: number = 0;
-  delivery_location_id:any
-  client_id:any
-  response:any
-  appUrl: string
-  payable_order_id:any
+  delivery_location_id: any;
+  client_id: any;
+  response: any;
+  appUrl: string;
+  payable_order_id: any;
+  current_platform: any;
   private subscription: any;
 
   constructor(
@@ -59,14 +60,21 @@ export class CheckoutPage implements OnInit {
     private alertController: AlertController,
     private authservice: AuthenticationService,
     private storage: Storage,
-    private pay:PaymentService,
-    private utils:UtilsService,
-    private paymentService:PaymentService
+    private pay: PaymentService,
+    private utils: UtilsService,
+    private paymentService: PaymentService
   ) {
-    this.appUrl = this.utils.getAppUrl()
+    this.appUrl = this.utils.getAppUrl();
     this.address_id = this.activatedRoute.snapshot.params.address_id;
     this.delivery_location_id = this.activatedRoute.snapshot.params.delivery_location_id;
-    console.log(this.delivery_location_id)
+    if (this.platform.is("cordova")) {
+      this.current_platform = "cordova";
+    } else if (this.platform.is("pwa")) {
+      this.current_platform = "pwa";
+    } else {
+      this.current_platform = "web";
+    }
+    console.log("current platform is", this.current_platform);
   }
 
   ionViewWillEnter() {
@@ -82,11 +90,13 @@ export class CheckoutPage implements OnInit {
     this.presentLoading().then(() => {
       this.authservice.isAuthenticated().then((val) => {
         if (val) {
-          this.client_id=val
-          this.checkoutService.getAmountDetails(val, this.address_id,this.delivery_location_id).subscribe(
-            (data) => this.handleResponse(data, GET_AMOUNTDETAILS),
-            (error) => this.handleError(error, GET_AMOUNTDETAILS)
-          );
+          this.client_id = val;
+          this.checkoutService
+            .getAmountDetails(val, this.address_id, this.delivery_location_id)
+            .subscribe(
+              (data) => this.handleResponse(data, GET_AMOUNTDETAILS),
+              (error) => this.handleError(error, GET_AMOUNTDETAILS)
+            );
         }
       });
     });
@@ -97,43 +107,36 @@ export class CheckoutPage implements OnInit {
       this.loadingController.dismiss();
 
       this.data = data;
-    }
-     else if (type == GET_PAY) {
-
-    } 
-    else if (type == ORDER_RESPONSE) {
+    } else if (type == GET_PAY) {
+    } else if (type == ORDER_RESPONSE) {
       this.loadingController.dismiss();
-      this.payable_order_id= data.payable_order_id
+      this.payable_order_id = data.payable_order_id;
       // let storable_data = {
       //   payable_order_id: data.payable_order_id,
       //   payable_amount: this.data.payable_amount,
       // };
       // this.storage.set("data_store", JSON.stringify(storable_data)).then(() => { });
-        if (this.payment_id == 4) {
-          // this.router.navigate(["paypal"]);
-          this.hostedSubmit()
-        } else if (this.payment_id == 2) {
-          this.router.navigate(["/successful"], {replaceUrl:true});
-        }
-     
-    } 
-    else if (type == WALLET_RESPONSE) {
-      console.log("Payment complete")
+      if (this.payment_id == 4) {
+        // this.router.navigate(["paypal"]);
+        this.hostedSubmit();
+      } else if (this.payment_id == 2) {
+        this.router.navigate(["/successful"], { replaceUrl: true });
+      }
+    } else if (type == WALLET_RESPONSE) {
+      console.log("Payment complete");
       this.loadingController.dismiss();
-      this.router.navigate(["/successful"], {replaceUrl:true});
-    } 
-    else if (type == POST_DATA) {
+      this.router.navigate(["/successful"], { replaceUrl: true });
+    } else if (type == POST_DATA) {
       this.response = data;
       this.storage.set("tran_ref", data.tran_ref).then(() => {
         let encodedData = {
           redirect_url: encodeURIComponent(data.redirect_url),
           tran_ref: data.tran_ref,
           client_id: this.client_id,
+          incoming_platform: this.current_platform,
         };
 
-        var url = `${this.appUrl}iframe?data=${JSON.stringify(
-          encodedData
-        )}`;
+        var url = `${this.appUrl}iframe?data=${JSON.stringify(encodedData)}`;
         window.open(url, "_self");
         if (this.platform.is("cordova")) {
           this.subscription = this.platform.resume.subscribe(async () => {
@@ -143,7 +146,7 @@ export class CheckoutPage implements OnInit {
                   .confirmPayment(ref, this.client_id)
                   .subscribe(
                     (data) => this.handleResponse(data, CONFIRM),
-                    (error) => this.handleError(error,CONFIRM)
+                    (error) => this.handleError(error, CONFIRM)
                   );
               }
             });
@@ -188,22 +191,17 @@ export class CheckoutPage implements OnInit {
 
   hostedSubmit() {
     this.presentLoading().then(() => {
-     
-          this.storage.get("data_store").then((val) => {
-            let data = {
-              client_id:  JSON.stringify(this.client_id),
-              payable_order_id:  JSON.stringify(this.payable_order_id),
-              payable_amount:  JSON.stringify(this.data.payable_amount),
-              address_id:this.address_id,
-            };
+      let data = {
+        client_id: JSON.stringify(this.client_id),
+        payable_order_id: JSON.stringify(this.payable_order_id),
+        payable_amount: JSON.stringify(this.data.payable_amount),
+        address_id: this.address_id,
+      };
 
-            this.pay.hostedPay(data).subscribe(
-              (data) => this.handleResponse(data, POST_DATA),
-              (error) => this.handleError(error, POST_DATA)
-            );
-          });
-        
-      
+      this.pay.hostedPay(data).subscribe(
+        (data) => this.handleResponse(data, POST_DATA),
+        (error) => this.handleError(error, POST_DATA)
+      );
     });
   }
 
@@ -360,5 +358,4 @@ export class CheckoutPage implements OnInit {
       this.subscription.unsubscribe();
     }
   }
-
 }

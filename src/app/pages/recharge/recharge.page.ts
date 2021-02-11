@@ -19,6 +19,7 @@ export class RechargePage implements OnInit {
   client_id: any;
   subscription: any;
   appUrl: string;
+  current_platform:any
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -34,6 +35,13 @@ export class RechargePage implements OnInit {
     private paymentService: PaymentService
   ) {
     this.appUrl = this.utils.getAppUrl();
+    if (this.platform.is("cordova")) {
+      this.current_platform = "cordova";
+    } else if (this.platform.is("pwa")) {
+      this.current_platform = "pwa";
+    } else {
+      this.current_platform = "web";
+    }
     this.rechargeForm = this.formBuilder.group({
       client_id: [""],
       amount: [
@@ -76,6 +84,7 @@ export class RechargePage implements OnInit {
           tran_ref: data.tran_ref,
           client_id: this.client_id,
           total_amount: this.rechargeForm.value.amount,
+          incoming_platform: this.current_platform,
         };
 
         var url = `${this.appUrl}wallet-pay?data=${JSON.stringify(

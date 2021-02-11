@@ -286,7 +286,7 @@ export class AddAddressPage implements OnInit {
       this.getDistance()
     });
 
-    console.log("get distance");
+    // console.log("get distance");
     this.latitude = lat
     this.longitude = lng
     this.getDistance();
@@ -320,7 +320,7 @@ export class AddAddressPage implements OnInit {
           
 
           this.selectedAddress = address;
-          console.log(this.addressForm.value, "get address from coords");
+          // console.log(this.addressForm.value, "get address from coords");
 
         })
         .catch((error: any) => {});
@@ -329,7 +329,7 @@ export class AddAddressPage implements OnInit {
       var geocoder = new google.maps.Geocoder();
       this.zone.run(() => {
         geocoder.geocode({ latLng: latlng }, (results, status) => {
-          console.log(results);
+          // console.log(results);
           if (status !== google.maps.GeocoderStatus.OK) {
             alert(status);
           }
@@ -342,7 +342,7 @@ export class AddAddressPage implements OnInit {
             this.addressForm.controls["longitude"].setValue(longitude);
 
             this.selectedAddress = results[0].formatted_address;
-            console.log(this.addressForm.value, "get address from load map");
+            // console.log(this.addressForm.value, "get address from load map");
           }
         });
       });
@@ -372,7 +372,7 @@ export class AddAddressPage implements OnInit {
     };
 
     service.getDistanceMatrix(matrixOptions, (response, status) => {
-      console.log(response);
+      // console.log(response);
       if (status !== "OK") {
         var msg = "Error with distance matrix";
         this.locationAvailability = false;
@@ -450,18 +450,18 @@ export class AddAddressPage implements OnInit {
 
       this.latitude = data.data.lat;
       this.longitude = data.data.lng;
-      console.log(this.latitude, this.longitude);
+      // console.log(this.latitude, this.longitude);
 
       this.zone.run(() => {
         this.addressForm.controls["latitude"].setValue(this.latitude);
         this.addressForm.controls["longitude"].setValue(this.longitude);
       });
-      console.log(this.addressForm.value);
+      // console.log(this.addressForm.value);
 
       // this.addressForm.patchValue({ latitude: data.data.lat });
       // this.addressForm.patchValue({ longitude: data.data.lng });
 
-      console.log("onsearch change");
+      // console.log("onsearch change");
       this.getDistance();
     });
     return await modal.present();
@@ -472,7 +472,7 @@ export class AddAddressPage implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.addressForm.value);
+    // console.log(this.addressForm.value);
 
     if (this.locationAvailability == false) {
       this.showToast(
