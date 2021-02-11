@@ -12,6 +12,7 @@ import { AlertController, LoadingController, Platform } from "@ionic/angular";
 export class OrderPlacedPage implements OnInit {
   status: boolean;
   isPWA: boolean = false;
+  incoming_platform:any
   constructor(
     public router: Router,
     private paymentService: PaymentService,
@@ -30,6 +31,7 @@ export class OrderPlacedPage implements OnInit {
     let data = JSON.parse(localStorage.getItem("tran_data"));
     let tran_ref = data.tran_ref;
     let client_id = data.client_id;
+    this.incoming_platform = data.incoming_platform
     this.presentLoading().then(() => {
       this.paymentService.confirmPayment(tran_ref, client_id).subscribe(
         (data) => this.handleResponse(data),
@@ -39,16 +41,12 @@ export class OrderPlacedPage implements OnInit {
   }
   continue() {
     localStorage.clear();
-    setTimeout(() => {
-      this.ngzone.run(() => {
-        this.router.navigate(["/tabs/home"], { replaceUrl: true });
-      });
-    }, 25);
-    window.open("dos://dealonstore.com", "_blank");
-    // window.open('dos://dealonstore.com','_blank');
-    // setTimeout(() => {
-    //   this.router.navigate(['/tabs/home'],{ replaceUrl: true })
-    // }, 1000);
+    if(this.incoming_platform == 'cordova'){
+      window.open("dos://dealonstore.com", "_blank");
+    }
+    else{
+      this.router.navigate(["/tabs/home"], { replaceUrl: true });
+    }
   }
 
   handleResponse(data) {
@@ -80,12 +78,12 @@ export class OrderPlacedPage implements OnInit {
           text: "OK",
           handler: () => {
             localStorage.clear();
-            setTimeout(() => {
-              this.ngzone.run(() => {
-                this.router.navigate(["/tabs/home"], { replaceUrl: true });
-              });
-            }, 25);
-            window.open("dos://dealonstore.com", "_blank");
+            if(this.incoming_platform == 'cordova'){
+              window.open("dos://dealonstore.com", "_blank");
+            }
+            else{
+              this.router.navigate(["/tabs/home"], { replaceUrl: true });
+            }
           },
         },
       ],

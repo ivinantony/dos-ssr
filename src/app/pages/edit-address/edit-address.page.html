@@ -2,6 +2,16 @@
 <ion-content>
   <div class="map-wrapper">
     <div #map id="map"></div>
+    <ion-fab
+      vertical="top"
+      horizontal="end"
+      slot="fixed"
+      class="ion-hide-md-down"
+    >
+      <ion-fab-button size="small" color="secondary" (click)="loadMap()">
+        <ion-icon name="locate"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
   </div>
   <ion-grid> </ion-grid>
 

@@ -83,6 +83,7 @@ export class NotificationPage implements OnInit {
       (error) => this.handleError(error)
     );
     let id = this.notificationMsgs[index].id;
+    
     this.presentModal(id);
   }
 
@@ -130,6 +131,8 @@ export class NotificationPage implements OnInit {
     await modal.present();
 
     await modal.onDidDismiss().then(() => {
+      this.page_count=1;
+    this.notificationMsgs=[]
       this.getData();
     });
   }
