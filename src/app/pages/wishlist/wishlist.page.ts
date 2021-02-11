@@ -74,12 +74,12 @@ export class WishlistPage implements OnInit {
   handleResponse(data, type) {
     if (type == GET_DATA) {
       this.loadingController.dismiss();
-      console.log(data);
+
       this.wishlist = data.wishlist;
     } else if (type == REMOVE) {
       this.wishlist.splice(this.removedIndex, 1);
       this.loadingController.dismiss();
-      console.log(data);
+
     } else if (type == ADD_TO_CART) {
       this.loadingController.dismiss().then(() => {
         let name = this.wishlist[this.currentIndex].name;

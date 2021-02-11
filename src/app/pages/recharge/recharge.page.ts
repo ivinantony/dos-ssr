@@ -80,7 +80,7 @@ export class RechargePage implements OnInit {
 
     if (type == POST_DATA) {
       this.is_walletRecharge = true
-      this.storage.set("tran_ref", JSON.stringify(data.tran_ref)).then(() => {
+      this.storage.set("tran_ref", data.tran_ref).then(() => {
         let encodedData = {
           redirect_url: encodeURIComponent(data.redirect_url),
           tran_ref: data.tran_ref,
@@ -113,10 +113,10 @@ export class RechargePage implements OnInit {
         // this.router.navigate(["wallet-pay"], { replaceUrl: true });
       });
     } else if (type == CONFIRM) {
-      console.log(data.details)
+  
       
       if (data.details) {
-        console.log(data.details)
+       
         if (data.details.response_status == "A") {
           this.router.navigate(["/tabs/home"], { replaceUrl: true });
         } else {
@@ -170,10 +170,7 @@ export class RechargePage implements OnInit {
     if ((this.platform.is("cordova"))&& this.is_walletRecharge) {
       this.subscription.unsubscribe();
     }
-    else{
-      console.log("not recharge")
-
-    }
+   
   }
 
   // ionViewWillLeave() {

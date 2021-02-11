@@ -75,7 +75,7 @@ export class CheckoutPage implements OnInit {
     } else {
       this.current_platform = "web";
     }
-    console.log("current platform is", this.current_platform);
+    
   }
 
   ionViewWillEnter() {
@@ -124,7 +124,7 @@ export class CheckoutPage implements OnInit {
         this.router.navigate(["/successful"], { replaceUrl: true });
       }
     } else if (type == WALLET_RESPONSE) {
-      console.log("Payment complete");
+   
       this.loadingController.dismiss();
       this.router.navigate(["/successful"], { replaceUrl: true });
     } else if (type == POST_DATA) {
@@ -359,8 +359,6 @@ export class CheckoutPage implements OnInit {
     if ((this.platform.is("cordova")) && this.is_cardOrNetBanking) {
       this.subscription.unsubscribe();
     }
-    else{
-      console.log("not card")
-    }
+    
   }
 }
