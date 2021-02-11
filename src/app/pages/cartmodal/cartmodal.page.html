@@ -24,7 +24,8 @@
             {{address_selected?.name ? 'Deliver to' :''}}
           </h3>
         </ion-text>
-        <p>{{address_selected?.full_address}}{{address_selected?.landmark}},{{address_selected?.phone}}</p>
+        <p>{{address_selected?.full_address}}</p>
+        <!-- <p>{{address_selected?.full_address}}</p><p>{{address_selected?.landmark}}</p><p>{{address_selected?.phone}}</p> -->
       </ion-label>
       <ion-button
         [color]="address_selected?.name ? 'dark':'primary'"

@@ -43,6 +43,7 @@ export class CheckoutPage implements OnInit {
   appUrl: string;
   payable_order_id: any;
   current_platform: any;
+  is_cardOrNetBanking:boolean=false
   private subscription: any;
 
   constructor(
@@ -127,6 +128,7 @@ export class CheckoutPage implements OnInit {
       this.loadingController.dismiss();
       this.router.navigate(["/successful"], { replaceUrl: true });
     } else if (type == POST_DATA) {
+      this.is_cardOrNetBanking = true
       this.response = data;
       this.storage.set("tran_ref", data.tran_ref).then(() => {
         let encodedData = {
@@ -354,8 +356,11 @@ export class CheckoutPage implements OnInit {
   }
 
   ngOnDestroy(): void {
-    if (this.platform.is("cordova")) {
+    if ((this.platform.is("cordova")) && this.is_cardOrNetBanking) {
       this.subscription.unsubscribe();
+    }
+    else{
+      console.log("not card")
     }
   }
 }
