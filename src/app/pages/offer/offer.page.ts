@@ -156,27 +156,6 @@ export class OfferPage implements OnInit {
     }
   }
 
-  addToCart(index: number) {
-    this.authService.isAuthenticated().then((val) => {
-      if (val) {
-        this.presentLoading().then(() => {
-          let data = {
-            product_id: this.products[index].id,
-            client_id: val,
-          };
-          this.cartService.addToCart(data).subscribe(
-            (data) => this.handleResponse(data, POST_DATA),
-            (error) => this.handleError(error)
-          );
-        });
-
-        this.products[index].cart_count++;
-        this.name = this.products[index].name;
-      } else {
-        this.authGuard.presentModal();
-      }
-    });
-  }
 
   buyNow(index: number) {
     this.authService.isAuthenticated().then((val) => {
@@ -218,9 +197,6 @@ export class OfferPage implements OnInit {
     });
   }
 
-  goToCart() {
-    this.router.navigate(["/cart"]);
-  }
 
   async openSort(ev: any) {
     const popover = await this.popOverCtrl.create({

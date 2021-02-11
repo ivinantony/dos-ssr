@@ -117,9 +117,10 @@ export class RechargePage implements OnInit {
         } else {
           this.router.navigate(["/wallet"], { replaceUrl: true });
         }
-      } else {
-        alert("Payment Cancelled.");
-      }
+      } 
+      // else {
+      //   alert("Payment Cancelled.");
+      // }
     }
   }
 
