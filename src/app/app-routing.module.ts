@@ -85,10 +85,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/modeofpayment/modeofpayment.module').then(m => m.ModeofpaymentPageModule)
   },
   {
-    path: 'paypal',
-    loadChildren: () => import('./pages/paypal/paypal.module').then(m => m.PaypalPageModule)
-  },
-  {
     path: 'orders',
     loadChildren: () => import('./pages/orders/orders.module').then(m => m.OrdersPageModule)
   },
