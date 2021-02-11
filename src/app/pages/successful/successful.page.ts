@@ -10,7 +10,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 })
 export class SuccessfulPage implements OnInit {
 
-  constructor(public router:Router,
+  constructor(private router:Router,
     private authService:AuthenticationService,
     private cartCountService:CartcountService) {
     defineCustomElements(window);
@@ -19,6 +19,11 @@ export class SuccessfulPage implements OnInit {
    }
 
   ngOnInit() {
+  }
+
+  continue()
+  {
+    this.router.navigate(["/tabs/home"])
   }
 
 }
