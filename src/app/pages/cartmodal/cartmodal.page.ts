@@ -214,6 +214,7 @@ export class CartmodalPage implements OnInit {
   }
 
   continueShopping() {
+    this.modalController.dismiss()
     this.router.navigate(["/tabs/home"]);
   }
 
