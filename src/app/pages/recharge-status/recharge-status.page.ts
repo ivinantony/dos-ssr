@@ -27,7 +27,6 @@ export class RechargeStatusPage implements OnInit {
   ) {
     if (!this.platform.is("cordova")) {
       this.isPWA = true;
-      // console.log("is platform pwa", this.isPWA);
     }
   }
 

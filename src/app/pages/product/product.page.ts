@@ -14,7 +14,7 @@ import { CartService } from "src/app/services/cart/cart.service";
 import { ProductDetailsService } from "src/app/services/productDetails/product-details.service";
 import { UtilsService } from "src/app/services/utils.service";
 import { CartmodalPage } from "../cartmodal/cartmodal.page";
-import { CartcountService } from "src/app/cartcount.service";
+import { CartcountService } from "src/app/services/cartcount.service";
 import { WishlistService } from "src/app/services/wishlist/wishlist.service";
 
 const GET_DATA = 200;

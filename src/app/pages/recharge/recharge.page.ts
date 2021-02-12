@@ -19,8 +19,8 @@ export class RechargePage implements OnInit {
   client_id: any;
   subscription: any;
   appUrl: string;
-  current_platform:any
-  is_walletRecharge:boolean=false
+  current_platform: any;
+  is_walletRecharge: boolean = false;
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -79,7 +79,7 @@ export class RechargePage implements OnInit {
     this.loadingController.dismiss();
 
     if (type == POST_DATA) {
-      this.is_walletRecharge = true
+      this.is_walletRecharge = true;
       this.storage.set("tran_ref", data.tran_ref).then(() => {
         let encodedData = {
           redirect_url: encodeURIComponent(data.redirect_url),
@@ -109,23 +109,15 @@ export class RechargePage implements OnInit {
             });
           });
         }
-
-        // this.router.navigate(["wallet-pay"], { replaceUrl: true });
       });
     } else if (type == CONFIRM) {
-  
-      
       if (data.details) {
-       
         if (data.details.response_status == "A") {
           this.router.navigate(["/tabs/home"], { replaceUrl: true });
         } else {
           this.router.navigate(["/wallet"], { replaceUrl: true });
         }
-      } 
-      // else {
-      //   alert("Payment Cancelled.");
-      // }
+      }
     }
   }
 
@@ -167,15 +159,8 @@ export class RechargePage implements OnInit {
   }
 
   ngOnDestroy(): void {
-    if ((this.platform.is("cordova"))&& this.is_walletRecharge) {
+    if (this.platform.is("cordova") && this.is_walletRecharge) {
       this.subscription.unsubscribe();
     }
-   
   }
-
-  // ionViewWillLeave() {
-  //   if (this.platform.is("cordova")) {
-  //     this.subscription.unsubscribe();
-  //   }
-  // }
 }

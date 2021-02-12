@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { CartcountService } from "src/app/cartcount.service";
-import { NotcountService } from "src/app/notcount.service";
+import { CartcountService } from "src/app/services/cartcount.service";
+import { NotcountService } from "src/app/services/notcount.service";
 import { FormControl } from "@angular/forms";
 import { SearchService } from "src/app/services/search/search.service";
 import { debounceTime } from "rxjs/operators";

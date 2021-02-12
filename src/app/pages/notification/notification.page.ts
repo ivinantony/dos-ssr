@@ -7,7 +7,7 @@ import {
   ModalController,
 } from "@ionic/angular";
 import { Storage } from "@ionic/storage";
-import { NotcountService } from "src/app/notcount.service";
+import { NotcountService } from "src/app/services/notcount.service";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { NotificationService } from "src/app/services/notification/notification.service";
 import { UtilsService } from "src/app/services/utils.service";

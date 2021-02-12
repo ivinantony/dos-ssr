@@ -56,12 +56,9 @@ export class ProfilePage implements OnInit {
       this.user = data.client_Details;
       this.loadingController.dismiss();
     }
-
-    // console.log(this.user)
   }
   handleError(error) {
     this.loadingController.dismiss();
-    // console.log(error)
   }
 
   async presentLoading() {

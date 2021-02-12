@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { defineCustomElements } from "@teamhive/lottie-player/loader";
-import { CartcountService } from 'src/app/cartcount.service';
+import { CartcountService } from 'src/app/services/cartcount.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 @Component({
   selector: 'app-successful',

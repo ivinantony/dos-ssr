@@ -1,7 +1,7 @@
 import { Platform } from "@ionic/angular";
 import { Injectable } from "@angular/core";
-import { CartcountService } from "../cartcount.service";
-import { NotcountService } from "../notcount.service";
+import { CartcountService } from "./cartcount.service";
+import { NotcountService } from "./notcount.service";
 import { Storage } from "@ionic/storage";
 import { BehaviorSubject } from "rxjs";
 

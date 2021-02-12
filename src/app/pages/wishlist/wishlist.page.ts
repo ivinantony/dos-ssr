@@ -7,7 +7,7 @@ import {
   ModalController,
   ToastController,
 } from "@ionic/angular";
-import { CartcountService } from "src/app/cartcount.service";
+import { CartcountService } from "src/app/services/cartcount.service";
 import { AuthGuard } from "src/app/guards/auth.guard";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { CartService } from "src/app/services/cart/cart.service";

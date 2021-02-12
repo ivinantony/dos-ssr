@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { CartcountService } from 'src/app/cartcount.service';
+import { CartcountService } from 'src/app/services/cartcount.service';
 
 @Component({
   selector: 'app-tabs',
