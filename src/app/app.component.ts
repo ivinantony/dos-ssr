@@ -51,7 +51,7 @@ export class AppComponent implements OnInit {
     {
       id: 3,
       name: "Shop by Category",
-      url: "/categories",
+      url: "/tabs/categories",
       icon: "../assets/imgs/icons/categories.svg",
     },
     {

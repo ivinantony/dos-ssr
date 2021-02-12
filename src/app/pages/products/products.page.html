@@ -88,7 +88,7 @@
             >
               {{ item?.cart_count > 0 ? 'Go To Cart' : 'Add To Cart'}}
             </ion-button> -->
-            <ion-button (click)="buyNow(i)" expand="full" color="primary" shape="round" class="tocart">
+            <ion-button (click)="buyNow(i)" expand="full" color="primary" shape="round" class="tocart" [disabled]="item?.in_stock == 0">
               Buy Now
             </ion-button>
             <ion-button fill="clear" (click)="addToWishlist(i)" class="wish">
