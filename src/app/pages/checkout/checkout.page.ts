@@ -315,7 +315,7 @@ export class CheckoutPage implements OnInit {
           handler: () => {},
         },
         {
-          text: "Okey",
+          text: "Okay",
           handler: () => {
             let balance = this.data.payable_amount - this.data.wallet_balance;
             this.router.navigate(["recharge", { balance }]);
@@ -334,7 +334,7 @@ export class CheckoutPage implements OnInit {
       message: msg,
       buttons: [
         {
-          text: "Okey",
+          text: "Okay",
           handler: () => {
             this.router.navigate(["/tabs/cart"]);
           },

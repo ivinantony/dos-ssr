@@ -218,6 +218,7 @@ export class CartmodalPage implements OnInit {
   }
 
   navigateToProduct(index: number) {
+    this.modalController.dismiss()
     let id = this.cart[index].id;
     this.router.navigate(["product", id]);
   }
@@ -318,7 +319,7 @@ export class CartmodalPage implements OnInit {
       message: "Do you want to remove " + this.name + " from cart",
       buttons: [
         {
-          text: "cancel",
+          text: "Cancel",
           role: "cancel",
         },
         {

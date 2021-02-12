@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionSheetController, LoadingController, ModalController } from '@ionic/angular';
+import { ActionSheetController, AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { AddressService } from 'src/app/services/address/address.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { AddAddressPage } from "../add-address/add-address.page";
 declare var google;
 const GET_DATA=100;
 const DELETE_DATA=110;
+const POST_DATA=120;
 @Component({
   selector: 'app-address-modal',
   templateUrl: './address-modal.page.html',
@@ -17,7 +18,8 @@ selectedAddress: any;
   constructor(private modalController:ModalController,
     private addressService:AddressService,private loadingController:LoadingController,
     private authservice:AuthenticationService,
-    private actionSheetController:ActionSheetController) 
+    private actionSheetController:ActionSheetController,
+    private alertController:AlertController) 
     { 
     this.getData()
     }
@@ -81,13 +83,7 @@ selectedAddress: any;
           text: "Delete",
           icon: "trash-outline",
           handler: () => {
-            this.addressService
-              .deleteAddress(this.addresses[index].id)
-              .subscribe(
-                (data) => this.handleResponse(data,DELETE_DATA),
-                (error) => this.handleError(error)
-              );
-            this.addresses.splice(index, 1);
+            this.presentAlertConfirm(index)
           },
         },
       ],
@@ -116,5 +112,33 @@ selectedAddress: any;
     });
     await loading.present();
   }
+
+  async presentAlertConfirm(index:number) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Delete',
+      message: 'Do you want to remove the selected address.',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        }, {
+          text: 'Delete',
+          handler: () => {
+            this.addressService
+              .deleteAddress(this.addresses[index].id)
+              .subscribe(
+                (data) => this.handleResponse(data, POST_DATA),
+                (error) => this.handleError(error)
+              );
+            this.addresses.splice(index, 1);  
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  
+}
 
 }

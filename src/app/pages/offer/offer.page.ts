@@ -328,11 +328,12 @@ export class OfferPage implements OnInit {
   async presentAlert(msg: string) {
     const alert = await this.alertController.create({
       cssClass: "my-custom-class",
-      header: "Low Stock Alert",
+      header: "Required quantity unavailable",
 
       message:
-        msg +
-        " For ordering large quantities contact us through email or whatsapp.",
+      "This item is not available in the volume required by you.<br/><br/>" 
+       +msg+
+        "<br/> <br/> Please contact via Email or WhatsApp to order in more volume.",
       buttons: ["OK"],
     });
 
