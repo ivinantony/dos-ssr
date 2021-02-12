@@ -10,8 +10,8 @@ import { UtilsService } from "src/app/services/utils.service";
 import { IonSlides } from "@ionic/angular";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { SearchService } from "src/app/services/search/search.service";
-import { CartcountService } from "src/app/cartcount.service";
-import { NotcountService } from "src/app/notcount.service";
+import { CartcountService } from "src/app/services/cartcount.service";
+import { NotcountService } from "src/app/services/notcount.service";
 import { Storage } from "@ionic/storage";
 
 @Component({

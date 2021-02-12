@@ -21,7 +21,7 @@ import { CartmodalPage } from "../cartmodal/cartmodal.page";
 import { CartService } from "src/app/services/cart/cart.service";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { IonContent } from "@ionic/angular";
-import { CartcountService } from "src/app/cartcount.service";
+import { CartcountService } from "src/app/services/cartcount.service";
 import { AuthGuard } from "src/app/guards/auth.guard";
 import { WishlistService } from "src/app/services/wishlist/wishlist.service";
 const GET_DATA = 200;
@@ -270,26 +270,6 @@ export class ProductsPage implements OnInit {
     await alert.present();
   }
 
-  addToCart(index: number) {
-    this.currentIndex = index;
-    this.authService.isAuthenticated().then((token) => {
-      if (token) {
-        this.presentLoading().then(() => {
-          let data = {
-            product_id: this.products[index].id,
-            client_id: token,
-          };
-          this.cartService.addToCart(data).subscribe(
-            (data) => this.handleResponse(data, POST_DATA),
-            (error) => this.handleError(error)
-          );
-        });
-      } else {
-        this.authGuard.presentModal();
-      }
-    });
-  }
-
   addToWishlist(index:number)
   {
     this.wishlistIndex = index
@@ -314,12 +294,9 @@ export class ProductsPage implements OnInit {
   buyNow(index: number) {
     this.authService.isAuthenticated().then((val) => {
       if (val) {
-        // if(this.products[index].cart_count>0){
-        // this.presentModal();
-        // }
-        // else{
+
           this.presentLoading().then(() => {
-            // this.products[index].cart_count=this.products[index].cart_count+1 
+   
             let data = {
               product_id: this.products[index].id,
               client_id: val,
@@ -398,13 +375,6 @@ export class ProductsPage implements OnInit {
 
     await modal.present();
 
-    // await modal.onDidDismiss().then((data) => {
-    //   if ((data.data = 1)) {
-    //     this.page_count = 1;
-    //     this.products = [];
-    //     this.getData();
-    //   }
-    // });
   }
 
   ionViewWillLeave() {

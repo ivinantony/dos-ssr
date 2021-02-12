@@ -11,7 +11,7 @@ import {
   IonRouterOutlet,
 } from "@ionic/angular";
 import { IonContent } from "@ionic/angular";
-import { CartcountService } from "src/app/cartcount.service";
+import { CartcountService } from "src/app/services/cartcount.service";
 import { AuthGuard } from "src/app/guards/auth.guard";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { BrandProductService } from "src/app/services/brandProducts/brand-product.service";
@@ -314,25 +314,6 @@ export class BrandProductsPage implements OnInit {
     await alert.present();
   }
 
-  addToCart(index: number) {
-    this.currentIndex = index;
-    this.authService.isAuthenticated().then((val) => {
-      if (val) {
-        this.presentLoading().then(() => {
-          let data = {
-            product_id: this.products[index].id,
-            client_id: val,
-          };
-          this.cartService.addToCart(data).subscribe(
-            (data) => this.handleResponse(data, POST_DATA),
-            (error) => this.handleError(error)
-          );
-        });
-      } else {
-        this.authGuard.presentModal();
-      }
-    });
-  }
 
   addToWishlist(index:number)
   {

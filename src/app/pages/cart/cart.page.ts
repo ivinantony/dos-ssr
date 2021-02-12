@@ -8,7 +8,7 @@ import {
 } from "@ionic/angular";
 import { CartService } from "src/app/services/cart/cart.service";
 import { UtilsService } from "src/app/services/utils.service";
-import { CartcountService } from "src/app/cartcount.service";
+import { CartcountService } from "src/app/services/cartcount.service";
 import { AddressModalPage } from "../address-modal/address-modal.page";
 import { IonSlides } from "@ionic/angular";
 import { AuthenticationService } from "src/app/services/authentication.service";
