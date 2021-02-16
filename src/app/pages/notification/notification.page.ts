@@ -190,6 +190,6 @@ export class NotificationPage implements OnInit {
     this.getData();
     setTimeout(() => {
       event.target.complete();
-    }, 1000);
+    }, 2000);
   }
 }
