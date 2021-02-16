@@ -28,6 +28,8 @@ export class NotificationPage implements OnInit {
   currentIndex: number;
   page_limit: number;
   page_count: number = 1;
+  disable_refresh:boolean=false;
+  refresh:any;
   constructor(
     private notifications: NotificationService,
     private utils: UtilsService,
@@ -49,17 +51,17 @@ export class NotificationPage implements OnInit {
 
   ngOnInit() {}
 
-  getData(infiniteScroll?,refresh?) {
+  getData(infiniteScroll?) {
     this.presentLoading().then(() => {
       this.authservice.isAuthenticated().then((val) => {
         if (val) {
           this.notifications.getNotifications(val,this.page_count,).subscribe(
-            (data) => this.handleResponse(data, GET_DATA, infiniteScroll, refresh),
+            (data) => this.handleResponse(data, GET_DATA, infiniteScroll),
             (error) => this.handleError(error)
           );
         } else {
           this.notifications.getNotifications(null,this.page_count).subscribe(
-            (data) => this.handleResponse(data, GET_DATA, infiniteScroll, refresh),
+            (data) => this.handleResponse(data, GET_DATA, infiniteScroll),
             (error) => this.handleError(error)
           );
         }
@@ -87,7 +89,7 @@ export class NotificationPage implements OnInit {
     this.presentModal(id);
   }
 
-  handleResponse(data, type, infiniteScroll?, refresh?) {
+  handleResponse(data, type, infiniteScroll?) {
     if (type == GET_DATA) {
       data.data.filter((msg)=>{
         this.notificationMsgs.push(msg)
@@ -113,8 +115,10 @@ export class NotificationPage implements OnInit {
     if (infiniteScroll) {
       infiniteScroll.target.complete();
     }
-    if (refresh) {
-      refresh.target.complete();
+    if (this.disable_refresh == true) {
+      console.log(this.refresh)
+      this.refresh.target.complete();
+      this.disable_refresh = false;
     }
   }
 
@@ -190,7 +194,9 @@ export class NotificationPage implements OnInit {
   doRefresh(refresh) {
     this.page_count=1;
     this.notificationMsgs=[]
-    this.getData(refresh);
+    this.disable_refresh=true
+    this.refresh = refresh
+    this.getData();
     // setTimeout(() => {
     //   event.target.complete();
     // }, 2000);
