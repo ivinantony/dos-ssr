@@ -28,8 +28,7 @@ export class NotificationPage implements OnInit {
   currentIndex: number;
   page_limit: number;
   page_count: number = 1;
-  disable_refresh:boolean=false;
-  refresh:any;
+  refresh:any
   constructor(
     private notifications: NotificationService,
     private utils: UtilsService,
@@ -115,10 +114,10 @@ export class NotificationPage implements OnInit {
     if (infiniteScroll) {
       infiniteScroll.target.complete();
     }
-    if (this.disable_refresh == true) {
+    if (this.refresh) {
       console.log(this.refresh)
       this.refresh.target.complete();
-      this.disable_refresh = false;
+      
     }
   }
 
@@ -194,7 +193,6 @@ export class NotificationPage implements OnInit {
   doRefresh(refresh) {
     this.page_count=1;
     this.notificationMsgs=[]
-    this.disable_refresh=true
     this.refresh = refresh
     this.getData();
     // setTimeout(() => {
