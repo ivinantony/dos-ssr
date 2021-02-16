@@ -49,17 +49,17 @@ export class NotificationPage implements OnInit {
 
   ngOnInit() {}
 
-  getData(infiniteScroll?) {
+  getData(infiniteScroll?,refresh?) {
     this.presentLoading().then(() => {
       this.authservice.isAuthenticated().then((val) => {
         if (val) {
           this.notifications.getNotifications(val,this.page_count,).subscribe(
-            (data) => this.handleResponse(data, GET_DATA, infiniteScroll),
+            (data) => this.handleResponse(data, GET_DATA, infiniteScroll, refresh),
             (error) => this.handleError(error)
           );
         } else {
           this.notifications.getNotifications(null,this.page_count).subscribe(
-            (data) => this.handleResponse(data, GET_DATA, infiniteScroll),
+            (data) => this.handleResponse(data, GET_DATA, infiniteScroll, refresh),
             (error) => this.handleError(error)
           );
         }
@@ -87,7 +87,7 @@ export class NotificationPage implements OnInit {
     this.presentModal(id);
   }
 
-  handleResponse(data, type, infiniteScroll?) {
+  handleResponse(data, type, infiniteScroll?, refresh?) {
     if (type == GET_DATA) {
       data.data.filter((msg)=>{
         this.notificationMsgs.push(msg)
@@ -112,6 +112,9 @@ export class NotificationPage implements OnInit {
 
     if (infiniteScroll) {
       infiniteScroll.target.complete();
+    }
+    if (refresh) {
+      refresh.target.complete();
     }
   }
 
@@ -184,12 +187,12 @@ export class NotificationPage implements OnInit {
   }
 
 
-  doRefresh(event) {
+  doRefresh(refresh) {
     this.page_count=1;
     this.notificationMsgs=[]
-    this.getData();
-    setTimeout(() => {
-      event.target.complete();
-    }, 1000);
+    this.getData(refresh);
+    // setTimeout(() => {
+    //   event.target.complete();
+    // }, 2000);
   }
 }
