@@ -8,30 +8,23 @@ import { ReturnandrefundService } from 'src/app/services/returnandrefund.service
 })
 export class ReturnandrefundPage implements OnInit {
 
-  data:any
-  constructor(private returnPolicy:ReturnandrefundService) {
+  data: any
+  constructor(private returnPolicy: ReturnandrefundService) {
     this.getData()
-   }
+  }
 
   ngOnInit() {
   }
-
-
-  getData()
-  {
+  getData() {
     this.returnPolicy.getReturnAndRefundPolicy().subscribe(
-      (data)=>this.handleResponse(data),
-      (error)=>this.handleError(error)
+      (data) => this.handleResponse(data),
+      (error) => this.handleError(error)
     )
   }
-
-  handleResponse(data)
-  {
-    // console.log(data)
-    this.data=data
+  handleResponse(data) {
+    this.data = data
   }
-  handleError(error)
-  {
+  handleError(error) {
     // console.log(error)
   }
 }

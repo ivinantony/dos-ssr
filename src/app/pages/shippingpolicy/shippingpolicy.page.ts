@@ -7,31 +7,25 @@ import { ShippingPolicyService } from 'src/app/services/shippingPolicy/shipping-
   styleUrls: ['./shippingpolicy.page.scss'],
 })
 export class ShippingpolicyPage implements OnInit {
-  data:any
-  constructor(private deliverypolicy:ShippingPolicyService) 
-  { 
+  data: any
+  constructor(private deliverypolicy: ShippingPolicyService) {
     this.getData()
   }
 
   ngOnInit() {
   }
 
-
-  getData()
-  {
+  getData() {
     this.deliverypolicy.getShippingpolicy().subscribe(
-      (data)=>this.handleResponse(data),
-      (error)=>this.handleError(error)
+      (data) => this.handleResponse(data),
+      (error) => this.handleError(error)
     )
   }
 
-  handleResponse(data)
-  {
-    // console.log(data)
-    this.data=data
+  handleResponse(data) {
+    this.data = data
   }
-  handleError(error)
-  {
+  handleError(error) {
     // console.log(error)
   }
 }

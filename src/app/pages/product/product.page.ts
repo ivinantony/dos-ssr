@@ -327,8 +327,6 @@ export class ProductPage implements OnInit {
     window.open(
       "https://mail.google.com/mail/?view=cm&fs=1&to=dealonstoreuae@gmail.com"
     );
-    // window.open('mailto:dealonstoreuae@gmail.com?subject=subject&body=body');
-    // window.location.href = "mailto:dealonstoreuae@gmail.com?subject=Subject&body=message%20goes%20here";
   }
 
   qtyIncrease() {

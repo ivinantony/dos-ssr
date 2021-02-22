@@ -6,18 +6,14 @@ import {
   LoadingController,
   IonInfiniteScroll,
   ModalController,
-  Platform,
   PopoverController,
   ToastController,
   IonRouterOutlet,
 } from "@ionic/angular";
-import { utils } from "protractor";
 import { SubcatProductsService } from "src/app/services/subcatProducts/subcat-products.service";
 import { UtilsService } from "src/app/services/utils.service";
-
 import { FilterComponent } from "../filter/filter.component";
 import { CartmodalPage } from "../cartmodal/cartmodal.page";
-
 import { CartService } from "src/app/services/cart/cart.service";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { IonContent } from "@ionic/angular";
@@ -51,7 +47,7 @@ export class ProductsPage implements OnInit {
   cart_count: any;
   name: any;
   currentIndex: number;
-  wishlistIndex:any;
+  wishlistIndex: any;
   constructor(
     private activatedRoute: ActivatedRoute,
     public router: Router,
@@ -68,20 +64,20 @@ export class ProductsPage implements OnInit {
     private authGuard: AuthGuard,
     private modalController: ModalController,
     private routerOutlet: IonRouterOutlet,
-    private wishlistService:WishlistService
+    private wishlistService: WishlistService
   ) {
     this.page_count = 1;
     this.s3url = this.utils.getS3url();
     this.catId = parseInt(this.activatedRoute.snapshot.paramMap.get("id"));
     this.category_name = this.activatedRoute.snapshot.paramMap.get("name");
-    
+
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
   ionViewWillEnter() {
     this.cartCountService.getCartCount().subscribe((val) => {
       this.cart_count = val;
-      
+
     });
     this.getData();
     this.infiniteScroll.disabled = false;
@@ -144,18 +140,17 @@ export class ProductsPage implements OnInit {
         this.presentModal();
       });
     } else if (type == WISHLIST) {
-      this.loadingController.dismiss().then(()=>{
+      this.loadingController.dismiss().then(() => {
         let name = this.products[this.wishlistIndex].name
-        if(this.products[this.wishlistIndex].wishlist==true)
-        {
+        if (this.products[this.wishlistIndex].wishlist == true) {
           this.presentToastSuccess(name + "  removed from wishlist.");
-          this.products[this.wishlistIndex].wishlist=!this.products[this.wishlistIndex].wishlist
+          this.products[this.wishlistIndex].wishlist = !this.products[this.wishlistIndex].wishlist
 
         }
-        else{
+        else {
           this.presentToastSuccess(name + "  added to wishlist.");
-         
-           this.products[this.wishlistIndex].wishlist=!this.products[this.wishlistIndex].wishlist
+
+          this.products[this.wishlistIndex].wishlist = !this.products[this.wishlistIndex].wishlist
         }
       })
     }
@@ -251,7 +246,7 @@ export class ProductsPage implements OnInit {
     });
     await actionSheet.present();
   }
-  
+
   async presentLogin() {
     const alert = await this.alertController.create({
       cssClass: "my-custom-class",
@@ -270,8 +265,7 @@ export class ProductsPage implements OnInit {
     await alert.present();
   }
 
-  addToWishlist(index:number)
-  {
+  addToWishlist(index: number) {
     this.wishlistIndex = index
     this.authService.isAuthenticated().then((token) => {
       if (token) {
@@ -307,7 +301,7 @@ export class ProductsPage implements OnInit {
             );
           });
         // }
-        
+
       } else {
         this.authGuard.presentModal();
       }
@@ -340,12 +334,12 @@ export class ProductsPage implements OnInit {
   }
 
   doRefresh(event) {
-    this.page_count = 1;
-    this.products = [];
-    this.getData();
     setTimeout(() => {
+      this.page_count = 1;
+      this.products = [];
+      this.getData();
       event.target.complete();
-    }, 1000);
+    }, 2000);
   }
 
   async presentAlert(msg: string) {
@@ -354,8 +348,8 @@ export class ProductsPage implements OnInit {
       header: "Required quantity unavailable",
 
       message:
-      "This item is not available in the volume required by you.<br/><br/>" 
-       +msg+
+        "This item is not available in the volume required by you.<br/><br/>"
+        + msg +
         "<br/> <br/> Please contact via Email or WhatsApp to order in more volume.",
       buttons: ["OK"],
     });
@@ -377,7 +371,7 @@ export class ProductsPage implements OnInit {
   }
 
   ionViewWillLeave() {
-  
+
     this.page_count = 1;
     this.products = [];
     this.infiniteScroll.disabled = true;

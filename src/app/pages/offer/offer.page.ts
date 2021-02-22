@@ -252,12 +252,12 @@ export class OfferPage implements OnInit {
   }
 
   doRefresh(event) {
-    this.page_count = 1;
-    this.products = [];
-    this.getData();
     setTimeout(() => {
+      this.page_count = 1;
+      this.products = [];
+      this.getData()
       event.target.complete();
-    }, 1000);
+    }, 2000);
   }
 
   async openSortMobile() {
@@ -349,14 +349,6 @@ export class OfferPage implements OnInit {
     });
 
     await modal.present();
-
-    // await modal.onDidDismiss().then((data) => {
-    //   if ((data.data = 1)) {
-    //     this.page_count = 1;
-    //     this.products = [];
-    //     this.getData();
-    //   }
-    // });
   }
 
   ionViewWillLeave() {

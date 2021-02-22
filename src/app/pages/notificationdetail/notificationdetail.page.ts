@@ -49,13 +49,13 @@ export class NotificationdetailPage implements OnInit {
   {
     this.modalController.dismiss()
   }
+
   handleResponse(data)
   {
     this.loadingController.dismiss()
-    // console.log(data)
     this.data = data
-    // console.log(this.data)
   }
+  
   handleError(error)
   {
     // console.log(error)

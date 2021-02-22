@@ -48,7 +48,7 @@ export class WalletPage implements OnInit {
   handleError(error) {
     this.loadingController.dismiss();
   }
-
+  
   async presentLoading() {
     const loading = await this.loadingController.create({
       spinner: "crescent",

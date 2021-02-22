@@ -226,14 +226,6 @@ export class WishlistPage implements OnInit {
     });
 
     await modal.present();
-
-    // await modal.onDidDismiss().then((data) => {
-    //   if ((data.data = 1)) {
-    //     this.page_count = 1;
-    //     this.products = [];
-    //     this.getData();
-    //   }
-    // });
   }
 
   async presentAlert(msg: string) {

@@ -1,10 +1,11 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild} from "@angular/core";
 import { Badge } from "@ionic-native/badge/ngx";
 import {
   ActionSheetController,
   IonRouterOutlet,
   LoadingController,
   ModalController,
+  IonInfiniteScroll
 } from "@ionic/angular";
 import { Storage } from "@ionic/storage";
 import { NotcountService } from "src/app/services/notcount.service";
@@ -22,6 +23,8 @@ const DEL_DATA = 220;
   styleUrls: ["./notification.page.scss"],
 })
 export class NotificationPage implements OnInit {
+  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+
   notificationMsgs: Array<any>=[];
   s3url: any;
   notf_count: any;
@@ -50,7 +53,7 @@ export class NotificationPage implements OnInit {
 
   ngOnInit() {}
 
-  getData(infiniteScroll?) {
+  async getData(infiniteScroll?) {
     this.presentLoading().then(() => {
       this.authservice.isAuthenticated().then((val) => {
         if (val) {
@@ -115,7 +118,7 @@ export class NotificationPage implements OnInit {
       infiniteScroll.target.complete();
     }
     if (this.refresh) {
-      console.log(this.refresh)
+      
       this.refresh.target.complete();
       
     }
@@ -184,19 +187,17 @@ export class NotificationPage implements OnInit {
       infiniteScroll.target.disabled = true;
     } else {
       this.page_count += 1;
-
       this.getData(infiniteScroll);
     }
   }
 
-
-  doRefresh(refresh) {
-    this.page_count=1;
-    this.notificationMsgs=[]
-    this.refresh = refresh
-    this.getData();
-    // setTimeout(() => {
-    //   event.target.complete();
-    // }, 2000);
+   doRefresh(event) {
+    setTimeout(() => {
+      this.page_count=1;
+      this.notificationMsgs=[]
+      this.getData()
+      this.infiniteScroll.disabled = false;
+      event.target.complete();
+    }, 2000);
   }
 }

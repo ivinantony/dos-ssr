@@ -26,6 +26,8 @@ import { AngularFireMessagingModule } from '@angular/fire/messaging';
 import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
 import { enterAnimation } from './animation/nav-animation';
 import { Deeplinks } from '@ionic-native/deeplinks/ngx';
+import { AppUpdate } from '@ionic-native/app-update/ngx';
+
 
 @NgModule({
   declarations: [AppComponent, FilterComponent],
@@ -56,6 +58,7 @@ import { Deeplinks } from '@ionic-native/deeplinks/ngx';
     Deeplinks,
     FCM,
     NativeGeocoder,
+    AppUpdate,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
