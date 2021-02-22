@@ -25,7 +25,7 @@ import { AuthGuard } from "./guards/auth.guard";
 import { INotificationPayload } from "cordova-plugin-fcm-with-dependecy-updated/typings/INotificationPayload";
 import { Badge } from "@ionic-native/badge/ngx";
 import { Deeplinks } from '@ionic-native/deeplinks/ngx';
-import { AppUpdate } from '@ionic-native/app-update/ngx';
+
 
 @Component({
   selector: "app-root",
@@ -103,8 +103,7 @@ export class AppComponent implements OnInit {
     private authguard: AuthGuard,
     private badge: Badge,
     private deeplinks: Deeplinks,
-    private ngzone: NgZone,
-    private appUpdate: AppUpdate
+    private ngzone: NgZone
   ) {
     this.initializeApp();
     this.searchTerm = new FormControl();
@@ -116,10 +115,10 @@ export class AppComponent implements OnInit {
       this.statusBar.styleDefault();
       this.statusBar.overlaysWebView(false);
       this.statusBar.backgroundColorByHexString("#565656");
-      if(this.platform.is("cordova"))
-      {
-        this.checkForUpdate()
-      }
+      // if(this.platform.is("cordova"))
+      // {
+      //   this.checkForUpdate()
+      // }
       this.setupFCM();
       this.setDeepLink()
       this.searchService.searchResult.subscribe((data) => {
@@ -213,15 +212,17 @@ export class AppComponent implements OnInit {
       this.setFilteredItems(search);
     });
   }
-  checkForUpdate()
-  {
-    const updateUrl = 'https://arba.mermerapps.com/app/app_update.xml';
-    this.appUpdate.checkAppUpdate(updateUrl).then(update => {
-      // alert("Update Status:  "+update.msg);
-    }).catch(error=>{
-      alert("Error: "+error.msg);
-    });
-  }
+
+  // checkForUpdate()
+  // {
+  //   const updateUrl = 'https://arba.mermerapps.com/app/app_update.xml';
+  //   this.appUpdate.checkAppUpdate(updateUrl).then(update => {
+  //     // alert("Update Status:  "+update.msg);
+  //   }).catch(error=>{
+  //     alert("Error: "+error.msg);
+  //   });
+  // }
+
   setDeepLink() {
     this.deeplinks.route({ '/:slug': 'posts' }).subscribe(
       match => {

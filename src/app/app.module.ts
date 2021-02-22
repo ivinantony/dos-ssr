@@ -15,10 +15,6 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { Badge } from '@ionic-native/badge/ngx';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { fas } from '@fortawesome/free-solid-svg-icons'
-import { far } from '@fortawesome/free-regular-svg-icons'
-import { fab } from '@fortawesome/free-brands-svg-icons'
 import { IonicStorageModule } from '@ionic/storage';
 import { FilterComponent } from './pages/filter/filter.component';
 import { AngularFireModule } from '@angular/fire';
@@ -26,7 +22,8 @@ import { AngularFireMessagingModule } from '@angular/fire/messaging';
 import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
 import { enterAnimation } from './animation/nav-animation';
 import { Deeplinks } from '@ionic-native/deeplinks/ngx';
-import { AppUpdate } from '@ionic-native/app-update/ngx';
+import { AppVersion } from '@ionic-native/app-version/ngx';
+
 
 
 @NgModule({
@@ -45,7 +42,6 @@ import { AppUpdate } from '@ionic-native/app-update/ngx';
     }),
     IonicStorageModule.forRoot(),
     AppRoutingModule,
-    FontAwesomeModule,
     HttpClientModule,
     ReactiveFormsModule,
     ServiceWorkerModule.register('combined-sw.js', { enabled: environment.production })
@@ -58,13 +54,11 @@ import { AppUpdate } from '@ionic-native/app-update/ngx';
     Deeplinks,
     FCM,
     NativeGeocoder,
-    AppUpdate,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    AppVersion
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor(library: FaIconLibrary) {
-    library.addIconPacks(fas, fab, far);
-  }
+  constructor() {}
 }

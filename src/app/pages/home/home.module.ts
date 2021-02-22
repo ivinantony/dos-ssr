@@ -6,7 +6,6 @@ import { IonicModule } from '@ionic/angular';
 
 import { HomePageRoutingModule } from './home-routing.module';
 import { HomePage } from './home.page';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { RouterModule } from '@angular/router';
 import { SharedComponentsModule } from 'src/app/components/shared-components.module';
 
@@ -18,7 +17,6 @@ import { SharedComponentsModule } from 'src/app/components/shared-components.mod
     IonicModule,
     HomePageRoutingModule,
     ReactiveFormsModule,
-    FontAwesomeModule,
     RouterModule,
     SharedComponentsModule
   ],
