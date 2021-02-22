@@ -3,7 +3,7 @@ import { FormControl } from "@angular/forms";
 import { Router } from "@angular/router";
 import { Badge } from "@ionic-native/badge/ngx";
 import { debounceTime } from "rxjs/operators";
-import { LoadingController, Platform } from "@ionic/angular";
+import { AlertController, LoadingController, Platform } from "@ionic/angular";
 import { ProductSearchService } from "src/app/services/product-search.service";
 import { HomeService } from "src/app/services/home/home.service";
 import { UtilsService } from "src/app/services/utils.service";
@@ -13,6 +13,7 @@ import { SearchService } from "src/app/services/search/search.service";
 import { CartcountService } from "src/app/services/cartcount.service";
 import { NotcountService } from "src/app/services/notcount.service";
 import { Storage } from "@ionic/storage";
+import { AppVersion } from '@ionic-native/app-version/ngx';
 
 @Component({
   selector: "app-home",
@@ -170,6 +171,9 @@ export class HomePage implements OnInit {
   public searchItems;
   searching: any = false;
   result: Array<any> = [];
+  android_version:any
+  ios_version:any
+  isAlertPresent:boolean=false;
 
   myDate: String = new Date().toISOString();
   banner_image: any;
@@ -185,7 +189,9 @@ export class HomePage implements OnInit {
     private cartCountService: CartcountService,
     private notCountService: NotcountService,
     private storage: Storage,
-    private notificationCountService:NotcountService
+    private notificationCountService:NotcountService,
+    private alertController:AlertController,
+    private appVersion:AppVersion
   ) {
     this.s3url = utils.getS3url();
     // this.badge.set(10);
@@ -213,6 +219,20 @@ export class HomePage implements OnInit {
             (error) => this.handleErrorSearch(error)
           );
         }
+      });
+
+      this.platform.resume.subscribe(async () => {
+        console.log("alert status",this.isAlertPresent)
+        if(this.isAlertPresent)
+        {
+          this.alertController.dismiss()
+            this.checkApplicationUpdate(this.android_version,this.ios_version); 
+        }
+        else{
+          console.log("when returned from store without update")
+          this.checkApplicationUpdate(this.android_version,this.ios_version)
+        }
+   
       });
   }
 
@@ -314,6 +334,12 @@ export class HomePage implements OnInit {
     this.categories = data.categories;
     this.products = data.products;
     this.banners = data.banner;
+    this.android_version = data.android_version
+    this.ios_version = data.ios_version
+    if(this.platform.is('cordova')){
+      this.checkApplicationUpdate(data.android_version,data.ios_version)
+    }
+    
   }
 
   handleError(error) {
@@ -367,4 +393,65 @@ export class HomePage implements OnInit {
     });
   }
   handleErrorSearch(error) {}
+
+  checkApplicationUpdate(android_version:any,ios_version:any)
+  {
+    console.log("android_version",this.android_version)
+    let current_version
+    this.appVersion.getVersionNumber().then(res => {
+      current_version = res;
+      console.log("current_version", current_version)
+      if (android_version > current_version) {
+      
+        console.log("force update required")
+        this.presentUpdateConfirm()
+      }
+      else if(ios_version > current_version)
+      {
+        console.log("force update required")
+        this.presentUpdateConfirm()
+      }
+      else{
+        console.log("update not required app up to date")
+      }
+    })
+    
+    
+    
+  }
+
+  async presentUpdateConfirm() {
+    this.isAlertPresent = true
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'This version of the app is outdated',
+      message: 'Please download the latest version to continue.',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            navigator['app'].exitApp();
+          }
+        }, {
+          text: 'Update',
+          handler: () => {
+            if(this.platform.is('ios'))
+            {
+              this.isAlertPresent = false
+              window.open('http://itunes.apple.com/lb/app/truecaller-caller-id-number/id448142450?mt=8');
+            }
+            else if(this.platform.is('android'))
+            {
+              this.isAlertPresent = false
+              window.open('https://play.google.com/store/apps/details?id=com.whatsapp');
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
 }
