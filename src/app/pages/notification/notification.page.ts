@@ -118,7 +118,7 @@ export class NotificationPage implements OnInit {
       infiniteScroll.target.complete();
     }
     if (this.refresh) {
-      console.log(this.refresh)
+      
       this.refresh.target.complete();
       
     }
@@ -183,13 +183,10 @@ export class NotificationPage implements OnInit {
   }
 
   loadMoreContent(infiniteScroll) {
-    console.log(this.page_count,"page count")
-    console.log(this.page_limit,"page limit")
     if (this.page_count == this.page_limit) {
       infiniteScroll.target.disabled = true;
     } else {
       this.page_count += 1;
-
       this.getData(infiniteScroll);
     }
   }
@@ -198,8 +195,6 @@ export class NotificationPage implements OnInit {
     setTimeout(() => {
       this.page_count=1;
       this.notificationMsgs=[]
-      
-      console.log(this.page_count,"page count after update")
       this.getData()
       this.infiniteScroll.disabled = false;
       event.target.complete();

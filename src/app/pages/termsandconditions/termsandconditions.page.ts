@@ -8,30 +8,24 @@ import { TermsandconditionsService } from 'src/app/services/termsandconditions.s
 })
 export class TermsandconditionsPage implements OnInit {
 
-  data:any
-  constructor(private termsPolicy:TermsandconditionsService) {
+  data: any
+  constructor(private termsPolicy: TermsandconditionsService) {
     this.getData()
-   }
+  }
 
   ngOnInit() {
   }
-
-
-  getData()
-  {
+  getData() {
     this.termsPolicy.getTerms().subscribe(
-      (data)=>this.handleResponse(data),
-      (error)=>this.handleError(error)
+      (data) => this.handleResponse(data),
+      (error) => this.handleError(error)
     )
   }
 
-  handleResponse(data)
-  {
-    // console.log(data)
-    this.data=data
+  handleResponse(data) {
+    this.data = data
   }
-  handleError(error)
-  {
+  handleError(error) {
     // console.log(error)
   }
 }

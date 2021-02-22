@@ -6,18 +6,14 @@ import {
   LoadingController,
   IonInfiniteScroll,
   ModalController,
-  Platform,
   PopoverController,
   ToastController,
   IonRouterOutlet,
 } from "@ionic/angular";
-import { utils } from "protractor";
 import { SubcatProductsService } from "src/app/services/subcatProducts/subcat-products.service";
 import { UtilsService } from "src/app/services/utils.service";
-
 import { FilterComponent } from "../filter/filter.component";
 import { CartmodalPage } from "../cartmodal/cartmodal.page";
-
 import { CartService } from "src/app/services/cart/cart.service";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { IonContent } from "@ionic/angular";

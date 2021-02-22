@@ -59,10 +59,6 @@ export class ProfileOTPPage implements OnInit {
         (error) => this.handleError(error)
       );
     }
- 
-
-    
-
   }
 
   handleResponseData(data,type)

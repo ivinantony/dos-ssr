@@ -29,14 +29,6 @@
   <ng-template #thenTemplate>
     <section>
       <ion-slides [options]="bannerSlideOpts" class="slider">
-        <!-- <ion-slide
-          *ngFor="let item of data?.banner[0]?.desktop_images; let i=index"
-          (click)="onRoute(item.application_url)"
-        >
-          <img [src]="s3url + item?.path" alt="" />
-        </ion-slide> -->
-
-
         <ion-slide
           *ngFor="let item of data?.banner[0]?.desktop_images; let i=index"
           class="dsk"

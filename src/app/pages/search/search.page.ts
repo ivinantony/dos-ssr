@@ -3,6 +3,8 @@ import { FormControl } from "@angular/forms";
 import { Router } from "@angular/router";
 import { debounceTime } from "rxjs/operators";
 import { SearchService } from "src/app/services/search/search.service";
+import { defineCustomElements } from "@teamhive/lottie-player/loader";
+
 
 @Component({
   selector: "app-search",
@@ -17,6 +19,7 @@ export class SearchPage implements OnInit {
   public searchTerm: FormControl;
 
   constructor(private searchService: SearchService, private router: Router) {
+    defineCustomElements(window);
     this.searchTerm = new FormControl();
   }
 
