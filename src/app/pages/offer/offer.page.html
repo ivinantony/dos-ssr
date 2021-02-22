@@ -74,17 +74,6 @@
                 </ion-item>
               </ion-list>
             </div>
-
-            <!-- <ion-button
-            shape="round"
-              (click)="item?.cart_count > 0 ? goToCart() : addToCart(i)"
-              [color]="item?.cart_count > 0 ? 'secondary' : 'primary'"
-              expand="full"
-              [disabled]="item?.in_stock == 0"
-              class="tocart"
-            >
-              {{ item?.cart_count > 0 ? 'Go To Cart' : 'Add To Cart'}}
-            </ion-button> -->
             <ion-button (click)="buyNow(i)" expand="full" color="primary" shape="round" class="tocart" [disabled]="item?.in_stock == 0">
               Buy Now
             </ion-button>

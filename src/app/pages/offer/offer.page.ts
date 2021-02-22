@@ -163,10 +163,9 @@ export class OfferPage implements OnInit {
         this.presentLoading().then(() => {
           let data = {
             product_id: this.products[index].id,
-            client_id: val,
-            qty: 1,
+            client_id: val
           };
-          this.cartService.addToCartQty(data).subscribe(
+          this.cartService.addToCart(data).subscribe(
             (data) => this.handleResponse(data, BUY_NOW),
             (error) => this.handleError(error)
           );
