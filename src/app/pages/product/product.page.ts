@@ -227,7 +227,7 @@ export class ProductPage implements OnInit {
           client_id: val,
           qty: this.qty,
         };
-        this.cartService.addToCart(data).subscribe(
+        this.cartService.addToCartQty(data).subscribe(
           (data) => this.handleResponse(data, POST_DATA),
           (error) => this.handleError(error)
         );
