@@ -336,20 +336,6 @@ export class BrandProductsPage implements OnInit {
   buyNow(index: number) {
     this.authService.isAuthenticated().then((val) => {
       if (val) {
-<<<<<<< HEAD
-        this.presentLoading().then(() => {
-          let data = {
-            product_id: this.products[index].id,
-            client_id: val,
-            qty: 1,
-          };
-          this.cartService.addToCartQty(data).subscribe(
-            (data) => this.handleResponse(data, BUY_NOW),
-            (error) => this.handleError(error)
-          );
-        });
-
-=======
           this.presentLoading().then(() => {
             let data = {
               product_id: this.products[index].id,
@@ -361,7 +347,6 @@ export class BrandProductsPage implements OnInit {
             );
           });
         
->>>>>>> 090ffa754f0448aebac8c605238f687a98300672
       } else {
         this.authGuard.presentModal();
       }
