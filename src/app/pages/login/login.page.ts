@@ -1,12 +1,18 @@
 import { Component, NgZone, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
-import { LoadingController, ToastController,AlertController} from "@ionic/angular";
+import {
+  LoadingController,
+  ToastController,
+  AlertController,
+} from "@ionic/angular";
 import { LoginService } from "src/app/services/login/login.service";
 import { AngularFireMessaging } from "@angular/fire/messaging";
 import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
 import { Platform } from "@ionic/angular";
 import { Storage } from "@ionic/storage";
+import { CountryCodeService } from "src/app/services/countryCode/country-code.service";
+import { parsePhoneNumber, isValidPhoneNumber } from "libphonenumber-js";
 
 @Component({
   selector: "app-login",
@@ -16,6 +22,10 @@ import { Storage } from "@ionic/storage";
 export class LoginPage implements OnInit {
   public loginGroup: FormGroup;
   public hasPermission: boolean;
+  code: any;
+  countries: any;
+  isPhoneValid: boolean;
+  errormsg: any;
   constructor(
     private loadingController: LoadingController,
     private toastController: ToastController,
@@ -27,15 +37,29 @@ export class LoginPage implements OnInit {
     private afMessaging: AngularFireMessaging,
     private fcm: FCM,
     public platform: Platform,
-    private zone: NgZone
+    private zone: NgZone,
+    private countryCodeService: CountryCodeService
   ) {
     this.loginGroup = this.formBuilder.group({
-      name: [ "",Validators.compose([Validators.required, Validators.minLength(4)]),],
-      phone: ["",Validators.compose([Validators.required,Validators.minLength(9),Validators.maxLength(9), Validators.pattern("[0-9]*"),]),],
-      email: [ "",Validators.compose([Validators.maxLength(70),Validators.pattern("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"),Validators.required,]),],
+      name: [
+        "",
+        Validators.compose([Validators.required, Validators.minLength(4)]),
+      ],
+      phone: ["", Validators.required],
+      email: [
+        "",
+        Validators.compose([
+          Validators.maxLength(70),
+          Validators.pattern(
+            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
+          ),
+          Validators.required,
+        ]),
+      ],
       fcm_token: [""],
+      country_code: [""],
     });
-    
+    this.countries = this.countryCodeService.getCountryCodes();
     this.setupFCM();
   }
 
@@ -106,6 +130,7 @@ export class LoginPage implements OnInit {
   }
 
   login() {
+    
     this.presentLoading().then(() => {
       this.loginService.registerUser(this.loginGroup.value).subscribe(
         (data) => this.handleResponse(data),
@@ -143,6 +168,19 @@ export class LoginPage implements OnInit {
     });
   }
 
+  onCountryChange(event) {
+    this.code = event.detail.value;
+    let code = this.code.substring(1);
+    this.loginGroup.controls["country_code"].setValue(code);
+    let phone = event.detail.value + this.loginGroup.value.phone;
+    this.isPhoneValid = isValidPhoneNumber(phone);
+    if (this.isPhoneValid) {
+      this.errormsg = null;
+    } else if (!this.isPhoneValid && this.loginGroup.value.phone) {
+      this.errormsg = "Phone number is invalid";
+    }
+  }
+
   async presentLoading() {
     const loading = await this.loadingController.create({
       message: "Please wait..",
@@ -159,7 +197,14 @@ export class LoginPage implements OnInit {
     toast.present();
   }
 
-
-
-
+  onPhoneChange(event) {
+    let phone = this.code + event.detail.value;
+    this.isPhoneValid = isValidPhoneNumber(phone);
+    if (this.isPhoneValid) {
+      console.log(this.isPhoneValid);
+      this.errormsg = null;
+    } else {
+      this.errormsg = "Phone number is invalid";
+    }
+  }
 }

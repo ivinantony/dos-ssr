@@ -26,6 +26,7 @@ import { AppVersion } from '@ionic-native/app-version/ngx';
 
 
 
+
 @NgModule({
   declarations: [AppComponent, FilterComponent],
   entryComponents: [],
@@ -44,7 +45,7 @@ import { AppVersion } from '@ionic-native/app-version/ngx';
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    ServiceWorkerModule.register('combined-sw.js', { enabled: environment.production })
+    ServiceWorkerModule.register('combined-sw.js', { enabled: environment.production }),
   ],
   providers: [
     StatusBar,

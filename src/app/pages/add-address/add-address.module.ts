@@ -8,14 +8,17 @@ import { AddAddressPageRoutingModule } from './add-address-routing.module';
 
 import { AddAddressPage } from './add-address.page';
 
+
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     AddAddressPageRoutingModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
+
   declarations: [AddAddressPage]
 })
 export class AddAddressPageModule {}

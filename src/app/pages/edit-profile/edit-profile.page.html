@@ -30,13 +30,24 @@
         <ion-label>Contact Details</ion-label>
       </ion-item>
       
+      <ion-item class="item" lines="none">
+        <ion-label>Country Code</ion-label>
+        <ion-select (ionChange)="onCountryChange($event)" [value]="countryCodeSelected">   
+        <ion-select-option *ngFor="let item of countries" value="{{item.dial_code}}">{{item.name}}  {{item.dial_code}}</ion-select-option>
+        </ion-select>
+        </ion-item>
+
       <ion-item class="item">
-        <ion-input type="tel" placeholder="Phone" [(ngModel)]="phone"></ion-input>
+        <ion-input type="tel" placeholder="Phone" [(ngModel)]="phone" (ionChange)="onPhoneChange($event)"></ion-input>
         <ion-button (click)="updatePhone()" expand="block" fill="outline" color="tertiary" shape="round">
           Update
         </ion-button>
+       
        </ion-item>
-
+       <div class="err_msg" *ngIf="errormsg">
+        <ion-icon name="information-circle-outline"></ion-icon>
+        {{ errormsg}}
+      </div>
       <ion-item>
         <ion-input type="email" placeholder="Email" [(ngModel)]="email"></ion-input>
         <ion-button (click)="updateEmail()" expand="block" fill="outline" color="tertiary" shape="round">

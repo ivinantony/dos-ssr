@@ -4,6 +4,7 @@ import { AddressService } from "src/app/services/address/address.service";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { AddAddressPage } from "../add-address/add-address.page";
 import { EditAddressPage } from "../edit-address/edit-address.page";
+
 const GET_ADDRESS = 200;
 const POST_DATA = 210;
 @Component({
@@ -18,7 +19,7 @@ export class MyAddressesPage implements OnInit {
     private actionSheetController: ActionSheetController,
     private modalController: ModalController,
     private authservice: AuthenticationService,
-    private alertController:AlertController
+    private alertController:AlertController,
   ) {}
 
   ionViewWillEnter() {
@@ -81,7 +82,6 @@ export class MyAddressesPage implements OnInit {
     const modal = await this.modalController.create({
       component: AddAddressPage,
       swipeToClose: true,
-      // presentingElement: this.routerOutlet.nativeEl,
       cssClass: "my-custom-class",
     });
     modal.onDidDismiss().finally(() => {
