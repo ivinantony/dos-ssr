@@ -5,11 +5,11 @@ import { Injectable } from '@angular/core';
 })
 export class CountryCodeService {
   countries = [ {
-    name: "United Arab Emirates",
+    name: "UAE",
     dial_code: "+971",
     code: "AE"
 },{
-    name: "United States",
+    name: "US",
     dial_code: "+1",
     code: "US"
 }, {

@@ -1,26 +1,24 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="secondary">
     <ion-title>Available Locations.</ion-title>
-    <ion-button slot="end" fill="clear" (click)="dismissModal()">
-      <ion-icon slot="icon-only" name="close" color="dark"></ion-icon>
+    <ion-button slot="end" fill="clear" (click)="dismissModal()" size="small">
+      <ion-icon slot="icon-only" name="close" color="light"></ion-icon>
     </ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
-    <ion-radio-group (ionChange)="onChangeLoc($event)">
-
-  
-      <ion-item class="ion-no-padding" *ngFor="let item of deliveryLocations ; let i =index">
+    <ion-radio-group mode="md" (ionChange)="onChangeLoc($event)" >
+      <ion-item class="ion-no-padding" lines="none" *ngFor="let item of deliveryLocations ; let i =index" class="ion-margin">
         <ion-label class="ion-padding-horizontal">{{item.location}}</ion-label>
-        <ion-radio  value="{{i}}"></ion-radio>
+        <ion-radio slot="start"  value="{{i}}"></ion-radio>
       </ion-item>
     </ion-radio-group>
   </ion-list>
 </ion-content>
 <ion-footer>
-  <ion-toolbar color="primary">
+  <ion-toolbar color="secondary">
     <ion-button
       [disabled]="!selectedAddress"
       color="light"

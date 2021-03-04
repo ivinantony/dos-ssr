@@ -33,6 +33,7 @@ export class CartPage implements OnInit {
     this.slides.slidePrev();
   }
   address_selected: any;
+  address_index: any;
   selectedAddress: any;
   selectedPayment: any;
   cart: any[];
@@ -152,11 +153,9 @@ export class CartPage implements OnInit {
 
     if (this.isOut) {
       this.presentToast("Some items in your cart is currently out of stock.");
-    } else if (!this.valid_address) {
-      this.presentToast("Please select a serviceable delivery Location.");
     } else {
-      let address_id = this.address_id;
-      this.router.navigate(["/checkout", address_id,this.delivery_location_id]);
+      
+      this.router.navigate(["/checkout", this.address_id,this.delivery_location_id]);
     }
   }
 
@@ -181,61 +180,6 @@ export class CartPage implements OnInit {
     this.router.navigate(["product", id]);
   }
 
-  getDistance(latitude, longitude) {
-    const service = new google.maps.DistanceMatrixService();
-    var current_coords = new google.maps.LatLng(latitude, longitude);
-    var lat: string = latitude.toString();
-    var long: string = longitude.toString();
-    var destination = lat + "," + long;
-    var shop_coords = new Array();
-
-    this.data.delivery_location?.forEach((element) => {
-      shop_coords.push(element.location);
-    });
-    const matrixOptions = {
-      origins: shop_coords, // shop coords
-      destinations: [destination], // customer coords
-      travelMode: "DRIVING",
-      unitSystem: google.maps.UnitSystem.IMPERIAL,
-    };
-    service.getDistanceMatrix(matrixOptions, (response, status) => {
-      if (status !== "OK") {
-        var msg = "Error with distance matrix";
-        this.presentToast(msg);
-      } else {
-        var response_data = new Array();
-        var distances = new Array();
-        let shortest_distance;
-        let shop_index: number;
-        response_data = response.rows;
-        response_data.forEach((ele) => {
-          distances.push(ele.elements[0].distance.value);
-        });
-        shortest_distance = Math.min.apply(null, distances);
-        shop_index = distances.findIndex(
-          (element) => element == shortest_distance
-        );
-        if (
-          shortest_distance <
-          this.data.delivery_location[shop_index].radius * 1000
-        ) {
-          var msg =
-            "Delivery available from " +
-            this.data.delivery_location[shop_index].location;
-          this.delivery_location_id = this.data.delivery_location[shop_index].id
-          this.presentToast(msg);
-          this.selectedAddress = this.current_selection;
-          this.address_id = this.address_selected.id;
-          this.valid_address = true;
-        } else {
-          var msg = "Sorry, this location is currently not serviceable";
-          this.presentToast(msg);
-          this.valid_address = false;
-        }
-      }
-    });
-  }
-
   handle(url: any) {
     this.router.navigate(["paytabs"]);
   }
@@ -247,6 +191,7 @@ export class CartPage implements OnInit {
       this.cart = data.cart;
       this.amountDetails = data;
       this.addresses = data.address;
+      console.log(this.addresses)
       this.cartLength = this.cart.length;
       for (let i = 0; i < this.cart?.length; i++) {
         this.cart[i].images[0].path = this.s3url + this.cart[i].images[0].path;
@@ -335,12 +280,17 @@ export class CartPage implements OnInit {
 
     await modal.onDidDismiss().then((data) => {
       if (data.data) {
-        this.address_selected = data.data;
-        this.current_selection = data.role;
-        this.getDistance(
-          this.address_selected.latitude,
-          this.address_selected.longitude
-        );
+        console.log(data.data)
+        this.address_index = data.data
+        this.address_selected = this.addresses[this.address_index]
+        console.log(this.address_selected)
+        this.address_id = this.addresses[this.address_index].id
+        this.delivery_location_id = this.addresses[this.address_index].delivery_location_id
+        // this.current_selection = data.role;
+        // this.getDistance(
+        //   this.address_selected.latitude,
+        //   this.address_selected.longitude
+        // );
       }
     });
   }

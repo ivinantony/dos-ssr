@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { ModalController } from '@ionic/angular';
+import { CountryCallingCode } from 'libphonenumber-js';
 import { AddressService } from 'src/app/services/address/address.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { CountryCodeService } from 'src/app/services/countryCode/country-code.service';
 import { LocationmodelPage } from '../locationmodel/locationmodel.page';
-
+import {isValidPhoneNumber } from "libphonenumber-js";
 
 
 @Component({
@@ -16,8 +18,15 @@ export class AddAddressPage implements OnInit {
   deliveryLocations:Array<any>=[]
   public addressForm:FormGroup;
   selectedDeliveryLocationId:any;
+  countries:any
+  code:any
+  isPhoneValid:any
+  errormsg: any;
+  alterrormsg: any;
+  addressSelected:boolean=false
   constructor(private formBuilder:FormBuilder,private addressService:AddressService,
-    private modalController:ModalController,private authservice:AuthenticationService) 
+    private modalController:ModalController,private authservice:AuthenticationService,
+    private countryCodeService:CountryCodeService) 
   { 
     this.addressForm = this.formBuilder.group({
       client_id: [""],
@@ -26,15 +35,18 @@ export class AddAddressPage implements OnInit {
       state:["",Validators.compose([Validators.required])],
       landmark: [""],
       country: ["",Validators.required],
-      alternate_phone: ["",Validators.compose([Validators.maxLength(9),Validators.minLength(9),Validators.pattern("[0-9]*"),]),],
-      phone: ["",Validators.compose([Validators.required,Validators.maxLength(9),Validators.minLength(9),Validators.pattern("[0-9]*"),]),],
+      alternate_phone: ["",Validators.pattern("[0-9]*")],
+      phone: ["",Validators.compose([Validators.pattern("[0-9]*"),Validators.required])],
       delivery_location_id: ["",Validators.required],
       zip_code: ["",Validators.compose([Validators.required,Validators.maxLength(6),Validators.minLength(6),Validators.pattern("[0-9]*")])],
+      phone_country_code: [""],
     });
 
     this.authservice.isAuthenticated().then((val)=>{
       this.addressForm.controls['client_id'].setValue(val);
     })
+
+    this.countries = this.countryCodeService.getCountryCodes()
   
   }
 
@@ -118,12 +130,13 @@ export class AddAddressPage implements OnInit {
     const modal = await this.modalController.create({
       component: LocationmodelPage,
       cssClass: 'my-custom-class',
-      // presentingElement: await this.modalController.getTop(),
+      presentingElement: await this.modalController.getTop(),
     });
 
     modal.onDidDismiss().then((data) => {
       if(data.data)
       {
+      this.addressSelected = true
       console.log(data)
       this.addressForm.controls['delivery_location_id'].setValue(data.data);
       }
@@ -138,6 +151,44 @@ export class AddAddressPage implements OnInit {
     (error)=>this.handleError(error))
     console.log(this.addressForm.value)
   }
+
+  onCountryChange(event) {
+    this.code = event.detail.value;
+    let code = this.code.substring(1);
+    this.addressForm.controls["phone_country_code"].setValue(code);
+    let phone = event.detail.value + this.addressForm.value.phone;
+    this.isPhoneValid = isValidPhoneNumber(phone);
+    if (this.isPhoneValid) {
+      this.errormsg = null;
+    } else if (!this.isPhoneValid && this.addressForm.value.phone) {
+      this.errormsg = "Phone number is invalid";
+    }
+  }
+
+  onPhoneChange(event) {
+    let phone = this.code + event.detail.value;
+    this.isPhoneValid = isValidPhoneNumber(phone);
+    if (this.isPhoneValid) {
+      console.log(this.isPhoneValid);
+      this.errormsg = null;
+    } else {
+      this.errormsg = "Phone number is invalid";
+    }
+  }
+
+  onAltPhoneChange(event) {
+    console.log(event.detail.value)
+    let phone = this.code + event.detail.value;
+    this.isPhoneValid = isValidPhoneNumber(phone);
+    if (this.isPhoneValid) {
+      console.log(this.isPhoneValid);
+      this.alterrormsg = null;
+    } else {
+      this.alterrormsg = "Phone number is invalid";
+    }
+  }
+
+  
   
   handleResponse(data)
   {

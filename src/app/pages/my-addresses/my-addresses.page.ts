@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ActionSheetController, AlertController, ModalController } from "@ionic/angular";
+import { ActionSheetController, AlertController, IonRouterOutlet, ModalController } from "@ionic/angular";
 import { AddressService } from "src/app/services/address/address.service";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { AddAddressPage } from "../add-address/add-address.page";
@@ -20,6 +20,7 @@ export class MyAddressesPage implements OnInit {
     private modalController: ModalController,
     private authservice: AuthenticationService,
     private alertController:AlertController,
+    private routerOutlet:IonRouterOutlet
   ) {}
 
   ionViewWillEnter() {
@@ -82,6 +83,7 @@ export class MyAddressesPage implements OnInit {
     const modal = await this.modalController.create({
       component: AddAddressPage,
       swipeToClose: true,
+      presentingElement:this.routerOutlet.nativeEl,
       cssClass: "my-custom-class",
     });
     modal.onDidDismiss().finally(() => {
@@ -94,6 +96,7 @@ export class MyAddressesPage implements OnInit {
     const modal = await this.modalController.create({
       component: EditAddressPage,
       swipeToClose: true,
+      presentingElement:this.routerOutlet.nativeEl,
       cssClass: "my-custom-class",
       componentProps: { address_id: id },
     });
@@ -103,7 +106,6 @@ export class MyAddressesPage implements OnInit {
     });
     return await modal.present();
   }
-
 
   async presentAlertConfirm(index:number) {
     const alert = await this.alertController.create({

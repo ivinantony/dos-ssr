@@ -15,6 +15,8 @@ const POST_DATA=120;
 export class AddressModalPage implements OnInit {
 addresses:any
 selectedAddress: any;
+delivery_location:Array<any>=[]
+valid_del_loc_id:Array<any>=[]
   constructor(private modalController:ModalController,
     private addressService:AddressService,private loadingController:LoadingController,
     private authservice:AuthenticationService,
@@ -46,15 +48,21 @@ selectedAddress: any;
   handleResponse(data,type)
   {
     if(type==GET_DATA){
+      console.log(data)
       this.loadingController.dismiss()
       // console.log(data)
       this.addresses = data.addresses
+      this.delivery_location = data.delivery_locations
+      
+      this.delivery_location.filter((loc)=>{
+        this.valid_del_loc_id.push(loc.id)
+      })
+      console.log(this.valid_del_loc_id)
     }
     else if(type==DELETE_DATA){
       // console.log(data)
     }
-    
-    
+     
   }
   handleError(error)
   {
@@ -94,14 +102,17 @@ selectedAddress: any;
   {
     this.modalController.dismiss()
   }
-
-
-  onChangeAddress(index:number) {
-    let current_selection = index;
-    let address_selected = this.addresses[current_selection]
-    this.modalController.dismiss(address_selected)
-  
+  onChangeAddress(event){
+    console.log(event.detail.value)
+    this.modalController.dismiss(event.detail.value)
   }
+
+  // onChangeAddress(index:number) {
+  //   let current_selection = index;
+  //   let address_selected = this.addresses[current_selection]
+  //   this.modalController.dismiss(address_selected)
+  
+  // }
 
   async presentLoading() {
     const loading = await this.loadingController.create({
