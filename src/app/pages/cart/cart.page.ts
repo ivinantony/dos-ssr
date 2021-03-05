@@ -281,11 +281,14 @@ export class CartPage implements OnInit {
     await modal.onDidDismiss().then((data) => {
       if (data.data) {
         console.log(data.data)
-        this.address_index = data.data
-        this.address_selected = this.addresses[this.address_index]
-        console.log(this.address_selected)
-        this.address_id = this.addresses[this.address_index].id
-        this.delivery_location_id = this.addresses[this.address_index].delivery_location_id
+        
+        // this.address_index = data.data
+        this.address_selected = data.data
+        // console.log(this.address_selected)
+        this.address_id =  this.address_selected.id
+        this.delivery_location_id = this.address_selected.delivery_location_id
+
+
         // this.current_selection = data.role;
         // this.getDistance(
         //   this.address_selected.latitude,
