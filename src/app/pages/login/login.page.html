@@ -49,26 +49,31 @@
                 {{ validation.message}}
               </div>
             </ng-container>
+
+            <ion-item color="light" class="input" lines="none">
+            <ion-label>Country</ion-label>
+            <ion-select (ionChange)="onCountryChange($event)">   
+            <ion-select-option *ngFor="let item of countries" value="{{item.dial_code}}">{{item.name}}  {{item.dial_code}}</ion-select-option>
+            </ion-select>
+            </ion-item>
+            
+
+
             <ion-item color="light" class="ion-text-center input" lines="none">
-              +971
               <ion-input
+              (ionChange)="onPhoneChange($event)"
                 required
                 placeholder="Phone number"
                 formControlName="phone"
                 type="tel"
               ></ion-input>
             </ion-item>
-            <ng-container *ngFor="let validation of validation_messages.phone">
-              <div
-                class="err_msg"
-                *ngIf="loginGroup.get('phone').hasError(validation.type) &&
-            loginGroup.get('phone').dirty &&
-            loginGroup.get('phone').touched"
-              >
+            
+            <div class="err_msg" *ngIf="errormsg">
                 <ion-icon name="information-circle-outline"></ion-icon>
-                {{ validation.message}}
+                {{ errormsg}}
               </div>
-            </ng-container>
+
             <ion-item color="light" class="ion-text-center input" lines="none">
               <ion-input
                 placeholder="Email"

@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
+import { parsePhoneNumber, isValidPhoneNumber } from "libphonenumber-js";
+import { CountryCodeService } from 'src/app/services/countryCode/country-code.service';
 const GET_DATA=200;
 const POST_PHONE=210;
 const POST_EMAIL=220;
@@ -23,15 +25,22 @@ export class EditProfilePage implements OnInit {
   email:any
   type:any
   client_id:any
+  countries:any
+  countryCodeSelected:any
+  new_phone:any
+  isPhoneValid:boolean=true
+  errormsg:any
 
 
   constructor(private modalController:ModalController,private toastController:ToastController,
     private loadingController:LoadingController,
     private profileService:ProfileService,
     private router:Router,
-    private authservice:AuthenticationService) {
+    private authservice:AuthenticationService,
+    private countryCodeService:CountryCodeService) {
 
     this.getData()
+    this.countries = this.countryCodeService.getCountryCodes();
     this.authservice.isAuthenticated().then(val=>{
       if(val)
       {
@@ -89,18 +98,21 @@ export class EditProfilePage implements OnInit {
 
   updatePhone()
   {
-    if(this.currentPhone == this.phone)
+    this.new_phone = this.countryCodeSelected + this.phone
+    if(this.currentPhone == this.new_phone)
     {
       this.toastError("Please change the mobile number to update")
     }
-    else if(this.validatePhone(this.phone))
+    else if(this.isPhoneValid)
     {
+      let code = this.countryCodeSelected.substring(1)
       this.authservice.isAuthenticated().then(val=>{
         if(val)
         {
           let data={
             client_id:val,
-            phone:this.phone
+            phone:this.phone,
+            country_code:code
           }
           this.profileService.updatePhone(data).subscribe(
             (data)=>this.handleResponseData(data,POST_PHONE),
@@ -184,11 +196,16 @@ export class EditProfilePage implements OnInit {
       this.loadingController.dismiss().then(()=>{
         this.profile = data.client_Details
         this.name = this.profile?.name
-        this.phone = this.profile?.phone
+        
         this.email = this.profile?.email
-        this.currentPhone = this.profile?.phone
+        this.phone = this.profile?.phone
         this.currentEmail = this.profile?.email
         this.currentName = this.profile?.name
+        this.countryCodeSelected = "+" + this.profile?.country_code
+        console.log(this.countryCodeSelected)
+        this.currentPhone = this.countryCodeSelected + this.profile?.phone
+        console.log(this.currentPhone)
+
       })  
     }
     else if(type == POST_NAME){
@@ -204,15 +221,39 @@ export class EditProfilePage implements OnInit {
     this.loadingController.dismiss()
   }
 
+  onCountryChange(event) {
+    this.countryCodeSelected = event.detail.value;
+    let code = this.countryCodeSelected.substring(1);
+
+    let phone = event.detail.value + this.phone;
+    this.isPhoneValid = isValidPhoneNumber(phone);
+    if (this.isPhoneValid) {
+      this.errormsg = null;
+    } else if (!this.isPhoneValid && this.phone) {
+      this.errormsg = "Phone number is invalid";
+    }
+  }
+
+  onPhoneChange(event) {
+    let phone = this.countryCodeSelected + event.detail.value;
+    this.isPhoneValid = isValidPhoneNumber(phone);
+    if (this.isPhoneValid) {
+      console.log(this.isPhoneValid);
+      this.errormsg = null;
+    } else {
+      this.errormsg = "Phone number is invalid";
+    }
+  }
+
   async toastError(msg) {
     const toast = await this.toastController.create({
-      color: "danger",
+      color: "dark",
 
       message: msg,
       duration: 1000,
       mode: "ios",
       cssClass: "my-custom-toast",
-      position: "top",
+      position: "bottom",
     });
     toast.present();
   }

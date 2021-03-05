@@ -1,114 +1,169 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title>Edit Address</ion-title>
+    <ion-button slot="end" fill="clear" (click)="close()" size="small">
+      <ion-icon slot="icon-only" name="close" color="light"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
 
 <ion-content>
-  <div class="map-wrapper">
-    <div #map id="map"></div>
-    <ion-fab
-      vertical="top"
-      horizontal="end"
-      slot="fixed"
-      class="ion-hide-md-down"
-    >
-      <ion-fab-button size="small" color="secondary" (click)="loadMap()">
-        <ion-icon name="locate"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
-  </div>
-  <ion-grid> </ion-grid>
 
-  <ion-card class="card">
-    <ion-list>
-      <ion-item lines="none">
-        <ion-label>
-          <h2>Set your delivery location</h2>
-        </ion-label>
-        <ion-button slot="end" fill="clear" (click)="dismissModal()">
-          <ion-icon slot="icon-only" name="close" color="dark"></ion-icon>
+ <ion-grid fixed>
+  <ion-list>
+    <ion-item lines="none">
+      <ion-label>
+        <h2>Set your delivery location</h2>
+      </ion-label>
+      
+        <ion-button (click)="selectDeliveryLocation()" slot="end" fill="outline">
+          Change
         </ion-button>
+    
+    </ion-item>
+    
+
+    <form [formGroup]="addressForm">
+      <ion-item class="area" lines="none">
+        <ion-input
+          required
+          placeholder="Name*"
+          formControlName="name"
+        ></ion-input>
       </ion-item>
-      <ion-item lines="none">
-        <ion-label>DELIVERY AREA</ion-label>
+      <ng-container *ngFor="let validation of validation_messages.name">
+        <div
+          class="err_msg"
+          *ngIf="
+        addressForm.get('name').hasError(validation.type) &&
+        addressForm.get('name').dirty &&
+        addressForm.get('name').touched"
+        >
+          <ion-icon name="information-circle-outline"></ion-icon>
+          {{ validation.message}}
+        </div>
+      </ng-container>
+
+      <ion-item class="area" lines="none">
+        <ion-input
+          required
+          placeholder="Full Address*"
+          formControlName="full_address"
+        ></ion-input>
       </ion-item>
       <ion-item class="area" lines="none">
-        <ion-label> <h2 id="address">{{selectedAddress}}</h2></ion-label>
-        <ion-button
-          color="danger"
-          slot="end"
-          (click)="areaSearch()"
-          fill="clear"
-        >
-          CHANGE
-        </ion-button>
+        <ion-input
+          placeholder="Landmark"
+          formControlName="landmark"
+        ></ion-input>
       </ion-item>
+      <ion-item class="area" lines="none">
+        <ion-input
+          required
+          placeholder="State/Province*"
+          formControlName="state"
+        ></ion-input>
+      </ion-item>
+      <ng-container *ngFor="let validation of validation_messages.state">
+        <div
+          class="err_msg"
+          *ngIf="
+        addressForm.get('state').hasError(validation.type) &&
+        addressForm.get('state').dirty &&
+        addressForm.get('state').touched"
+        >
+          <ion-icon name="information-circle-outline"></ion-icon>
+          {{ validation.message}}
+        </div>
+      </ng-container>
 
-      <form [formGroup]="addressForm" class="form">
-        <ion-item class="area" lines="none">
-          <ion-input
-            required
-            placeholder="Name*"
-            formControlName="name"
-          ></ion-input>
+      <ion-item class="area" lines="none">
+        <ion-input
+          required
+          placeholder="Country*"
+          formControlName="country"
+        ></ion-input>
+      </ion-item>
+      <ng-container *ngFor="let validation of validation_messages.country">
+        <div
+          class="err_msg"
+          *ngIf="
+        addressForm.get('country').hasError(validation.type) &&
+        addressForm.get('country').dirty &&
+        addressForm.get('country').touched"
+        >
+          <ion-icon name="information-circle-outline"></ion-icon>
+          {{ validation.message}}
+        </div>
+      </ng-container>
+
+      <ion-item class="area" lines="none">
+        <ion-input
+          required
+          placeholder="zip_code*"
+          formControlName="zip_code"
+          type="tel"
+        ></ion-input>
+      </ion-item>
+      <ng-container
+        *ngFor="let validation of validation_messages.zip_code"
+      >
+        <div
+          class="err_msg"
+          *ngIf="
+        addressForm.get('zip_code').hasError(validation.type) &&
+        addressForm.get('zip_code').dirty &&
+        addressForm.get('zip_code').touched"
+        >
+          <ion-icon name="information-circle-outline"></ion-icon>
+          {{ validation.message}}
+        </div>
+      </ng-container>
+
+      <ion-item  class="area" lines="none">
+        <p>Country code &nbsp;&nbsp;</p>
+        <ion-select (ionChange)="onCountryChange($event)" [value]="countryCodeSelected">   
+        <ion-select-option *ngFor="let item of countries" value="{{item.dial_code}}"> {{item.name}}  {{item.dial_code}}</ion-select-option>
+        </ion-select>
         </ion-item>
-        <ng-container  *ngFor="let validation of validation_messages.name">
-          <div class="err_msg" *ngIf="
-          addressForm.get('name').hasError(validation.type) &&
-          addressForm.get('name').dirty &&
-          addressForm.get('name').touched">
-            <ion-icon name="information-circle-outline"></ion-icon>
-            {{ validation.message}}
-          </div>
-        </ng-container>
-        <ion-item class="area" lines="none">
-          <ion-input
-            required
-            placeholder="Full Address*"
-            formControlName="full_address"
-          ></ion-input>
-        </ion-item>
-        <ion-item class="area" lines="none">
-          <ion-input
-            placeholder="Landmark"
-            formControlName="landmark"
-          ></ion-input>
-        </ion-item>
-        <ion-item class="area" lines="none">
-          <ion-input
-            required
-            placeholder="Phone*"
-            formControlName="phone"
-            type="tel"
-          ></ion-input>
-        </ion-item>
-        <ng-container *ngFor="let validation of validation_messages.phone">
-          <div
-            class="err_msg"
-            *ngIf="
-            addressForm.get('phone').hasError(validation.type) &&
-            addressForm.get('phone').dirty &&
-            addressForm.get('phone').touched"
-          >
-            <ion-icon name="information-circle-outline"></ion-icon>
-            {{ validation.message}}
-          </div>
-        </ng-container>
-        <ion-item class="area" lines="none">
-          <ion-input placeholder="Alternate number" formControlName="alternate_phone" type="tel"></ion-input>
-        </ion-item>
-        <ng-container  *ngFor="let validation of validation_messages.alternate_phone">
-          <div class="err_msg" *ngIf="
-          addressForm.get('alternate_phone').hasError(validation.type) &&
-          addressForm.get('alternate_phone').dirty &&
-          addressForm.get('alternate_phone').touched">
-            <ion-icon name="information-circle-outline"></ion-icon>
-            {{ validation.message}}
-          </div>
-        </ng-container>
-      </form>
-    </ion-list>
-  </ion-card>
+      <ion-item class="area" lines="none">
+        <ion-input
+          required
+          placeholder="Phone*"
+          formControlName="phone"
+          type="tel"
+          (ionChange)="onPhoneChange($event)"
+        ></ion-input>
+      </ion-item>
+      <div class="err_msg" *ngIf="errormsg">
+        <ion-icon name="information-circle-outline"></ion-icon>
+        {{ errormsg}}
+      </div>
+      <ion-item class="area" lines="none">
+        <ion-input
+          placeholder="Alternate number"
+          formControlName="alternate_phone"
+          type="tel"
+          (ionChange)="onAltPhoneChange($event)"
+        ></ion-input>
+      </ion-item>
+      <div class="err_msg" *ngIf="alterrormsg">
+        <ion-icon name="information-circle-outline"></ion-icon>
+        {{alterrormsg}}
+      </div>
+    </form>
+  </ion-list>
+ </ion-grid>
+        
+  
+  
+
 </ion-content>
+
 <ion-footer>
-  <ion-toolbar color="danger">
+  <ion-toolbar color="secondary">
     <ion-button
+    [disabled]="!addressForm.valid"
       color="light"
       id="btn"
       expand="block"
@@ -116,7 +171,7 @@
       shape="round"
       (click)="onSubmit()"
     >
-    Confirm and proceed
+      Confirm and proceed
     </ion-button>
   </ion-toolbar>
 </ion-footer>

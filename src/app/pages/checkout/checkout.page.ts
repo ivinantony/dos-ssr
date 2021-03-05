@@ -101,7 +101,7 @@ export class CheckoutPage implements OnInit {
         }
       });
     });
-  }
+  } 
 
   handleResponse(data, type) {
     if (type == GET_AMOUNTDETAILS) {

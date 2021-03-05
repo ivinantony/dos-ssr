@@ -212,6 +212,15 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     loadChildren: () => import('./pages/wishlist/wishlist.module').then( m => m.WishlistPageModule)
   },
+  {
+    path: 'add-address',
+    loadChildren: () => import('./pages/add-address/add-address.module').then( m => m.AddAddressPageModule)
+  },
+  {
+    path: 'locationmodel',
+    loadChildren: () => import('./pages/locationmodel/locationmodel.module').then( m => m.LocationmodelPageModule)
+  },
+
 ];
 
 @NgModule({

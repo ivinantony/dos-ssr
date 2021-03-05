@@ -17,14 +17,14 @@
     </ion-chip>
   </ion-toolbar>
 
-  <ion-content>
     <ng-container
       *ngIf="addresses?.length > 0; then thenTemplate; else elseTemplate"
     ></ng-container>
 
     <ng-template #thenTemplate>
       <ion-list>
-        <ion-item *ngFor="let item of addresses; let i=index" lines="none">
+        <!-- <div *ngFor="let item of addresses; let i=index">
+        <ion-item lines="none">
           <ion-label (click)="onChangeAddress(i)">
             <ion-text color="primary">
               <h3>{{item.name}}</h3>
@@ -39,7 +39,43 @@
             </ion-button>
           </ion-buttons>
         </ion-item>
-      </ion-list>
+        <ion-item lines="none">
+          <p *ngIf="!valid_del_loc_id.includes(item?.delivery_location_id)">Address not servicable</p>
+        </ion-item>
+        
+      </div> -->
+      <ion-radio-group mode="md" (ionChange)="onChangeAddress($event)">
+        <ion-item
+          *ngFor="let item of addresses; let i=index"
+          lines="none"
+          [disabled]="!valid_del_loc_id.includes(item?.delivery_location_id)"
+        >
+          <ion-label>
+            <ion-text color="primary">
+              <h3>{{item.name}}</h3>
+            </ion-text>
+            <p>{{item.fulladdress}}</p>
+            <p>{{item.landmark}}</p>
+          </ion-label>
+          <ion-radio slot="start" value="{{i}}"></ion-radio>
+          <ion-button
+            slot="end"
+            fill="clear"
+            color="danger"
+            shape="round"
+            [ngStyle]="{'display': valid_del_loc_id.includes(item?.delivery_location_id) ? 'none':''}"
+          >
+            Not deliverable
+          </ion-button>
+          <ion-buttons slot="end">
+            <ion-button (click)="options(i)" color="secondary">
+              <ion-icon name="ellipsis-horizontal-sharp"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+     
     </ng-template>
 
     <ng-template #elseTemplate>
@@ -47,5 +83,5 @@
         <ion-label>No Addresses Added</ion-label>
       </ion-item>
     </ng-template>
-  </ion-content>
+  
 </ion-content>
