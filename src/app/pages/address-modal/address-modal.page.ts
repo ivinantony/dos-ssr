@@ -104,7 +104,8 @@ valid_del_loc_id:Array<any>=[]
   }
   onChangeAddress(event){
     console.log(event.detail.value)
-    this.modalController.dismiss(event.detail.value)
+console.log(this.addresses[event.detail.value])
+    this.modalController.dismiss(this.addresses[event.detail.value])
   }
 
   // onChangeAddress(index:number) {
