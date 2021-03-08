@@ -59,6 +59,14 @@ export class OrderDetailsPage implements OnInit {
     this.presentModal()
   }
 
+  track(){
+    let id = this.data.order.delivery_id
+ 
+    window.open(
+      "https://www.skyexpressinternational.com/Home/Tracking?trackingType=REF&tid="+id
+    );
+  }
+
 
   async presentModal() {
     const modal = await this.modalController.create({
