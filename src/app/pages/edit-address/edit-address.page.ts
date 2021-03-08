@@ -141,7 +141,7 @@ export class EditAddressPage implements OnInit {
       if(data.data)
       {
         this.addressSelected = true
-        console.log(data)
+    
         this.addressForm.controls['delivery_location_id'].setValue(data.data.id);
         this.loc_selected = data.data.location 
       }
@@ -152,7 +152,7 @@ export class EditAddressPage implements OnInit {
   getEditAddress() {
     
     this.presentLoading().then(()=>{  
-      console.log(this.address_id)
+    
         this.addressService.getEditAddress(this.address_id).subscribe(
           (data)=>this.handleResponse(data,GET_EDIT_ADDRESS),
           (error)=>this.handleError(error)
@@ -163,13 +163,13 @@ export class EditAddressPage implements OnInit {
   handleResponse(data,type)
   {   
     if(type == POST_ADDRESS){
-      console.log(data)
+    
       this.modalController.dismiss()
     }
     else if(type == GET_EDIT_ADDRESS){
       this.loadingController.dismiss()
       this.editAddress = data.address
-      console.log(this.editAddress)
+   
       this.countryCodeSelected = "+" + this.editAddress?.phone_country_code
       this.loc_selected = this.editAddress?.location
       this.update()
@@ -228,7 +228,7 @@ export class EditAddressPage implements OnInit {
     let phone = this.code + event.detail.value;
     this.isPhoneValid = isValidPhoneNumber(phone);
     if (this.isPhoneValid) {
-      console.log(this.isPhoneValid);
+      
       this.errormsg = null;
     } else {
       this.errormsg = "Phone number is invalid";
@@ -236,11 +236,11 @@ export class EditAddressPage implements OnInit {
   }
 
   onAltPhoneChange(event) {
-    console.log(event.detail.value)
+
     let phone = this.code + event.detail.value;
     this.isPhoneValid = isValidPhoneNumber(phone);
     if (this.isPhoneValid) {
-      console.log(this.isPhoneValid);
+     
       this.alterrormsg = null;
     } else {
       this.alterrormsg = "Phone number is invalid";
@@ -250,7 +250,6 @@ export class EditAddressPage implements OnInit {
 
   onSubmit()
   {
-    console.log(this.addressForm.value)
     this.addressService.addEditAddress(this.addressForm.value).subscribe(
       (data) => this.handleResponse(data, POST_ADDRESS),
       (error) => this.handleError(error)

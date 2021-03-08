@@ -114,7 +114,7 @@ export class LoginPage implements OnInit {
           this.loginGroup.controls["fcm_token"].setValue(token);
         },
         (error) => {
-          console.error(error);
+          // console.error(error);
         }
       );
     } else {
@@ -201,7 +201,7 @@ export class LoginPage implements OnInit {
     let phone = this.code + event.detail.value;
     this.isPhoneValid = isValidPhoneNumber(phone);
     if (this.isPhoneValid) {
-      console.log(this.isPhoneValid);
+      // console.log(this.isPhoneValid);
       this.errormsg = null;
     } else {
       this.errormsg = "Phone number is invalid";

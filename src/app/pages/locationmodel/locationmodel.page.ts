@@ -32,7 +32,7 @@ export class LocationmodelPage implements OnInit {
 
   handleResponse(data) {
     this.deliveryLocations = data.delivery_locations;
-    console.log("delivery locations",this.deliveryLocations)
+   
   }
 
   handleError(error) {
@@ -41,7 +41,7 @@ export class LocationmodelPage implements OnInit {
 
   onChangeLoc(event) {
     this.selectedAddress = this.deliveryLocations[event.detail.value]
-    console.log(this.selectedAddress,"selected address")
+  
     let data={
       
     }

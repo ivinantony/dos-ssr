@@ -295,7 +295,7 @@ export class CartmodalPage implements OnInit {
 
     await modal.onDidDismiss().then((data) => {
       if (data.data) {
-        console.log(data.data)
+       
         this.address_selected = data.data
         this.address_id =  this.address_selected.id
         this.delivery_location_id = this.address_selected.delivery_location_id
