@@ -24,6 +24,7 @@ export class AddAddressPage implements OnInit {
   errormsg: any;
   alterrormsg: any;
   addressSelected:boolean=false
+  loc_selected:any;
   constructor(private formBuilder:FormBuilder,private addressService:AddressService,
     private modalController:ModalController,private authservice:AuthenticationService,
     private countryCodeService:CountryCodeService) 
@@ -51,6 +52,11 @@ export class AddAddressPage implements OnInit {
   }
 
   ngOnInit() {
+    if (!window.history.state.modal) {
+      const modalState = { modal: true };
+      history.pushState(modalState, null);
+    }
+
   }
 
   close()
@@ -138,7 +144,8 @@ export class AddAddressPage implements OnInit {
       {
       this.addressSelected = true
       console.log(data)
-      this.addressForm.controls['delivery_location_id'].setValue(data.data);
+      this.addressForm.controls['delivery_location_id'].setValue(data.data.id);
+      this.loc_selected = data.data.location 
       }
     });
     return await modal.present();

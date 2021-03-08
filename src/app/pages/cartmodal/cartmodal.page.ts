@@ -94,15 +94,10 @@ export class CartmodalPage implements OnInit {
   continue() {
     this.checkOutofStock();
     if (this.isOut) {
-      this.presentToastDanger(
-        "Some items in your cart is currently out of stock."
-      );
-    } else if (!this.valid_address) {
-      this.presentToastDanger("Please select a serviceable delivery Location.");
+      this.presentToast("Some items in your cart is currently out of stock.");
     } else {
-      let address_id = this.address_id;
-      this.modalController.dismiss();
-      this.router.navigate(["checkout", address_id,this.delivery_location_id]);
+      this.modalController.dismiss()
+      this.router.navigate(["/checkout", this.address_id,this.delivery_location_id]);
     }
   }
 
@@ -293,21 +288,17 @@ export class CartmodalPage implements OnInit {
     const modal = await this.modalController.create({
       component: AddressModalPage,
       cssClass: "cartmodal",
-      componentProps: { value: 123 },
       swipeToClose: true,
-      presentingElement: await this.modalController.getTop(),
     });
 
     await modal.present();
 
     await modal.onDidDismiss().then((data) => {
       if (data.data) {
-        this.address_selected = data.data;
-        this.current_selection = data.role;
-        this.getDistance(
-          this.address_selected.latitude,
-          this.address_selected.longitude
-        );
+        console.log(data.data)
+        this.address_selected = data.data
+        this.address_id =  this.address_selected.id
+        this.delivery_location_id = this.address_selected.delivery_location_id
       }
     });
   }

@@ -24,6 +24,8 @@ export class EditAddressPage implements OnInit {
   errormsg:any
   alterrormsg:any
   countryCodeSelected:any
+  loc_selected:any
+  addressSelected:boolean = true
   constructor(private formBuilder:FormBuilder,
     private modalController:ModalController,
     private addressService: AddressService,
@@ -51,6 +53,7 @@ export class EditAddressPage implements OnInit {
 
 
   ngOnInit() {
+    
   }
 
   validation_messages = {
@@ -137,8 +140,10 @@ export class EditAddressPage implements OnInit {
     modal.onDidDismiss().then((data) => {
       if(data.data)
       {
-      console.log(data)
-      this.addressForm.controls['delivery_location_id'].setValue(data.data);
+        this.addressSelected = true
+        console.log(data)
+        this.addressForm.controls['delivery_location_id'].setValue(data.data.id);
+        this.loc_selected = data.data.location 
       }
     });
     return await modal.present();
@@ -166,6 +171,7 @@ export class EditAddressPage implements OnInit {
       this.editAddress = data.address
       console.log(this.editAddress)
       this.countryCodeSelected = "+" + this.editAddress?.phone_country_code
+      this.loc_selected = this.editAddress?.location
       this.update()
     }
 

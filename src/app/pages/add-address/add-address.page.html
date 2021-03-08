@@ -11,9 +11,10 @@
 
  <ion-grid fixed>
   <ion-list>
-    <ion-item lines="none">
+    <ion-item lines="none" class="address">
       <ion-label>
-        <h2>Select your delivery location</h2>
+        <h2>{{ addressSelected ? 'Selected Location':  'Select your delivery location' }}</h2>
+        <p class="ion-padding-vertical">{{loc_selected}}</p>
       </ion-label>
       
         <ion-button (click)="selectDeliveryLocation()" slot="end" fill="outline">

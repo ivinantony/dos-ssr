@@ -27,6 +27,7 @@ valid_del_loc_id:Array<any>=[]
     }
 
   ngOnInit() {
+    
   }
 
   getData()
