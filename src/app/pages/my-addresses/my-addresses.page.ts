@@ -96,7 +96,7 @@ export class MyAddressesPage implements OnInit {
     const modal = await this.modalController.create({
       component: EditAddressPage,
       swipeToClose: true,
-      presentingElement:this.routerOutlet.nativeEl,
+      // presentingElement:this.routerOutlet.nativeEl,
       cssClass: "my-custom-class",
       componentProps: { address_id: id },
     });

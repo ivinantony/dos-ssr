@@ -8,6 +8,10 @@
 </ion-header>
 
 <ion-content>
+  <ng-container
+  *ngIf="deliveryLocations?.length > 0; then thenTemplate ; else elseTemplate"
+></ng-container>
+<ng-template #thenTemplate>
   <ion-list>
     <ion-radio-group mode="md" (ionChange)="onChangeLoc($event)" >
       <ion-item class="ion-no-padding" lines="none" *ngFor="let item of deliveryLocations ; let i =index" class="ion-margin">
@@ -16,8 +20,20 @@
       </ion-item>
     </ion-radio-group>
   </ion-list>
+</ng-template>
+<ng-template #elseTemplate>
+  <div >
+    <div class="ion-text-center ion-padding-vertical">
+      <p>Currently no locations are available.</p>
+
+    </div>
+  </div>
+
+</ng-template>
+  
 </ion-content>
-<ion-footer>
+
+<ion-footer *ngIf="deliveryLocations?.length > 0">
   <ion-toolbar color="secondary">
     <ion-button
       [disabled]="!selectedAddress"

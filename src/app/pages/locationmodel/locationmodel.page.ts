@@ -16,6 +16,11 @@ export class LocationmodelPage implements OnInit {
   }
 
   ngOnInit() {
+    if (!window.history.state.modal) {
+      const modalState = { modal: true };
+      history.pushState(modalState, null);
+    }
+    
   }
 
   getData() {
@@ -35,8 +40,11 @@ export class LocationmodelPage implements OnInit {
   }
 
   onChangeLoc(event) {
-    this.selectedAddress = this.deliveryLocations[event.detail.value].id
+    this.selectedAddress = this.deliveryLocations[event.detail.value]
     console.log(this.selectedAddress,"selected address")
+    let data={
+      
+    }
   }
 
   dismissModal(){
