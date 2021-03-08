@@ -64,7 +64,7 @@ export class OfferPage implements OnInit {
     private wishlistService: WishlistService
   ) {
     this.s3url = utils.getS3url();
-    console.log("constructor");
+    
   }
 
   ionViewWillEnter() {

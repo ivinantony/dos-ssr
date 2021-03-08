@@ -143,7 +143,7 @@ export class AddAddressPage implements OnInit {
       if(data.data)
       {
       this.addressSelected = true
-      console.log(data)
+    
       this.addressForm.controls['delivery_location_id'].setValue(data.data.id);
       this.loc_selected = data.data.location 
       }
@@ -156,7 +156,7 @@ export class AddAddressPage implements OnInit {
     this.addressService.addAddress(this.addressForm.value).subscribe( 
     (data)=>this.handleResponse(data),
     (error)=>this.handleError(error))
-    console.log(this.addressForm.value)
+ 
   }
 
   onCountryChange(event) {
@@ -176,7 +176,7 @@ export class AddAddressPage implements OnInit {
     let phone = this.code + event.detail.value;
     this.isPhoneValid = isValidPhoneNumber(phone);
     if (this.isPhoneValid) {
-      console.log(this.isPhoneValid);
+     
       this.errormsg = null;
     } else {
       this.errormsg = "Phone number is invalid";
@@ -184,11 +184,11 @@ export class AddAddressPage implements OnInit {
   }
 
   onAltPhoneChange(event) {
-    console.log(event.detail.value)
+    
     let phone = this.code + event.detail.value;
     this.isPhoneValid = isValidPhoneNumber(phone);
     if (this.isPhoneValid) {
-      console.log(this.isPhoneValid);
+      
       this.alterrormsg = null;
     } else {
       this.alterrormsg = "Phone number is invalid";
@@ -199,11 +199,11 @@ export class AddAddressPage implements OnInit {
   
   handleResponse(data)
   {
-    console.log(data)
+
     this.modalController.dismiss()
   }
   handleError(error)
   {
-    console.log(error)
+    // console.log(error)
   }
 }

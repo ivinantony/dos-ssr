@@ -29,6 +29,7 @@
     "@ionic-native/geolocation": "^5.29.0",
     "@ionic-native/in-app-browser": "^5.30.0",
     "@ionic-native/ionic-webview": "^5.31.1",
+    "@ionic-native/market": "^5.31.1",
     "@ionic-native/native-geocoder": "^5.29.0",
     "@ionic-native/native-storage": "^5.30.0",
     "@ionic-native/paypal": "^5.30.0",
@@ -86,6 +87,7 @@
     "cordova-plugin-inappbrowser": "^4.1.0",
     "cordova-plugin-ionic-keyboard": "^2.2.0",
     "cordova-plugin-ionic-webview": "^5.0.0",
+    "cordova-plugin-market": "^1.2.0",
     "cordova-plugin-nativegeocoder": "^3.4.1",
     "cordova-plugin-nativestorage": "^2.3.2",
     "cordova-plugin-splashscreen": "^5.0.2",
@@ -154,7 +156,8 @@
         "DEEPLINK_5_HOST": " "
       },
       "cordova-plugin-app-update": {},
-      "cordova-plugin-app-version": {}
+      "cordova-plugin-app-version": {},
+      "cordova-plugin-market": {}
     },
     "platforms": [
       "ios",

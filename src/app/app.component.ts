@@ -226,7 +226,7 @@ export class AppComponent implements OnInit {
   setDeepLink() {
     this.deeplinks.route({ '/:slug': 'posts' }).subscribe(
       match => {
-        console.log('Successfully matched route', match);
+        // console.log('Successfully matched route', match);
 
         // Create our internal Router path by hand
         const internalPath = `/${match.$route}/${match.$args['slug']}`;
@@ -238,7 +238,7 @@ export class AppComponent implements OnInit {
       },
       error => {
         // nomatch.$link - the full link data
-        console.error("Got a deeplink that didn't match", error);
+        // console.error("Got a deeplink that didn't match", error);
       }
     );
 
