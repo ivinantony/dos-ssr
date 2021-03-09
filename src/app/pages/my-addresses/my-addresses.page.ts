@@ -27,7 +27,12 @@ export class MyAddressesPage implements OnInit {
     this.getAddress();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (!window.history.state.modal) {
+      const modalState = { modal: true };
+      history.pushState(modalState, null);
+    }
+  }
 
   getAddress() {
     this.authservice.isAuthenticated().then((val) => {
@@ -83,7 +88,7 @@ export class MyAddressesPage implements OnInit {
     const modal = await this.modalController.create({
       component: AddAddressPage,
       swipeToClose: true,
-      presentingElement:this.routerOutlet.nativeEl,
+      presentingElement:await this.modalController.getTop(),
       cssClass: "my-custom-class",
     });
     modal.onDidDismiss().finally(() => {
@@ -96,7 +101,7 @@ export class MyAddressesPage implements OnInit {
     const modal = await this.modalController.create({
       component: EditAddressPage,
       swipeToClose: true,
-      // presentingElement:this.routerOutlet.nativeEl,
+      presentingElement:await this.modalController.getTop(),
       cssClass: "my-custom-class",
       componentProps: { address_id: id },
     });

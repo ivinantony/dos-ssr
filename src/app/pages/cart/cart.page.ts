@@ -153,7 +153,14 @@ export class CartPage implements OnInit {
 
     if (this.isOut) {
       this.presentToast("Some items in your cart is currently out of stock.");
-    } else {
+    } 
+
+    else if(!this.address_id){
+      this.presentToast("Please select a delivery address.");
+
+    }
+    
+    else {
       
       this.router.navigate(["/checkout", this.address_id,this.delivery_location_id]);
     }
