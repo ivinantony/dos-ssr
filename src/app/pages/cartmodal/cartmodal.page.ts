@@ -95,7 +95,12 @@ export class CartmodalPage implements OnInit {
     this.checkOutofStock();
     if (this.isOut) {
       this.presentToast("Some items in your cart is currently out of stock.");
-    } else {
+    } 
+    else if(!this.address_id){
+      this.presentToast("Please select a delivery address.");
+
+    }
+    else {
       this.modalController.dismiss()
       this.router.navigate(["/checkout", this.address_id,this.delivery_location_id]);
     }
@@ -287,7 +292,8 @@ export class CartmodalPage implements OnInit {
   async changeAddress() {
     const modal = await this.modalController.create({
       component: AddressModalPage,
-      cssClass: "cartmodal",
+      cssClass: "my-custom-class",
+      presentingElement: await this.modalController.getTop(),
       swipeToClose: true,
     });
 
@@ -399,6 +405,7 @@ export class CartmodalPage implements OnInit {
       cssClass: "custom-toast",
       position: "top",
       duration: 2000,
+      color:"dark"
     });
     toast.present();
   }

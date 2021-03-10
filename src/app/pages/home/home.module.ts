@@ -11,7 +11,6 @@ import { SharedComponentsModule } from 'src/app/components/shared-components.mod
 import { Market } from '@ionic-native/market/ngx';
 
 
-
 @NgModule({
   imports: [
     CommonModule,

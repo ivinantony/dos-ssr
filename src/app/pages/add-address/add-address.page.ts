@@ -136,6 +136,7 @@ export class AddAddressPage implements OnInit {
     const modal = await this.modalController.create({
       component: LocationmodelPage,
       cssClass: 'my-custom-class',
+      swipeToClose: true,
       presentingElement: await this.modalController.getTop(),
     });
 

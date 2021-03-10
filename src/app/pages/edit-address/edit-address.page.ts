@@ -53,7 +53,10 @@ export class EditAddressPage implements OnInit {
 
 
   ngOnInit() {
-    
+    if (!window.history.state.modal) {
+      const modalState = { modal: true };
+      history.pushState(modalState, null);
+    }
   }
 
   validation_messages = {

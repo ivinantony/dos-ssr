@@ -148,6 +148,7 @@ export class LoginPage implements OnInit {
             {
               phone: this.loginGroup.value.phone,
               email: this.loginGroup.value.email,
+              code: this.loginGroup.value.country_code,
             },
           ],
           { replaceUrl: true }

@@ -18,6 +18,7 @@ export class OtpPage implements OnInit {
   inputOtp: number;
   phone: number;
   email: any;
+  code:any;
   constructor(
     private otpService: VerifyOtpService,
     private activatedRoute: ActivatedRoute,
@@ -33,6 +34,7 @@ export class OtpPage implements OnInit {
   ) {
     this.phone = this.activatedRoute.snapshot.params.phone;
     this.email = this.activatedRoute.snapshot.params.email;
+    this.code = this.activatedRoute.snapshot.params.code;
   }
 
   ngOnInit() {}
@@ -45,6 +47,7 @@ export class OtpPage implements OnInit {
     var data = {
       email: this.email,
       phone: this.phone,
+      country_code : this.code
     };
     this.presentLoading().then(() => {
       this.otpService.resendOtp(data).subscribe(

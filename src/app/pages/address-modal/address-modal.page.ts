@@ -28,12 +28,18 @@ export class AddressModalPage implements OnInit {
     private loadingController: LoadingController,
     private authservice: AuthenticationService,
     private actionSheetController: ActionSheetController,
-    private alertController: AlertController
+    private alertController: AlertController,
   ) {
     this.getData();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+     if (!window.history.state.modal) {
+      const modalState = { modal: true };
+      history.pushState(modalState, null);
+    }
+    
+  }
 
   getData() {
     this.presentLoading().then(() => {
@@ -141,4 +147,6 @@ export class AddressModalPage implements OnInit {
 
     await alert.present();
   }
+
+
 }
