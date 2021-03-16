@@ -8,6 +8,7 @@ import { BehaviorSubject } from "rxjs";
 const TOKEN_KEY = "client_id";
 const CART_COUNT = "cart_count";
 const NOTIFICATION_COUNT = "notf_count";
+const WISH_COUNT = "wish_count";
 @Injectable({
   providedIn: "root",
 })
@@ -41,6 +42,12 @@ export class AuthenticationService {
   }
   async getCartCount() {
     return this.storage.get(CART_COUNT);
+  }
+  async setWishCount(count) {
+    return this.storage.set(WISH_COUNT, count);
+  }
+  async getWishCount() {
+    return this.storage.get(WISH_COUNT);
   }
   async setNotificationCount(count) {
     return this.storage.set(NOTIFICATION_COUNT, count);

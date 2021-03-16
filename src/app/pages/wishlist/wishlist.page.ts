@@ -74,11 +74,13 @@ export class WishlistPage implements OnInit {
   handleResponse(data, type) {
     if (type == GET_DATA) {
       this.loadingController.dismiss();
-
       this.wishlist = data.wishlist;
     } else if (type == REMOVE) {
       this.wishlist.splice(this.removedIndex, 1);
       this.loadingController.dismiss();
+
+      this.authService.setWishCount(data.wish_count);
+      this.wishlistService.setWishCount(data.wish_count);
 
     } else if (type == ADD_TO_CART) {
       this.loadingController.dismiss().then(() => {

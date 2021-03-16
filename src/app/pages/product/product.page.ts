@@ -175,12 +175,15 @@ export class ProductPage implements OnInit {
         if(this.productDetails.wishlist==true)
         {
           this.presentToastSuccess(this.productDetails.name + "  removed from wishlist.");
+          this.authService.setWishCount(data.wish_count);
+          this.wishlistService.setWishCount(data.wish_count);
           this.productDetails.wishlist=!this.productDetails.wishlist
 
         }
         else{
           this.presentToastSuccess(this.productDetails.name + "  added to wishlist.");
-         
+          this.authService.setWishCount(data.wish_count);
+          this.wishlistService.setWishCount(data.wish_count);
            this.productDetails.wishlist=!this.productDetails.wishlist
         }
       })
