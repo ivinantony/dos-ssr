@@ -39,7 +39,7 @@ export class AddAddressPage implements OnInit {
       alternate_phone: ["",Validators.pattern("[0-9]*")],
       phone: ["",Validators.compose([Validators.pattern("[0-9]*"),Validators.required])],
       delivery_location_id: ["",Validators.required],
-      zip_code: ["",Validators.compose([Validators.required,Validators.maxLength(6),Validators.minLength(6),Validators.pattern("[0-9]*")])],
+      zip_code: [""],
       phone_country_code: [""],
     });
 

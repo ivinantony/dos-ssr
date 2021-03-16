@@ -43,7 +43,7 @@ export class EditAddressPage implements OnInit {
       alternate_phone: [""],
       phone: ["",Validators.required],
       delivery_location_id: ["",Validators.required],
-      zip_code: ["",Validators.compose([Validators.required,Validators.maxLength(6),Validators.minLength(6),Validators.pattern("[0-9]*")])],
+      zip_code: [""],
       phone_country_code: [""],
       address_id:[""]
     });
