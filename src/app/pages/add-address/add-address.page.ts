@@ -39,7 +39,7 @@ export class AddAddressPage implements OnInit {
       alternate_phone: ["",Validators.pattern("[0-9]*")],
       phone: ["",Validators.compose([Validators.pattern("[0-9]*"),Validators.required])],
       delivery_location_id: ["",Validators.required],
-      zip_code: ["",Validators.compose([Validators.maxLength(6),Validators.minLength(6),Validators.pattern("[0-9]*")])],
+      zip_code: [""],
       phone_country_code: [""],
     });
 
@@ -113,23 +113,7 @@ export class AddAddressPage implements OnInit {
         type: "pattern",
         message: "Your Mobile number must contain only numbers.",
       },
-    ],
-    zip_code: 
-    [
-      { type: "required", message: "Zip code is required." },
-      {
-        type: "minlength",
-        message: "Zip code must be 6 digits.",
-      },
-      {
-        type: "maxlength",
-        message: "Zip code cannot be more than 6 digits.",
-      },
-      {
-        type: "pattern",
-        message: "Zip code must contain only numbers.",
-      },
-    ],
+    ]
   };
 
   async selectDeliveryLocation() {

@@ -85,7 +85,9 @@
           slot="icon-only"
           src="../assets/imgs/icons/heart-outline.svg"
         ></ion-icon>
-       
+        <ion-badge id="cart-badge" color="primary" *ngIf="wish_count > 0">{{
+          wish_count
+        }}</ion-badge>
       </ion-button>
 
       <ion-button

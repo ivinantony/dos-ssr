@@ -15,6 +15,7 @@ import { NotcountService } from "src/app/services/notcount.service";
 import { Storage } from "@ionic/storage";
 import { AppVersion } from '@ionic-native/app-version/ngx';
 import { Market } from '@ionic-native/market/ngx';
+import { WishlistService } from "src/app/services/wishlist/wishlist.service";
 
 @Component({
   selector: "app-home",
@@ -168,6 +169,7 @@ export class HomePage implements OnInit {
   client_id: any;
   cart_count: any;
   notf_count: any;
+  wish_count: any;
   public searchTerm: FormControl;
   public searchItems;
   searching: any = false;
@@ -193,7 +195,8 @@ export class HomePage implements OnInit {
     private notificationCountService:NotcountService,
     private alertController:AlertController,
     private appVersion:AppVersion,
-    private market:Market
+    private market:Market,
+    private wishlistService:WishlistService
   ) {
     this.s3url = utils.getS3url();
     // this.badge.set(10);
@@ -325,8 +328,11 @@ export class HomePage implements OnInit {
     this.loadingController.dismiss();
     this.authService.setCartCount(data.cart_count)
     this.authService.setNotificationCount(data.notification_count)
+    this.authService.setWishCount(data.wish_count);
+    this.wish_count = data.wish_count;
     this.cart_count = data.cart_count;
     this.notf_count = data.notification_count;
+    this.wishlistService.setWishCount(data.wish_count);
     this.cartCountService.setCartCount(data.cart_count);
     this.notCountService.setNotCount(data.notification_count)
     this.badge.set(this.notf_count);
