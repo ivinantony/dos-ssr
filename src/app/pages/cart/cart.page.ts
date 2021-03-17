@@ -153,7 +153,14 @@ export class CartPage implements OnInit {
 
     if (this.isOut) {
       this.presentToast("Some items in your cart is currently out of stock.");
-    } else {
+    } 
+
+    else if(!this.address_id){
+      this.presentToast("Please select a delivery address.");
+
+    }
+    
+    else {
       
       this.router.navigate(["/checkout", this.address_id,this.delivery_location_id],{ replaceUrl: true });
     }
@@ -191,7 +198,7 @@ export class CartPage implements OnInit {
       this.cart = data.cart;
       this.amountDetails = data;
       this.addresses = data.address;
-      console.log(this.addresses)
+     
       this.cartLength = this.cart.length;
       for (let i = 0; i < this.cart?.length; i++) {
         this.cart[i].images[0].path = this.s3url + this.cart[i].images[0].path;
@@ -280,12 +287,15 @@ export class CartPage implements OnInit {
 
     await modal.onDidDismiss().then((data) => {
       if (data.data) {
-        console.log(data.data)
-        this.address_index = data.data
-        this.address_selected = this.addresses[this.address_index]
-        console.log(this.address_selected)
-        this.address_id = this.addresses[this.address_index].id
-        this.delivery_location_id = this.addresses[this.address_index].delivery_location_id
+    
+        
+        // this.address_index = data.data
+        this.address_selected = data.data
+     
+        this.address_id =  this.address_selected.id
+        this.delivery_location_id = this.address_selected.delivery_location_id
+
+
         // this.current_selection = data.role;
         // this.getDistance(
         //   this.address_selected.latitude,

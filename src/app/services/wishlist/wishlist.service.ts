@@ -3,12 +3,14 @@ import { Injectable } from "@angular/core";
 import { HeadersService } from "../headers.service";
 import { UtilsService } from "../utils.service";
 import { map } from "rxjs/operators";
+import { BehaviorSubject } from "rxjs";
 
 @Injectable({
   providedIn: "root",
 })
 export class WishlistService {
   url: string;
+  wishCount = new BehaviorSubject(0);
   constructor(
     private utils: UtilsService,
     private httpclient: HttpClient,
@@ -35,6 +37,14 @@ export class WishlistService {
           return res;
         })
       );
+  }
+
+  getWishCount() {
+    return this.wishCount.asObservable();
+  }
+
+  setWishCount(count) {
+    this.wishCount.next(count);
   }
 
 //   public removeFromCart(client_id, product_id) {

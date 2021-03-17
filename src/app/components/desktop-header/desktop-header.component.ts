@@ -5,6 +5,7 @@ import { NotcountService } from "src/app/services/notcount.service";
 import { FormControl } from "@angular/forms";
 import { SearchService } from "src/app/services/search/search.service";
 import { debounceTime } from "rxjs/operators";
+import { WishlistService } from "src/app/services/wishlist/wishlist.service";
 
 @Component({
   selector: "desktop-header",
@@ -41,6 +42,7 @@ export class DesktopHeaderComponent implements OnInit {
   selectedCategoryIndex: number = 0;
   notf_count: any;
   cart_count: any;
+  wish_count: any;
   searching: any = false;
   public searchTerm: FormControl;
   result: Array<any> = [];
@@ -50,7 +52,8 @@ export class DesktopHeaderComponent implements OnInit {
     public router: Router,
     private notificationCountService: NotcountService,
     private cartCountService: CartcountService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private wishlistService:WishlistService
   ) {
     this.searchTerm = new FormControl();
     
@@ -60,6 +63,10 @@ export class DesktopHeaderComponent implements OnInit {
     this.cartCountService.getCartCount().subscribe((res) => {
       this.cart_count = res;
     });
+    
+    this.wishlistService.getWishCount().subscribe((res)=>{
+      this.wish_count = res;
+    })
   }
 
   ngOnInit() {

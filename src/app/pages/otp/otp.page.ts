@@ -7,6 +7,7 @@ import { Storage } from "@ionic/storage";
 import { CartcountService } from "src/app/services/cartcount.service";
 import { NotcountService } from "src/app/services/notcount.service";
 import { Badge } from "@ionic-native/badge/ngx";
+import { WishlistService } from "src/app/services/wishlist/wishlist.service";
 const POST_OTP = 200;
 const RESEND_OTP = 210;
 @Component({
@@ -18,6 +19,7 @@ export class OtpPage implements OnInit {
   inputOtp: number;
   phone: number;
   email: any;
+  code:any;
   constructor(
     private otpService: VerifyOtpService,
     private activatedRoute: ActivatedRoute,
@@ -29,10 +31,12 @@ export class OtpPage implements OnInit {
     private notCountService: NotcountService,
     private router: Router,
     private loadingController: LoadingController,
-    private badge: Badge
+    private badge: Badge,
+    private wishlistService:WishlistService
   ) {
     this.phone = this.activatedRoute.snapshot.params.phone;
     this.email = this.activatedRoute.snapshot.params.email;
+    this.code = this.activatedRoute.snapshot.params.code;
   }
 
   ngOnInit() {}
@@ -45,6 +49,7 @@ export class OtpPage implements OnInit {
     var data = {
       email: this.email,
       phone: this.phone,
+      country_code : this.code
     };
     this.presentLoading().then(() => {
       this.otpService.resendOtp(data).subscribe(
@@ -71,7 +76,10 @@ export class OtpPage implements OnInit {
     if (type == POST_OTP) {
       this.authService.setClientId(data.client_id);
       this.authService.setCartCount(data.cart_count);
+      this.authService.setWishCount(data.wish_count);
       this.authService.setNotificationCount(data.notification_count);
+
+      this.wishlistService.setWishCount(data.wish_count)
       this.cartCountService.setCartCount(data.cart_count);
       this.notCountService.setNotCount(data.notification_count);
       this.badge.set(data.notification_count);

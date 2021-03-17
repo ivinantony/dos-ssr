@@ -16,6 +16,11 @@ export class LocationmodelPage implements OnInit {
   }
 
   ngOnInit() {
+    if (!window.history.state.modal) {
+      const modalState = { modal: true };
+      history.pushState(modalState, null);
+    }
+    
   }
 
   getData() {
@@ -27,7 +32,7 @@ export class LocationmodelPage implements OnInit {
 
   handleResponse(data) {
     this.deliveryLocations = data.delivery_locations;
-    console.log("delivery locations",this.deliveryLocations)
+   
   }
 
   handleError(error) {
@@ -35,8 +40,11 @@ export class LocationmodelPage implements OnInit {
   }
 
   onChangeLoc(event) {
-    this.selectedAddress = this.deliveryLocations[event.detail.value].id
-    console.log(this.selectedAddress,"selected address")
+    this.selectedAddress = this.deliveryLocations[event.detail.value]
+  
+    let data={
+      
+    }
   }
 
   dismissModal(){

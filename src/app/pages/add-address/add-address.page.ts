@@ -24,6 +24,7 @@ export class AddAddressPage implements OnInit {
   errormsg: any;
   alterrormsg: any;
   addressSelected:boolean=false
+  loc_selected:any;
   constructor(private formBuilder:FormBuilder,private addressService:AddressService,
     private modalController:ModalController,private authservice:AuthenticationService,
     private countryCodeService:CountryCodeService) 
@@ -38,7 +39,7 @@ export class AddAddressPage implements OnInit {
       alternate_phone: ["",Validators.pattern("[0-9]*")],
       phone: ["",Validators.compose([Validators.pattern("[0-9]*"),Validators.required])],
       delivery_location_id: ["",Validators.required],
-      zip_code: ["",Validators.compose([Validators.required,Validators.maxLength(6),Validators.minLength(6),Validators.pattern("[0-9]*")])],
+      zip_code: [""],
       phone_country_code: [""],
     });
 
@@ -51,6 +52,11 @@ export class AddAddressPage implements OnInit {
   }
 
   ngOnInit() {
+    if (!window.history.state.modal) {
+      const modalState = { modal: true };
+      history.pushState(modalState, null);
+    }
+
   }
 
   close()
@@ -107,29 +113,14 @@ export class AddAddressPage implements OnInit {
         type: "pattern",
         message: "Your Mobile number must contain only numbers.",
       },
-    ],
-    zip_code: 
-    [
-      { type: "required", message: "Zip code is required." },
-      {
-        type: "minlength",
-        message: "Zip code must be 6 digits.",
-      },
-      {
-        type: "maxlength",
-        message: "Zip code cannot be more than 6 digits.",
-      },
-      {
-        type: "pattern",
-        message: "Zip code must contain only numbers.",
-      },
-    ],
+    ]
   };
 
   async selectDeliveryLocation() {
     const modal = await this.modalController.create({
       component: LocationmodelPage,
       cssClass: 'my-custom-class',
+      swipeToClose: true,
       presentingElement: await this.modalController.getTop(),
     });
 
@@ -137,8 +128,9 @@ export class AddAddressPage implements OnInit {
       if(data.data)
       {
       this.addressSelected = true
-      console.log(data)
-      this.addressForm.controls['delivery_location_id'].setValue(data.data);
+    
+      this.addressForm.controls['delivery_location_id'].setValue(data.data.id);
+      this.loc_selected = data.data.location 
       }
     });
     return await modal.present();
@@ -149,7 +141,7 @@ export class AddAddressPage implements OnInit {
     this.addressService.addAddress(this.addressForm.value).subscribe( 
     (data)=>this.handleResponse(data),
     (error)=>this.handleError(error))
-    console.log(this.addressForm.value)
+ 
   }
 
   onCountryChange(event) {
@@ -169,7 +161,7 @@ export class AddAddressPage implements OnInit {
     let phone = this.code + event.detail.value;
     this.isPhoneValid = isValidPhoneNumber(phone);
     if (this.isPhoneValid) {
-      console.log(this.isPhoneValid);
+     
       this.errormsg = null;
     } else {
       this.errormsg = "Phone number is invalid";
@@ -177,11 +169,11 @@ export class AddAddressPage implements OnInit {
   }
 
   onAltPhoneChange(event) {
-    console.log(event.detail.value)
+    
     let phone = this.code + event.detail.value;
     this.isPhoneValid = isValidPhoneNumber(phone);
     if (this.isPhoneValid) {
-      console.log(this.isPhoneValid);
+      
       this.alterrormsg = null;
     } else {
       this.alterrormsg = "Phone number is invalid";
@@ -192,11 +184,11 @@ export class AddAddressPage implements OnInit {
   
   handleResponse(data)
   {
-    console.log(data)
+
     this.modalController.dismiss()
   }
   handleError(error)
   {
-    console.log(error)
+    // console.log(error)
   }
 }

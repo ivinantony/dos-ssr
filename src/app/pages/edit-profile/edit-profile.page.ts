@@ -202,9 +202,9 @@ export class EditProfilePage implements OnInit {
         this.currentEmail = this.profile?.email
         this.currentName = this.profile?.name
         this.countryCodeSelected = "+" + this.profile?.country_code
-        console.log(this.countryCodeSelected)
+        
         this.currentPhone = this.countryCodeSelected + this.profile?.phone
-        console.log(this.currentPhone)
+       
 
       })  
     }
@@ -238,7 +238,7 @@ export class EditProfilePage implements OnInit {
     let phone = this.countryCodeSelected + event.detail.value;
     this.isPhoneValid = isValidPhoneNumber(phone);
     if (this.isPhoneValid) {
-      console.log(this.isPhoneValid);
+      
       this.errormsg = null;
     } else {
       this.errormsg = "Phone number is invalid";

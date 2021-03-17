@@ -64,7 +64,7 @@ export class OfferPage implements OnInit {
     private wishlistService: WishlistService
   ) {
     this.s3url = utils.getS3url();
-    console.log("constructor");
+    
   }
 
   ionViewWillEnter() {
@@ -131,12 +131,13 @@ export class OfferPage implements OnInit {
         let name = this.products[this.wishlistIndex].name;
         if (this.products[this.wishlistIndex].wishlist == true) {
           this.presentToastSuccess(name + "  removed from wishlist.");
-          this.products[this.wishlistIndex].wishlist = !this.products[
-            this.wishlistIndex
-          ].wishlist;
+          this.authService.setWishCount(data.wish_count);
+          this.wishlistService.setWishCount(data.wish_count);
+          this.products[this.wishlistIndex].wishlist = !this.products[this.wishlistIndex].wishlist;
         } else {
           this.presentToastSuccess(name + "  added to wishlist.");
-
+          this.authService.setWishCount(data.wish_count);
+          this.wishlistService.setWishCount(data.wish_count);
           this.products[this.wishlistIndex].wishlist = !this.products[
             this.wishlistIndex
           ].wishlist;
