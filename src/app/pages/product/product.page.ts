@@ -118,6 +118,9 @@ export class ProductPage implements OnInit {
   ngOnInit() {
     this.appUrl = window.location.hostname + this.router.url;  
   }
+  replace(){
+    this.router.navigate(["tabs"],{replaceUrl:true});
+  }
 
   ionViewWillEnter() {
     this.cartCountService.getCartCount().subscribe((val) => {

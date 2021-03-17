@@ -8,7 +8,10 @@
     <ion-title>{{category_name}}</ion-title>
 
     <ion-buttons slot="end">
-      <ion-button class="ion-hide-md-up" (click)="router.navigate(['/tabs/cart'])">
+      <ion-button
+        class="ion-hide-md-up"
+        (click)="router.navigate(['/tabs/cart'])"
+      >
         <ion-icon src="../assets/imgs/icons/cart.svg"></ion-icon>
         <ion-badge id="cart-badge" color="primary" *ngIf="cart_count > 0"
           >{{cart_count}}</ion-badge
@@ -19,6 +22,7 @@
 </ion-header>
 
 <ion-content>
+ 
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content
       pullingIcon="refresh"
@@ -77,12 +81,21 @@
                 </ion-item>
               </ion-list>
             </div>
-            <ion-button (click)="buyNow(i)" expand="full" color="primary" shape="round" class="tocart" [disabled]="item?.in_stock == 0">
+            <ion-button
+              (click)="buyNow(i)"
+              expand="full"
+              color="primary"
+              shape="round"
+              class="tocart"
+              [disabled]="item?.in_stock == 0"
+            >
               Buy Now
             </ion-button>
             <ion-button fill="clear" (click)="addToWishlist(i)" class="wish">
-              
-              <ion-icon slot="icon-only" [name]="item.wishlist==true? 'heart' : 'heart-outline'" ></ion-icon>
+              <ion-icon
+                slot="icon-only"
+                [name]="item.wishlist==true? 'heart' : 'heart-outline'"
+              ></ion-icon>
             </ion-button>
           </ion-col>
         </ion-row>
@@ -90,7 +103,12 @@
     </ion-col>
   </ion-row>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="ion-hide-md-down">
+  <ion-fab
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed"
+    class="ion-hide-md-down"
+  >
     <ion-fab-button color="secondary" (click)="openSort($event)">
       <ion-icon name="funnel-outline"></ion-icon>
     </ion-fab-button>

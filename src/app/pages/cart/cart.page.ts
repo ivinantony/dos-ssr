@@ -155,7 +155,7 @@ export class CartPage implements OnInit {
       this.presentToast("Some items in your cart is currently out of stock.");
     } else {
       
-      this.router.navigate(["/checkout", this.address_id,this.delivery_location_id]);
+      this.router.navigate(["/checkout", this.address_id,this.delivery_location_id],{ replaceUrl: true });
     }
   }
 
