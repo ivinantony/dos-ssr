@@ -2,7 +2,9 @@ import { Component, NgZone, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { defineCustomElements } from "@teamhive/lottie-player/loader";
 import { PaymentService } from "src/app/services/payment/payment.service";
-import { AlertController, LoadingController, Platform } from "@ionic/angular";
+import { AlertController, LoadingController, ModalController, Platform } from "@ionic/angular";
+import { SuccessfulPage } from "../successful/successful.page";
+
 
 @Component({
   selector: "app-order-placed",
@@ -19,7 +21,8 @@ export class OrderPlacedPage implements OnInit {
     private alertController: AlertController,
     private loadingController: LoadingController,
     private platform: Platform,
-    private ngzone: NgZone
+    private ngzone: NgZone,
+    private modalController:ModalController
   ) {
     if (!this.platform.is("cordova")) {
       this.isPWA = true;
@@ -51,12 +54,14 @@ export class OrderPlacedPage implements OnInit {
 
   handleResponse(data) {
     this.loadingController.dismiss();
+
     if (data.details == null) {
       this.status = false;
       let msg = "Unknown Error";
       this.presentAlert(msg);
     } else if (data.details.response_status == "A") {
       this.status = true;
+      this.presentSuccessModal()
     } else if (data.details.response_status != "A") {
       this.status = false;
       this.presentAlert(data.details.response_message);
@@ -100,5 +105,17 @@ export class OrderPlacedPage implements OnInit {
       showBackdrop: true,
     });
     await loading.present();
+  }
+  async presentSuccessModal() {
+    const modal = await this.modalController.create({
+      component: SuccessfulPage,
+      cssClass: 'my-custom-class'
+    });
+
+    modal.onDidDismiss().then(()=>{
+      this.router.navigate(['/tabs/home'], { replaceUrl: true });
+      // this.navController.navigateRoot('tabs/home')
+    })
+    return await modal.present();
   }
 }
