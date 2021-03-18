@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { LoadingController } from "@ionic/angular";
+import { LoadingController, ToastController } from "@ionic/angular";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { WalletService } from "src/app/services/wallet/wallet.service";
 const GET_WALLET = 200;
@@ -17,7 +17,8 @@ export class WalletPage implements OnInit {
     public router: Router,
     private loadingController: LoadingController,
     private walletService: WalletService,
-    private authservice: AuthenticationService
+    private authservice: AuthenticationService,
+    private toastController:ToastController
   ) {}
 
   ionViewWillEnter() {
@@ -46,6 +47,7 @@ export class WalletPage implements OnInit {
   }
   
   handleError(error) {
+    this.presentToast(error.error.messgae)
     this.loadingController.dismiss();
   }
   
@@ -57,5 +59,16 @@ export class WalletPage implements OnInit {
       showBackdrop: true,
     });
     await loading.present();
+  }
+
+  async presentToast(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast",
+      position: "top",
+      color: "dark",
+      duration: 2000,
+    });
+    toast.present();
   }
 }

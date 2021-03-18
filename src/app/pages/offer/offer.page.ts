@@ -155,6 +155,9 @@ export class OfferPage implements OnInit {
     if (error.status == 400) {
       this.presentAlert(error.error.message);
     }
+    else{
+      this.presentToast(error.error.message)
+    }
   }
 
 
@@ -356,5 +359,16 @@ export class OfferPage implements OnInit {
     this.page_count = 1;
     this.products = [];
     this.infiniteScroll.disabled = true;
+  }
+
+  async presentToast(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast",
+      position: "top",
+      color: "dark",
+      duration: 2000,
+    });
+    toast.present();
   }
 }

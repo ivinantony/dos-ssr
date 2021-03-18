@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
 import { AddressService } from 'src/app/services/address/address.service';
 
 @Component({
@@ -10,7 +10,9 @@ import { AddressService } from 'src/app/services/address/address.service';
 export class LocationmodelPage implements OnInit {
   deliveryLocations:Array<any>=[];
   selectedAddress:any;
-  constructor(private addressService:AddressService,private modalController:ModalController) 
+  constructor(private addressService:AddressService,
+    private modalController:ModalController,
+    private toastController:ToastController) 
   { 
     this.getData()
   }
@@ -36,7 +38,7 @@ export class LocationmodelPage implements OnInit {
   }
 
   handleError(error) {
-    // this.showToast(error.msg)
+    this.presentToast(error.error.message)
   }
 
   onChangeLoc(event) {
@@ -54,6 +56,17 @@ export class LocationmodelPage implements OnInit {
   onSubmit()
   {
     this.modalController.dismiss(this.selectedAddress)
+  }
+
+  async presentToast(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast",
+      position: "top",
+      color: "dark",
+      duration: 2000,
+    });
+    toast.present();
   }
 
 }

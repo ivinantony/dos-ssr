@@ -158,6 +158,9 @@ export class CartmodalPage implements OnInit {
     if (error.status == 400) {
       this.presentAlert(error.error.message);
     }
+    else{
+      this.presentToast(error.error.message)
+    }
   }
 
   add(index: number, id: number) {

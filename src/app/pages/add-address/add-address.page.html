@@ -105,21 +105,6 @@
           type="tel"
         ></ion-input>
       </ion-item>
-      <ng-container
-        *ngFor="let validation of validation_messages.zip_code"
-      >
-        <div
-          class="err_msg"
-          *ngIf="
-        addressForm.get('zip_code').hasError(validation.type) &&
-        addressForm.get('zip_code').dirty &&
-        addressForm.get('zip_code').touched"
-        >
-          <ion-icon name="information-circle-outline"></ion-icon>
-          {{ validation.message}}
-        </div>
-      </ng-container>
-
 
       <ion-item  class="area" lines="none">
         <p>Country code &nbsp;&nbsp;</p>

@@ -27,7 +27,7 @@
         <p>Order Id : {{data?.order.unique_id}}</p>
         <p>Payment Type : {{data?.order.name}}</p>
         <p>Order Date : {{data?.order.order_date}}</p>
-        <p>Total Amount Paid : {{data?.order.payable_amount}}</p>
+        <p>Total Amount Paid : {{data?.order.payable_amount | currency:'AED '}}</p>
         <div *ngIf="data?.order.delivery_id">
           <p>Delivery Id: {{data?.order.delivery_id}}</p>
           <ion-button (click)="track()" color="primary" fill="outline" size="small">
