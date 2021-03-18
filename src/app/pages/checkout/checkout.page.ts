@@ -134,7 +134,7 @@ export class CheckoutPage implements OnInit {
     else if (type == WALLET_RESPONSE) {
    
       this.loadingController.dismiss();
-      this.router.navigate(['successful'],{replaceUrl: true});
+      this.presentSuccessModal()  
     } 
     else if (type == POST_DATA) {
       this.is_cardOrNetBanking = true
