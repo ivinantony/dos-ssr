@@ -73,6 +73,7 @@
     "codelyzer": "^6.0.0",
     "com.paypal.cordova.mobilesdk": "^3.5.0",
     "cordova-android": "^9.0.0",
+    "cordova-browser": "^6.0.0",
     "cordova-ios": "^6.2.0",
     "cordova-plugin-add-swift-support": "^2.0.2",
     "cordova-plugin-androidx": "^3.0.0",
@@ -161,7 +162,8 @@
     },
     "platforms": [
       "ios",
-      "android"
+      "android",
+      "browser"
     ]
   }
 }
