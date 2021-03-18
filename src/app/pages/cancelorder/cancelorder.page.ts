@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { LoadingController, ModalController } from "@ionic/angular";
+import { LoadingController, ModalController, ToastController } from "@ionic/angular";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { OrderService } from "src/app/services/order/order.service";
 
@@ -15,7 +15,8 @@ export class CancelorderPage implements OnInit {
     private modalController: ModalController,
     private orderService: OrderService,
     private loadingController: LoadingController,
-    private authservice: AuthenticationService
+    private authservice: AuthenticationService,
+    private toastController:ToastController
   ) {}
 
   ngOnInit() {
@@ -65,6 +66,7 @@ export class CancelorderPage implements OnInit {
 
   handleError(error) {
     this.loadingController.dismiss();
+    this.presentToast(error.error.message)
     this.modalController.dismiss();
   }
 
@@ -76,5 +78,16 @@ export class CancelorderPage implements OnInit {
       showBackdrop: true,
     });
     await loading.present();
+  }
+
+  async presentToast(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast",
+      position: "top",
+      color: "dark",
+      duration: 2000,
+    });
+    toast.present();
   }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { LoadingController } from "@ionic/angular";
+import { LoadingController, ToastController } from "@ionic/angular";
 import { CategoryService } from "src/app/services/category/category.service";
 import { UtilsService } from "src/app/services/utils.service";
 @Component({
@@ -33,7 +33,8 @@ export class CategoriesPage implements OnInit {
     public router: Router,
     private categoryService: CategoryService,
     private utils: UtilsService,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private toastController:ToastController
   ) {
     this.s3url = utils.getS3url();
     this.getData();
@@ -91,6 +92,7 @@ export class CategoriesPage implements OnInit {
   }
   handleError(error) {
     this.loadingController.dismiss();
+    this.presentToast(error.error.message)
   }
 
   async presentLoading() {
@@ -110,5 +112,15 @@ export class CategoriesPage implements OnInit {
     setTimeout(() => {
       event.target.complete();
     }, 1000);
+  }
+  async presentToast(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast",
+      position: "top",
+      color: "dark",
+      duration: 2000,
+    });
+    toast.present();
   }
 }

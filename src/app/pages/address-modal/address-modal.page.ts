@@ -4,6 +4,7 @@ import {
   AlertController,
   LoadingController,
   ModalController,
+  ToastController,
 } from "@ionic/angular";
 import { AddressService } from "src/app/services/address/address.service";
 import { AuthenticationService } from "src/app/services/authentication.service";
@@ -29,15 +30,16 @@ export class AddressModalPage implements OnInit {
     private authservice: AuthenticationService,
     private actionSheetController: ActionSheetController,
     private alertController: AlertController,
+    private toastController: ToastController
   ) {
     this.getData();
   }
 
   ngOnInit() {
-     if (!window.history.state.modal) {
-      const modalState = { modal: true };
-      history.pushState(modalState, null);
-    }
+    //  if (!window.history.state.modal) {
+    //   const modalState = { modal: true };
+    //   history.pushState(modalState, null);
+    // }
     
   }
 
@@ -71,7 +73,7 @@ export class AddressModalPage implements OnInit {
   }
   handleError(error) {
     this.loadingController.dismiss();
-    // console.log(error)
+    this.presentToast(error.error.message)
   }
 
   async addAddress() {
@@ -146,6 +148,17 @@ export class AddressModalPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  async presentToast(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast",
+      position: "top",
+      color: "dark",
+      duration: 2000,
+    });
+    toast.present();
   }
 
 

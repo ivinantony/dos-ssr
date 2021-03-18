@@ -229,6 +229,9 @@ export class CartPage implements OnInit {
     if (error.status == 400) {
       this.presentAlert(error.error.message);
     }
+    else{
+      this.presentToast(error.error.message)
+    }
   }
 
   doRefresh(event) {
@@ -339,4 +342,6 @@ export class CartPage implements OnInit {
     });
     await loading.present();
   }
+
+
 }

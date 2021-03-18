@@ -3,7 +3,7 @@ import { FormControl } from "@angular/forms";
 import { Router } from "@angular/router";
 import { Badge } from "@ionic-native/badge/ngx";
 import { debounceTime } from "rxjs/operators";
-import { AlertController, LoadingController, Platform } from "@ionic/angular";
+import { AlertController, LoadingController, Platform, ToastController } from "@ionic/angular";
 import { ProductSearchService } from "src/app/services/product-search.service";
 import { HomeService } from "src/app/services/home/home.service";
 import { UtilsService } from "src/app/services/utils.service";
@@ -196,7 +196,8 @@ export class HomePage implements OnInit {
     private alertController:AlertController,
     private appVersion:AppVersion,
     private market:Market,
-    private wishlistService:WishlistService
+    private wishlistService:WishlistService,
+    private toastController:ToastController
   ) {
     this.s3url = utils.getS3url();
     // this.badge.set(10);
@@ -351,6 +352,7 @@ export class HomePage implements OnInit {
   }
 
   handleError(error) {
+    this.presentToast(error.error.message)
     this.loadingController.dismiss();
   }
 
@@ -449,6 +451,17 @@ export class HomePage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  async presentToast(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast",
+      position: "top",
+      color: "dark",
+      duration: 2000,
+    });
+    toast.present();
   }
 
 }

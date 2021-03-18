@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LoadingController, ModalController } from '@ionic/angular';
+import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { AddressService } from 'src/app/services/address/address.service';
 import { LocationmodelPage } from '../locationmodel/locationmodel.page';
 import {isValidPhoneNumber } from "libphonenumber-js";
@@ -31,6 +31,7 @@ export class EditAddressPage implements OnInit {
     private addressService: AddressService,
     private loadingController:LoadingController,
     private countryCodeService:CountryCodeService,
+    private toastController:ToastController
   ) 
   { 
     this.addressForm = this.formBuilder.group({
@@ -116,7 +117,6 @@ export class EditAddressPage implements OnInit {
     this.modalController.dismiss()
   }
 
-
   async selectDeliveryLocation() {
     const modal = await this.modalController.create({
       component: LocationmodelPage,
@@ -166,8 +166,8 @@ export class EditAddressPage implements OnInit {
 
   handleError(error)
   {
+    this.presentToast(error.error.message)
     this.loadingController.dismiss()
-    // console.log(error)
   }
   
   update()
@@ -241,6 +241,17 @@ export class EditAddressPage implements OnInit {
       (data) => this.handleResponse(data, POST_ADDRESS),
       (error) => this.handleError(error)
     );
+  }
+
+  async presentToast(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast",
+      position: "top",
+      color: "dark",
+      duration: 2000,
+    });
+    toast.present();
   }
 
 }

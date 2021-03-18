@@ -78,6 +78,7 @@ export class CouponPage implements OnInit {
 
   handleError(error) {
     // console.log(error)
+    this.presentToast(error.error.message);
     this.loadingController.dismiss()
   }
 
@@ -99,5 +100,16 @@ export class CouponPage implements OnInit {
       showBackdrop: true,
     });
     await loading.present();
+  }
+
+  async presentToast(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast",
+      position: "top",
+      color: "dark",
+      duration: 2000,
+    });
+    toast.present();
   }
 }

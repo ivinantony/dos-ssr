@@ -195,6 +195,9 @@ export class ProductPage implements OnInit {
     if (error.status == 400) {
       this.presentAlert(error.error.message);
     }
+    else{
+      this.presentToast(error.error.message)
+    }
   }
 
   async presentModal() {
@@ -369,5 +372,16 @@ export class ProductPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  async presentToast(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast",
+      position: "top",
+      color: "dark",
+      duration: 2000,
+    });
+    toast.present();
   }
 }

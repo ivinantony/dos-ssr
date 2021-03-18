@@ -13,6 +13,8 @@ const POST_DATA = 220;
 })
 export class ModeofpaymentPage implements OnInit {
   paymentOptions: any;
+  payment_id: any;
+  // history:any
   constructor(
     public router: Router,
     private paymentservice: PaymentService,
@@ -20,15 +22,22 @@ export class ModeofpaymentPage implements OnInit {
     private modalController: ModalController,
     private authservice: AuthenticationService
   ) {
+    console.log("b4", window.history);
+    // this.history = window.history;
     this.getData();
   }
   ngOnInit() {
     if (!window.history.state.modal) {
       const modalState = { modal: true };
       history.pushState(modalState, null);
+      console.log("afr", window.history);
     }
   }
 
+  ionViewWillLeave() {
+    history.back();
+    // history.replaceState(this.prev_location,'',{modal:true})
+  }
   getData() {
     this.authservice.isAuthenticated().then((val) => {
       if (val) {
@@ -81,5 +90,4 @@ export class ModeofpaymentPage implements OnInit {
     const { role, data } = await loading.onDidDismiss();
     // console.log('Loading dismissed!');
   }
-
 }

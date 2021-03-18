@@ -1,6 +1,6 @@
 import { Component, NgZone, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { AlertController, LoadingController, Platform } from "@ionic/angular";
+import { AlertController, LoadingController, Platform, ToastController } from "@ionic/angular";
 import { Storage } from "@ionic/storage";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { PaymentService } from "src/app/services/payment/payment.service";
@@ -23,7 +23,8 @@ export class RechargeStatusPage implements OnInit {
     private router: Router,
     private loadingController: LoadingController,
     private ngZone: NgZone,
-    private authservice: AuthenticationService
+    private authservice: AuthenticationService,
+    private toastController:ToastController
   ) {
     if (!this.platform.is("cordova")) {
       this.isPWA = true;
@@ -59,6 +60,7 @@ export class RechargeStatusPage implements OnInit {
   }
 
   handleError(error) {
+    this.presentToast(error.error.message)
     this.loadingController.dismiss();
   }
 
@@ -105,5 +107,16 @@ export class RechargeStatusPage implements OnInit {
       showBackdrop: true,
     });
     await loading.present();
+  }
+
+  async presentToast(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast",
+      position: "top",
+      color: "dark",
+      duration: 2000,
+    });
+    toast.present();
   }
 }
