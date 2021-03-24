@@ -127,6 +127,10 @@ style="position: absolute; z-index: 2;  right: 0;--background:transparent !impor
         (click)="viewSearchProduct(i)"
         
       >
+      <ion-thumbnail style="margin: 3px 5px;">
+        <img [src]="s3url + item?.path" alt="" />
+       </ion-thumbnail>
+
       <ion-label>
         <ion-text color="primary">
           <h3>  {{ item.name ?item.name:item.category_name?item.category_name:item.brand_name }}</h3>

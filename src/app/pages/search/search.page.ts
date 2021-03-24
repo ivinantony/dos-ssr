@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { debounceTime } from "rxjs/operators";
 import { SearchService } from "src/app/services/search/search.service";
 import { defineCustomElements } from "@teamhive/lottie-player/loader";
+import { UtilsService } from "src/app/services/utils.service";
 
 
 @Component({
@@ -16,10 +17,14 @@ export class SearchPage implements OnInit {
   searching: any = false;
   isSearchResult: boolean = false;
   result: Array<any> = [];
+  s3url:any;
   public searchTerm: FormControl;
 
-  constructor(private searchService: SearchService, private router: Router) {
+  constructor(private searchService: SearchService, private router: Router,
+    private utils:UtilsService) {
     defineCustomElements(window);
+    this.s3url = utils.getS3url();
+    console.log(this.s3url)
     this.searchTerm = new FormControl();
   }
 

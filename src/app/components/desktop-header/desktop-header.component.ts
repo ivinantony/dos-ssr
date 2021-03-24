@@ -6,6 +6,8 @@ import { FormControl } from "@angular/forms";
 import { SearchService } from "src/app/services/search/search.service";
 import { debounceTime } from "rxjs/operators";
 import { WishlistService } from "src/app/services/wishlist/wishlist.service";
+import { utils } from "protractor";
+import { UtilsService } from "src/app/services/utils.service";
 
 @Component({
   selector: "desktop-header",
@@ -47,15 +49,18 @@ export class DesktopHeaderComponent implements OnInit {
   public searchTerm: FormControl;
   result: Array<any> = [];
   isSearchResult: boolean = false;
+  s3url:string
 
   constructor(
     public router: Router,
     private notificationCountService: NotcountService,
     private cartCountService: CartcountService,
     private searchService: SearchService,
-    private wishlistService:WishlistService
+    private wishlistService:WishlistService,
+    private utils:UtilsService
   ) {
     this.searchTerm = new FormControl();
+    this.s3url = utils.getS3url()
     
     this.notificationCountService.getNotCount().subscribe((res) => {
       this.notf_count = res;

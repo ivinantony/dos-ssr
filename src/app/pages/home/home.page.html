@@ -133,10 +133,28 @@
             >
               <ion-card>
                 <img src="{{s3url+item.images[0]?.path}}" alt="" />
-                <ion-card-content>
+                <ion-card-content class="ion-no-padding top-deals-name">
                   <p>{{item.name}}</p>
                 </ion-card-content>
+                <ion-text
+                class="ion-text-center"
+                color="primary"
+                [ngStyle]="{'display': item?.offer_price?'':'none'}"
+              >
+                <h6 class="ion-no-margin"><b> {{ item.offer_price | currency:'AED ' }}</b></h6>
+              </ion-text>
+              <ion-text
+                class="ion-text-center"
+                color="dark"
+                [ngStyle]="{'text-decoration': item?.offer_price ? 'line-through':'none'}"
+              >
+                <p style="font-size: 12px" class="ion-no-margin">
+                  <b>{{ item.price | currency:'AED ' }}</b>
+                  
+                </p>
+              </ion-text>
               </ion-card>
+        
             </ion-slide>
           </ion-slides>
           <ion-button
@@ -266,8 +284,27 @@
             <ion-slide *ngFor="let item of data?.products; let i=index">
               <ion-card (click)="viewProduct(i)">
                 <img src="{{s3url+item.images[0]?.path}}" alt="" />
-                <ion-card-content>
+                <ion-card-content style="padding: 0px 2px;">
                   <p>{{item.name}}</p>
+
+                  <ion-text
+                  class="ion-text-center"
+                  color="primary"
+                  [ngStyle]="{'display': item?.offer_price?'':'none'}"
+                >
+                  <h6><b> {{ item.offer_price | currency:'AED ' }}</b></h6>
+                </ion-text>
+                <ion-text
+                  class="ion-text-center"
+                  color="dark"
+                  [ngStyle]="{'text-decoration': item?.offer_price ? 'line-through':'none'}"
+                >
+                  <p style="font-size: 12px">
+                    <b>{{ item.price | currency:'AED ' }}</b>
+                    
+                  </p>
+                </ion-text>
+
                 </ion-card-content>
               </ion-card>
             </ion-slide>

@@ -44,9 +44,9 @@
                 style="position: relative; overflow: hidden"
                 class="img_wrapper ion-text-center"
               >
-                <div class="ion-text-center stock" *ngIf="item.in_stock == 0">
+                <!-- <div class="ion-text-center stock" *ngIf="item.in_stock == 0">
                   <h3>OUT OF STOCK</h3>
-                </div>
+                </div> -->
                 <img [src]="s3url + item?.images[0]?.path" alt="" />
               </div>
               <ion-list class="ion-text-center details">
@@ -74,7 +74,7 @@
                 </ion-item>
               </ion-list>
             </div>
-            <ion-button (click)="buyNow(i)" expand="full" color="primary" shape="round" class="tocart" [disabled]="item?.in_stock == 0">
+            <ion-button (click)="buyNow(i)" expand="full" color="primary" shape="round" class="tocart" >
               Buy Now
             </ion-button>
             <ion-button fill="clear" (click)="addToWishlist(i)" class="wish">  
