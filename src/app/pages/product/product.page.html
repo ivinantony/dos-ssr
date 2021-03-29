@@ -113,7 +113,7 @@
                 (click)="addToCart()"
                 color="primary"
                 expand="block"
-                [disabled]="data?.product.in_stock == 0"
+                
               >
                 ADD TO CART
               </ion-button>
@@ -127,7 +127,7 @@
                 (click)="goToCart()"
                 color="primary"
                 expand="block"
-                [disabled]="data?.product.in_stock == 0"
+               
               >
                 GO TO CART
               </ion-button>
@@ -144,7 +144,7 @@
                 (click)="buyNow()"
                 color="secondary"
                 expand="block"
-                [disabled]="data?.product.in_stock == 0"
+               
               >
                 BUY NOW
               </ion-button>
@@ -155,7 +155,7 @@
         <div class="productDesc">
           <ion-row>
             <ion-col size="12" class="ion-padding description">
-              <ion-text color="dark">
+             <!--  <ion-text color="dark">
                 <ion-item
                   class="ion-no-padding"
                   lines="none"
@@ -165,9 +165,9 @@
                   &nbsp;
                   <h5 class="inStock">In Stock</h5>
                 </ion-item>
-              </ion-text>
+              </ion-text> -->
 
-              <ion-text color="dark">
+              <!-- <ion-text color="dark">
                 <ion-item
                   class="ion-no-padding"
                   lines="none"
@@ -177,7 +177,7 @@
                   &nbsp;
                   <h5 class="outofStock">Out Of Stock</h5>
                 </ion-item>
-              </ion-text>
+              </ion-text> -->
 
               <ion-text color="dark">
                 <ion-item
