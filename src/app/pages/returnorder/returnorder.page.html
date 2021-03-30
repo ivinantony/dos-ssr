@@ -1,0 +1,36 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()" fill="clear" shape="round" color="dark">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="ion-padding">
+  <ion-item lines="none">
+    <ion-textarea
+      rows="4"
+      cols="20"
+      autoGrow="true"
+      placeholder="Enter reasons for cancellation."
+      [(ngModel)]="desc"
+    ></ion-textarea>
+  </ion-item>
+</ion-content>
+<ion-footer>
+  <ion-toolbar color="primary">
+    <ion-button
+      class="btn"
+      color="light"
+      id="btn"
+      expand="block"
+      fill="clear"
+      shape="round"
+      (click)="cancelOrder()"
+    >
+      CONFIRM ORDER RETURN
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

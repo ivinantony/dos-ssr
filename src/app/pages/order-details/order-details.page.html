@@ -75,19 +75,30 @@
 </div>
 
 </ion-content>
-<ion-footer *ngIf="data?.order_status?.id!=5">
+<ion-footer >
   
   <ion-toolbar color="primary">
-    <ion-button
+    <ion-button *ngIf="cancelStatus"
       class="btn"
       color="light"
       id="btn"
       expand="block"
       fill="clear"
       shape="round"
-      (click)="cancelOrder()"
+      (click)="returnOrder()"
     >
       CANCEL ORDER
     </ion-button>
+    <ion-button *ngIf="returnStatus"
+    class="btn"
+    color="light"
+    id="btn"
+    expand="block"
+    fill="clear"
+    shape="round"
+    (click)="returnOrder()"
+  >
+    RETURN ORDER
+  </ion-button>
   </ion-toolbar>
 </ion-footer>
