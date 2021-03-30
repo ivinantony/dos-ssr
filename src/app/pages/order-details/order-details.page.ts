@@ -4,6 +4,7 @@ import { LoadingController, ModalController } from '@ionic/angular';
 import { OrderService } from 'src/app/services/order/order.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { CancelorderPage } from '../cancelorder/cancelorder.page';
+import { ReturnorderPage } from '../returnorder/returnorder.page';
 const GET_DATA = 200;
 @Component({
   selector: 'app-order-details',
@@ -13,7 +14,9 @@ const GET_DATA = 200;
 export class OrderDetailsPage implements OnInit {
   s3url:string
   id:any
-  data:any
+  data:any;
+  cancelStatus=false;
+  returnStatus=false;
   constructor(private orderService:OrderService,private activatedRoute:ActivatedRoute,
     private router:Router,
     private modalController:ModalController,private utilsService:UtilsService,
@@ -42,6 +45,12 @@ export class OrderDetailsPage implements OnInit {
   {
     this.loadingController.dismiss()
     this.data = data
+    if(data.order.cancel_check){
+      this.cancelStatus=true;
+    }
+    if(data.order.return_check){
+      this.returnStatus=true;
+    }
   }
   handleError(error)
   {
@@ -58,6 +67,10 @@ export class OrderDetailsPage implements OnInit {
   {
     this.presentModal()
   }
+  returnOrder()
+  {
+    this.returnModal()
+  }
 
   track(){
     let id = this.data.order.delivery_id
@@ -71,6 +84,17 @@ export class OrderDetailsPage implements OnInit {
   async presentModal() {
     const modal = await this.modalController.create({
       component: CancelorderPage,
+      cssClass: 'my-custom-class',
+      componentProps: { order_id: this.data.order.id }
+    });
+  
+    await modal.present();
+    await modal.onDidDismiss().then(()=>{this.router.navigate(['orders'])})
+    
+  }
+  async returnModal() {
+    const modal = await this.modalController.create({
+      component:ReturnorderPage ,
       cssClass: 'my-custom-class',
       componentProps: { order_id: this.data.order.id }
     });

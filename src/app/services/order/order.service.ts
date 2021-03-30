@@ -39,4 +39,10 @@ export class OrderService {
      return this.httpclient.post(
       this.url + "cancel-order",data,{ headers }).pipe(map(res=>{ return res}));
    }
+   public returnOrder(data:any)
+   {
+     const headers = this.headerservice.getHttpHeaders()
+     return this.httpclient.post(
+      this.url + "return-order",data,{ headers }).pipe(map(res=>{ return res}));
+   }
 }
