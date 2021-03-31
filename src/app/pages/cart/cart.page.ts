@@ -106,7 +106,7 @@ export class CartPage implements OnInit {
           client_id: val,
         };
 
-        this.cartService.addToCart(data).subscribe(
+        this.cartService.addProductToCart(data).subscribe(
           (data) => this.handleResponse(data, ADD),
           (error) => this.handleError(error)
         );
@@ -116,7 +116,7 @@ export class CartPage implements OnInit {
           client_id: null,
         };
 
-        this.cartService.addToCart(data).subscribe(
+        this.cartService.addProductToCart(data).subscribe(
           (data) => this.handleResponse(data, ADD),
           (error) => this.handleError(error)
         );

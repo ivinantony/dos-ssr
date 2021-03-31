@@ -22,6 +22,14 @@ export class CartService {
      ).pipe(map(res=>{
        return res}));
    }
+   public addProductToCart (data)
+   {
+     const headers = this.headerservice.getHttpHeaders()
+     return this.httpclient.post(
+      this.url + "product-cart",data,{ headers }
+     ).pipe(map(res=>{
+       return res}));
+   }
    public addToCartQty (data)
    {
      const headers = this.headerservice.getHttpHeaders()
