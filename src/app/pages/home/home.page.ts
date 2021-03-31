@@ -397,6 +397,13 @@ export class HomePage implements OnInit {
     window.open("https://www.instagram.com/deal_on_store/", "_self");
   }
 
+  whatsapp() {
+    window.open(
+      "https://api.whatsapp.com/send?phone=447417344825&amp;"
+      
+    );
+  }
+
   handleResponseSearch(data) {
     data.data.filter((item) => {
       this.result.push(item);

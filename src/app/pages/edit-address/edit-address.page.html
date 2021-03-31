@@ -52,7 +52,7 @@
           formControlName="full_address"
         ></ion-input>
       </ion-item>
-      <ion-item class="area" lines="none">
+      <ion-item class="area" lines="none" [ngStyle]="{'border': '1px solid green'}">
         <ion-input
           placeholder="Landmark"
           formControlName="landmark"
@@ -98,7 +98,7 @@
         </div>
       </ng-container>
 
-      <ion-item class="area" lines="none">
+      <ion-item class="area" lines="none" [ngStyle]="{'border': '1px solid green'}">
         <ion-input
           placeholder="zip_code"
           formControlName="zip_code"
@@ -125,7 +125,7 @@
         <ion-icon name="information-circle-outline"></ion-icon>
         {{ errormsg}}
       </div>
-      <ion-item class="area" lines="none">
+      <ion-item class="area" lines="none" [ngStyle]="{'border': '1px solid green'}">
         <ion-input
           placeholder="Alternate number"
           formControlName="alternate_phone"

@@ -365,9 +365,7 @@ export class ProductPage implements OnInit {
       header: "Required quantity unavailable",
 
       message:
-      "This item is not available in the volume required by you.<br/><br/>" 
-       +msg+
-        "<br/> <br/> Please contact via Email or WhatsApp to order in more volume.",
+      "Sorry we are unable to process with your required quantity, please contact via whatsapp or email." ,
       buttons: ["OK"],
     });
 
