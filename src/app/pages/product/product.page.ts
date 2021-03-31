@@ -322,7 +322,7 @@ export class ProductPage implements OnInit {
 
   whatsapp() {
     window.open(
-      "https://api.whatsapp.com/send?phone=447440700295&amp;text=I%20have%20an%20enquiry%20about%20the%20product%20('" +
+      "https://api.whatsapp.com/send?phone=447417344825&amp;text=I%20have%20an%20enquiry%20about%20the%20product%20('" +
         this.productDetails.name +
         "')",
       this.productDetails.name
@@ -331,7 +331,7 @@ export class ProductPage implements OnInit {
 
   mail() {
     window.open(
-      "https://mail.google.com/mail/?view=cm&fs=1&to=dealonstoreuae@gmail.com"
+      "https://mail.google.com/mail/?view=cm&fs=1&to=info@dealonstore.com"
     );
   }
 
