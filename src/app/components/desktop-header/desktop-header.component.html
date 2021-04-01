@@ -20,7 +20,8 @@
         >
           <ion-searchbar
             animated
-            showCancelButton="focus"
+            showCancelButton="always"
+            
             placeholder="Search for products, brands and more"
             [formControl]="searchTerm"
             (ionChange)="onSearchChange()"

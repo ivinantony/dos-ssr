@@ -27,6 +27,10 @@ const routes: Routes = [
         loadChildren: () => import('../categories/categories.module').then(m => m.CategoriesPageModule)
       },
       {
+        path: 'offers',
+        loadChildren: () => import('../offer/offer.module').then(m => m.OfferPageModule)
+      },
+      {
         path: 'cart',
         canActivate: [AuthGuard],
         loadChildren: () => import('../cart/cart.module').then(m => m.CartPageModule)
