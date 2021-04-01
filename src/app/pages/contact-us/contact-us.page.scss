@@ -1,0 +1,13 @@
+.content{
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 0.8rem;
+  }
+  
+  @media only screen and (max-width: 720px)
+  {
+    .content{
+    
+      font-size: 0.6rem;
+    }
+  }
