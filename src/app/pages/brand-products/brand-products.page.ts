@@ -393,11 +393,35 @@ export class BrandProductsPage implements OnInit {
   async presentAlert(msg: string) {
     const alert = await this.alertController.create({
       cssClass: "my-custom-class",
-      header: "Required quantity unavailable",
+      header: "Required Quantity Unavailable",
 
       message:
-        "Sorry we are unable to process with your required quantity, please contact via whatsapp or email.",
-      buttons: ["OK"],
+      "Sorry we are unable to process with your required quantity, please contact via whatsapp or email." ,
+      buttons: [
+      {
+        text: "Whatsapp",
+      
+        handler: () => {
+          window.open(
+            "https://api.whatsapp.com/send?phone=447417344825&amp;"  
+          );
+        }
+      },
+      {
+        text: "E-Mail",
+  
+        handler: () => {
+          window.open(
+            "https://mail.google.com/mail/?view=cm&fs=1&to=info@dealonstore.com"
+          ); 
+          
+        },
+      },
+      {
+        text: "Cancel",
+        role:"cancel"
+      },
+    ],
     });
 
     await alert.present();
