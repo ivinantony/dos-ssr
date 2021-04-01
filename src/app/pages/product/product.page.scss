@@ -308,6 +308,13 @@ li {
   color: #25cc62;
 }
 
+.alert-message{
+  img{
+    width: 25px !important;
+    height: 25px !important;
+  }
+}
+
 @media only screen and (max-width: 320px) {
 }
 @media (min-width: 490px) and (max-width: 1091px) {

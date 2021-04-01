@@ -437,11 +437,10 @@ export class CartmodalPage implements OnInit {
 
   async presentAlert(msg: string) {
     const alert = await this.alertController.create({
-      cssClass: "my-custom-class",
+      cssClass: "alert-class",
       header: "Required Quantity Unavailable",
 
-      message:
-      "Sorry we are unable to process with your required quantity, please contact via whatsapp or email." ,
+      message:'Sorry we are unable to process with your required quantity, please contact via <img src = "../../../assets/imgs/icons/whatsapp.svg">  or  <img src = "../../../assets/imgs/icons/gmail.svg">.',
       buttons: [
       {
         text: "Whatsapp",
