@@ -4,6 +4,7 @@ import { CartcountService } from "./cartcount.service";
 import { NotcountService } from "./notcount.service";
 import { Storage } from "@ionic/storage";
 import { BehaviorSubject } from "rxjs";
+import { WishlistService } from "./wishlist/wishlist.service";
 
 const TOKEN_KEY = "client_id";
 const CART_COUNT = "cart_count";
@@ -18,7 +19,8 @@ export class AuthenticationService {
   constructor(
     private storage: Storage,
     private cartCountService: CartcountService,
-    private notfCountSertvice: NotcountService
+    private notfCountSertvice: NotcountService,
+    private wishlistService:WishlistService
   ) {}
 
 
@@ -29,6 +31,7 @@ export class AuthenticationService {
   async logout() {
     this.cartCountService.setCartCount(0);
     this.notfCountSertvice.setNotCount(0); 
+    this.wishlistService.setWishCount(0);
     localStorage.clear();
     await this.storage.clear()
   }

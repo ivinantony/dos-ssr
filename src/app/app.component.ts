@@ -25,6 +25,7 @@ import { AuthGuard } from "./guards/auth.guard";
 import { INotificationPayload } from "cordova-plugin-fcm-with-dependecy-updated/typings/INotificationPayload";
 import { Badge } from "@ionic-native/badge/ngx";
 import { Deeplinks } from '@ionic-native/deeplinks/ngx';
+import { WishlistService } from "./services/wishlist/wishlist.service";
 
 
 @Component({
@@ -103,7 +104,8 @@ export class AppComponent implements OnInit {
     private authguard: AuthGuard,
     private badge: Badge,
     private deeplinks: Deeplinks,
-    private ngzone: NgZone
+    private ngzone: NgZone,
+    private wishlistService:WishlistService
   ) {
     this.initializeApp();
     this.searchTerm = new FormControl();
@@ -181,6 +183,12 @@ export class AppComponent implements OnInit {
     this.authService.getCartCount().then((count) => {
       if (count) {
         this.cartCountService.setCartCount(count);
+      }
+    });
+    this.authService.getWishCount().then((count) => {
+      if (count) {
+        console.log("wish",count)
+        this.wishlistService.setWishCount(count);
       }
     });
     this.authService.getNotificationCount().then((count) => {

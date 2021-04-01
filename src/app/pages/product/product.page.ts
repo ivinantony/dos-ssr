@@ -155,6 +155,7 @@ export class ProductPage implements OnInit {
       this.data = data;
       this.cartCountService.setCartCount(data.cart_count);
       this.authService.setCartCount(data.cart_count);
+    
       this.productDetails = data.product;
       for (let i = 0; i < this.productDetails.images.length; i++) {
         this.productDetails.images[i].path =

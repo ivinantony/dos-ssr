@@ -66,10 +66,13 @@ export class DesktopHeaderComponent implements OnInit {
       this.notf_count = res;
     });
     this.cartCountService.getCartCount().subscribe((res) => {
+      console.log("heyyyy")
       this.cart_count = res;
     });
     
     this.wishlistService.getWishCount().subscribe((res)=>{
+      console.log("heyyyy",res)
+
       this.wish_count = res;
     })
   }

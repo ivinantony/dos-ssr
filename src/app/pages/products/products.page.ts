@@ -122,6 +122,7 @@ export class ProductsPage implements OnInit {
         this.cart_count = data.cart_count;
         this.authService.setCartCount(data.cart_count);
         this.cartCountService.setCartCount(data.cart_count);
+       
         this.infiniteScroll.disabled = false;
       });
     } else if (type == POST_DATA) {
