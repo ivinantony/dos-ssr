@@ -161,8 +161,8 @@ export class ProductPage implements OnInit {
         this.productDetails.images[i].path =
           this.s3url + this.productDetails.images[i].path;
       }
-      this.myThumbnail = this.productDetails.images[0].path;
-      this.myFullresImage = this.productDetails.images[0].path;
+      this.myThumbnail = this.productDetails.images[0]?.path;
+      this.myFullresImage = this.productDetails.images[0]?.path;
 
       this.loadingController.dismiss();
     } else if (type == POST_DATA) {

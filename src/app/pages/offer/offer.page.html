@@ -47,7 +47,7 @@
                 <!-- <div class="ion-text-center stock" *ngIf="item.in_stock == 0">
                   <h3>OUT OF STOCK</h3>
                 </div> -->
-                <img [src]="s3url + item?.images[0]?.path" alt="" />
+                <img [src]="s3url + item?.images[0]?.path"  onError="this.src = '../../assets/imgs/noImage.png'" />
               </div>
               <ion-list class="ion-text-center details">
                 <h3>{{item.name}}</h3>

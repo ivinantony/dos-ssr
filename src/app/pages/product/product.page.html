@@ -25,7 +25,7 @@
           <ion-slides [options]="slidesOptions" pager="true" #slides>
             <ion-slide *ngFor="let item of productDetails?.images">
               <lib-ngx-image-zoom
-                thumbImage="{{item.path}}"
+                thumbImage="{{'item.path' ? 'item.path' :'../../assets/imgs/noImage.png'}}"
                 [magnification]="2"
                 class="imge"
               ></lib-ngx-image-zoom>
@@ -40,7 +40,7 @@
             >
               <div>
                 <ion-thumbnail>
-                  <img src="{{item.path}} " />
+                  <img src="{{item.path}}"  onError="this.src = '../../assets/imgs/user.png'"/>
                 </ion-thumbnail>
               </div>
             </div>
