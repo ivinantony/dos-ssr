@@ -254,7 +254,7 @@ export class HomePage implements OnInit {
     this.result = [];
     this.selectedIndex = index;
     this.router.navigate([
-      "products",
+      "tabs/products",
       this.categories[index].id,
       { name: this.categories[index].category_name },
     ]);
@@ -360,12 +360,12 @@ export class HomePage implements OnInit {
     this.result = [];
     let brand_id = this.brands[index].id;
     let brand_name = this.brands[index].brand_name;
-    this.router.navigate(["brand-products", brand_id, { brand_name }]);
+    this.router.navigate(["tabs/brand-products", brand_id, { brand_name }]);
   }
 
   viewAll() {
     this.result = [];
-    this.router.navigate(["manufacturers"]);
+    this.router.navigate(["tabs/manufacturers"]);
   }
   onNotification() {
     this.router.navigate(['notification'])
