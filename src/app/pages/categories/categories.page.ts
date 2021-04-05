@@ -53,7 +53,7 @@ export class CategoriesPage implements OnInit {
 
   navigateToProducts(index: number) {
     this.router.navigate([
-      "products",
+      "tabs/products",
       this.categories[index].id,
       { name: this.categories[index].category_name },
     ]);
