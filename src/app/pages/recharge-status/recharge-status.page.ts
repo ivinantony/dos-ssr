@@ -33,6 +33,7 @@ export class RechargeStatusPage implements OnInit {
 
   ngOnInit() {
     let data = JSON.parse(localStorage.getItem("tran_data"));
+    console.log(data,"from ngoninit")
     let tran_ref = data.tran_ref;
     let client_id = data.client_id;
     this.incoming_platform = data.incoming_platform
@@ -91,6 +92,7 @@ export class RechargeStatusPage implements OnInit {
 
   continue() {
     localStorage.clear();
+    console.log(this.incoming_platform,"from continue")
     if(this.incoming_platform == 'cordova'){
       window.open("dos://dealonstore.com", "_blank");
     }
