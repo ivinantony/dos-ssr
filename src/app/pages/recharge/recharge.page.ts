@@ -48,7 +48,7 @@ export class RechargePage implements OnInit {
       client_id: [""],
       amount: [
         "",
-        Validators.compose([Validators.required, Validators.pattern("[0-9]*")]),
+        Validators.compose([Validators.required, Validators.pattern("[0-9]*.[0-9]*")]),
       ],
     });
 
