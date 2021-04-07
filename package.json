@@ -13,6 +13,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-devkit/architect": "^0.1102.7",
     "@angular/common": "~11.1.2",
     "@angular/core": "~11.1.2",
     "@angular/fire": "^6.1.4",
