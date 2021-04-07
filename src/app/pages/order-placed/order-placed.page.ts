@@ -62,7 +62,7 @@ export class OrderPlacedPage implements OnInit {
       this.presentAlert(msg);
     } else if (data.details.response_status == "A") {
       this.status = true;
-      this.presentSuccessModal()
+      // this.presentSuccessModal()
     } else if (data.details.response_status != "A") {
       this.status = false;
       this.presentAlert(data.details.response_message);
