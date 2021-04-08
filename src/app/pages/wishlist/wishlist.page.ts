@@ -120,7 +120,7 @@ export class WishlistPage implements OnInit {
   }
 
   continueShopping() {
-    this.router.navigate(["/tabs/home"]);
+    this.router.navigate(["/tabs/offers"]);
   }
 
   async remove(index: number) {

@@ -474,7 +474,7 @@ export class HomePage implements OnInit {
   async exitApp() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-      message: 'Do you want to close the application ?',
+      message: 'Do you want to exit the application ?',
       buttons: [
         {
           text: 'Cancel',
