@@ -177,6 +177,7 @@ export class HomePage implements OnInit {
   android_version:any
   ios_version:any
   isAlertPresent:boolean=false;
+  backButtonSubscription;
 
   myDate: String = new Date().toISOString();
   banner_image: any;
@@ -208,6 +209,10 @@ export class HomePage implements OnInit {
   }
 
   ionViewWillEnter() {
+    this.backButtonSubscription = this.platform.backButton.subscribe(() => {
+      this.exitApp()
+      // navigator['app'].exitApp();
+    });
     this.getData();
     this.searchTerm.reset();
   }
@@ -241,6 +246,13 @@ export class HomePage implements OnInit {
    
       });
   }
+
+  // ngAfterViewInit() {
+  //   this.backButtonSubscription = this.platform.backButton.subscribe(() => {
+  //     console.log("HEY")
+  //     navigator['app'].exitApp();
+  //   });
+  // }
 
   onSearchInputMobile() {
     this.searching = true;
@@ -459,6 +471,26 @@ export class HomePage implements OnInit {
 
     await alert.present();
   }
+  async exitApp() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      message: 'Do you want to close the application ?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+        }, {
+          text: 'Exit',
+          handler: () => {
+            navigator['app'].exitApp();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
 
   async presentToast(msg) {
     const toast = await this.toastController.create({
@@ -469,6 +501,20 @@ export class HomePage implements OnInit {
       duration: 2000,
     });
     toast.present();
+  }
+
+  // ngOnDestroy() {
+   
+  //   console.log("hellloooo")
+  //    this.backButtonSubscription.unsubscribe();
+    
+  // }
+
+  ionViewDidLeave(){
+    console.log("hellloooo")
+
+    this.backButtonSubscription.unsubscribe();
+
   }
 
 }
