@@ -1,4 +1,4 @@
-import { Component, HostListener, NgZone, OnInit } from "@angular/core";
+import { Component, HostListener, NgZone, OnInit, ViewChildren } from "@angular/core";
 import {
   LoadingController,
   MenuController,
@@ -26,6 +26,9 @@ import { INotificationPayload } from "cordova-plugin-fcm-with-dependecy-updated/
 import { Badge } from "@ionic-native/badge/ngx";
 import { Deeplinks } from '@ionic-native/deeplinks/ngx';
 import { WishlistService } from "./services/wishlist/wishlist.service";
+import { QueryList } from '@angular/core';
+
+import { IonRouterOutlet } from '@ionic/angular';
 
 
 @Component({
@@ -49,7 +52,7 @@ export class AppComponent implements OnInit {
   islogged: boolean;
   categories: Array<any> = [
     { id: 1, name: "Home", url: "/tabs/home", icon: "../assets/imgs/icons/home.svg" },
-    { id: 2, name: "Offers", url: "/offers", icon: "../assets/imgs/icons/tag.svg" },
+    { id: 2, name: "Offers", url: "tabs/offers", icon: "../assets/imgs/icons/tag.svg" },
     {
       id: 3,
       name: "Shop by Category",
@@ -59,7 +62,7 @@ export class AppComponent implements OnInit {
     {
       id: 4,
       name: "Shop by Brand",
-      url: "/manufacturers",
+      url: "tabs/manufacturers",
       icon: "../assets/imgs/icons/brand.svg",
     },
     {
@@ -82,7 +85,11 @@ export class AppComponent implements OnInit {
     },
   ];
   selectedCategoryIndex: number = 0;
+  lastTimeBackPress = 0;
+  timePeriodToExit = 2000;
 
+  //code for exit app
+  @ViewChildren(IonRouterOutlet) routerOutlets: QueryList<IonRouterOutlet>;
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -108,6 +115,7 @@ export class AppComponent implements OnInit {
     private wishlistService:WishlistService
   ) {
     this.initializeApp();
+    this.backButtonEvent()
     this.searchTerm = new FormControl();
   }
 
@@ -313,6 +321,36 @@ export class AppComponent implements OnInit {
     this.authguard.canActivate();
   }
 
+
+  backButtonEvent() {
+    this.platform.backButton.subscribe(async () => {
+      console.log("from app.ts")
+
+      this.routerOutlets.forEach(async (outlet: IonRouterOutlet) => {
+        if (outlet && outlet.canGoBack()) {
+          outlet.pop();
+
+        } else if (this.router.url === '/tabs/home') {
+          if (new Date().getTime() - this.lastTimeBackPress < this.timePeriodToExit) {
+            // this.platform.exitApp(); // Exit from app
+            navigator['app'].exitApp(); // work in ionic 4
+
+          } else {
+            const toast = await this.toastController.create({
+              message: 'Press back again to exit App.',
+              duration: 2000,
+              position: 'middle'
+            });
+            toast.present();
+            // console.log(JSON.stringify(toast));
+            this.lastTimeBackPress = new Date().getTime();
+          }
+        }
+      });
+    });
+  }
+
+  
   async presentLoading() {
     const loading = await this.loadingController.create({
       message: "Please wait... ",
