@@ -178,6 +178,7 @@ export class HomePage implements OnInit {
   ios_version:any
   isAlertPresent:boolean=false;
   backButtonSubscription;
+  public subscription: any;
 
   myDate: String = new Date().toISOString();
   banner_image: any;
@@ -209,13 +210,23 @@ export class HomePage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.backButtonSubscription = this.platform.backButton.subscribe(() => {
-      this.exitApp()
-      // navigator['app'].exitApp();
-    });
+    
     this.getData();
     this.searchTerm.reset();
+
   }
+
+  ionViewDidEnter() {
+    this.subscription = this.platform.backButton.subscribe(() => {
+      // navigator['app'].exitApp();
+    });
+  }
+
+  ionViewWillLeave() {
+    this.subscription.unsubscribe();
+  }
+
+
 
   ngOnInit() {
     this.searchTerm.valueChanges
@@ -247,12 +258,7 @@ export class HomePage implements OnInit {
       });
   }
 
-  // ngAfterViewInit() {
-  //   this.backButtonSubscription = this.platform.backButton.subscribe(() => {
-  //     console.log("HEY")
-  //     navigator['app'].exitApp();
-  //   });
-  // }
+ 
 
   onSearchInputMobile() {
     this.searching = true;
@@ -471,7 +477,7 @@ export class HomePage implements OnInit {
 
     await alert.present();
   }
-  async exitApp() {
+  async exitAppCustom() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       message: 'Do you want to exit the application ?',
@@ -503,18 +509,6 @@ export class HomePage implements OnInit {
     toast.present();
   }
 
-  // ngOnDestroy() {
-   
-  //   console.log("hellloooo")
-  //    this.backButtonSubscription.unsubscribe();
-    
-  // }
 
-  ionViewDidLeave(){
-    console.log("hellloooo")
-
-    this.backButtonSubscription.unsubscribe();
-
-  }
-
+  
 }

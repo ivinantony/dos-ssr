@@ -2,11 +2,18 @@
 
 <ion-header class="ion-no-border ion-hide-md-up">
   <ion-toolbar color="secondary">
-    <ion-buttons slot="start" [ngStyle]="{'display':current_url ? '':'none'}">
+    <!-- <ion-buttons slot="start" [ngStyle]="{'display':current_url ? '':'none'}">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-buttons slot="start" [ngStyle]="{'display':current_url ? 'none':''}">
       <ion-back-button defaultHref="/tabs/home"></ion-back-button>
+    </ion-buttons> -->
+    <ion-buttons slot="start">
+      <ion-back-button
+      defaultHref="/tabs/home"
+      
+      color="light"
+    ></ion-back-button>
     </ion-buttons>
     <ion-title>Cart</ion-title>
   </ion-toolbar>
