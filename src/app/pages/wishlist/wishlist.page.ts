@@ -88,7 +88,7 @@ export class WishlistPage implements OnInit {
 
         this.authService.setCartCount(data.cart_count);
         this.cartCountService.setCartCount(data.cart_count);
-        this.presentToastSuccess(name + " added to cart.");
+        this.presentToast(name + " added to cart.");
       });
     } else if (type == BUY_NOW) {
       this.loadingController.dismiss().then(() => {
@@ -104,6 +104,9 @@ export class WishlistPage implements OnInit {
     if (error.status == 400) {
       this.presentAlert(error.error.message);
     }
+    else{
+      this.presentToast(error.error.message)
+    }
   }
 
   async presentLoading() {
@@ -117,7 +120,7 @@ export class WishlistPage implements OnInit {
   }
 
   continueShopping() {
-    this.router.navigate(["/tabs/home"]);
+    this.router.navigate(["/tabs/offers"]);
   }
 
   async remove(index: number) {
@@ -207,7 +210,7 @@ export class WishlistPage implements OnInit {
     });
   }
 
-  async presentToastSuccess(msg) {
+  async presentToast(msg) {
     const toast = await this.toastController.create({
       message: msg,
       cssClass: "custom-toast-success",

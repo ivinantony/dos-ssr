@@ -3,12 +3,13 @@ import { LoadingController, ModalController, ToastController } from "@ionic/angu
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { OrderService } from "src/app/services/order/order.service";
 
+
 @Component({
-  selector: "app-cancelorder",
-  templateUrl: "./cancelorder.page.html",
-  styleUrls: ["./cancelorder.page.scss"],
+  selector: 'app-returnorder',
+  templateUrl: './returnorder.page.html',
+  styleUrls: ['./returnorder.page.scss'],
 })
-export class CancelorderPage implements OnInit {
+export class ReturnorderPage implements OnInit {
   @Input() order_id: any;
   desc: any;
   constructor(
@@ -31,6 +32,12 @@ export class CancelorderPage implements OnInit {
   }
 
   cancelOrder() {
+    console.log(this.desc)
+    if(this.desc == "" ||this.desc == undefined ){
+      let msg="Enter reason for return";
+      this.presentToast(msg);
+    }
+    else{
     this.presentLoading().then(() => {
       this.authservice.isAuthenticated().then((val) => {
         if (val) {
@@ -39,7 +46,7 @@ export class CancelorderPage implements OnInit {
             client_id: val,
             order_id: this.order_id,
           };
-          this.orderService.cancelOrder(data).subscribe(
+          this.orderService.returnOrder(data).subscribe(
             (data) => this.handleResponse(data),
             (error) => this.handleError(error)
           );
@@ -49,13 +56,14 @@ export class CancelorderPage implements OnInit {
             client_id: null,
             order_id: this.order_id,
           };
-          this.orderService.cancelOrder(data).subscribe(
+          this.orderService.returnOrder(data).subscribe(
             (data) => this.handleResponse(data),
             (error) => this.handleError(error)
           );
         }
       });
     });
+  }
   }
 
   handleResponse(data) {

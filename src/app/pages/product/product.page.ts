@@ -156,13 +156,14 @@ export class ProductPage implements OnInit {
       this.data = data;
       this.cartCountService.setCartCount(data.cart_count);
       this.authService.setCartCount(data.cart_count);
+    
       this.productDetails = data.product;
       for (let i = 0; i < this.productDetails.images.length; i++) {
         this.productDetails.images[i].path =
           this.s3url + this.productDetails.images[i].path;
       }
-      this.myThumbnail = this.productDetails.images[0].path;
-      this.myFullresImage = this.productDetails.images[0].path;
+      this.myThumbnail = this.productDetails.images[0]?.path;
+      this.myFullresImage = this.productDetails.images[0]?.path;
 
       this.loadingController.dismiss();
     } else if (type == POST_DATA) {
@@ -195,6 +196,9 @@ export class ProductPage implements OnInit {
     this.loadingController.dismiss;
     if (error.status == 400) {
       this.presentAlert(error.error.message);
+    }
+    else{
+      this.presentToast(error.error.message)
     }
   }
 
@@ -320,7 +324,7 @@ export class ProductPage implements OnInit {
 
   whatsapp() {
     window.open(
-      "https://api.whatsapp.com/send?phone=447440700295&amp;text=I%20have%20an%20enquiry%20about%20the%20product%20('" +
+      "https://api.whatsapp.com/send?phone=447417344825&amp;text=I%20have%20an%20enquiry%20about%20the%20product%20('" +
         this.productDetails.name +
         "')",
       this.productDetails.name
@@ -329,7 +333,7 @@ export class ProductPage implements OnInit {
 
   mail() {
     window.open(
-      "https://mail.google.com/mail/?view=cm&fs=1&to=dealonstoreuae@gmail.com"
+      "https://mail.google.com/mail/?view=cm&fs=1&to=info@dealonstore.com"
     );
   }
 
@@ -359,16 +363,48 @@ export class ProductPage implements OnInit {
 
   async presentAlert(msg: string) {
     const alert = await this.alertController.create({
-      cssClass: "my-custom-class",
-      header: "Required quantity unavailable",
+      cssClass: "alert-class",
+      header: "Required Quantity Unavailable",
 
-      message:
-      "This item is not available in the volume required by you.<br/><br/>" 
-       +msg+
-        "<br/> <br/> Please contact via Email or WhatsApp to order in more volume.",
-      buttons: ["OK"],
+      message:'Sorry we are unable to process with your required quantity, please contact via <img src = "../../../assets/imgs/icons/whatsapp.svg">  or  <img src = "../../../assets/imgs/icons/gmail.svg">.',
+      buttons: [
+      {
+        text: "Whatsapp",
+      
+        handler: () => {
+          window.open(
+            "https://api.whatsapp.com/send?phone=447417344825&amp;"  
+          );
+        }
+      },
+      {
+        text: "E-Mail",
+  
+        handler: () => {
+          window.open(
+            "https://mail.google.com/mail/?view=cm&fs=1&to=info@dealonstore.com"
+          ); 
+          
+        },
+      },
+      {
+        text: "Cancel",
+        role:"cancel"
+      },
+    ],
     });
 
     await alert.present();
+  }
+
+  async presentToast(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast",
+      position: "top",
+      color: "dark",
+      duration: 2000,
+    });
+    toast.present();
   }
 }

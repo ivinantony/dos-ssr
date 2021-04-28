@@ -5,6 +5,7 @@ import {
   IonRouterOutlet,
   LoadingController,
   ModalController,
+  NavController,
   Platform,
   ToastController,
 } from "@ionic/angular";
@@ -18,6 +19,8 @@ import { AuthenticationService } from "src/app/services/authentication.service";
 import { Storage } from "@ionic/storage";
 import { PaymentService } from "src/app/services/payment/payment.service";
 import { UtilsService } from "src/app/services/utils.service";
+import { SuccessfulPage } from "../successful/successful.page";
+
 
 const GET_AMOUNTDETAILS = 200;
 const ORDER_RESPONSE = 210;
@@ -63,8 +66,10 @@ export class CheckoutPage implements OnInit {
     private storage: Storage,
     private pay: PaymentService,
     private utils: UtilsService,
-    private paymentService: PaymentService
+    private paymentService: PaymentService,
+    private navController:NavController
   ) {
+    console.log('b4', window.history)
     this.appUrl = this.utils.getAppUrl();
     this.address_id = this.activatedRoute.snapshot.params.address_id;
     this.delivery_location_id = this.activatedRoute.snapshot.params.delivery_location_id;
@@ -109,7 +114,9 @@ export class CheckoutPage implements OnInit {
 
       this.data = data;
     } else if (type == GET_PAY) {
-    } else if (type == ORDER_RESPONSE) {
+
+    } 
+    else if (type == ORDER_RESPONSE) {
       this.loadingController.dismiss();
       this.payable_order_id = data.payable_order_id;
       // let storable_data = {
@@ -121,13 +128,15 @@ export class CheckoutPage implements OnInit {
         // this.router.navigate(["paypal"]);
         this.hostedSubmit();
       } else if (this.payment_id == 2) {
-        this.router.navigate(["/successful"])
+        this.presentSuccessModal()  
       }
-    } else if (type == WALLET_RESPONSE) {
+    } 
+    else if (type == WALLET_RESPONSE) {
    
       this.loadingController.dismiss();
-      this.router.navigate(["/successful"])
-    } else if (type == POST_DATA) {
+      this.presentSuccessModal()  
+    } 
+    else if (type == POST_DATA) {
       this.is_cardOrNetBanking = true
       this.response = data;
       this.storage.set("tran_ref", data.tran_ref).then(() => {
@@ -185,6 +194,9 @@ export class CheckoutPage implements OnInit {
         this.qtyNotSufficient(error.error.message);
       }
     }
+    else{
+      this.presentToast(error.error.message);
+    }
   }
 
   checkOut() {
@@ -235,6 +247,7 @@ export class CheckoutPage implements OnInit {
   }
 
   async openPaymentModes() {
+
     const modal = await this.modalController.create({
       component: ModeofpaymentPage,
       swipeToClose: true,
@@ -247,6 +260,7 @@ export class CheckoutPage implements OnInit {
       if (paymentDetails) {
         this.presentLoading().then(() => {
           this.payment_id = paymentDetails.modeOfPayment_Id;
+          
           if (this.payment_id == 7) {
             this.authservice.isAuthenticated().then((val) => {
               if (val) {
@@ -285,9 +299,25 @@ export class CheckoutPage implements OnInit {
               }
             });
           }
+
+
         });
+
       }
     });
+    return await modal.present();
+  }
+
+  async presentSuccessModal() {
+    const modal = await this.modalController.create({
+      component: SuccessfulPage,
+      cssClass: 'my-custom-class'
+    });
+
+    modal.onDidDismiss().then(()=>{
+      this.router.navigate(['/tabs/home'], { replaceUrl: true });
+      // this.navController.navigateRoot('tabs/home')
+    })
     return await modal.present();
   }
 

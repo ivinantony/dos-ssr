@@ -219,7 +219,11 @@ const routes: Routes = [
   {
     path: 'locationmodel',
     loadChildren: () => import('./pages/locationmodel/locationmodel.module').then( m => m.LocationmodelPageModule)
+  },  {
+    path: 'returnorder',
+    loadChildren: () => import('./pages/returnorder/returnorder.module').then( m => m.ReturnorderPageModule)
   },
+
 
 ];
 

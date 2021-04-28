@@ -27,6 +27,10 @@ const routes: Routes = [
         loadChildren: () => import('../categories/categories.module').then(m => m.CategoriesPageModule)
       },
       {
+        path: 'offers',
+        loadChildren: () => import('../offer/offer.module').then(m => m.OfferPageModule)
+      },
+      {
         path: 'cart',
         canActivate: [AuthGuard],
         loadChildren: () => import('../cart/cart.module').then(m => m.CartPageModule)
@@ -45,7 +49,18 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         loadChildren: () => import('../profile/profile.module').then(m => m.ProfilePageModule)
       },
-
+      {
+        path: 'products/:id',
+        loadChildren: () => import('../products/products.module').then(m => m.ProductsPageModule)
+      },
+      {
+        path: 'manufacturers',
+        loadChildren: () => import('../manufacturers/manufacturers.module').then(m => m.ManufacturersPageModule)
+      },
+      {
+        path: 'brand-products/:brand_id',
+        loadChildren: () => import('../brand-products/brand-products.module').then(m => m.BrandProductsPageModule)
+      },
     ]
   },
   {

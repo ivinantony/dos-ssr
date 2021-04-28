@@ -3,7 +3,7 @@ import { FormControl } from "@angular/forms";
 import { Router } from "@angular/router";
 import { Badge } from "@ionic-native/badge/ngx";
 import { debounceTime } from "rxjs/operators";
-import { AlertController, LoadingController, Platform } from "@ionic/angular";
+import { AlertController, LoadingController, Platform, ToastController } from "@ionic/angular";
 import { ProductSearchService } from "src/app/services/product-search.service";
 import { HomeService } from "src/app/services/home/home.service";
 import { UtilsService } from "src/app/services/utils.service";
@@ -177,6 +177,8 @@ export class HomePage implements OnInit {
   android_version:any
   ios_version:any
   isAlertPresent:boolean=false;
+  backButtonSubscription;
+  public subscription: any;
 
   myDate: String = new Date().toISOString();
   banner_image: any;
@@ -196,7 +198,8 @@ export class HomePage implements OnInit {
     private alertController:AlertController,
     private appVersion:AppVersion,
     private market:Market,
-    private wishlistService:WishlistService
+    private wishlistService:WishlistService,
+    private toastController:ToastController
   ) {
     this.s3url = utils.getS3url();
     // this.badge.set(10);
@@ -207,9 +210,23 @@ export class HomePage implements OnInit {
   }
 
   ionViewWillEnter() {
+    
     this.getData();
     this.searchTerm.reset();
+
   }
+
+  ionViewDidEnter() {
+    this.subscription = this.platform.backButton.subscribe(() => {
+      // navigator['app'].exitApp();
+    });
+  }
+
+  ionViewWillLeave() {
+    this.subscription.unsubscribe();
+  }
+
+
 
   ngOnInit() {
     this.searchTerm.valueChanges
@@ -241,6 +258,8 @@ export class HomePage implements OnInit {
       });
   }
 
+ 
+
   onSearchInputMobile() {
     this.searching = true;
   }
@@ -253,7 +272,7 @@ export class HomePage implements OnInit {
     this.result = [];
     this.selectedIndex = index;
     this.router.navigate([
-      "products",
+      "tabs/products",
       this.categories[index].id,
       { name: this.categories[index].category_name },
     ]);
@@ -351,6 +370,7 @@ export class HomePage implements OnInit {
   }
 
   handleError(error) {
+    this.presentToast(error.error.message)
     this.loadingController.dismiss();
   }
 
@@ -358,12 +378,12 @@ export class HomePage implements OnInit {
     this.result = [];
     let brand_id = this.brands[index].id;
     let brand_name = this.brands[index].brand_name;
-    this.router.navigate(["brand-products", brand_id, { brand_name }]);
+    this.router.navigate(["tabs/brand-products", brand_id, { brand_name }]);
   }
 
   viewAll() {
     this.result = [];
-    this.router.navigate(["manufacturers"]);
+    this.router.navigate(["tabs/manufacturers"]);
   }
   onNotification() {
     this.router.navigate(['notification'])
@@ -393,6 +413,13 @@ export class HomePage implements OnInit {
   }
   insta() {
     window.open("https://www.instagram.com/deal_on_store/", "_self");
+  }
+
+  whatsapp() {
+    window.open(
+      "https://api.whatsapp.com/send?phone=447417344825&amp;"
+      
+    );
   }
 
   handleResponseSearch(data) {
@@ -450,5 +477,38 @@ export class HomePage implements OnInit {
 
     await alert.present();
   }
+  async exitAppCustom() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      message: 'Do you want to exit the application ?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+        }, {
+          text: 'Exit',
+          handler: () => {
+            navigator['app'].exitApp();
+          }
+        }
+      ]
+    });
 
+    await alert.present();
+  }
+
+  async presentToast(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast",
+      position: "top",
+      color: "dark",
+      duration: 2000,
+    });
+    toast.present();
+  }
+
+
+  
 }

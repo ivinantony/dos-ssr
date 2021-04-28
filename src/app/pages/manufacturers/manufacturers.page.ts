@@ -58,7 +58,7 @@ export class ManufacturersPage implements OnInit {
     let brand_id = this.brands[index].id;
     let brand_name = this.brands[index].brand_name;
 
-    this.router.navigate(["brand-products", brand_id, { brand_name }]);
+    this.router.navigate(["tabs/brand-products", brand_id, { brand_name }]);
   }
 
   loadMoreContent(infiniteScroll) {

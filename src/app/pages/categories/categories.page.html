@@ -3,7 +3,11 @@
   <ion-toolbar color="secondary" class="ion-hide-md-up">
     <ion-title>Categories</ion-title>
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-back-button
+      defaultHref="/tabs/home"
+      
+      color="light"
+    ></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -46,7 +50,7 @@
     </ion-slides>
   </section>
 
-  <ion-grid class="catSection">
+  <!-- <ion-grid class="catSection">
     <ion-row>
       <ion-col size="12" size-sm="12" size-md="12" size-xl="12" size-lg="12">
         <ion-grid>
@@ -72,6 +76,40 @@
             </ion-col>
           </ion-row>
         </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid> -->
+
+  <ion-grid fixed>
+    <ion-row class="row">
+      <ion-col
+        size="12"
+        size-sm="12"
+        size-md="6"
+        size-lg="3"
+        size-xl="3"
+        *ngFor="let item of categories; let i=index"
+      >
+        <ion-card
+          class="ion-no-margin card"
+          (click)="navigateToProducts(i)"
+        >
+          <ion-card-content class="ion-text-center">
+            <img
+              style="
+                height: 120px;
+                width: 120px;
+                object-fit: contain;
+                object-position: center;
+              "
+              [src]="s3url + item.path"
+              alt=""
+            />
+          </ion-card-content>
+          <ion-card-header class="ion-text-center">
+            <ion-card-title class="text">{{item.category_name}}</ion-card-title>
+          </ion-card-header>
+        </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>

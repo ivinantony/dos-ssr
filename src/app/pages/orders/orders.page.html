@@ -36,7 +36,7 @@
     <h3>{{ item.unique_id }}  </h3>
     <p>{{ item.status }}</p>
     <p>{{ item.order_date }}</p>
-    <p>Rs. {{ item.payable_amount }}.</p>
+    <p>{{ item.payable_amount | currency:'AED '}}.</p>
   </ion-label>
   
     <ion-button (click)="details(i)" expand="block" fill="outline" shape="round" class="btn">

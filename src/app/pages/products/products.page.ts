@@ -122,6 +122,7 @@ export class ProductsPage implements OnInit {
         this.cart_count = data.cart_count;
         this.authService.setCartCount(data.cart_count);
         this.cartCountService.setCartCount(data.cart_count);
+       
         this.infiniteScroll.disabled = false;
       });
     } else if (type == POST_DATA) {
@@ -167,6 +168,9 @@ export class ProductsPage implements OnInit {
     this.loadingController.dismiss();
     if (error.status == 400) {
       this.presentAlert(error.error.message);
+    }
+    else{
+      this.presentToast(error.error.message)
     }
   }
 
@@ -347,14 +351,35 @@ export class ProductsPage implements OnInit {
 
   async presentAlert(msg: string) {
     const alert = await this.alertController.create({
-      cssClass: "my-custom-class",
-      header: "Required quantity unavailable",
+      cssClass: "alert-class",
+      header: "Required Quantity Unavailable",
 
-      message:
-        "This item is not available in the volume required by you.<br/><br/>"
-        + msg +
-        "<br/> <br/> Please contact via Email or WhatsApp to order in more volume.",
-      buttons: ["OK"],
+      message:'Sorry we are unable to process with your required quantity, please contact via <img src = "../../../assets/imgs/icons/whatsapp.svg">  or  <img src = "../../../assets/imgs/icons/gmail.svg">.',
+      buttons: [
+      {
+        text: "Whatsapp",
+      
+        handler: () => {
+          window.open(
+            "https://api.whatsapp.com/send?phone=447417344825&amp;"  
+          );
+        }
+      },
+      {
+        text: "E-Mail",
+  
+        handler: () => {
+          window.open(
+            "https://mail.google.com/mail/?view=cm&fs=1&to=info@dealonstore.com"
+          ); 
+          
+        },
+      },
+      {
+        text: "Cancel",
+        role:"cancel"
+      },
+    ],
     });
 
     await alert.present();
@@ -379,5 +404,16 @@ export class ProductsPage implements OnInit {
     this.products = [];
     this.infiniteScroll.disabled = true;
 
+  }
+
+  async presentToast(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast",
+      position: "top",
+      color: "dark",
+      duration: 2000,
+    });
+    toast.present();
   }
 }

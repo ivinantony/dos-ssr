@@ -2,10 +2,8 @@
 
 <ion-content>
 <div class="ion-text-center wrapper" *ngIf="status">
-  <!-- <img src="../../../assets/imgs/check-mark.svg" alt=""> -->
+  <img src="../../../assets/imgs/check-mark.svg" alt="" />
   <h2>Order placed Successfully</h2>
-  <lottie-player class="player" autoplay  src="../../../assets/imgs/orderplaced.json"  style="width: 300px; height: 300px">
-  </lottie-player>
   <div class='button' *ngIf="isPWA">
     <ion-button class="btn"  (click)="continue()" expand="full" fill="solid" shape="round" color="primary"  >
       CONTINUE
@@ -21,3 +19,5 @@
   
 </div>
 </ion-content>
+
+

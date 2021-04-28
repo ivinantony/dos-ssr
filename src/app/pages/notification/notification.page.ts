@@ -1,11 +1,12 @@
-import { Component, OnInit, ViewChild} from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { Badge } from "@ionic-native/badge/ngx";
 import {
   ActionSheetController,
   IonRouterOutlet,
   LoadingController,
   ModalController,
-  IonInfiniteScroll
+  IonInfiniteScroll,
+  ToastController,
 } from "@ionic/angular";
 import { Storage } from "@ionic/storage";
 import { NotcountService } from "src/app/services/notcount.service";
@@ -25,13 +26,13 @@ const DEL_DATA = 220;
 export class NotificationPage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
-  notificationMsgs: Array<any>=[];
+  notificationMsgs: Array<any> = [];
   s3url: any;
   notf_count: any;
   currentIndex: number;
   page_limit: number;
   page_count: number = 1;
-  refresh:any
+  refresh: any;
   constructor(
     private notifications: NotificationService,
     private utils: UtilsService,
@@ -42,7 +43,8 @@ export class NotificationPage implements OnInit {
     private actionSheetController: ActionSheetController,
     private badge: Badge,
     private storage: Storage,
-    private authservice: AuthenticationService
+    private authservice: AuthenticationService,
+    private toastController: ToastController
   ) {
     this.s3url = this.utils.getS3url();
     notcountService.getNotCount().subscribe((res) => {
@@ -57,12 +59,12 @@ export class NotificationPage implements OnInit {
     this.presentLoading().then(() => {
       this.authservice.isAuthenticated().then((val) => {
         if (val) {
-          this.notifications.getNotifications(val,this.page_count,).subscribe(
+          this.notifications.getNotifications(val, this.page_count).subscribe(
             (data) => this.handleResponse(data, GET_DATA, infiniteScroll),
             (error) => this.handleError(error)
           );
         } else {
-          this.notifications.getNotifications(null,this.page_count).subscribe(
+          this.notifications.getNotifications(null, this.page_count).subscribe(
             (data) => this.handleResponse(data, GET_DATA, infiniteScroll),
             (error) => this.handleError(error)
           );
@@ -87,20 +89,22 @@ export class NotificationPage implements OnInit {
       (error) => this.handleError(error)
     );
     let id = this.notificationMsgs[index].id;
-    
+
     this.presentModal(id);
   }
 
   handleResponse(data, type, infiniteScroll?) {
     if (type == GET_DATA) {
-      data.data.filter((msg)=>{
-        this.notificationMsgs.push(msg)
-      })
+      data.data.filter((msg) => {
+        this.notificationMsgs.push(msg);
+      });
       // this.notificationMsgs = data.data;
-      this.page_limit = data.page_count
+      this.page_limit = data.page_count;
       this.loadingController.dismiss();
     } else if (type == DEL_DATA) {
-      if (this.notificationMsgs[this.currentIndex].push_notification_read_status) {
+      if (
+        this.notificationMsgs[this.currentIndex].push_notification_read_status
+      ) {
         this.badge.set(this.notf_count);
       } else {
         this.notf_count = this.notf_count - 1;
@@ -118,13 +122,12 @@ export class NotificationPage implements OnInit {
       infiniteScroll.target.complete();
     }
     if (this.refresh) {
-      
       this.refresh.target.complete();
-      
     }
   }
 
   handleError(error) {
+    this.presentToast(error.error.message);
     this.loadingController.dismiss();
   }
 
@@ -140,8 +143,8 @@ export class NotificationPage implements OnInit {
     await modal.present();
 
     await modal.onDidDismiss().then(() => {
-      this.page_count=1;
-    this.notificationMsgs=[]
+      this.page_count = 1;
+      this.notificationMsgs = [];
       this.getData();
     });
   }
@@ -158,7 +161,10 @@ export class NotificationPage implements OnInit {
             this.presentLoading().then(() => {
               this.authservice.isAuthenticated().then((val) => {
                 this.notifications
-                  .deleteNotification(val, this.notificationMsgs[index].notification_id)
+                  .deleteNotification(
+                    val,
+                    this.notificationMsgs[index].notification_id
+                  )
                   .subscribe(
                     (data) => this.handleResponse(data, DEL_DATA),
                     (error) => this.handleError(error)
@@ -191,13 +197,24 @@ export class NotificationPage implements OnInit {
     }
   }
 
-   doRefresh(event) {
+  doRefresh(event) {
     setTimeout(() => {
-      this.page_count=1;
-      this.notificationMsgs=[]
-      this.getData()
+      this.page_count = 1;
+      this.notificationMsgs = [];
+      this.getData();
       this.infiniteScroll.disabled = false;
       event.target.complete();
     }, 2000);
+  }
+
+  async presentToast(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast",
+      position: "top",
+      color: "dark",
+      duration: 2000,
+    });
+    toast.present();
   }
 }

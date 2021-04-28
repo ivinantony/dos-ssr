@@ -27,7 +27,7 @@
         <p>Order Id : {{data?.order.unique_id}}</p>
         <p>Payment Type : {{data?.order.name}}</p>
         <p>Order Date : {{data?.order.order_date}}</p>
-        <p>Total Amount Paid : {{data?.order.payable_amount}}</p>
+        <p>Total Amount Paid : {{data?.order.payable_amount | currency:'AED '}}</p>
         <div *ngIf="data?.order.delivery_id">
           <p>Delivery Id: {{data?.order.delivery_id}}</p>
           <ion-button (click)="track()" color="primary" fill="outline" size="small">
@@ -75,10 +75,10 @@
 </div>
 
 </ion-content>
-<ion-footer *ngIf="data?.order_status?.id!=5">
+<ion-footer >
   
   <ion-toolbar color="primary">
-    <ion-button
+    <ion-button *ngIf="cancelStatus"
       class="btn"
       color="light"
       id="btn"
@@ -89,5 +89,16 @@
     >
       CANCEL ORDER
     </ion-button>
+    <ion-button *ngIf="returnStatus"
+    class="btn"
+    color="light"
+    id="btn"
+    expand="block"
+    fill="clear"
+    shape="round"
+    (click)="returnOrder()"
+  >
+    RETURN ORDER
+  </ion-button>
   </ion-toolbar>
 </ion-footer>

@@ -33,9 +33,19 @@
         (click)="viewSearchProduct(i)"
         detail
       >
+      <ion-thumbnail style="margin: 3px 5px;">
+        <img [src]="s3url + item?.path" alt="" />
+       </ion-thumbnail>
      <ion-label>
-      <h3>{{ item?.name }} {{item?.brand_name}} {{item?.category_name}}</h3>
-      <p>{{item?.part_number}}</p>
+      
+      <!-- <h3>{{ item?.name }} {{item?.brand_name}} {{item?.category_name}}</h3>
+      <p>{{item?.part_number}}</p> -->
+      <ion-text color="primary">
+        <h3>  {{ item.name ?item.name:item.category_name?item.category_name:item.brand_name }}</h3>
+      </ion-text>
+      <ion-text color="secondary">
+      <p> in {{  item.name ?"Products":item.category_name?"Categories":"Manufacturers" }}</p>
+      </ion-text>
      </ion-label>
       </ion-item>
     </ng-template>

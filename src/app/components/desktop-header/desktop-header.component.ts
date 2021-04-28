@@ -6,6 +6,8 @@ import { FormControl } from "@angular/forms";
 import { SearchService } from "src/app/services/search/search.service";
 import { debounceTime } from "rxjs/operators";
 import { WishlistService } from "src/app/services/wishlist/wishlist.service";
+import { utils } from "protractor";
+import { UtilsService } from "src/app/services/utils.service";
 
 @Component({
   selector: "desktop-header",
@@ -47,32 +49,35 @@ export class DesktopHeaderComponent implements OnInit {
   public searchTerm: FormControl;
   result: Array<any> = [];
   isSearchResult: boolean = false;
+  s3url: string;
 
   constructor(
     public router: Router,
     private notificationCountService: NotcountService,
     private cartCountService: CartcountService,
     private searchService: SearchService,
-    private wishlistService:WishlistService
+    private wishlistService: WishlistService,
+    private utils: UtilsService
   ) {
     this.searchTerm = new FormControl();
-    
+    this.s3url = utils.getS3url();
+
     this.notificationCountService.getNotCount().subscribe((res) => {
       this.notf_count = res;
     });
     this.cartCountService.getCartCount().subscribe((res) => {
       this.cart_count = res;
     });
-    
-    this.wishlistService.getWishCount().subscribe((res)=>{
+
+    this.wishlistService.getWishCount().subscribe((res) => {
       this.wish_count = res;
-    })
+    });
   }
 
   ngOnInit() {
     // const path = window.location.pathname.split('folder/')[1];
     const path = window.location.pathname;
-    
+
     if (path !== undefined) {
       this.selectedCategoryIndex = this.categories.findIndex(
         (page) => page.url.toLowerCase() === path.toLowerCase()
@@ -99,7 +104,7 @@ export class DesktopHeaderComponent implements OnInit {
   navigateByUrl(index: number) {
     this.selectedCategoryIndex = index;
 
-    this.router.navigate([this.categories[index].url],{replaceUrl:true});
+    this.router.navigate([this.categories[index].url], { replaceUrl: true });
   }
   onNavigate(url) {
     this.router.navigate([url]);
@@ -111,7 +116,6 @@ export class DesktopHeaderComponent implements OnInit {
   handleResponseSearch(data) {
     data.data.filter((item) => {
       this.result.push(item);
-     
     });
 
     this.isSearchResult = true;

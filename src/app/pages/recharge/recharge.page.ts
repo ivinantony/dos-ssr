@@ -33,7 +33,8 @@ export class RechargePage implements OnInit {
     private toastController: ToastController,
     private formBuilder: FormBuilder,
     private authservice: AuthenticationService,
-    private paymentService: PaymentService
+    private paymentService: PaymentService,
+
   ) {
     this.appUrl = this.utils.getAppUrl();
     if (this.platform.is("cordova")) {
@@ -47,7 +48,7 @@ export class RechargePage implements OnInit {
       client_id: [""],
       amount: [
         "",
-        Validators.compose([Validators.required, Validators.pattern("[0-9]*")]),
+        Validators.compose([Validators.required, Validators.pattern("[0-9]*.[0-9]*")]),
       ],
     });
 
@@ -122,6 +123,7 @@ export class RechargePage implements OnInit {
   }
 
   handleError(error) {
+    this.presentToast(error.error.message)
     this.loadingController.dismiss();
   }
 
@@ -163,4 +165,6 @@ export class RechargePage implements OnInit {
       this.subscription.unsubscribe();
     }
   }
+
+
 }

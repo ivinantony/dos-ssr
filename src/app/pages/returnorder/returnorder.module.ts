@@ -4,18 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { OrderPlacedPageRoutingModule } from './order-placed-routing.module';
+import { ReturnorderPageRoutingModule } from './returnorder-routing.module';
 
-import { OrderPlacedPage } from './order-placed.page';
+import { ReturnorderPage } from './returnorder.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    OrderPlacedPageRoutingModule,
-    
+    ReturnorderPageRoutingModule
   ],
-  declarations: [OrderPlacedPage],
+  declarations: [ReturnorderPage]
 })
-export class OrderPlacedPageModule {}
+export class ReturnorderPageModule {}

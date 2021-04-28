@@ -4,10 +4,12 @@ import {
   AlertController,
   LoadingController,
   ModalController,
+  ToastController,
 } from "@ionic/angular";
 import { AddressService } from "src/app/services/address/address.service";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { AddAddressPage } from "../add-address/add-address.page";
+import { EditAddressPage } from "../edit-address/edit-address.page";
 declare var google;
 const GET_DATA = 100;
 const DELETE_DATA = 110;
@@ -29,15 +31,16 @@ export class AddressModalPage implements OnInit {
     private authservice: AuthenticationService,
     private actionSheetController: ActionSheetController,
     private alertController: AlertController,
+    private toastController: ToastController
   ) {
     this.getData();
   }
 
   ngOnInit() {
-     if (!window.history.state.modal) {
-      const modalState = { modal: true };
-      history.pushState(modalState, null);
-    }
+    //  if (!window.history.state.modal) {
+    //   const modalState = { modal: true };
+    //   history.pushState(modalState, null);
+    // }
     
   }
 
@@ -71,7 +74,7 @@ export class AddressModalPage implements OnInit {
   }
   handleError(error) {
     this.loadingController.dismiss();
-    // console.log(error)
+    this.presentToast(error.error.message)
   }
 
   async addAddress() {
@@ -86,11 +89,32 @@ export class AddressModalPage implements OnInit {
     });
     return await modal.present();
   }
+  async editAddress(id: any) {
+    const modal = await this.modalController.create({
+      component: EditAddressPage,
+      swipeToClose: true,
+      presentingElement: await this.modalController.getTop(),
+      cssClass: "my-custom-class",
+      componentProps: { address_id: id }
+
+    });
+    modal.onDidDismiss().finally(() => {
+      this.getData();
+    });
+    return await modal.present();
+  }
 
   async options(index: number) {
     const actionSheet = await this.actionSheetController.create({
       cssClass: "my-custom-class",
       buttons: [
+        {
+          text: "Edit",
+          icon: "",
+          handler: () => {
+            this.editAddress(this.addresses[index].id);
+          },
+        },
         {
           text: "Delete",
           icon: "trash-outline",
@@ -146,6 +170,17 @@ export class AddressModalPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  async presentToast(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      cssClass: "custom-toast",
+      position: "top",
+      color: "dark",
+      duration: 2000,
+    });
+    toast.present();
   }
 
 
