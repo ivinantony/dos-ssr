@@ -17,13 +17,20 @@ export class SuccessfulPage implements OnInit {
     this.authService.setCartCount(0);
     this.cartCountService.setCartCount(0);
    }
+   replace(){
+    this.router.navigate(["tabs"],{replaceUrl:true});
+  }
 
   ngOnInit() {
   }
 
   continue()
   {
-    this.router.navigate(["/tabs/home"])
+    this.router.navigate(["/tabs/home"], { replaceUrl: true })
+  }
+  ionViewWillLeave(){
+    console.log('ionViewWillLeave')
+    // window.location.replace('tabs');
   }
 
 }

@@ -121,12 +121,12 @@ export class CheckoutPage implements OnInit {
         // this.router.navigate(["paypal"]);
         this.hostedSubmit();
       } else if (this.payment_id == 2) {
-        this.router.navigate(["/successful"], { replaceUrl: true });
+        this.router.navigate(["/successful"])
       }
     } else if (type == WALLET_RESPONSE) {
    
       this.loadingController.dismiss();
-      this.router.navigate(["/successful"], { replaceUrl: true });
+      this.router.navigate(["/successful"])
     } else if (type == POST_DATA) {
       this.is_cardOrNetBanking = true
       this.response = data;

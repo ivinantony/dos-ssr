@@ -161,8 +161,8 @@ export class CartPage implements OnInit {
     }
     
     else {
-      
-      this.router.navigate(["/checkout", this.address_id,this.delivery_location_id],{ replaceUrl: true });
+    
+      this.router.navigate(["/checkout", this.address_id,this.delivery_location_id]);
     }
   }
 
