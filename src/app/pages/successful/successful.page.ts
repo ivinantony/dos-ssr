@@ -21,6 +21,9 @@ export class SuccessfulPage implements OnInit {
     this.cartCountService.setCartCount(0);
     
    }
+   replace(){
+    this.router.navigate(["tabs"],{replaceUrl:true});
+  }
 
   ngOnInit() {
   }

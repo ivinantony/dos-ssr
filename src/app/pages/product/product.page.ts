@@ -119,6 +119,7 @@ export class ProductPage implements OnInit {
   ngOnInit() {
     this.appUrl = window.location.hostname + this.router.url;  
   }
+ 
 
   ionViewWillEnter() {
     this.cartCountService.getCartCount().subscribe((val) => {
