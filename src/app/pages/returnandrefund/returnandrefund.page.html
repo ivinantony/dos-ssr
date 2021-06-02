@@ -23,6 +23,103 @@
     </ion-col>
   </ion-row>
 </ion-grid>
+<section>
+  <ion-footer>
+    <ion-row class="footer">
+      <ion-col size="10" class="footerWrapper">
+        <ion-row>
+          <ion-col size="12" size-md="3">
+            <h5>Keep In Touch</h5>
+            <ul class="social">
+              <li>
+                <ion-icon
+                  name="logo-facebook"
+                  (click)="facebook()"
+                ></ion-icon>
+              </li>
+              <li>
+                <ion-icon
+                  name="logo-twitter"
+                  (click)="twitter()"
+                ></ion-icon>
+              </li>
+              <li>
+                <ion-icon
+                  name="logo-instagram"
+                  (click)="insta()"
+                ></ion-icon>
+              </li>
+              <li>
+                <ion-icon
+                  name="logo-whatsapp"
+                  (click)="whatsapp()"
+                ></ion-icon>
+              </li>
+            </ul>
+            <h5>Shop On The Go</h5>
+              <div>
+                <img src="../../../assets/imgs/app-store.svg" alt="" style="padding: 2px;" (click)="ios_App()">
+                <img src="../../../assets/imgs/google-play.svg" alt="" style="padding: 2px;" (click)="android_App()">
+              </div>
+          </ion-col>
+
+          <ion-col size="12" size-md="3" class="usefulLinks">
+            <h5>Useful Links</h5>
+            <ul class="links">
+              <li (click)="router.navigate(['about'])"><p>About Us</p></li>
+              <li (click)="router.navigate(['/tabs/categories'])">
+                <p>Categories</p>
+              </li>
+              <li (click)="router.navigate(['offers'])"><p>Offers</p></li>
+            </ul>
+          </ion-col>
+
+          <ion-col size="12" class="address" size-md="3">
+            <h5>WhatsApp</h5>
+            <p>+44 7417 344825</p>
+            <h5>We Accept</h5>
+            <!-- <h5 class="accept">We Accept</h5> -->
+            <div class="logosPayment">
+              <img
+                src="../../../assets/imgs/icons/mastercard.svg"
+                alt=""
+                class="payLogo"
+              />
+              <img
+                src="../../../assets/imgs/icons/visa.svg"
+                alt=""
+                class="payLogo"
+              />
+            </div>
+          </ion-col>
+
+          <ion-col size="12" size-md="3" class="policies">
+            <p (click)="router.navigate(['returnandrefund'])">
+              Return & Refund Policy
+            </p>
+            <p (click)="router.navigate(['privacypolicy'])">
+              Privacy Policy
+            </p>
+            <p (click)="router.navigate(['termsandconditions'])">
+              Terms and Conditions
+            </p>
+            <p (click)="router.navigate(['shippingpolicy'])">
+              Shipping Policy
+            </p>
+            <p (click)="router.navigate(['contact-us'])">Contact Us</p>
+          </ion-col>
+
+          <!-- <ion-col size="12">
+            <p class="ion-text-center">
+              © 2021 Deal on Store. All rights reserved. Designed by Mermer
+              Technologies.
+            </p>
+          </ion-col> -->
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-footer>
+</section>
 </ion-content>
 
 

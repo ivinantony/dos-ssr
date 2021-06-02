@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, HostListener,ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 import { CartcountService } from "src/app/services/cartcount.service";
 import { NotcountService } from "src/app/services/notcount.service";
@@ -6,8 +6,8 @@ import { FormControl } from "@angular/forms";
 import { SearchService } from "src/app/services/search/search.service";
 import { debounceTime } from "rxjs/operators";
 import { WishlistService } from "src/app/services/wishlist/wishlist.service";
-import { utils } from "protractor";
 import { UtilsService } from "src/app/services/utils.service";
+import { IonContent ,AlertController } from "@ionic/angular";
 
 @Component({
   selector: "desktop-header",
@@ -15,6 +15,27 @@ import { UtilsService } from "src/app/services/utils.service";
   styleUrls: ["./desktop-header.component.scss"],
 })
 export class DesktopHeaderComponent implements OnInit {
+  @ViewChild(IonContent) content: IonContent;
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+
+    if(event.key  ===  'ArrowDown'  ||  event.key  ===  'ArrowLeft'){
+      if(this.selected<this.result.length-1){
+        this.selected +=1;
+        this.content.scrollByPoint(0, 55,200)
+      }
+      
+    }
+    else if(event.key  ===  'ArrowUp' ||  event.key  ===  'ArrowRight'){
+      if(this.selected>0){
+        this.selected -=1;
+        this.content.scrollByPoint(0, -55,200)
+      }
+    }
+    if(event.key  ===  'Enter'){
+    this.viewSearchProduct(this.selected)
+    }
+  }
   categories: Array<any> = [
     {
       id: 1,
@@ -46,6 +67,7 @@ export class DesktopHeaderComponent implements OnInit {
   cart_count: any;
   wish_count: any;
   searching: any = false;
+  selected:any=0;
   public searchTerm: FormControl;
   result: Array<any> = [];
   isSearchResult: boolean = false;
@@ -57,7 +79,8 @@ export class DesktopHeaderComponent implements OnInit {
     private cartCountService: CartcountService,
     private searchService: SearchService,
     private wishlistService: WishlistService,
-    private utils: UtilsService
+    private utils: UtilsService,
+    private alertController:AlertController
   ) {
     this.searchTerm = new FormControl();
     this.s3url = utils.getS3url();
@@ -114,6 +137,10 @@ export class DesktopHeaderComponent implements OnInit {
     this.searching = true;
   }
   handleResponseSearch(data) {
+   if(data.data.length==0){
+    this.presentAlert()
+   }
+   this.selected = 0;
     data.data.filter((item) => {
       this.result.push(item);
     });
@@ -130,7 +157,7 @@ export class DesktopHeaderComponent implements OnInit {
     let type = this.result[index].type;
 
     if (type == "P") {
-      this.router.navigate(["product", id, { catId }]);
+      this.router.navigate(["product", id]);
     } else if (type == "B") {
       let brand_id = id;
       let brand_name = this.result[index].brand_name;
@@ -142,4 +169,49 @@ export class DesktopHeaderComponent implements OnInit {
       this.router.navigate(["products", catId, { category_name }]);
     }
   }
+
+  goToHome(){
+    this.router.navigate(["/tabs/home"]);
+  }
+
+  
+
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      cssClass: "alert-class",
+      header: "Item Not Found",
+
+      message:'Sorry, no item found in the database. Send your enquiry by email or WhatsApp',
+      buttons: [
+      {
+        text: "Whatsapp",
+      
+        handler: () => {
+          window.open(
+            "https://api.whatsapp.com/send?phone=447417344825&amp;"  
+          );
+        }
+      },
+      {
+        text: "E-Mail",
+  
+        handler: () => {
+          window.open(
+            "https://mail.google.com/mail/?view=cm&fs=1&to=info@dealonstore.com"
+          ); 
+          
+        },
+      },
+      {
+        text: "Cancel",
+        role:"cancel"
+      },
+    ],
+    });
+
+    await alert.present();
+  }
+
+ 
+
 }

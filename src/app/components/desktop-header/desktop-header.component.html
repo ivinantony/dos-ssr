@@ -10,7 +10,7 @@
             style="font-weight: bold; font-size: 2rem"
             class="ion-text-left ion-no-padding ion-padding-horizontal"
             >Deal on Store</ion-title> -->
-            <img src="../../../assets/imgs/icons/dos logo.png" alt="">
+            <img src="../../../assets/imgs/icons/dos logo.png" alt="" (click)="goToHome()">
         </ion-col>
         <ion-col
           size="6"
@@ -123,9 +123,11 @@ style="position: absolute; z-index: 2;  right: 0;--background:transparent !impor
       class="ion-no-padding"
     >
     <ion-list>
+      
       <ion-item detail
         *ngFor="let item of result; let i = index"
         (click)="viewSearchProduct(i)"
+        [class.highlight]="selected==i"
         
       >
       <ion-thumbnail style="margin: 3px 5px;">

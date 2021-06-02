@@ -54,7 +54,7 @@ export class HomePage implements OnInit {
     slidesPerView: 1,
     initialSlide: 1,
     spaceBetween: 20,
-
+    loop:true,
     centeredSlides: true,
     autoplay: {
       delay: 2000,
@@ -81,9 +81,11 @@ export class HomePage implements OnInit {
     loop: true,
     centeredSlides: true,
     updateOnWindowResize: true,
+    disableOnInteraction: false,
     autoplay: {
       delay: 3500,
       disableOnInteraction: false,
+      loop:true
     },
   };
   categoryOpts = {
@@ -420,6 +422,24 @@ export class HomePage implements OnInit {
       "https://api.whatsapp.com/send?phone=447417344825&amp;"
       
     );
+  }
+  ios_App(){
+    window.open(
+      "https://apps.apple.com/in/app/deal-on-store/id1550282870"
+    );
+    
+  }
+
+  android_App(){
+    // if(this.platform.is('cordova')){
+    //   this.market.open('com.mermerapps.premier');
+    // }else{
+    //   window.open(
+    //     "https://play.google.com/store/apps/details?id=com.ludo.king"
+        
+    //   );
+    // }
+    
   }
 
   handleResponseSearch(data) {

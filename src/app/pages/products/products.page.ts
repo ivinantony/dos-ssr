@@ -177,7 +177,7 @@ export class ProductsPage implements OnInit {
   navigateToProduct(index: number) {
     let id = this.products[index].id;
     let catId = this.products[index].category_id;
-    this.router.navigate(["product", id, { catId }]);
+    this.router.navigate(["product", id]);
   }
 
   async openSort(ev: any) {

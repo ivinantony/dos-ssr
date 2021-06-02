@@ -101,7 +101,7 @@
     </section>
 
     <section id="banr">
-      <ion-slides class="banner" [options]="bannerSlideOpts2">
+      <ion-slides class="banner" [options]="bannerSlideOpts2" >
         <ion-slide
           *ngFor="let item of data?.banner[1]?.desktop_images; let i=index"
           class="dsk"
@@ -430,7 +430,13 @@
                     ></ion-icon>
                   </li>
                 </ul>
+                <h5>Shop On The Go</h5>
+               <div>
+                 <img src="../../../assets/imgs/app-store.svg" alt="" style="padding: 2px;" (click)="ios_App()">
+                 <img src="../../../assets/imgs/google-play.svg" alt="" style="padding: 2px;" (click)="android_App()">
+               </div>
               </ion-col>
+            
 
               <ion-col size="12" size-md="3" class="usefulLinks">
                 <h5>Useful Links</h5>
@@ -480,8 +486,7 @@
 
               <ion-col size="12">
                 <p class="ion-text-center">
-                  © 2021 Deal on Store. All rights reserved. Designed by Mermer
-                  Technologies.
+                  © 2021 Deal on Store. All rights reserved. 
                 </p>
               </ion-col>
             </ion-row>

@@ -11,6 +11,58 @@ ion-content{
     font-size: 0.8rem;
   }
 
+  .footer {
+    color: #ffff;
+    margin-top: 50px;
+    padding-top: 70px;
+    background-color: #232020;
+    p {
+      color: #a09292;
+    }
+  
+    .text {
+      max-width: 200px;
+    }
+    .footerWrapper {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  
+    h5 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 1.3px;
+    }
+    .social {
+      padding: 0px;
+      list-style: none;
+      font-size: 24px;
+      display: flex;
+      li {
+        padding-right: 25px;
+      }
+    }
+    .links {
+      list-style: none;
+      padding: 0px;
+    }
+    .accept {
+      margin-top: 38px;
+    }
+  
+    .logosPayment {
+      display: flex;
+    }
+    .payIcon {
+      color: #a09292;
+    }
+    .payLogo {
+      width: 48px;
+      height: 36px;
+    }
+  }
+
   @media only screen and (max-width: 720px)
   {
     .content{

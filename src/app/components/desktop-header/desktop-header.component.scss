@@ -17,9 +17,9 @@ ion-title{
   }
 
 .search{
-  position: absolute; 
-  z-index: 2; 
-  left: 0; 
+  position: absolute;
+  z-index: 2;
+  left: 0;
   right: 0;
 }
 
@@ -29,4 +29,12 @@ ion-item.selected {
 .spinner{
   display: flex;
   justify-content: center;
+}
+
+.highlight {
+  // background-color: #FFFF33 !important;
+  zoom: 1.2;
+  h3{
+    font-weight: 600;
+  }
 }

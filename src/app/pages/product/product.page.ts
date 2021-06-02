@@ -29,6 +29,7 @@ const WISHLIST = 250;
 })
 export class ProductPage implements OnInit {
   @ViewChild("slides", { static: false }) slides: IonSlides;
+  @ViewChild("mySlider") mySlides: IonSlides;
   recommendedSlides = {
     slidesPerView: 1,
     initialSlide: 0,
@@ -358,6 +359,14 @@ export class ProductPage implements OnInit {
 
   slideTo(index: number) {
     this.slides.slideTo(index, 500);
+  }
+
+
+  swipeNext() {
+    this.mySlides.slideNext();
+  }
+  swipePrev() {
+    this.mySlides.slidePrev();
   }
 
   async presentAlert(msg: string) {
