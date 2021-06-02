@@ -22,14 +22,14 @@ export class DesktopHeaderComponent implements OnInit {
     if(event.key  ===  'ArrowDown'  ||  event.key  ===  'ArrowLeft'){
       if(this.selected<this.result.length-1){
         this.selected +=1;
-        this.content.scrollByPoint(0, 55,200)
+        this.content.scrollByPoint(0, 55,10)
       }
       
     }
     else if(event.key  ===  'ArrowUp' ||  event.key  ===  'ArrowRight'){
       if(this.selected>0){
         this.selected -=1;
-        this.content.scrollByPoint(0, -55,200)
+        this.content.scrollByPoint(0, -55,10)
       }
     }
     if(event.key  ===  'Enter'){
