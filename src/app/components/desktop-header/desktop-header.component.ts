@@ -168,6 +168,7 @@ export class DesktopHeaderComponent implements OnInit {
 
       this.router.navigate(["products", catId, { category_name }]);
     }
+    this.result = []
   }
 
   goToHome(){
