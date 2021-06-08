@@ -12,6 +12,7 @@ import { CartcountService } from "src/app/services/cartcount.service";
 import { AddressModalPage } from "../address-modal/address-modal.page";
 import { IonSlides } from "@ionic/angular";
 import { AuthenticationService } from "src/app/services/authentication.service";
+import {QuantityUnavailablePage  } from "../quantity-unavailable/quantity-unavailable.page";
 
 declare var google;
 const GET_CART = 200;
@@ -227,7 +228,8 @@ export class CartPage implements OnInit {
   handleError(error) {
     this.loadingController.dismiss();
     if (error.status == 400) {
-      this.presentAlert(error.error.message);
+      // this.presentAlert(error.error.message);
+      this.presentMessage()
     }
     else{
       this.presentToast(error.error.message)
@@ -362,6 +364,18 @@ export class CartPage implements OnInit {
       showBackdrop: true,
     });
     await loading.present();
+  }
+
+
+  async presentMessage() {
+    const modal = await this.modalController.create({
+      component: QuantityUnavailablePage,
+      cssClass: "custom_alert",
+      swipeToClose: true,
+      mode:"ios"
+    });
+
+    await modal.present();
   }
 
 

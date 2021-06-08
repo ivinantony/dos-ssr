@@ -8,14 +8,17 @@ import { OfferPageRoutingModule } from './offer-routing.module';
 
 import { OfferPage } from './offer.page';
 import { SharedComponentsModule } from 'src/app/components/shared-components.module';
-
+import {NgxPaginationModule} from 'ngx-pagination';
+import { JwPaginationModule } from 'jw-angular-pagination';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    JwPaginationModule,
     OfferPageRoutingModule,
     SharedComponentsModule,
+    NgxPaginationModule,
     SharedComponentsModule
   ],
   declarations: [OfferPage]

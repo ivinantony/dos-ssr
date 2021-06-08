@@ -7,7 +7,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { CountryCodeService } from 'src/app/services/countryCode/country-code.service';
 import { LocationmodelPage } from '../locationmodel/locationmodel.page';
 import {isValidPhoneNumber } from "libphonenumber-js";
-
+import { LocationUnavailablePage } from "../location-unavailable/location-unavailable.page";
 
 @Component({
   selector: 'app-add-address',
@@ -184,11 +184,24 @@ export class AddAddressPage implements OnInit {
   
   handleResponse(data)
   {
-
+    if(data.other_location_status ==true){
+      this.presentMessage()  
+    }
     this.modalController.dismiss()
   }
   handleError(error)
   {
     // console.log(error)
+  }
+
+  async presentMessage() {
+    const modal = await this.modalController.create({
+      component: LocationUnavailablePage,
+      cssClass: "custom_alert_location_unavailable",
+      swipeToClose: true,
+      mode:"ios"
+    });
+
+    await modal.present();
   }
 }

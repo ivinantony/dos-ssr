@@ -10,6 +10,7 @@ import { AddressService } from "src/app/services/address/address.service";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { AddAddressPage } from "../add-address/add-address.page";
 import { EditAddressPage } from "../edit-address/edit-address.page";
+import { LocationUnavailablePage } from "../location-unavailable/location-unavailable.page";
 declare var google;
 const GET_DATA = 100;
 const DELETE_DATA = 110;
@@ -130,7 +131,14 @@ export class AddressModalPage implements OnInit {
     this.modalController.dismiss();
   }
   onChangeAddress(event) {
-    this.modalController.dismiss(this.addresses[event.detail.value]);
+    console.log(event)
+    if(this.addresses[event.detail.value].other_location_status == true){
+      this.presentMessage()
+    }
+    else{ 
+      this.modalController.dismiss(this.addresses[event.detail.value]);
+    }
+    
   }
 
 
@@ -181,6 +189,17 @@ export class AddressModalPage implements OnInit {
       duration: 2000,
     });
     toast.present();
+  }
+
+  async presentMessage() {
+    const modal = await this.modalController.create({
+      component: LocationUnavailablePage,
+      cssClass: "custom_alert_location_unavailable",
+      swipeToClose: true,
+      mode:"ios"
+    });
+
+    await modal.present();
   }
 
 

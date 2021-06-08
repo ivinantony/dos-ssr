@@ -20,6 +20,7 @@ import { IonContent } from "@ionic/angular";
 import { CartcountService } from "src/app/services/cartcount.service";
 import { AuthGuard } from "src/app/guards/auth.guard";
 import { WishlistService } from "src/app/services/wishlist/wishlist.service";
+import { QuantityUnavailablePage } from "../quantity-unavailable/quantity-unavailable.page";
 const GET_DATA = 200;
 const POST_DATA = 210;
 const DEL_DATA = 220;
@@ -31,7 +32,7 @@ const WISHLIST = 240;
   styleUrls: ["./products.page.scss"],
 })
 export class ProductsPage implements OnInit {
-  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+  // @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   @ViewChild(IonContent, { static: false }) content: IonContent;
 
   products: Array<any> = [];
@@ -48,6 +49,7 @@ export class ProductsPage implements OnInit {
   name: any;
   currentIndex: number;
   wishlistIndex: any;
+  collection:any
   constructor(
     private activatedRoute: ActivatedRoute,
     public router: Router,
@@ -79,11 +81,10 @@ export class ProductsPage implements OnInit {
       this.cart_count = val;
 
     });
-    this.getData();
-    this.infiniteScroll.disabled = false;
+    this.getData(true);
   }
 
-  getData(infiniteScroll?) {
+  getData(isFirst) {
     this.presentLoading().then(() => {
       this.authService.isAuthenticated().then((res) => {
         if (res) {
@@ -93,7 +94,7 @@ export class ProductsPage implements OnInit {
             this.page_count,
             this.sortType
           ).subscribe(
-            (data) => this.handleResponse(data, GET_DATA, infiniteScroll),
+            (data) => this.handleResponse(data, GET_DATA,isFirst),
             (error) => this.handleError(error)
           );
         } else {
@@ -103,7 +104,7 @@ export class ProductsPage implements OnInit {
             this.page_count,
             this.sortType
           ).subscribe(
-            (data) => this.handleResponse(data, GET_DATA, infiniteScroll),
+            (data) => this.handleResponse(data, GET_DATA,isFirst),
             (error) => this.handleError(error)
           );
         }
@@ -111,19 +112,24 @@ export class ProductsPage implements OnInit {
     });
   }
 
-  handleResponse(data, type, infiniteScroll?) {
+  handleResponse(data, type,isFirst) {
     if (type == GET_DATA) {
       this.loadingController.dismiss().then(() => {
         this.data = data;
-        this.data.products.forEach((element) => {
-          this.products.push(element);
-        });
+        this.products=this.data.products
         this.page_limit = data.page_count;
         this.cart_count = data.cart_count;
+        if(isFirst){
+          let a=[]
+          for (let i = 1; i <= data.page_count; i++) {
+            a.push(i);
+          }
+          this.collection = a;
+        }
+
         this.authService.setCartCount(data.cart_count);
         this.cartCountService.setCartCount(data.cart_count);
        
-        this.infiniteScroll.disabled = false;
       });
     } else if (type == POST_DATA) {
       this.loadingController.dismiss().then(() => {
@@ -158,16 +164,13 @@ export class ProductsPage implements OnInit {
         }
       })
     }
-
-    if (infiniteScroll) {
-      infiniteScroll.target.complete();
-    }
   }
 
   handleError(error) {
     this.loadingController.dismiss();
     if (error.status == 400) {
-      this.presentAlert(error.error.message);
+      // this.presentAlert(error.error.message);
+      this.presentMessage()
     }
     else{
       this.presentToast(error.error.message)
@@ -190,33 +193,44 @@ export class ProductsPage implements OnInit {
     });
     popover.onDidDismiss().then((data) => {
       if (data.data) {
-        this.infiniteScroll.disabled = true;
+     
 
         if (data.data == 2) {
           this.sortType = "ASC";
           this.page_count = 1;
           this.products = [];
 
-          this.getData();
+          this.getData(true);
         } else if (data.data == 1) {
           this.sortType = "DESC";
           this.page_count = 1;
           this.products = [];
 
-          this.getData();
+          this.getData(true);
         }
       }
     });
     await popover.present();
   }
 
-  loadMoreContent(infiniteScroll) {
+  loadMoreContent() {
     if (this.page_count == this.page_limit) {
-      infiniteScroll.target.disabled = true;
+      // infiniteScroll.target.disabled = true;
     } else {
-      this.page_count += 1;
-      this.getData(infiniteScroll);
+      this.page_count++;
+      this.getData(false);
+      this.content.scrollToTop(1500);
     }
+  }
+
+  onChangePage(e){
+    console.log(e[0])
+    if(e[0]!=this.page_count){
+      this.page_count= e[0];
+      this.getData(false);
+      this.content.scrollToTop(1500);
+    }
+    
   }
 
   async openSortMobile() {
@@ -228,24 +242,21 @@ export class ProductsPage implements OnInit {
         {
           text: "Price - high to low",
           handler: () => {
-            this.infiniteScroll.disabled = true;
 
             this.page_count = 1;
             this.products = [];
             this.sortType = "DESC";
-            this.getData();
+            this.getData(true);
             this.content.scrollToTop();
           },
         },
         {
           text: "Price - low to high",
           handler: () => {
-            this.infiniteScroll.disabled = true;
-
             this.page_count = 1;
             this.products = [];
             this.sortType = "ASC";
-            this.getData();
+            this.getData(true);
             this.content.scrollToTop();
           },
         },
@@ -282,7 +293,7 @@ export class ProductsPage implements OnInit {
             client_id: token,
           };
           this.wishlistService.wishlist(data).subscribe(
-            (data) => this.handleResponse(data, WISHLIST),
+            (data) => this.handleResponse(data, WISHLIST,''),
             (error) => this.handleError(error)
           );
         });
@@ -303,7 +314,7 @@ export class ProductsPage implements OnInit {
               client_id: val
             };
             this.cartService.addToCart(data).subscribe(
-              (data) => this.handleResponse(data, BUY_NOW),
+              (data) => this.handleResponse(data, BUY_NOW,''),
               (error) => this.handleError(error)
             );
           });
@@ -344,46 +355,11 @@ export class ProductsPage implements OnInit {
     setTimeout(() => {
       this.page_count = 1;
       this.products = [];
-      this.getData();
+      this.getData(true);
       event.target.complete();
     }, 2000);
   }
 
-  async presentAlert(msg: string) {
-    const alert = await this.alertController.create({
-      cssClass: "alert-class",
-      header: "Required Quantity Unavailable",
-
-      message:'Sorry we are unable to process with your required quantity, please contact via <img src = "../../../assets/imgs/icons/whatsapp.svg">  or  <img src = "../../../assets/imgs/icons/gmail.svg">.',
-      buttons: [
-      {
-        text: "Whatsapp",
-      
-        handler: () => {
-          window.open(
-            "https://api.whatsapp.com/send?phone=447417344825&amp;"  
-          );
-        }
-      },
-      {
-        text: "E-Mail",
-  
-        handler: () => {
-          window.open(
-            "https://mail.google.com/mail/?view=cm&fs=1&to=info@dealonstore.com"
-          ); 
-          
-        },
-      },
-      {
-        text: "Cancel",
-        role:"cancel"
-      },
-    ],
-    });
-
-    await alert.present();
-  }
 
   async presentModal() {
     const modal = await this.modalController.create({
@@ -402,7 +378,6 @@ export class ProductsPage implements OnInit {
 
     this.page_count = 1;
     this.products = [];
-    this.infiniteScroll.disabled = true;
 
   }
 
@@ -415,5 +390,16 @@ export class ProductsPage implements OnInit {
       duration: 2000,
     });
     toast.present();
+  }
+
+  async presentMessage() {
+    const modal = await this.modalController.create({
+      component: QuantityUnavailablePage,
+      cssClass: "custom_alert",
+      swipeToClose: true,
+      mode:"ios"
+    });
+
+    await modal.present();
   }
 }

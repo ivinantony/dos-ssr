@@ -23,7 +23,7 @@ import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
 import { enterAnimation } from './animation/nav-animation';
 import { Deeplinks } from '@ionic-native/deeplinks/ngx';
 import { AppVersion } from '@ionic-native/app-version/ngx';
-
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 
@@ -34,6 +34,7 @@ import { AppVersion } from '@ionic-native/app-version/ngx';
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireMessagingModule,
+    NgxPaginationModule,
     IonicModule.forRoot({
       mode:'ios',
       swipeBackEnabled:true,

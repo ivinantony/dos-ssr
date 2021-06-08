@@ -102,7 +102,7 @@
     </ion-fab-button>
   </ion-fab>
 
-  <ion-infinite-scroll
+  <!-- <ion-infinite-scroll
     threshold="100px"
     (ionInfinite)="loadMoreContent($event)"
   >
@@ -111,7 +111,9 @@
       loadingText="Loading more data..."
     >
     </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+  </ion-infinite-scroll> -->
+  <jw-pagination  [items]="collection" [pageSize]="1" (changePage)="onChangePage($event)"></jw-pagination>
+  
 </ion-content>
 <ion-footer class="ion-hide-md-up">
   <ion-toolbar>

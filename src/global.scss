@@ -66,6 +66,127 @@
       }
     }
   }
+
+  .custom_alert{
+    .modal-wrapper {
+      height: 260px;
+      width: 270px;
+      top: 30%;
+      // position: absolute;
+    }
+    // width: 270px !important;
+    // height: 270px !important;
+
+  }
+
+  .custom_alert_location_unavailable{
+    .modal-wrapper {
+      height: 285px;
+      width: 270px;
+      top: 30%;
+      // position: absolute;
+      box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    }
+    
+  }
+
+
+  
+.pagination {
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.pagination {
+display: -ms-flexbox;
+display: flex;
+padding-left: 0;
+list-style: none;
+border-radius: .25rem;
+}
+.page-link {
+  position: relative;
+  display: block;
+  padding: 0.5rem 0.75rem;
+  margin-left: -1px;
+  line-height: 1.25;
+  color:var(--ion-color-primary);
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+}
+
+.page-link:hover {
+  z-index: 2;
+  color: var(--ion-color-primary);
+  text-decoration: none;
+  background-color: #e9ecef;
+  border-color: #dee2e6;
+}
+
+.page-link:focus {
+  z-index: 3;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.page-item:first-child .page-link {
+  margin-left: 0;
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+
+.page-item:last-child .page-link {
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.page-item.active .page-link {
+  z-index: 3;
+  color: #fff;
+  background-color:var(--ion-color-primary);
+  border-color: var(--ion-color-primary);
+}
+
+.page-item.disabled .page-link {
+  color: #6c757d;
+  pointer-events: none;
+  cursor: auto;
+  background-color: #fff;
+  border-color: #dee2e6;
+}
+
+.pagination-lg .page-link {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+.pagination-lg .page-item:first-child .page-link {
+  border-top-left-radius: 0.3rem;
+  border-bottom-left-radius: 0.3rem;
+}
+
+.pagination-lg .page-item:last-child .page-link {
+  border-top-right-radius: 0.3rem;
+  border-bottom-right-radius: 0.3rem;
+}
+
+.pagination-sm .page-link {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.pagination-sm .page-item:first-child .page-link {
+  border-top-left-radius: 0.2rem;
+  border-bottom-left-radius: 0.2rem;
+}
+
+.pagination-sm .page-item:last-child .page-link {
+  border-top-right-radius: 0.2rem;
+  border-bottom-right-radius: 0.2rem;
+}
+
   @media only screen and (min-width: 769px) {
   .install {
   --height: calc(100% - 50%);
@@ -80,6 +201,7 @@
   }
   }
 
+ 
 // .custom-toast-success {
 //   --background: #212121;
 //   color: white;

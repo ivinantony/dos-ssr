@@ -219,10 +219,16 @@ const routes: Routes = [
   {
     path: 'locationmodel',
     loadChildren: () => import('./pages/locationmodel/locationmodel.module').then( m => m.LocationmodelPageModule)
-  },  {
+  },
+  {
     path: 'returnorder',
     loadChildren: () => import('./pages/returnorder/returnorder.module').then( m => m.ReturnorderPageModule)
   },
+  {
+    path: 'quantity-unavailable',
+    loadChildren: () => import('./pages/quantity-unavailable/quantity-unavailable.module').then( m => m.QuantityUnavailablePageModule)
+  },
+
 
 
 ];

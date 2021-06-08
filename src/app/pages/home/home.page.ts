@@ -54,10 +54,9 @@ export class HomePage implements OnInit {
     slidesPerView: 1,
     initialSlide: 1,
     spaceBetween: 20,
-    loop:true,
     centeredSlides: true,
     autoplay: {
-      delay: 2000,
+      delay:4500,
       loop: true,
       disableOnInteraction: false,
     },
@@ -67,10 +66,10 @@ export class HomePage implements OnInit {
     slidesPerView: 1,
     initialSlide: 2,
     spaceBetween: 20,
-    loop: true,
     centeredSlides: true,
     autoplay: {
-      delay: 3500,
+      loop: true,
+      delay: 4500,
       disableOnInteraction: false,
     },
     speed: 400,
@@ -78,12 +77,13 @@ export class HomePage implements OnInit {
   bannerSlideOpts = {
     slidesPerView: 1,
     spaceBetween: 20,
-    loop: true,
+    // loop: true,
+    // autoplay: true,
     centeredSlides: true,
     updateOnWindowResize: true,
     disableOnInteraction: false,
     autoplay: {
-      delay: 3500,
+      delay: 4500,
       disableOnInteraction: false,
       loop:true
     },

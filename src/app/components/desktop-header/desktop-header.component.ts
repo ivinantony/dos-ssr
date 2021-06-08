@@ -134,7 +134,9 @@ export class DesktopHeaderComponent implements OnInit {
   }
 
   onSearchChange() {
-    this.searching = true;
+  
+      this.searching = true;
+   
   }
   handleResponseSearch(data) {
    if(data.data.length==0){

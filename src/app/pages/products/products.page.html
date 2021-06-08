@@ -107,13 +107,19 @@
     </ion-fab-button>
   </ion-fab>
 
-  <ion-infinite-scroll threshold="15%" (ionInfinite)="loadMoreContent($event)">
+  <!-- <ion-infinite-scroll threshold="15%" (ionInfinite)="loadMoreContent($event)">
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
       loadingText="Loading more data..."
     >
     </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+  </ion-infinite-scroll> -->
+
+ 
+    
+    
+      <jw-pagination  [items]="collection" [pageSize]="1" (changePage)="onChangePage($event)"></jw-pagination>
+  
 </ion-content>
 
 <ion-footer class="ion-hide-md-up">

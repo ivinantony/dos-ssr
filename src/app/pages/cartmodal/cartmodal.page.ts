@@ -13,7 +13,7 @@ import { DOCUMENT } from "@angular/common";
 import { CartcountService } from "src/app/services/cartcount.service";
 import { AddressModalPage } from "../address-modal/address-modal.page";
 import { AuthenticationService } from "src/app/services/authentication.service";
-
+import { QuantityUnavailablePage } from "../quantity-unavailable/quantity-unavailable.page";
 declare var google;
 const GET_CART = 200;
 const ADD = 210;
@@ -156,7 +156,8 @@ export class CartmodalPage implements OnInit {
     this.loadingController.dismiss();
 
     if (error.status == 400) {
-      this.presentAlert(error.error.message);
+      // this.presentAlert(error.error.message);
+      this.presentMessage()
     }
     else{
       this.presentToast(error.error.message)
@@ -435,39 +436,50 @@ export class CartmodalPage implements OnInit {
     toast.present();
   }
 
-  async presentAlert(msg: string) {
-    const alert = await this.alertController.create({
-      cssClass: "alert-class",
-      header: "Required Quantity Unavailable",
+  // async presentAlert(msg: string) {
+  //   const alert = await this.alertController.create({
+  //     cssClass: "alert-class",
+  //     header: "Required Quantity Unavailable",
 
-      message:'Sorry we are unable to process with your required quantity, please contact via <img src = "../../../assets/imgs/icons/whatsapp.svg">  or  <img src = "../../../assets/imgs/icons/gmail.svg">.',
-      buttons: [
-      {
-        text: "Whatsapp",
+  //     message:'Sorry we are unable to process with your required quantity, please contact via <img src = "../../../assets/imgs/icons/whatsapp.svg">  or  <img src = "../../../assets/imgs/icons/gmail.svg">.',
+  //     buttons: [
+  //     {
+  //       text: "Whatsapp",
       
-        handler: () => {
-          window.open(
-            "https://api.whatsapp.com/send?phone=447417344825&amp;"  
-          );
-        }
-      },
-      {
-        text: "E-Mail",
+  //       handler: () => {
+  //         window.open(
+  //           "https://api.whatsapp.com/send?phone=447417344825&amp;"  
+  //         );
+  //       }
+  //     },
+  //     {
+  //       text: "E-Mail",
   
-        handler: () => {
-          window.open(
-            "https://mail.google.com/mail/?view=cm&fs=1&to=info@dealonstore.com"
-          ); 
+  //       handler: () => {
+  //         window.open(
+  //           "https://mail.google.com/mail/?view=cm&fs=1&to=info@dealonstore.com"
+  //         ); 
           
-        },
-      },
-      {
-        text: "Cancel",
-        role:"cancel"
-      },
-    ],
+  //       },
+  //     },
+  //     {
+  //       text: "Cancel",
+  //       role:"cancel"
+  //     },
+  //   ],
+  //   });
+
+  //   await alert.present();
+  // }
+
+  async presentMessage() {
+    const modal = await this.modalController.create({
+      component: QuantityUnavailablePage,
+      cssClass: "custom_alert",
+      swipeToClose: true,
+      mode:"ios"
     });
 
-    await alert.present();
+    await modal.present();
   }
 }

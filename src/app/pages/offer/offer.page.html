@@ -25,7 +25,7 @@
       refreshingText="Refreshing..."
     ></ion-refresher-content>
   </ion-refresher>
-  <ion-row>
+  <ion-row >
     <ion-col size="12" size-sm="12" size-md="12" size-xl="12" size-lg="12">
       <ion-grid>
         <ion-row class="row">
@@ -97,13 +97,24 @@
     </ion-fab-button>
   </ion-fab>
 
-  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreContent($event)" >
+  <!-- <ion-infinite-scroll class="ion-hide-md-up" threshold="100px" (ionInfinite)="loadMoreContent($event)" >
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
       loadingText="Loading more data..."
     >
     </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+  </ion-infinite-scroll> -->
+<!-- <ion-row>
+  <ion-col size="12" class="ion-text-center">
+    <ion-button class="ion-hide-md-up"  (click)="loadMoreContent()"  fill="outline" mode="md" size="small">
+      Load More Products
+    </ion-button>
+  </ion-col>
+</ion-row> -->
+  
+  
+    <jw-pagination    [items]="collection" [pageSize]="1" (changePage)="onChangePage($event)"></jw-pagination>
+
 </ion-content>
 
 <ion-footer class="ion-hide-md-up">
