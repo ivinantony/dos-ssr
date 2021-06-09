@@ -126,7 +126,7 @@ export class OfferPage implements OnInit {
       this.cart_count = data.cart_count;
       this.products = data.product
    
-      if(isFirst){
+      if(isFirst && data.page_count!=0){
         let a=[]
         for (let i = 1; i <= data.page_count; i++) {
           a.push(i);

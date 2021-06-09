@@ -119,7 +119,7 @@ export class ProductsPage implements OnInit {
         this.products=this.data.products
         this.page_limit = data.page_count;
         this.cart_count = data.cart_count;
-        if(isFirst){
+        if(isFirst && data.page_count!=0){
           let a=[]
           for (let i = 1; i <= data.page_count; i++) {
             a.push(i);
