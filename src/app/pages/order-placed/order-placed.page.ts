@@ -31,7 +31,7 @@ export class OrderPlacedPage implements OnInit {
 
   ngOnInit() {
     let data = JSON.parse(localStorage.getItem("tran_data"));
-    console.log(data,"data from ngonint")
+    // console.log(data,"data from ngonint")
     let tran_ref = data.tran_ref;
     let client_id = data.client_id;
     this.incoming_platform = data.incoming_platform
@@ -44,7 +44,7 @@ export class OrderPlacedPage implements OnInit {
   }
   continue() {
     localStorage.clear();
-    console.log(this.incoming_platform,"from continue")
+    // console.log(this.incoming_platform,"from continue")
     if(this.incoming_platform == 'cordova'){
       window.open("dos://dealonstore.com", "_blank");
     }

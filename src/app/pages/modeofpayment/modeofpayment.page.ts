@@ -22,7 +22,7 @@ export class ModeofpaymentPage implements OnInit {
     private modalController: ModalController,
     private authservice: AuthenticationService
   ) {
-    console.log("b4", window.history);
+    // console.log("b4", window.history);
     // this.history = window.history;
     this.getData();
   }
@@ -30,7 +30,7 @@ export class ModeofpaymentPage implements OnInit {
     if (!window.history.state.modal) {
       const modalState = { modal: true };
       history.pushState(modalState, null);
-      console.log("afr", window.history);
+      // console.log("afr", window.history);
     }
   }
 

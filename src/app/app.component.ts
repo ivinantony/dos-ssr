@@ -195,7 +195,7 @@ export class AppComponent implements OnInit {
     });
     this.authService.getWishCount().then((count) => {
       if (count) {
-        console.log("wish",count)
+        // console.log("wish",count)
         this.wishlistService.setWishCount(count);
       }
     });
@@ -324,7 +324,7 @@ export class AppComponent implements OnInit {
 
   backButtonEvent() {
     this.platform.backButton.subscribe(async () => {
-      console.log("from app.ts")
+      // console.log("from app.ts")
 
       this.routerOutlets.forEach(async (outlet: IonRouterOutlet) => {
         if (outlet && outlet.canGoBack()) {

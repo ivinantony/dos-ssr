@@ -69,7 +69,7 @@ export class CheckoutPage implements OnInit {
     private paymentService: PaymentService,
     private navController:NavController
   ) {
-    console.log('b4', window.history)
+    // console.log('b4', window.history)
     this.appUrl = this.utils.getAppUrl();
     this.address_id = this.activatedRoute.snapshot.params.address_id;
     this.delivery_location_id = this.activatedRoute.snapshot.params.delivery_location_id;

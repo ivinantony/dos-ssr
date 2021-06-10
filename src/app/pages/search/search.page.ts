@@ -24,7 +24,7 @@ export class SearchPage implements OnInit {
     private utils:UtilsService) {
     defineCustomElements(window);
     this.s3url = utils.getS3url();
-    console.log(this.s3url)
+  
     this.searchTerm = new FormControl();
   }
 

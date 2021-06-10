@@ -148,7 +148,7 @@ export class DesktopHeaderComponent implements OnInit {
     });
 
     this.isSearchResult = true;
-    console.log(this.result)
+    // console.log(this.result)
   }
   handleErrorSearch(error) {
     // console.log(error)

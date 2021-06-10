@@ -237,7 +237,7 @@ export class BrandProductsPage implements OnInit {
   }
 
   onChangePage(e){
-    console.log(e[0])
+    // console.log(e[0])
     if(e[0]!=this.page_count){
       this.page_count= e[0];
       this.getData(false);

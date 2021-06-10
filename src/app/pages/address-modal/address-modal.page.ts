@@ -131,7 +131,7 @@ export class AddressModalPage implements OnInit {
     this.modalController.dismiss();
   }
   onChangeAddress(event) {
-    console.log(event)
+    // console.log(event)
     if(this.addresses[event.detail.value].other_location_status == true){
       this.presentMessage()
     }

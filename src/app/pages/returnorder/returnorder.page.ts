@@ -32,7 +32,7 @@ export class ReturnorderPage implements OnInit {
   }
 
   cancelOrder() {
-    console.log(this.desc)
+    // console.log(this.desc)
     if(this.desc == "" ||this.desc == undefined ){
       let msg="Enter reason for return";
       this.presentToast(msg);
