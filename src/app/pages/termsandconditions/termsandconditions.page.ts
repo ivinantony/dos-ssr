@@ -48,21 +48,13 @@ export class TermsandconditionsPage implements OnInit {
     );
   }
   ios_App(){
-    window.open(
-      "https://apps.apple.com/in/app/deal-on-store/id1550282870"
-    );
+    window.open(this.data.app_store_url);
     
   }
 
   android_App(){
-    // if(this.platform.is('cordova')){
-    //   this.market.open('com.mermerapps.premier');
-    // }else{
-    //   window.open(
-    //     "https://play.google.com/store/apps/details?id=com.ludo.king"
-        
-    //   );
-    // }
-    
+ 
+      window.open(this.data.play_store_url);
+
   }
 }

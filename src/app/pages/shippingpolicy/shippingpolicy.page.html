@@ -2,7 +2,7 @@
 <ion-header class="ion-hide-md-up">
   <ion-toolbar color="secondary">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/tabs/home" color="light"></ion-back-button>
+      <ion-back-button defaultHref="/tabs/home"  color="light"></ion-back-button>
     </ion-buttons>
     <ion-title>Shipping Policy</ion-title>
   </ion-toolbar>
@@ -11,12 +11,18 @@
 <ion-content>
   <ion-grid fixed>
     <ion-row>
+    
       <ion-col size="11" class="content ion-text-justify">
-        <quill-view [content]="data?.delivery_policy " format="text" theme="snow"></quill-view>
+     
+          <quill-view
+        [content]="data?.delivery_policy  "
+        format="text"
+        theme="snow"
+        ></quill-view>
+        
       </ion-col>
     </ion-row>
   </ion-grid>
-
   <section *ngIf="data?.delivery_policy ">
     <ion-footer>
       <ion-row class="footer">
