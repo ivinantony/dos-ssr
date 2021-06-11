@@ -42,10 +42,10 @@ export class HomePage implements OnInit {
     slidesPerView: 1,
     initialSlide: 0,
     spaceBetween: 20,
-    loop: true,
     centeredSlides: true,
     autoplay: {
       delay: 2500,
+      loop: true,
       disableOnInteraction: false,
     },
     speed: 400,
@@ -321,6 +321,7 @@ export class HomePage implements OnInit {
 
   onRoute(link) {
     this.result = [];
+    console.log(link)
     if (link != null || link != undefined) {
       let data = link.split(".com").pop();
 

@@ -336,17 +336,17 @@
         <ion-slide
           *ngFor="let item of data?.banner[3]?.desktop_images; let i=index"
           class="dsk"
-          (click)="onRoute(item.application_url)"
+          
         >
-          <img [src]="s3url + item?.path" alt="" />
+          <img [src]="s3url + item?.path" alt="" (click)="onRoute(item.application_url)" />
         </ion-slide>
 
         <ion-slide
           *ngFor="let item of data?.banner[3]?.mobile_images; let i=index"
           class="mob"
-          (click)="onRoute(item.application_url)"
+          
         >
-          <img [src]="s3url + item?.path" alt="" />
+          <img [src]="s3url + item?.path" alt="" (click)="onRoute(item.application_url)" />
         </ion-slide>
       </ion-slides>
     </section>
