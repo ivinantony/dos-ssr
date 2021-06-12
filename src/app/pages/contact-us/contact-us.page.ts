@@ -55,14 +55,15 @@ export class ContactUsPage implements OnInit {
     );
   }
   ios_App(){
-    window.open(this.data.app_store_url);
-    
+    if(this.data.app_store_url!=null){
+      window.open(this.data.app_store_url);
+    }    
   }
 
   android_App(){
- 
+    if(this.data.play_store_url!=null){
       window.open(this.data.play_store_url);
-
+    }
   }
 
 

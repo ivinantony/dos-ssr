@@ -66,22 +66,15 @@ data:any
     );
   }
   ios_App(){
-    window.open(
-      "https://apps.apple.com/in/app/deal-on-store/id1550282870"
-    );
-    
+    if(this.data.app_store_url!=null){
+      window.open(this.data.app_store_url);
+    }    
   }
 
   android_App(){
-    // if(this.platform.is('cordova')){
-    //   this.market.open('com.mermerapps.premier');
-    // }else{
-    //   window.open(
-    //     "https://play.google.com/store/apps/details?id=com.ludo.king"
-        
-    //   );
-    // }
-    
+    if(this.data.play_store_url!=null){
+      window.open(this.data.play_store_url);
+    }
   }
 
 }
