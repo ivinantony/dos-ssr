@@ -26,7 +26,6 @@
     "@ionic-native/badge": "^5.29.0",
     "@ionic-native/core": "^5.0.0",
     "@ionic-native/deeplinks": "^5.31.1",
-    "@ionic-native/firebase": "^5.32.1",
     "@ionic-native/geolocation": "^5.29.0",
     "@ionic-native/in-app-browser": "^5.30.0",
     "@ionic-native/ionic-webview": "^5.31.1",
