@@ -73,7 +73,6 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.20.6",
     "codelyzer": "^6.0.0",
-    "cordova-android": "^9.1.0",
     "cordova-browser": "^6.0.0",
     "cordova-ios": "^6.2.0",
     "cordova-plugin-add-swift-support": "^2.0.2",

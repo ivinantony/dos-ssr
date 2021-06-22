@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:744606326185:android:eecc520c5c7cea7759f8b8",
+        "mobilesdk_app_id": "1:744606326185:android:792f36904680176059f8b8",
         "android_client_info": {
-          "package_name": "com.mermerapps.dealonstore"
+          "package_name": "com.mermerapps.dos"
         }
       },
       "oauth_client": [
