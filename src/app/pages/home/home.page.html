@@ -430,11 +430,14 @@
                     ></ion-icon>
                   </li>
                 </ul>
-                <h5>Shop On The Go</h5>
-               <div>
-                 <img src="../../../assets/imgs/app-store.svg" alt="" style="padding: 2px;" (click)="ios_App()">
-                 <img src="../../../assets/imgs/google-play.svg" alt="" style="padding: 2px;" (click)="android_App()">
-               </div>
+                <div *ngIf="!platform.is('cordova')">
+                  <h5>Shop On The Go</h5>
+                  <div>
+                    <img src="../../../assets/imgs/app-store.svg" alt="" style="padding: 2px;" (click)="ios_App()">
+                    <img src="../../../assets/imgs/google-play.svg" alt="" style="padding: 2px;" (click)="android_App()">
+                  </div>
+                </div>
+                
               </ion-col>
             
 

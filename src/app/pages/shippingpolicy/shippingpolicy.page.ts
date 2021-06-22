@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Platform } from '@ionic/angular';
 import { ShippingPolicyService } from 'src/app/services/shippingPolicy/shipping-policy.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { ShippingPolicyService } from 'src/app/services/shippingPolicy/shipping-
 export class ShippingpolicyPage implements OnInit {
   data: any
   constructor(private deliverypolicy: ShippingPolicyService,
-    public router:Router) {
+    public router:Router,public platform:Platform) {
     this.getData()
   }
 

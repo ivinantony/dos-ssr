@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Platform } from '@ionic/angular';
 import { ContactUsService } from 'src/app/services/contactUs/contact-us.service';
 
 @Component({
@@ -11,7 +12,7 @@ export class ContactUsPage implements OnInit {
 
   data:any
   constructor(private contactService:ContactUsService,
-    public router:Router) 
+    public router:Router,public platform:Platform) 
   { 
     this.getData()
   }

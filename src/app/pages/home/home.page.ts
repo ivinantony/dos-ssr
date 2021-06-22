@@ -185,7 +185,7 @@ export class HomePage implements OnInit {
   banner_image: any;
   constructor(
     public router: Router,
-    private platform: Platform,
+    public platform: Platform,
     private homeService: HomeService,
     private badge: Badge,
     private utils: UtilsService,
@@ -210,10 +210,8 @@ export class HomePage implements OnInit {
   }
 
   ionViewWillEnter() {
-    
     this.getData();
     this.searchTerm.reset();
-
   }
 
   ionViewDidEnter() {
@@ -225,6 +223,7 @@ export class HomePage implements OnInit {
   ionViewWillLeave() {
     this.subscription.unsubscribe();
   }
+
 
 
 

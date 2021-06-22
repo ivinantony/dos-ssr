@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Platform } from '@ionic/angular';
 import { PrivacyPolicyService } from 'src/app/services/privacy-policy.service';
 
 @Component({
@@ -11,7 +12,7 @@ export class PrivacypolicyPage implements OnInit {
 
   data:any
   constructor(private privacyPolicy:PrivacyPolicyService,
-    public router:Router) 
+    public router:Router,public platform:Platform) 
   {
   this.getData()
   }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Platform } from '@ionic/angular';
 import { ReturnandrefundService } from 'src/app/services/returnandrefund.service';
 
 @Component({
@@ -11,7 +12,7 @@ export class ReturnandrefundPage implements OnInit {
 
   data: any
   constructor(private returnPolicy: ReturnandrefundService,
-    public router:Router) {
+    public router:Router,public platform:Platform) {
     this.getData()
   }
 

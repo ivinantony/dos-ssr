@@ -72,6 +72,7 @@
     "@types/jasminewd2": "^2.0.9",
     "@types/node": "^12.20.15",
     "codelyzer": "^6.0.2",
+    "cordova-android": "^9.1.0",
     "cordova-browser": "^6.0.0",
     "cordova-plugin-add-swift-support": "^2.0.2",
     "cordova-plugin-androidx": "^3.0.0",
@@ -154,8 +155,8 @@
     },
     "platforms": [
       "browser",
-      "android",
-      "ios"
+      "ios",
+      "android"
     ]
   }
 }

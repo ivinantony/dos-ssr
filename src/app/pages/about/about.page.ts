@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { Platform, ToastController } from '@ionic/angular';
 import { AboutService } from 'src/app/services/about.service';
 
 @Component({
@@ -12,7 +12,7 @@ export class AboutPage implements OnInit {
 data:any
   constructor(private aboutService:AboutService,
     private toastController:ToastController,
-    public router:Router) {
+    public router:Router,public platform:Platform) {
     this.getData()
    }
 

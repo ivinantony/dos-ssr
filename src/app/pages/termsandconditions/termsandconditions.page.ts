@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Platform } from '@ionic/angular';
 import { TermsandconditionsService } from 'src/app/services/termsandconditions.service';
 
 @Component({
@@ -11,7 +12,7 @@ export class TermsandconditionsPage implements OnInit {
 
   data: any
   constructor(private termsPolicy: TermsandconditionsService,
-    public router:Router) {
+    public router:Router,public platform:Platform) {
     this.getData()
   }
 
