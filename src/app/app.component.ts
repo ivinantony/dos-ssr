@@ -125,10 +125,6 @@ export class AppComponent implements OnInit {
       this.statusBar.styleDefault();
       this.statusBar.overlaysWebView(false);
       this.statusBar.backgroundColorByHexString("#565656");
-      // if(this.platform.is("cordova"))
-      // {
-      //   this.checkForUpdate()
-      // }
       this.setupFCM();
       this.setDeepLink()
       this.searchService.searchResult.subscribe((data) => {
@@ -229,15 +225,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  // checkForUpdate()
-  // {
-  //   const updateUrl = 'https://arba.mermerapps.com/app/app_update.xml';
-  //   this.appUpdate.checkAppUpdate(updateUrl).then(update => {
-  //     // alert("Update Status:  "+update.msg);
-  //   }).catch(error=>{
-  //     alert("Error: "+error.msg);
-  //   });
-  // }
 
   setDeepLink() {
     this.deeplinks.route({ '/:slug': 'posts' }).subscribe(

@@ -22,7 +22,6 @@ import { AngularFireMessagingModule } from '@angular/fire/messaging';
 import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
 import { enterAnimation } from './animation/nav-animation';
 import { Deeplinks } from '@ionic-native/deeplinks/ngx';
-import { AppVersion } from '@ionic-native/app-version/ngx';
 import { NgxPaginationModule } from 'ngx-pagination';
 
 
@@ -57,7 +56,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
     FCM,
     NativeGeocoder,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    AppVersion
   ],
   bootstrap: [AppComponent]
 })

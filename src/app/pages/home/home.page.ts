@@ -13,7 +13,6 @@ import { SearchService } from "src/app/services/search/search.service";
 import { CartcountService } from "src/app/services/cartcount.service";
 import { NotcountService } from "src/app/services/notcount.service";
 import { Storage } from "@ionic/storage";
-import { AppVersion } from '@ionic-native/app-version/ngx';
 import { Market } from '@ionic-native/market/ngx';
 import { WishlistService } from "src/app/services/wishlist/wishlist.service";
 
@@ -198,7 +197,6 @@ export class HomePage implements OnInit {
     private storage: Storage,
     private notificationCountService:NotcountService,
     private alertController:AlertController,
-    private appVersion:AppVersion,
     private market:Market,
     private wishlistService:WishlistService,
     private toastController:ToastController
@@ -243,20 +241,6 @@ export class HomePage implements OnInit {
             (error) => this.handleErrorSearch(error)
           );
         }
-      });
-
-      this.platform.resume.subscribe(async () => {
-        
-        if(this.isAlertPresent)
-        {
-          this.alertController.dismiss()
-            this.checkApplicationUpdate(this.android_version,this.ios_version); 
-        }
-        else{
-        
-          this.checkApplicationUpdate(this.android_version,this.ios_version)
-        }
-   
       });
   }
 
@@ -365,11 +349,7 @@ export class HomePage implements OnInit {
     this.products = data.products;
     this.banners = data.banner;
     this.android_version = data.android_version
-    this.ios_version = data.ios_version
-    if(this.platform.is('cordova')){
-      this.checkApplicationUpdate(data.android_version,data.ios_version)
-    }
-    
+    this.ios_version = data.ios_version  
   }
 
   handleError(error) {
@@ -444,53 +424,7 @@ export class HomePage implements OnInit {
 
   handleErrorSearch(error) {}
 
-  checkApplicationUpdate(android_version:any,ios_version:any)
-  {
-    let current_version
-    this.appVersion.getVersionNumber().then(res => {
-      current_version = res;
- 
-      if (android_version > current_version) {
-      
-       
-        this.presentUpdateConfirm()
-      }
-      else if(ios_version > current_version)
-      {
-       
-        this.presentUpdateConfirm()
-      }
-      else{
-        // console.log("update not required app up to date")
-      }
-    }) 
-  }
 
-  async presentUpdateConfirm() {
-    this.isAlertPresent = true
-    const alert = await this.alertController.create({
-      cssClass: 'my-custom-class',
-      header: 'This version of the app is outdated',
-      message: 'Please download the latest version to continue.',
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            navigator['app'].exitApp();
-          }
-        }, {
-          text: 'Update',
-          handler: () => {
-            this.market.open('com.mermerapps.dealonstore');
-          }
-        }
-      ]
-    });
-
-    await alert.present();
-  }
   async exitAppCustom() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
