@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.mermerapps.dos" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.mermerapps.dealonstore" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Deal On Store</name>
     <description>Deal On Store Online Shop.</description>
     <author email="support@mermerapps.com" href="https://mermerapps.com/">Mermer Technologies</author>
@@ -141,4 +141,5 @@
     <plugin name="cordova-plugin-splashscreen" spec="5.0.2" />
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
     <allow-navigation href="http://localhost:8100" sessionid="d7b48e58" />
+    <allow-navigation href="http://localhost:8101" sessionid="c06a0de1" />
 </widget>
