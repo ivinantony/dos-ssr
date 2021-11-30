@@ -30,7 +30,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
   declarations: [AppComponent, FilterComponent],
   entryComponents: [],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireMessagingModule,
     NgxPaginationModule,

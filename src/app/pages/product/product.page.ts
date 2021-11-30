@@ -17,6 +17,7 @@ import { CartmodalPage } from "../cartmodal/cartmodal.page";
 import { CartcountService } from "src/app/services/cartcount.service";
 import { WishlistService } from "src/app/services/wishlist/wishlist.service";
 import { QuantityUnavailablePage } from "../quantity-unavailable/quantity-unavailable.page";
+import { Title, Meta } from "@angular/platform-browser";
 const GET_DATA = 200;
 const POST_DATA = 210;
 const BUY_NOW = 240;
@@ -91,7 +92,7 @@ export class ProductPage implements OnInit {
   myThumbnail: any;
   myFullresImage: any;
   appUrl: any;
-  cart_count:any;
+  cart_count: any;
 
   constructor(
     private modalController: ModalController,
@@ -108,8 +109,9 @@ export class ProductPage implements OnInit {
     private loadingController: LoadingController,
     private routerOutlet: IonRouterOutlet,
     private cartCountService: CartcountService,
-    private authGuard:AuthGuard,
-    private wishlistService:WishlistService
+    private authGuard: AuthGuard,
+    private wishlistService: WishlistService,
+    private titleService: Title, private metaService: Meta
   ) {
     this.productId = parseInt(this.activatedRoute.snapshot.paramMap.get("id"));
     this.catId = parseInt(this.activatedRoute.snapshot.paramMap.get("catId"));
@@ -117,9 +119,9 @@ export class ProductPage implements OnInit {
   }
 
   ngOnInit() {
-    this.appUrl = window.location.hostname + this.router.url;  
+    this.appUrl = window.location.hostname + this.router.url;
   }
- 
+
 
   ionViewWillEnter() {
     this.cartCountService.getCartCount().subscribe((val) => {
@@ -128,7 +130,7 @@ export class ProductPage implements OnInit {
     this.getData();
   }
 
- 
+
 
   getData() {
     this.presentLoading().then(() => {
@@ -155,9 +157,10 @@ export class ProductPage implements OnInit {
   handleResponse(data, type) {
     if (type == GET_DATA) {
       this.data = data;
+      this.createMetas(data?.product)
       this.cartCountService.setCartCount(data.cart_count);
       this.authService.setCartCount(data.cart_count);
-    
+
       this.productDetails = data.product;
       for (let i = 0; i < this.productDetails.images.length; i++) {
         this.productDetails.images[i].path =
@@ -173,21 +176,20 @@ export class ProductPage implements OnInit {
       this.productDetails.cart_count++;
       this.presentModal();
     } else if (type == WISHLIST) {
-      this.loadingController.dismiss().then(()=>{
-        
-        if(this.productDetails.wishlist==true)
-        {
+      this.loadingController.dismiss().then(() => {
+
+        if (this.productDetails.wishlist == true) {
           this.presentToastSuccess(this.productDetails.name + "  removed from wishlist.");
           this.authService.setWishCount(data.wish_count);
           this.wishlistService.setWishCount(data.wish_count);
-          this.productDetails.wishlist=!this.productDetails.wishlist
+          this.productDetails.wishlist = !this.productDetails.wishlist
 
         }
-        else{
+        else {
           this.presentToastSuccess(this.productDetails.name + "  added to wishlist.");
           this.authService.setWishCount(data.wish_count);
           this.wishlistService.setWishCount(data.wish_count);
-           this.productDetails.wishlist=!this.productDetails.wishlist
+          this.productDetails.wishlist = !this.productDetails.wishlist
         }
       })
     }
@@ -199,9 +201,27 @@ export class ProductPage implements OnInit {
       // this.presentAlert(error.error.message);
       this.presentMessage()
     }
-    else{
+    else {
       this.presentToast(error.error.message)
     }
+  }
+  async createMetas(product) {
+    console.log('creating tags')
+    this.titleService.setTitle(product.name);
+    this.metaService.updateTag({ name: 'description', content: product.brand_name });
+    this.metaService.updateTag({ name: 'description', content: product.category_name });
+    // Twitter
+    this.metaService.updateTag({ property: 'twitter:card', content: 'summary_large_image' });
+    this.metaService.updateTag({ property: 'twitter:title', content: product.name });
+    this.metaService.updateTag({ property: 'twitter:description', content: product.brand_name });
+    this.metaService.updateTag({ property: 'twitter:image', content: this.s3url + product.images[0]?.path });
+    // Facebook
+    this.metaService.updateTag({ property: 'og:url', content: '/second' });
+    this.metaService.updateTag({ property: 'og:type', content: 'website' });
+    this.metaService.updateTag({ property: 'og:description', content: product.brand_name });
+    this.metaService.updateTag({ property: 'og:title', content: product.name});
+    this.metaService.updateTag({ property: 'og:image', content: this.s3url + product.images[0]?.path });
+
   }
 
   async presentModal() {
@@ -247,9 +267,8 @@ export class ProductPage implements OnInit {
     });
   }
 
-  addToWishlist()
-  {
-    
+  addToWishlist() {
+
     this.authService.isAuthenticated().then((token) => {
       if (token) {
         this.presentLoading().then(() => {
@@ -327,8 +346,8 @@ export class ProductPage implements OnInit {
   whatsapp() {
     window.open(
       "https://api.whatsapp.com/send?phone=447417344825&amp;text=I%20have%20an%20enquiry%20about%20the%20product%20('" +
-        this.productDetails.name +
-        "')",
+      this.productDetails.name +
+      "')",
       this.productDetails.name
     );
   }
@@ -380,7 +399,7 @@ export class ProductPage implements OnInit {
   //     buttons: [
   //     {
   //       text: "Whatsapp",
-      
+
   //       handler: () => {
   //         window.open(
   //           "https://api.whatsapp.com/send?phone=447417344825&amp;"  
@@ -389,12 +408,12 @@ export class ProductPage implements OnInit {
   //     },
   //     {
   //       text: "E-Mail",
-  
+
   //       handler: () => {
   //         window.open(
   //           "https://mail.google.com/mail/?view=cm&fs=1&to=info@dealonstore.com"
   //         ); 
-          
+
   //       },
   //     },
   //     {
@@ -423,7 +442,7 @@ export class ProductPage implements OnInit {
       component: QuantityUnavailablePage,
       cssClass: "custom_alert",
       swipeToClose: true,
-      mode:"ios"
+      mode: "ios"
     });
 
     await modal.present();
